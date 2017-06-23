@@ -120,6 +120,14 @@ namespace DriveDrop.Api.Controllers
 
             return File(buffer, "image/png");
         }
+
+        [HttpGet]
+        [Route("[action]/{string:UserEmail}")]
+        public JsonResult ValidateUserName(string UserEmail)
+        {
+            return Json(!UserEmail.Equals("duplicate"));
+        }
+
     }
 }
 
