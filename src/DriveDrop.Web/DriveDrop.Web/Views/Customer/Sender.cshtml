@@ -1,0 +1,385 @@
+﻿@model DriveDrop.Web.ViewModels.CustomerModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+ 
+
+<form asp-action="Sender">
+
+    <div class="row">
+
+        <div class="col-md-10">
+            <h2>Sender information</h2>
+
+            <hr />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+        </div>
+    </div>
+<div class="row">
+
+                <div class="col-md-5">
+                    <h2>Sender Contact Info</h2>
+                    <hr />
+
+                    <div class="form-horizontal">
+
+                     
+                        <div class="form-group">
+                            
+                            <div class="col-md-12">
+                                <input asp-for="FirstName" class="form-control"  placeholder="First Name"/>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                           
+                            <div class="col-md-12">
+                                <input asp-for="LastName" class="form-control"  placeholder="Last Name"/>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <input asp-for="Phone" class="form-control" placeholder="Contact Phone" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                         
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <input asp-for="Email" class="form-control" placeholder="Contact Email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+
+                        @*<div class="form-group">
+                           
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(m => m.CustomerTypeId, Model.CustomerTypeList, "-- Select Type --", new { @class = "form-control" })
+                                <span asp-validation-for="CustomerTypeId" class="text-danger"></span>
+                            </div>
+                        </div>*@
+                        @*<div class="form-group">
+                           
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select transport type required --", new { @class = "form-control" })
+                                <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+                            </div>
+                        </div>*@
+                        @*<div class="form-group">
+                           
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(m => m.CustomerStatusId, Model.CustomerStatusList, "-- Select Status --", new { @class = "form-control" })
+                                <span asp-validation-for="CustomerStatusId" class="text-danger"></span>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+
+
+    <div class="col-md-5">
+        <h2>Pickup Address</h2>
+        <hr />
+        <div class="form-horizontal">
+
+            <div class="form-group">
+
+                <div class="col-md-12">
+                    <input asp-for="PickupStreet" class="form-control" placeholder="Street" />
+                    <span asp-validation-for="PickupStreet" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-md-12">
+                    <input asp-for="PickupCity" class="form-control" placeholder="City" />
+                    <span asp-validation-for="PickupCity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" />
+                    <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input asp-for="PickupPhone" class="form-control" placeholder="Pickup Phone" />
+                    <span asp-validation-for="PickupPhone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input asp-for="PickupContact" class="form-control" placeholder="Pickup contact person" />
+                    <span asp-validation-for="PickupContact" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+                @*<div class="col-md-5">
+
+                 
+                    <div class="form-horizontal">
+                       
+                        <div class="form-group">
+                          
+                            <div class="col-md-10">
+                                <input asp-for="MaxPackage" class="form-control"  placeholder="Max Package"/>
+                                <span asp-validation-for="MaxPackage" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group"> 
+                            <div class="col-md-12">
+                                <input asp-for="PickupRadius" class="form-control" placeholder="Pickup Radius"/>
+                                <span asp-validation-for="PickupRadius" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group"> 
+                            <div class="col-md-12">
+                                <input asp-for="DeliverRadius" class="form-control"  placeholder="Deliver Radius" />
+                                <span asp-validation-for="DeliverRadius" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group"> 
+                            <div class="col-md-12">
+                                <input asp-for="Phone" class="form-control" placeholder="Phone"/>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+            </div>
+
+
+    <div class="row">
+
+        <div class="col-md-10">
+            <h2>Package picture </h2>
+            <hr />
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="btn btn-primary" for="my-file-selector">
+                        <input id="my-file-selector" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+                        Click here to upload package picture
+                    </label>
+                    <span class='label label-info' id="upload-file-info"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+
+        <div class="col-md-5">
+            <h2>Delivery Address</h2>
+            <hr />
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="DeliveryStreet" class="form-control" placeholder="Street" />
+                        <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="DeliveryCity" class="form-control" placeholder="City" />
+                        <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code" />
+                        <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="DeliveryPhone" class="form-control" placeholder="Delivery Phone" />
+                        <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="DeliveryContact" class="form-control" placeholder="Delivery Contact person" />
+                        <span asp-validation-for="DeliveryContact" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h2>
+                Delivery Information
+
+            </h2>
+            <hr />
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, "-- Select Priority --", new { @class = "form-control" })
+                        <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="PriorityTypeLevel" class="form-control" placeholder="Priority level" />
+                        <span asp-validation-for="PriorityTypeLevel" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select transport type required --", new { @class = "form-control" })
+                        <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
+                        <textarea name="Note" class="span6" rows="3" placeholder="Note to the driver"></textarea>
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="PromoCode" class="form-control" placeholder="Promo Code" />
+                        <span asp-validation-for="PromoCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+
+            <div class="form-group">
+
+                <div class="form-horizontal">
+
+                    <h2>
+                        Payment Info
+                    </h2>
+                    <hr />
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="CardHolderName" class="form-control" placeholder="Card Holder Name" />
+                            <span asp-validation-for="CardHolderName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="CardNumber" class="form-control" placeholder="Card Number" />
+                            <span asp-validation-for="CardNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="Expiration" class="form-control" placeholder="Expiration" />
+                            <span asp-validation-for="Expiration" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="SecurityNumber" class="form-control" placeholder="Security Number" />
+                            <span asp-validation-for="SecurityNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-5">
+            <div class="form-horizontal">
+
+                <h2>
+                    Authentication Info
+                </h2>
+                <hr />
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="UserEmail" class="form-control" placeholder="User Email" />
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="Password" class="form-control" placeholder="Password" />
+                        <span asp-validation-for="Password" class="Password"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                        <span asp-validation-for="ConfirmPassword" class="ConfirmPassword"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+      
+    </div>
+
+    <div class="row"> 
+        <div class="col-md-10">
+            <h2>Shipment Total</h2>
+            <hr />
+            <div class="form-group">
+                <label for="basic-url">Total $0.00 </label>
+                 
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Register" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+        </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

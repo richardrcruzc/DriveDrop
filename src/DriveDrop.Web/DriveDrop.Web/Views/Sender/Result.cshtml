@@ -1,0 +1,144 @@
+﻿@model  ApplicationCore.Entities.ClientAgregate.Customer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Sender</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            Customer Status
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerStatus.Name)
+        </dd>
+        <dt>
+            Customer Type
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerType.Name)
+        </dd>
+        <dt>
+            E-Mail
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            Phone
+        </dt>
+        <dd>
+           @Model.Phone
+        </dd>
+    </dl>
+     
+
+    @if (Model.ShipmentSenders != null)
+    {
+
+        <table class="table">
+            <tr>
+                <th colspan="5">Shipping   <button type="button" id="button" class="btn btn-default">Add new Shipping</button></th>
+               
+            </tr>
+            <tr id="newShipmentTr" class="sr-only">
+                <td colspan="5">
+
+                    <div id="newShipment">
+                        <label class="title">Add New Shipment</label>
+                          @await Component.InvokeAsync("NewShipment", new { id = @Model.Id })
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <th><div>Date </div> Status</th>
+                <th>Priority</th>
+                <th><div>Amount</div>discount</th>
+                <th>Pickup Address</th>
+                <th>Delivery Address</th>
+
+            </tr>
+           
+            @foreach (var item in Model.ShipmentSenders)
+                {
+                <tr>
+                    <td>
+                        <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                        </div>
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                        @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)/
+                        @Html.DisplayFor(modelItem => item.Discount)
+                    </td>
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                        </div>
+                        <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                                @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                            </td>
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                        </div>
+                                @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+</td>
+                    </tr>
+            }
+            </table>
+
+    }
+
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+<script>
+
+    var theDiv = document.getElementById("newShipmentTr");
+    var button = document.getElementById("button");
+
+    function removeRed() {
+        
+        var classContent = theDiv.className;
+
+        theDiv.className = classContent.replace("sr-only", "").trim();
+    }
+
+    button.addEventListener("click", removeRed, false);
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

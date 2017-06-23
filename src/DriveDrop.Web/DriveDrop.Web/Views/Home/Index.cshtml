@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img src="~/images/banner1.svg" alt="DriveDrop" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+                <p>
+                    DriveDrop  -- TEST WEBSITE -- 
+                    <a class="btn btn-default" href="/home/index">
+                        Learn More
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+             <p>
+                <h2>Test as Admin</h2>
+             
+                    Impersonate an admin user .
+             <a class="btn btn-default" href="/customer/admin">Test &raquo;</a></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+                <p>
+                    <h2>Test as sender</h2>
+                    impersonate a sender user
+               <a class="btn btn-default" href="/sender">Test &raquo;</a></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
+            <div class="carousel-caption" role="option">
+               <p><h2>Test as a driver</h2>
+                Impersonate a driver user.
+                <a class="btn btn-default" href="/customer/driver">Test &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
+<div class="jumbotron">
+   
+    <h1>DriveDrop  -- TEST WEBSITE -- </h1>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Test as ADMIN</h2>
+        <p>
+            Impersonate an admin user .
+        </p>
+        <p><a class="btn btn-default" href="customer/index">Test &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Test as SENDER</h2>
+        <p>impersonate a sender user</p>
+        <p><a class="btn btn-default" href="/sender">Test &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Test as a DRIVER</h2>
+        <p>Impersonate a driver user.</p>
+        <p><a class="btn btn-default" href="/Driver">Test &raquo;</a></p>
+    </div>
+</div>

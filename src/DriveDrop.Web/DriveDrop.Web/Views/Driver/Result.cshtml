@@ -1,0 +1,157 @@
+﻿@model  ApplicationCore.Entities.ClientAgregate.Customer
+
+@{
+    ViewData["Title"] = "Details"; 
+}
+
+<h2>Details</h2> 
+<div class="row">
+    <h4>Driver</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            Customer Status
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerStatus.Name)
+        </dd>
+        <dt>
+            Customer Type
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerType.Name)
+        </dd>
+        <dt>
+            E-Mail
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            Phone
+        </dt>
+        <dd>
+            @Model.Phone
+        </dd>
+    </dl>
+</div>   
+
+<div class="row">
+    <div id="newShipment">
+        <label class="title">Shipments  not assigned</label>
+        @await Component.InvokeAsync("ShippingNoAssigned")
+    </div>
+</div>
+<div class="row">
+    @if (Model.ShipmentDrivers != null && Model.ShipmentDrivers.Count>0)
+    {
+
+        <table class="table">
+
+            <tr>
+                <th colspan="5">  <label> Shipment Assigned to me</label></th>
+
+
+            <tr>
+                <th>#</th>
+                <th><div>Date </div> Status</th>
+                <th>Priority</th>
+                <th><div>Amount</div>discount</th>
+                <th>Pickup Address</th>
+                <th>Delivery Address</th>
+
+            </tr>
+
+            @foreach (var item in Model.ShipmentDrivers)
+                {
+                <tr>
+                    <td class="btnAssingShipping"> @item.Id</td>
+                    <td>
+                        <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                        <div><div>
+    @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+
+</div>
+
+                                 <form asp-action="ChangeShippingStatus">
+                                <input name="customerId" type="hidden" value="@Model.Id" />
+                                <input name="shipingId" type="hidden" value="@item.Id" />
+                                <select name="ShippingStatusId" asp-items="@ViewBag.ShippingStatuses" class="dropdown form-control"></select>
+                                     <input type="submit" value="Change" />
+                                </form>
+</div>
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                        @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)/
+                        @Html.DisplayFor(modelItem => item.Discount)
+                    </td>
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                        </div>
+                        <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                        @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                    </td>
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                        </div>
+                        @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                    </td>
+                </tr>
+            }
+        </table>
+
+    }
+
+</div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+   <script>
+       //$(document).ready(function () {
+       //$(".btnAssingShipping").click(function () { alert(1); });
+       
+       //});
+      @*       var theDiv = document.getElementById("newShipmentTr");
+            var button = document.getElementById("button");
+
+            function removeRed() {
+
+                var classContent = theDiv.className;
+
+                theDiv.className = classContent.replace("sr-only", "").trim();
+            }
+
+            button.addEventListener("click", removeRed, false);*@
+
+
+        </script>
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} 
+    }

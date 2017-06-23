@@ -1,0 +1,209 @@
+﻿@model DriveDrop.Web.ViewModels.CustomerModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Customer</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="LastName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CustomerTypeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10"> 
+                @Html.DropDownListFor(m => m.CustomerTypeId, Model.CustomerTypeList, "-- Select Status --", new { @class = "form-control" })
+                <span asp-validation-for="CustomerTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TransportTypeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10"> 
+                @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select Status --", new { @class = "form-control" })
+                <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CustomerStatusId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m=>m.CustomerStatusId, Model.CustomerStatusList, "-- Select Status --", new { @class = "form-control" })
+                <span asp-validation-for="CustomerStatusId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MaxPackage" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MaxPackage" class="form-control" />
+                <span asp-validation-for="MaxPackage" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PickupRadius" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PickupRadius" class="form-control" />
+                <span asp-validation-for="PickupRadius" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DeliverRadius" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliverRadius" class="form-control" />
+                <span asp-validation-for="DeliverRadius" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+        <hr />
+
+            Pickup Address
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PickupStreet" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PickupStreet" class="form-control" />
+                <span asp-validation-for="PickupStreet" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PickupCity" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PickupCity" class="form-control" />
+                <span asp-validation-for="PickupCity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliverRadius" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliverRadius" class="form-control" />
+                <span asp-validation-for="DeliverRadius" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PickupState" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PickupState" class="form-control" />
+                <span asp-validation-for="PickupState" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PickupCountry" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PickupCountry" class="form-control" />
+                <span asp-validation-for="PickupCountry" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PickupZipCode" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PickupZipCode" class="form-control" />
+                <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <hr />
+            Delivery Address
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryStreet" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryStreet" class="form-control" />
+                <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryCity" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryCity" class="form-control" />
+                <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryState" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryState" class="form-control" />
+                <span asp-validation-for="DeliveryState" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryCountry" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryCountry" class="form-control" />
+                <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryZipCode" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryZipCode" class="form-control" />
+                <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+           <hr />
+            Shipment Details
+        </div>
+        <div class="form-group">
+            <label asp-for="PriorityTypeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.PriorityTypeId, Model.CustomerTypeList, "-- Select Status --", new { @class = "form-control" })
+                <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TransportTypeIdS" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.TransportTypeIdS, Model.TransportTypeList, "-- Select Status --", new { @class = "form-control" })
+                <span asp-validation-for="TransportTypeIdS" class="text-danger"></span>
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <label asp-for="PromoCode" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PromoCode" class="form-control" />
+                <span asp-validation-for="PromoCode" class="text-danger"></span>
+            </div>
+        </div>
+        
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
