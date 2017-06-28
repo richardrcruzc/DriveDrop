@@ -141,7 +141,8 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <div class="col-md-12">
-                                @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, "-- Select Priority --", new { @class = "form-control" })
+                                @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
+                                @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
                                 <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
                             </div>
                         </div>
@@ -153,7 +154,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select transport type required --", new { @class = "form-control" })
+                                @*<select asp-for="@Model.TransportTypeList" asp-items="@Model.TransportTypeId" class="esh-catalog-filter"></select>*@
+                                @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList,   new { @class = "form-control" })
                                 <span asp-validation-for="TransportTypeId" class="text-danger"></span>
                             </div>
                         </div>

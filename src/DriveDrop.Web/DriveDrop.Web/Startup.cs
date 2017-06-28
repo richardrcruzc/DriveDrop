@@ -1,20 +1,20 @@
-﻿
+﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using ApplicationCore.Interfaces;
-using Infrastructure.FileSystem;
-using Infrastructure.Logging;
+using Microsoft.Extensions.Logging;  
 using DriveDrop.Web.Infrastructure;
-using DriveDrop.Web.Services; 
+using DriveDrop.Web.Services;
+using DriveDrop.Web.ViewModels; 
+using System.Reflection;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.eShopOnContainers.BuildingBlocks; 
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.Extensions.HealthChecks;
 
 namespace DriveDrop.Web
 {
@@ -26,8 +26,15 @@ namespace DriveDrop.Web
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
+            }
+
             Configuration = builder.Build();
         }
 
@@ -36,106 +43,104 @@ namespace DriveDrop.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-            services.AddDbContext<DriveDropContext>(c =>
-            {
-                try
-                {
-                    //c.UseInMemoryDatabase("Catalog");
-                    c.UseSqlServer(Configuration.GetConnectionString("DriveDropConnection"));
-                    c.ConfigureWarnings(wb =>
-                    {
-                        //By default, in this application, we don't want to have client evaluations
-                        wb.Log(RelationalEventId.QueryClientEvaluationWarning);
-                    });
-                }
-                catch (System.Exception ex)
-                {
-                    var message = ex.Message;
-                }
-            });
+           
 
+            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
+            {
+                services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "drivedrop.webmvc";
+                })
+                .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            }
 
             services.Configure<AppSettings>(Configuration);
 
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                //options.UseInMemoryDatabase("Identity"));
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddMemoryCache();
-            // services.AddScoped<ICustomerService, CachedCustomerService>();
-            services.AddScoped<ICustomerService, CustomerService>();
-            //services.AddScoped<CustomerService>(); 
-            services.Configure<DriveDropSettings>(Configuration);
-            services.AddSingleton<IImageService, LocalFileImageService>();
-            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            services.AddMvc();
-
-
+            services.AddHealthChecks(checks =>
+            {
+                var minutes = 1;
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                {
+                    minutes = minutesParsed;
+                }
+                checks.AddUrlCheck(Configuration["DriveDropUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+            });
 
             // Add application services.
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
-            //services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
 
-            _services = services;
+            if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
+            {
+                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>();
+                services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
+            }
+            else
+            {
+                services.AddSingleton<IHttpClient, StandardHttpClient>();
+            }
+
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-
-                app.Map("/allservices", builder => builder.Run(async context =>
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("<h1>All Services</h1>");
-                    sb.Append("<table><thead>");
-                    sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
-                    sb.Append("</thead><tbody>");
-                    foreach (var svc in _services)
-                    {
-                        sb.Append("<tr>");
-                        sb.Append($"<td>{svc.ServiceType.FullName}</td>");
-                        sb.Append($"<td>{svc.Lifetime}</td>");
-                        sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
-                        sb.Append("</tr>");
-                    }
-                    sb.Append("</tbody></table>");
-                    await context.Response.WriteAsync(sb.ToString());
-                }));
             }
             else
             {
-                app.UseExceptionHandler("/Catalog/Error");
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Cookies",
+                AutomaticAuthenticate = true,
+            });
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+            var log = loggerFactory.CreateLogger("identity");
+
+            var oidcOptions = new OpenIdConnectOptions
+            {
+                AuthenticationScheme = "oidc",
+                SignInScheme = "Cookies",
+                Authority = identityUrl.ToString(),
+                PostLogoutRedirectUri = callBackUrl.ToString(),
+                ClientId = "mvc",
+                ClientSecret = "secret",
+                ResponseType = "code id_token",
+                SaveTokens = true,
+                GetClaimsFromUserInfoEndpoint = true,
+                RequireHttpsMetadata = false,
+                Scope = { "openid", "profile", "drivedrop" }
+            };
+
+            //Wait untill identity service is ready on compose. 
+            app.UseOpenIdConnectAuthentication(oidcOptions);
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Catalog}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            //Seed Data
-            DriveDropSeed.SeedAsync(app, loggerFactory)
-            .Wait();
         }
     }
 }

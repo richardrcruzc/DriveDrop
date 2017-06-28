@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Entities.Helpers;
-using ApplicationCore.SeedWork;
-using System.Security.Principal;
+using ApplicationCore.SeedWork; 
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Entities.ClientAgregate
@@ -16,13 +15,9 @@ namespace ApplicationCore.Entities.ClientAgregate
         Task<Customer> UpdateAsync(Customer customer);
         Task<Customer> FindAsync(string UserIdentityGuid);
 
-        Task<Customer> GetCustomerByUser(ApplicationUser user);
+        Task<Customer> GetCustomerByUser(string user);
 
 
     }
-
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
-    }
+     
 }

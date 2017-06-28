@@ -1,30 +1,30 @@
-﻿using ApplicationCore.Execeptions;
-using ApplicationCore.Interfaces; 
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
+﻿//using ApplicationCore.Execeptions;
+//using ApplicationCore.Interfaces; 
+//using Microsoft.AspNetCore.Hosting;
+//using System.IO;
 
-namespace Infrastructure.FileSystem
-{
-    public class LocalFileImageService : IImageService
-    {
-        private readonly IHostingEnvironment _env;
+//namespace Infrastructure.FileSystem
+//{
+//    public class LocalFileImageService : IImageService
+//    {
+//        private readonly IHostingEnvironment _env;
 
-        public LocalFileImageService(IHostingEnvironment env)
-        {
-            _env = env;
-        }
-        public byte[] GetImageBytesById(int id)
-        {
-            try
-            {
-                var contentRoot = _env.ContentRootPath + "//Pics";
-                var path = Path.Combine(contentRoot, id + ".png");
-                return File.ReadAllBytes(path);
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new DriveDropException(ex.Message,ex);
-            }
-        }
-    }
-}
+//        public LocalFileImageService(IHostingEnvironment env)
+//        {
+//            _env = env;
+//        }
+//        public byte[] GetImageBytesById(int id)
+//        {
+//            try
+//            {
+//                var contentRoot = _env.ContentRootPath + "//Pics";
+//                var path = Path.Combine(contentRoot, id + ".png");
+//                return File.ReadAllBytes(path);
+//            }
+//            catch (FileNotFoundException ex)
+//            {
+//                throw new DriveDropException(ex.Message,ex);
+//            }
+//        }
+//    }
+//}

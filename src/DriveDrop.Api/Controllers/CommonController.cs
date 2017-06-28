@@ -26,6 +26,55 @@ namespace DriveDrop.Api.Controllers
             _context = context;
             _env = env;
         }
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> GetShippingByCustomerId(int id)
+        {
+            try
+            {
+                var model = await _context.Shipments
+               .Where(x => x.SenderId == id)
+               .Include(d => d.DeliveryAddress)
+               .Include(d => d.PickupAddress)
+               .Include(d => d.ShippingStatus)
+               .Include(d => d.PriorityType)
+               .ToListAsync();
+
+                return Ok(model);
+
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+
+        // GET api/v1/Common/CustomerTypes
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetNotAssignedShipping()
+        {
+            try
+            {
+                var model = await _context.Shipments
+               .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id && x.DriverId == null)
+               .Include(d => d.DeliveryAddress)
+               .Include(d => d.PickupAddress)
+               .Include(d => d.ShippingStatus)
+               .Include(d => d.PriorityType)
+               .ToListAsync();
+
+                return Ok(model);
+
+             
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+
 
         // GET api/v1/Common/CustomerTypes
         [HttpGet]
@@ -34,7 +83,7 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var types = await _context.CustomerTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
+                var types = await _context.CustomerTypes.Select(x => new   { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
 
                 return Ok(types);
             }
@@ -50,7 +99,7 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var types = await _context.ShippingStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
+                var types = await _context.ShippingStatuses.Select(x => new   { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
 
                 return Ok(types);
             }
@@ -66,7 +115,8 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var types = await _context.PriorityTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
+                //  var types = await _context.PriorityTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
+                var types = await _context.PriorityTypes.Select(x => new  {Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
 
                 return Ok(types);
             }
@@ -82,7 +132,7 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var types = await _context.CustomerStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
+                var types = await _context.CustomerStatuses.Select(x =>   new { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
 
                 return Ok(types);
             }
@@ -98,7 +148,7 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var types = await _context.TransportTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
+                var types = await _context.TransportTypes.Select(x => new { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
 
                 return Ok(types);
             }
@@ -109,25 +159,25 @@ namespace DriveDrop.Api.Controllers
         }
 
         
-        [Route("[action]/{uri}")]
-        // GET: /<controller>/
-        public IActionResult GetImage(string uri)
-        {
-            var webRoot = _env.WebRootPath;
-            var path = Path.Combine(webRoot, uri);
+        //[Route("[action]/{uri}")]
+        //// GET: /<controller>/
+        //public IActionResult GetImage(string uri)
+        //{
+        //    var webRoot = _env.WebRootPath;
+        //    var path = Path.Combine(webRoot, uri);
 
-            var buffer = System.IO.File.ReadAllBytes(path);
+        //    var buffer = System.IO.File.ReadAllBytes(path);
 
-            return File(buffer, "image/png");
-        }
+        //    return File(buffer, "image/png");
+        //}
 
         [HttpGet]
-        [Route("[action]/{string:UserEmail}")]
+        [Route("[action]/{useremail}")]
         public JsonResult ValidateUserName(string UserEmail)
         {
             return Json(!UserEmail.Equals("duplicate"));
         }
-
+     
     }
 }
 

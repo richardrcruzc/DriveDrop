@@ -27,6 +27,8 @@ namespace ApplicationCore.Entities.ClientAgregate
         public int? PickupRadius { get; private set; }
         public int? DeliverRadius { get; private set; }
 
+        public decimal Commission { get; private set; }
+
         public Address DefaultAddress { get; private set; }
 
         //  public List<Shipment> Driver { get; private set; }
@@ -85,7 +87,7 @@ namespace ApplicationCore.Entities.ClientAgregate
       int customerTypeId = 2,
       int maxPackage=0,
       int pickupRadius=0,
-      int deliverRadius=0) : this()
+      int deliverRadius=0, decimal commission =10) : this()
         {
             LastName = lastName;
             FirstName = firstName;            
@@ -99,6 +101,8 @@ namespace ApplicationCore.Entities.ClientAgregate
 
             Email = email;
             Phone = phone;
+
+            Commission = commission;
         } 
 
         public Customer Update( 

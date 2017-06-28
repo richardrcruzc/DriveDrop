@@ -255,7 +255,7 @@ namespace DriveDrop.Api.ViewModels
         public int? PickupRadius { get; set; }
         public int? DeliverRadius { get; set; }
 
-
+        public Decimal Commission { get; set; }
 
 
 

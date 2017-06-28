@@ -101,8 +101,8 @@ namespace DriveDrop.Api.Infrastructure
 
 
                     context.Customers.Add(new Customer("Driver", "Fisrt", "Driver", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 3));
-                    context.Customers.Add(new Customer("Driver", "Last", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3));
-
+                    context.Customers.Add(new Customer("Driver", "Last", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3,2,0,0,15));
+                    
                     await context.SaveChangesAsync();
                 }
 
@@ -119,7 +119,7 @@ namespace DriveDrop.Api.Infrastructure
 
                     context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2, PriorityType.Asap.Id, 4, TransportType.Van.Id, "This is closed gate community", "", ""));
                     context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2, PriorityType.Hours.Id, 6, TransportType.Van.Id, "package left behain door", "", ""));
-                    context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2, PriorityType.Asap.Id, 4, TransportType.Van.Id, "ring the bell", "", ""));
+                    context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2, PriorityType.Asap.Id, 4, TransportType.Van.Id, "ring the bell", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg"));
                     await context.SaveChangesAsync();
                 }
 

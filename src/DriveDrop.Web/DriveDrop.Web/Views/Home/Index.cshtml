@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+@*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -56,29 +56,30 @@
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-</div>
+</div>*@
 
+<div class="container">
+    <div class="jumbotron">
 
-<div class="jumbotron">
-   
-    <h1>DriveDrop  -- TEST WEBSITE -- </h1>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Test as ADMIN</h2>
-        <p>
-            Impersonate an admin user .
-        </p>
-        <p><a class="btn btn-default" href="customer/index">Test &raquo;</a></p>
+        <h1>DriveDrop  -- TEST WEBSITE -- </h1>
     </div>
-    <div class="col-md-4">
-        <h2>Test as SENDER</h2>
-        <p>impersonate a sender user</p>
-        <p><a class="btn btn-default" href="/sender">Test &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Test as a DRIVER</h2>
-        <p>Impersonate a driver user.</p>
-        <p><a class="btn btn-default" href="/Driver">Test &raquo;</a></p>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Test as ADMIN</h2>
+            <p>
+                Impersonate an admin user .
+            </p>
+            <p><a class="btn btn-default" href="admin/index">Test &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Test as SENDER</h2>
+            <p>impersonate a sender user</p>
+            <p><a class="btn btn-default" href="/sender">Test &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Test as a DRIVER</h2>
+            <p>Impersonate a driver user.</p>
+            <p><a class="btn btn-default" href="/Driver">Test &raquo;</a></p>
+        </div>
     </div>
 </div>

@@ -1,18 +1,26 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿
+using DriveDrop.Api.Infrastructure; 
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Services; 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Text;
+using System.Reflection;
+using System.Linq; 
+using System.Threading.Tasks; 
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using DriveDrop.Api.Infrastructure.Filters;
+using System;
 using Microsoft.AspNetCore.Http;
-using ApplicationCore.Interfaces;
-using Infrastructure.FileSystem;
-using Infrastructure.Logging;
-using DriveDrop.Api.Infrastructure;
+using DriveDrop.Api.Infrastructure.Services;
+using Polly;
+using System.Data.SqlClient;
 
 namespace DriveDrop.Api
 {
@@ -26,7 +34,16 @@ namespace DriveDrop.Api
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly);
+            }
+
+            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -34,53 +51,54 @@ namespace DriveDrop.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-            services.AddDbContext<DriveDropContext>(c =>
+
+            // Add framework services.
+            services.AddMvc(options =>
             {
-                try
-                {
-                    //c.UseInMemoryDatabase("Catalog");
-                    c.UseSqlServer(Configuration.GetConnectionString("DriveDropConnection"));
-                    c.ConfigureWarnings(wb =>
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
+                                            //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+                                            
+
+            services.AddEntityFrameworkSqlServer()
+                    .AddDbContext<DriveDropContext>(options =>
                     {
-                        //By default, in this application, we don't want to have client evaluations
-                        wb.Log(RelationalEventId.QueryClientEvaluationWarning);
-                    });
-                }
-                catch (System.Exception ex)
+                        options.UseSqlServer(Configuration["DriveDropConnection"],
+                            sqlServerOptionsAction: sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                            });
+                    },
+                        ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                    );
+
+
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    var message = ex.Message;
-                }
+                    Title = "DriveDrop HTTP API",
+                    Version = "v1",
+                    Description = "The DriveDrop Service HTTP API",
+                    TermsOfService = "Terms Of Service"
+                });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
 
 
-            //services.Configure<AppSettings>(Configuration);
-
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                //options.UseInMemoryDatabase("Identity"));
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddMemoryCache();
-            // services.AddScoped<ICustomerService, CachedCustomerService>();
-            //services.AddScoped<ICustomerService, CustomerService>();
-            //services.AddScoped<CustomerService>(); 
-            //services.Configure<DriveDropSettings>(Configuration);
-            services.AddSingleton<IImageService, LocalFileImageService>();
-            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            services.AddMvc();
-
-
-
             // Add application services.
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
-            //services.AddTransient<ISmsSender, AuthMessageSender>();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IIdentityService, IdentityService>();
 
             _services = services;
         }
@@ -90,9 +108,62 @@ namespace DriveDrop.Api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddDebug(); 
 
-            app.UseMvc();
+            // Use frameworks
+            app.UseCors("CorsPolicy");
+
+            ConfigureAuth(app);
+
+
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+               });
+
+
+            WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
+
+             
+             
+ 
         }
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = identityUrl.ToString(),
+                ApiName = "drivedrop",
+                RequireHttpsMetadata = false
+            });
+        }
+
+        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        {
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+            var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
+            await policy.ExecuteAsync(async () =>
+            {
+                await DriveDropSeed.SeedAsync(app, loggerFactory);
+            });
+
+        }
+        private Policy CreatePolicy(int retries, ILogger logger, string prefix)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
+        }
+        
     }
 }

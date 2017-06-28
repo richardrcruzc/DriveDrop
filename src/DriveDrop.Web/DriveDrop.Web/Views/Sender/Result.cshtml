@@ -1,12 +1,12 @@
-﻿@model  ApplicationCore.Entities.ClientAgregate.Customer
+﻿@model  DriveDrop.Web.ViewModels.Customer
 
 @{
     ViewData["Title"] = "Details";
 }
-
+<div class="container">
 <h2>Details</h2>
 
-<div>
+ 
     <h4>Sender</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -27,13 +27,13 @@
             Customer Status
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CustomerStatus.Name)
+            @Html.DisplayFor(model => model.CustomerStatus)
         </dd>
         <dt>
             Customer Type
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CustomerType.Name)
+            @Html.DisplayFor(model => model.CustomerType)
         </dd>
         <dt>
             E-Mail
@@ -45,83 +45,40 @@
             Phone
         </dt>
         <dd>
-           @Model.Phone
+           @*@Model.Phone*@
         </dd>
     </dl>
      
-
-    @if (Model.ShipmentSenders != null)
-    {
-
+    <div>
         <table class="table">
             <tr>
-                <th colspan="5">Shipping   <button type="button" id="button" class="btn btn-default">Add new Shipping</button></th>
-               
+                <th colspan="5">    <button type="button" id="button" class="btn btn-default">Add new Shipping</button></th>
+
             </tr>
             <tr id="newShipmentTr" class="sr-only">
                 <td colspan="5">
 
                     <div id="newShipment">
                         <label class="title">Add New Shipment</label>
-                          @await Component.InvokeAsync("NewShipment", new { id = @Model.Id })
+                        @*@await Component.InvokeAsync("NewShipment", new { id = @Model.Id })*@
                     </div>
 
                 </td>
             </tr>
-            <tr>
-                <th><div>Date </div> Status</th>
-                <th>Priority</th>
-                <th><div>Amount</div>discount</th>
-                <th>Pickup Address</th>
-                <th>Delivery Address</th>
-
-            </tr>
-           
-            @foreach (var item in Model.ShipmentSenders)
-                {
-                <tr>
-                    <td>
-                        <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
-                        <div>
-                            @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
-                        </div>
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PriorityType.Name)/
-                        @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amount)/
-                        @Html.DisplayFor(modelItem => item.Discount)
-                    </td>
-                    <td>
-                        <div>
-                            @Html.DisplayFor(modelItem => item.PickupAddress.Street)
-                        </div>
-                        <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
-                                @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
-                            </td>
-                    <td>
-                        <div>
-                            @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
-                        </div>
-                        <div>
-                            @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
-                        </div>
-                                @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
-</td>
-                    </tr>
-            }
             </table>
 
-    }
 
+</div>
+
+   <div>
+       @*@await Component.InvokeAsync("ShippingByCustomer", new { customerId = @Model.Id })*@
+   </div>
+     <div>
+        @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |*@
+        @*<a asp-action="Index">Back to List</a>*@
     </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
     </div>
+   
 
 <script>
 

@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entities.ClientAgregate.ShipmentAgregate;
+﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

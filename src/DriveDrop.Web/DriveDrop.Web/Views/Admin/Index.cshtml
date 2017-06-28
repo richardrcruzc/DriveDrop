@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Catalog";
+    @model DriveDrop.Web.ViewModels.CustomerIndex
+}
+ 
+    <div class="container">
+        <h3> Senders / Drivers List</h3>
+    </div>
+ 
+
+<section class="esh-catalog-filters">
+    <div class="container">
+        <form asp-action="Index" asp-controller="Admin" method="post">
+            <label class="esh-catalog-label" data-title="Type">
+                <select asp-for="@Model.TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
+            </label>
+            <label class="esh-catalog-label" data-title="Status">
+                <select asp-for="@Model.StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
+            </label>
+            <label class="esh-catalog-label" data-title="Transport Type">
+                <select asp-for="@Model.TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
+            </label>
+
+            <label class="esh-catalog-label" data-title="Last Name">
+                <input asp-for="LastName"   placeholder="Last Name" class="form-control esh-catalog-filter"/> 
+            </label>
+
+           
+            <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
+        </form>
+    </div>
+</section>
+ 
+ 
+
+<div class="container">
+    
+
+    <p>
+        <a asp-action="Create" class="btn btn-default">Create New</a>
+    </p>
+    
+
+    @if (Model.CustomerList.Any())
+    {
+
+
+
+        @Html.Partial("_pagination", Model.PaginationInfo)
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Full Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Transport 
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (var customer in Model.CustomerList)
+                {
+                    <tr>
+                       
+                            @Html.Partial("_customer", customer)
+                       
+                    </tr>
+                }
+
+                <tr>
+                    <td colspan="5">
+                         @Html.Partial("_pagination", Model.PaginationInfo)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+        </div>
+         
+
+    }
+
+</div>
+

@@ -11,14 +11,15 @@ namespace DriveDrop.Web
     {
         public static void Main(string[] args)
         {
+            Console.Title = "IdentityServer";
+
             var host = new WebHostBuilder()
-               .UseKestrel()
-               .UseUrls("http://*:5106")
-               .UseContentRoot(Directory.GetCurrentDirectory())
-               .UseIISIntegration()
-               .UseStartup<Startup>()
-               .UseApplicationInsights()
-               .Build();
+                 .UseKestrel()
+                // .UseHealthChecks("/hc")
+                 .UseContentRoot(Directory.GetCurrentDirectory())
+                 .UseIISIntegration()
+                 .UseStartup<Startup>()
+                 .Build();
 
             host.Run();
         }

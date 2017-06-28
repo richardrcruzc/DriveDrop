@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entities.ClientAgregate;
+﻿ 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;

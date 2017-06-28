@@ -1,0 +1,60 @@
+﻿@model IEnumerable<DriveDrop.Web.ViewModels.Shipment>
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+  <table class="table">
+    <tr>
+        <th colspan="5">My Shipping   </th>
+
+    </tr>
+
+    <tr>
+        <th><div>Date </div> Status</th>
+        <th>Priority</th>
+        <th><div>Amount</div>discount</th>
+        <th>Pickup Address</th>
+        <th>Delivery Address</th>
+
+    </tr>
+      @Model.Count();
+    @foreach (var item in Model )
+    {
+        <tr>
+            <td>
+                <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                </div>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)/
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                <div>
+                    @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                </div>
+                <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+            </td>
+            <td>
+                <div>
+                    @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                </div>
+                @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+            </td>
+        </tr>
+    }
+</table>
+
+ 

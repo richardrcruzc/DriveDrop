@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Http;
 using DriveDrop.Api.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DriveDrop.Api.Controllers
 {
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class DriversController : Controller
     {
         private readonly DriveDropContext _context;
@@ -82,45 +84,7 @@ namespace DriveDrop.Api.Controllers
     }
             
         }
-
-
-        // GET api/values
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]int? statusId, [FromQuery]int? transporTypeId, [FromQuery]string LastName = null, [FromQuery]int pageIndex = 0, [FromQuery]int pageSize = 10)
-        { 
-            var root = (IQueryable<Customer>)_context.Customers;
- 
-
-            if (statusId.HasValue)
-            {
-                root = root.Where(ci => ci.CustomerStatus.Id == statusId);
-            }
-
-            if (transporTypeId.HasValue)
-            {
-                root = root.Where(ci => ci.TransportType.Id == transporTypeId);
-            }
-            if (!string.IsNullOrEmpty(LastName))
-            {
-                root = root.Where(l => l.LastName.Contains(LastName));
-            }
-
-            var totalItems = await root
-                .LongCountAsync();
-
-            var itemsOnPage = await root
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize)
-                .ToListAsync();
-
-            //itemsOnPage = ComposePicUri(itemsOnPage);
-
-           var drivers = new CustomersList() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems, PageSize= pageSize };
-
-            return Ok(drivers);
-
-        }
-
+        
         // GET api/values/5
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
@@ -173,7 +137,7 @@ namespace DriveDrop.Api.Controllers
 
                 var tmpUser = Guid.NewGuid().ToString();
 
-                var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, c.TransportTypeId, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Driver.Id, c.MaxPackage ?? 0, c.PickupRadius ?? 0, c.DeliverRadius ?? 0);
+                var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, c.TransportTypeId, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Driver.Id, c.MaxPackage ?? 0, c.PickupRadius ?? 0, c.DeliverRadius ?? 0, c.Commission);
 
                 _context.Add(newCustomer);
                 _context.SaveChanges();
