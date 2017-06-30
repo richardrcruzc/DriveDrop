@@ -26,6 +26,7 @@ namespace DriveDrop.Web.ViewComponents
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
+        private readonly string _remoteServiceShippingsUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
@@ -36,6 +37,7 @@ namespace DriveDrop.Web.ViewComponents
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/admin";
+            _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -52,7 +54,7 @@ namespace DriveDrop.Web.ViewComponents
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetShippingByCustomerId(_remoteServiceCommonUrl, customerId);
+            var allnotassignedshipings = API.Shipping.GetShippingByCustomerId(_remoteServiceShippingsUrl, customerId);
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 

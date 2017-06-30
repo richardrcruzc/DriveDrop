@@ -1,5 +1,5 @@
 ﻿ 
-@model IEnumerable<DriveDrop.Web.ViewModels.Shipment>
+@model DriveDrop.Web.ViewModels.PaginatedShippings
 
     <div class="row">
         <table class="table">
@@ -14,12 +14,15 @@
 
             </tr>
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.Data)
             {
-
+                var url = "http://localhost:5206/" + item.PickupPictureUri;
                 <tr>
+                    
                     <td>
                         @Html.ActionLink("Asign to me!","AssignDriver", new { id = ViewBag.DriverId , shipingId  = item.Id})
+
+                        <img src="@url" class="img-rounded" alt="Cinque Terre" width="90" height="60">
                     </td>
                     <td>
                         <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>

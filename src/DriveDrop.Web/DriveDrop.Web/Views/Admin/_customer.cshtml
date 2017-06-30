@@ -3,27 +3,38 @@
 
 
 <td>
-   @Model.CustomerType
+   @Model.CustomerType.Name
 </td>
 <td>
   @Model.FullName
 </td>
 <td>
-   @Model.CustomerStatus
+   @Model.CustomerStatus.Name
 </td>
 <td>
     @if (Model.TransportType != null)
     {
-  @Model.TransportType
+  @Model.TransportType.Name
     }
     
 </td>
 
 <td>
     
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="esh-catalog-button">Edit</a> 
-    <a asp-action="Details" asp-route-id="@Model.Id" class="esh-catalog-button">Details</a> |
-    <a asp-action="Delete" asp-route-id="@Model.Id" class="esh-catalog-button">Deletes</a>
+    @if (Model.CustomerType.Name == "administrator")
+    {
+        <a asp-action="Details" asp-route-id="@Model.Id" class="esh-catalog-button">Details</a>
+    }else if (Model.CustomerType.Name == "sender")
+    {
+        <a asp-controller="sender"   asp-action="result"  asp-route-id="@Model.Id" class="esh-catalog-button">Details</a>
+    }
+    else if (Model.CustomerType.Name == "driver")
+    {
+        <a asp-controller="driver" asp-action="result" asp-route-id="@Model.Id" class="esh-catalog-button">Details</a>
+    }
+    @*<a asp-action="Edit" asp-route-id="@Model.Id" class="esh-catalog-button">Edit</a>*@ 
+    
+    @*<a asp-action="Delete" asp-route-id="@Model.Id" class="esh-catalog-button">Deletes</a>*@
 </td>
 
 

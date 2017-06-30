@@ -3,6 +3,7 @@ using DriveDrop.Web.Infrastructure;
 using DriveDrop.Web.Services;
 using DriveDrop.Web.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,27 +21,35 @@ using System.Threading.Tasks;
 
 namespace DriveDrop.Web.Controllers
 {
+    [Authorize]
     public class SenderController : Controller
     {
-       
+
 
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
+        private readonly string _remoteServiceShippingsUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
+        private readonly IHostingEnvironment _env;
+
 
         public SenderController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
-            IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
+            IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser,
+            IHostingEnvironment env)
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
+            _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _appUserParser = appUserParser;
+
+            _env = env;
 
         }
 
@@ -78,9 +87,7 @@ namespace DriveDrop.Web.Controllers
 
             return View(response);
         }
-
         
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveNewShipment(NewShipment c, List<IFormFile> files)
@@ -100,16 +107,62 @@ namespace DriveDrop.Web.Controllers
                     var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
 
-                    var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceBaseUrl);
 
-                    var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
 
-                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    Guid extName = Guid.NewGuid();
+                    //saving files
+                    long size = files.Sum(f => f.Length);
+
+                    // full path to file in temp location
+                    var filePath = Path.GetTempFileName();
+                    var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\Shipment");
+                    var fileName = "";
+
+                    foreach (var formFile in files)
                     {
-                        throw new Exception("Error creating Shipping, try later.");
+
+                        if (formFile.Length > 0)
+                        {
+                            var extension = ".jpg";
+                            if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                                extension = ".jpg";
+                            if (formFile.FileName.ToLower().EndsWith(".tif"))
+                                extension = ".tif";
+                            if (formFile.FileName.ToLower().EndsWith(".png"))
+                                extension = ".png";
+                            if (formFile.FileName.ToLower().EndsWith(".gif"))
+                                extension = ".gif";
+
+
+
+
+                            filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                            fileName = string.Format("uploads\\img\\Shipment\\{0}{1}", extName, extension);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await formFile.CopyToAsync(stream);
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                    {
+
+                        c.PickupPictureUri = fileName;
+                        var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceShippingsUrl);
+
+                        var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Error creating Shipping, try later.");
+                        }
                     }
 
-                    response.EnsureSuccessStatusCode();
+ 
+
+
+                   // response.EnsureSuccessStatusCode();
                     //return RedirectToAction("result", new { id = c.CustomerId });
                     return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
                 }
@@ -123,22 +176,115 @@ namespace DriveDrop.Web.Controllers
 
                 ModelState.AddModelError("", error);
             }
-            
+
 
             await PrepareCustomerModel(c);
 
             return ViewComponent("NewShipment", c);
-              
+
         }
-
-
+        
         async Task<string> GetUserTokenAsync()
         {
             var context = _httpContextAccesor.HttpContext;
 
             return await context.Authentication.GetTokenAsync("access_token");
         }
-       
+        public async Task<IActionResult> NewSender()
+        {
+            CustomerModel c = new CustomerModel();
+            await PrepareCustomerModel(c);
+            return View(c);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewSender(CustomerModel c, List<IFormFile> files)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();  
+
+                    // response.EnsureSuccessStatusCode();
+                    //return RedirectToAction("result", new { id = c.CustomerId });
+
+
+
+                   // var response = JsonConvert.DeserializeObject<Customer>((response.));
+
+
+                    Guid extName = Guid.NewGuid();
+                    //saving files
+                    long size = files.Sum(f => f.Length);
+
+                    // full path to file in temp location
+                    var filePath = Path.GetTempFileName();
+                    var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\Shipment");
+                    var fileName = "";
+
+                    foreach (var formFile in files)
+                    {
+
+                        if (formFile.Length > 0)
+                        {
+                            var extension = ".jpg";
+                            if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                                extension = ".jpg";
+                            if (formFile.FileName.ToLower().EndsWith(".tif"))
+                                extension = ".tif";
+                            if (formFile.FileName.ToLower().EndsWith(".png"))
+                                extension = ".png";
+                            if (formFile.FileName.ToLower().EndsWith(".gif"))
+                                extension = ".gif";
+
+
+
+
+                            filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                            fileName = string.Format("uploads\\img\\Shipment\\{0}{1}", extName, extension);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await formFile.CopyToAsync(stream);
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                    {
+
+                        c.FilePath = fileName;
+                        var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
+
+                        var response = await _apiClient.PostAsync(addNewSenderUri, c, token);
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception("Error creating Shipping, try later.");
+                        }
+                    }
+
+
+
+                    return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
+                }
+            }               
+                catch (DbUpdateException ex)
+                {
+
+                var error = string.Format("Unable to save changes. " +
+                   "Try again, and if the problem persists " +
+                   "see your system administrator. {0}", ex.Message);
+
+                ModelState.AddModelError("", error);
+            }
+
+
+           await  PrepareCustomerModel(c);
+             return View(c);
+
+        }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> New(CustomerModel c, List<IFormFile> files)
@@ -346,6 +492,25 @@ namespace DriveDrop.Web.Controllers
                 });
             }
             model.TransportTypeList = transportTypes;
+
+
+            getUri = API.Common.GetAllPriorityTypes(_remoteServiceCommonUrl);
+            dataString = await _apiClient.GetStringAsync(getUri);
+            var priority = new List<SelectListItem>();
+            priority.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+
+            gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                priority.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.PriorityTypeList = priority;
+
 
             return model;
              

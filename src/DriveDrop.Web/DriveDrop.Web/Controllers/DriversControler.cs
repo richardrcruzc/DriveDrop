@@ -2,6 +2,7 @@
 using DriveDrop.Web.Infrastructure;
 using DriveDrop.Web.Services;
 using DriveDrop.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace DriveDrop.Web.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class DriversControler : Controller
     {
         private readonly IHostingEnvironment _env; 

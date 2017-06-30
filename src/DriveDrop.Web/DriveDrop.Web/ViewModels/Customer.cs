@@ -17,15 +17,15 @@ namespace DriveDrop.Web.ViewModels
         public string Phone { get;  set; }
         public string LastName { get;  set; }
         public string FirstName { get;  set; }
-        // public CustomerType CustomerType { get; private set; }
-        public string CustomerType { get;  set; }
+        public CustomerType CustomerType { get;  set; }
+       // public string CustomerType { get;  set; }
         public int CustomerTypeId { get;  set; }
         public int? TransportTypeId { get;  set; }
-        //public TransportType TransportType { get; private set; }
-        public string TransportType { get;  set; }
+        public TransportType TransportType { get;  set; }
+        //public string TransportType { get;  set; }
         public int CustomerStatusId { get;  set; }
-        //public CustomerStatus CustomerStatus { get; private set; }
-        public string CustomerStatus { get;  set; }
+        public CustomerStatus CustomerStatus { get;  set; }
+        //public string CustomerStatus { get;  set; }
         public int? MaxPackage { get;  set; }
         public int? PickupRadius { get;  set; }
         public int? DeliverRadius { get;  set; }

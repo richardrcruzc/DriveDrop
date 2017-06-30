@@ -30,7 +30,7 @@ namespace DriveDrop.Web.ViewModels
 
         public IFormFile file { get; set; }
 
-
+        public string FilePath { get; set; }
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -206,6 +206,7 @@ namespace DriveDrop.Web.ViewModels
         [DataType(DataType.Upload)]
         public IEnumerable<IFormFile> Files { get; set; }
 
+        public string FilePath { get; set; }
 
         [Required]
         [EmailAddress]
@@ -340,9 +341,7 @@ namespace DriveDrop.Web.ViewModels
 
         public IFormFile file { get; set; }
 
-
-         
-
+        public string PickupPictureUri { get; set; }
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]

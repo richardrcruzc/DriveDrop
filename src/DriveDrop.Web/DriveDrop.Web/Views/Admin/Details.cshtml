@@ -29,13 +29,13 @@
                 Customer Status
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.CustomerStatus)
+                @Html.DisplayFor(model => model.CustomerStatus.Name)
             </dd>
             <dt>
                 Customer Type
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.CustomerType)
+                @*@Html.DisplayFor(model => model.CustomerType.Name)*@
             </dd>
             <dt>
                 E-Mail
@@ -52,15 +52,15 @@
         </dl>
 
         
-        <div class="row">
+        @*<div class="row">
             <div id="newShipment">
                 <label class="title">Shipments  not assigned</label>
                 @await Component.InvokeAsync("ShippingNoAssigned") 
  
             </div>
-        </div>
+        </div>*@
         
-        <div class="row">
+        @*<div class="row">
             @if (Model.ShipmentSenders != null && Model.ShipmentSenders.Count > 0)
             {
 
@@ -131,7 +131,7 @@
 
             }
 
-        </div>
+        </div>*@
         <div>
             <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
             <a asp-action="Index">Back to List</a>

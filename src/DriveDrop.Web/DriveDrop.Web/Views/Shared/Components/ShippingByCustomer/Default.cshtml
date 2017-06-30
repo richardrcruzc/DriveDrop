@@ -6,7 +6,7 @@
 
   <table class="table">
     <tr>
-        <th colspan="5">My Shipping   </th>
+        <th colspan="5"><h3><label class="title"> My Shippings </label> </h3> </th>
 
     </tr>
 
@@ -18,14 +18,22 @@
         <th>Delivery Address</th>
 
     </tr>
-      @Model.Count();
     @foreach (var item in Model )
     {
+
+        var url = "http://localhost:5206/" + item.PickupPictureUri;
         <tr>
+           
             <td>
                 <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
-                <div>
+                <div class="btn-outline-danger">
                     @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                </div>
+                <div>
+                    <img src="@url" class="img-rounded" alt="Cinque Terre" width="100" height="75">
+                </div>
+                <div>
+                    @item.IdentityCode
                 </div>
             </td>
 

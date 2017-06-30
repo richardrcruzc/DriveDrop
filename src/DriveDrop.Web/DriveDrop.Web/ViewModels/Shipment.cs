@@ -1,9 +1,7 @@
-﻿ 
+﻿
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+ 
 namespace DriveDrop.Web.ViewModels
 {
     public class Shipment 
@@ -19,9 +17,10 @@ namespace DriveDrop.Web.ViewModels
 
         public virtual Customer Sender { get;  set; }
         public virtual Customer Driver { get;  set; }
-       
 
+        [JsonProperty("pickupAddress")]
         public Address PickupAddress { get;  set; }
+        [JsonProperty("deliveryAddress")]
         public Address DeliveryAddress { get;  set; }
         //public Address BillingAddress { get;  set; }
 

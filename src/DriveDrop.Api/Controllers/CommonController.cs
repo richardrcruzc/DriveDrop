@@ -12,9 +12,11 @@ using DriveDrop.Api.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DriveDrop.Api.Controllers
 {
+    //[Authorize]
     [Route("api/v1/[controller]")]
     public class CommonController : Controller
     {
@@ -26,55 +28,73 @@ namespace DriveDrop.Api.Controllers
             _context = context;
             _env = env;
         }
-        [HttpGet]
-        [Route("[action]/{id:int}")]
-        public async Task<IActionResult> GetShippingByCustomerId(int id)
-        {
-            try
-            {
-                var model = await _context.Shipments
-               .Where(x => x.SenderId == id)
-               .Include(d => d.DeliveryAddress)
-               .Include(d => d.PickupAddress)
-               .Include(d => d.ShippingStatus)
-               .Include(d => d.PriorityType)
-               .ToListAsync();
-
-                return Ok(model);
-
-
-            }
-            catch (Exception)
-            {
-                return BadRequest("CustomerTypesNotFound");
-            }
-        }
-
-        // GET api/v1/Common/CustomerTypes
-        [HttpGet]
+        // POST api/Attachments
+       // [Authorize]
+        [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> GetNotAssignedShipping()
+        public async Task<IActionResult> PostFiles([FromBody]ICollection<IFormFile> files)
         {
+
+            string belongTo = "sender";
             try
             {
-                var model = await _context.Shipments
-               .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id && x.DriverId == null)
-               .Include(d => d.DeliveryAddress)
-               .Include(d => d.PickupAddress)
-               .Include(d => d.ShippingStatus)
-               .Include(d => d.PriorityType)
-               .ToListAsync();
+                var fileUri = string.Format("uploads\\img\\{0}", belongTo);
 
-                return Ok(model);
+                Guid extName = Guid.NewGuid();
+                //saving files
+                long size = files.Sum(f => f.Length);
 
-             
+                // full path to file in temp location
+                var filePath = Path.GetTempFileName();
+                var uploads = Path.Combine(_env.WebRootPath, fileUri);
+                var fileName = "";
+
+                foreach (var formFile in files)
+                {
+
+                    if (formFile.Length > 0)
+                    {
+                        var extension = ".jpg";
+                        if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                            extension = ".jpg";
+                        if (formFile.FileName.ToLower().EndsWith(".tif"))
+                            extension = ".tif";
+                        if (formFile.FileName.ToLower().EndsWith(".png"))
+                            extension = ".png";
+                        if (formFile.FileName.ToLower().EndsWith(".gif"))
+                            extension = ".gif";
+
+
+
+
+                        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                        fileName = string.Format("{0}\\{1}{2}", fileUri, extName, extension);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+                    }
+                }
+                //if (!string.IsNullOrWhiteSpace(fileName))
+                //{
+                //    //shipment.SetPickupPictureUri(fileName);
+                //    //_context.SaveChanges();
+                //    //await _context.SaveChangesAsync();
+                //}
+
+                return Ok(new { fileName = fileName });
             }
-            catch (Exception)
+            catch (DbUpdateException ex)
             {
-                return BadRequest("CustomerTypesNotFound");
+                //Log the error (uncomment ex variable name and write a log.
+                var error = string.Format("Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator. {0}", ex.Message);
+
+                return NotFound("UnableToSaveChanges");
             }
         }
-
 
         // GET api/v1/Common/CustomerTypes
         [HttpGet]

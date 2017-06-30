@@ -1,4 +1,5 @@
-﻿ 
+﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +10,23 @@ namespace DriveDrop.Web.ViewModels
     public class Address 
     {
         public int Id { get; private set; }
-        public String Street { get; private set; }
+        [JsonProperty("street")]
+        public String Street { get;  set; }
 
-        public String City { get; private set; }
+        public String City { get;  set; }
 
-        public String State { get; private set; }
+        public String State { get;  set; }
 
-        public String Country { get; private set; }
+        public String Country { get;  set; }
 
-        public String ZipCode { get; private set; }
+        public String ZipCode { get;  set; }
 
-        public String Phone { get; private set; }
-        public String Contact { get; private set; }
+        public String Phone { get;  set; }
+        public String Contact { get;  set; }
 
 
-        public Double Latitude { get; private set; }
-        public Double Longitude { get; private set; }
+        public Double Latitude { get;  set; }
+        public Double Longitude { get;  set; }
         protected Address() { }
 
         

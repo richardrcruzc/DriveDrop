@@ -1,13 +1,17 @@
-﻿ 
-using DriveDrop.Web.Infrastructure;
+﻿using DriveDrop.Web.Infrastructure;
 using DriveDrop.Web.Services;
 using DriveDrop.Web.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,26 +21,31 @@ using System.Threading.Tasks;
 
 namespace DriveDrop.Web.Controllers
 {
-   // [Route("api/v1/[controller]")]
+    [Authorize]
     public class DriverController : Controller
     {
-        private readonly IHostingEnvironment _env; 
-       
-
-        //  private readonly IIdentityParser<ApplicationUser> _appUserParser;
-
-        private readonly IOptionsSnapshot<AppSettings> _settings;
+        private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
+        private readonly string _remoteServiceCommonUrl;
+        private readonly string _remoteServiceShippingsUrl;
+        private readonly string _remoteServiceDriversUrl;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+        private readonly IHttpContextAccessor _httpContextAccesor;
+        private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
 
-        public DriverController(IHostingEnvironment env ,
-              IOptionsSnapshot<AppSettings> settings)
+        public DriverController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
+            IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
         {
-            _env = env; 
-           
+            _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
+            _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
+            _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
+            _remoteServiceDriversUrl = $"{settings.Value.DriveDropUrl}/api/v1/drivers";
             _settings = settings;
+            _httpContextAccesor = httpContextAccesor;
+            _apiClient = httpClient;
+            _appUserParser = appUserParser;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.DriveDropUrl}/api/v1/Drivers/";
         }
 
         public IActionResult Index()
@@ -44,36 +53,136 @@ namespace DriveDrop.Web.Controllers
 
             return View();
         }
-        public IActionResult New()
+        public async Task<IActionResult> NewDriver()
         {
 
             var model = new DriverModel();
 
-            PrepareCustomerModel(model); 
+            await PrepareCustomerModel(model);
 
 
             return View(model);
         }
+         
+        [HttpPost]
+        public async Task<IActionResult> NewDriver(DriverModel c)
+        {
+            try
+            {
 
-       
-        //public async Task<IActionResult> AssignDriver(int id, int shipingId)
-        //{
-        //    var shipping = _context.Shipments.Find(shipingId);
 
-        //    if (shipping==null)
-        //        return RedirectToAction("Result", new { id = id });
+                foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
+                {
+                    var tt = state.Errors.ToString();
+                }
 
-        //    var driver = _context.Customers.Find(id);
-        //    if (driver == null)
-        //        return RedirectToAction("Result", new { id = id });
+                if (ModelState.IsValid)
+                {
 
-        //    shipping.SetDriver(driver);
-        //    _context.Update(driver);
-        //    await _context.SaveChangesAsync();
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
 
-        //    return RedirectToAction("Result", new { id = id });
+                    var addNewDriverUri = API.Driver.NewDriver(_remoteServiceDriversUrl);
 
-        //}
+                    var response = await _apiClient.PostAsync(addNewDriverUri, c, token);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception("Error creating Shipping, try later.");
+                    }
+
+                    response.EnsureSuccessStatusCode();
+
+
+                    
+
+
+
+                    //return RedirectToAction("result", new { id = c.CustomerId });
+                    return CreatedAtAction(nameof(Result), new {  }, null);
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                var error = string.Format("Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator. {0}", ex.Message);
+
+                ModelState.AddModelError("", error);
+            }
+
+            await PrepareCustomerModel(c);
+            return View(c);
+        }
+
+
+        public async Task<IActionResult> Result(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+             
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getById = API.Admin.GetbyId(_remoteServiceDriversUrl, id ?? 0);
+
+
+            var dataString = await _apiClient.GetStringAsync(getById, token);
+
+
+            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+
+            response.DriverLincensePictureUri = "http://localhost:5206/" + response.DriverLincensePictureUri;
+            ViewBag.DriverId = id;
+
+            return View(response);
+        }
+         
+
+
+        public async Task<IActionResult> AssignDriver(int id, int shipingId)
+        {
+             
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var assign = API.Driver.AssignDriver(_remoteServiceDriversUrl, id, shipingId);
+
+
+            var dataString = await _apiClient.GetStringAsync(assign, token);
+
+
+            //var response = JsonConvert.DeserializeObject<CustomerViewModel>((dataString));
+
+
+
+            return RedirectToAction("Result", new { id = id });
+
+        }
+
+        public async Task<IActionResult> UpdatePackageStatus(int id,int customerId )
+        {
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, id);
+
+
+            var dataString = await _apiClient.GetStringAsync(assign, token);
+
+
+            //var response = JsonConvert.DeserializeObject<CustomerViewModel>((dataString));
+
+
+
+            return RedirectToAction("Result", new { id = customerId });
+
+        }
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -116,7 +225,7 @@ namespace DriveDrop.Web.Controllers
 
         //            newCustomer.AddDefaultAddress(defaultAddres);
         //            _context.Update(newCustomer); 
-                     
+
 
         //            await _context.SaveChangesAsync();
 
@@ -131,7 +240,7 @@ namespace DriveDrop.Web.Controllers
 
         //            foreach (var formFile in files)
         //            {
-                        
+
         //                if (formFile.Length > 0)
         //                {
         //                    var extension = ".jpg";
@@ -146,7 +255,7 @@ namespace DriveDrop.Web.Controllers
 
 
 
-                           
+
         //                    filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
         //                    fileName = string.Format("uploads\\img\\driver\\{0}{1}",  extName, extension);
 
@@ -180,41 +289,8 @@ namespace DriveDrop.Web.Controllers
         //    return View(c);
         //}
 
-        
-        //public async Task<IActionResult> Result(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var customer = await _context.Customers 
-        //        .Where(x=>x.CustomerTypeId == CustomerType.Driver.Id)
-        //        .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PriorityType)
-        //       .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.ShippingStatus)
-        //       .Include(d=>d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PickupAddress)
-        //       .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.DeliveryAddress)
-        //       .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
-        //       .SingleOrDefaultAsync(m => m.Id == id);
 
 
-        //    var tttp = customer.ShipmentSenders;
-
-
-        //    if (customer == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    ViewBag.DriverId = id;
-
-        //    ViewBag.ShippingStatuses = _context.ShippingStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-
-
-
-
-        //    return View(customer);
-        //}
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -282,26 +358,67 @@ namespace DriveDrop.Web.Controllers
             throw new NotImplementedException();
         }
 
-        public DriverModel PrepareCustomerModel(DriverModel model)
+        public async Task<DriverModel> PrepareCustomerModel(DriverModel model)
         {
-            //model.CustomerTypeList = _context.CustomerTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-            //model.TransportTypeList = _context.TransportTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-            //model.CustomerStatusList = _context.CustomerStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var getUri = API.Common.GetAllCustomerTypes(_remoteServiceCommonUrl);
+            var dataString = await _apiClient.GetStringAsync(getUri);
+            var CustomerTypes = new List<SelectListItem>();
+            CustomerTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
 
-            //model.PriorityTypeList = _context.PriorityTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                CustomerTypes.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.CustomerTypeList = CustomerTypes;
+
+            getUri = API.Common.GetAllCustomerStatus(_remoteServiceCommonUrl);
+            dataString = await _apiClient.GetStringAsync(getUri);
+            var customerStatus = new List<SelectListItem>();
+            customerStatus.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+
+            gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                customerStatus.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.CustomerStatusList = customerStatus;
+
+            getUri = API.Common.GetAllTransportTypes(_remoteServiceCommonUrl);
+            dataString = await _apiClient.GetStringAsync(getUri);
+            var transportTypes = new List<SelectListItem>();
+            transportTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+
+            gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                transportTypes.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.TransportTypeList = transportTypes;
 
             return model;
+
         }
-        public CustomerModel PrepareCustomerModel(CustomerModel model)
+        async Task<string> GetUserTokenAsync()
         {
-            //model.CustomerTypeList = _context.CustomerTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-            //model.TransportTypeList = _context.TransportTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-            //model.CustomerStatusList = _context.CustomerStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            var context = _httpContextAccesor.HttpContext;
 
-            //model.PriorityTypeList = _context.PriorityTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-
-            return model;
+            return await context.Authentication.GetTokenAsync("access_token");
         }
-
     }
 }

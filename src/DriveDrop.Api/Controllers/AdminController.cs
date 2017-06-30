@@ -18,7 +18,7 @@ namespace DriveDrop.Api.Controllers
 {
 
     [Route("api/v1/[controller]")]
-   // [Authorize]
+     [Authorize]
     public class AdminController : Controller
     {
         private readonly DriveDropContext _context;
@@ -60,6 +60,7 @@ namespace DriveDrop.Api.Controllers
                 .LongCountAsync();
 
             var itemsOnPage = await root
+                   .Include(x => x.CustomerType).Include(x => x.CustomerStatus).Include(x => x.DefaultAddress)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .Include(x => x.CustomerStatus)
@@ -67,40 +68,46 @@ namespace DriveDrop.Api.Controllers
                 .Include(z => z.TransportType)
                 .ToListAsync();
 
+
+            var model = new PaginatedItemsViewModel<Customer>(
+               pageIndex, pageSize, totalItems, itemsOnPage);
+
+
+
             //itemsOnPage = ComposePicUri(itemsOnPage);
 
-            var drivers = new CustomersList() { Data = itemsOnPage, PageIndex = pageIndex, Count = (int)totalItems, PageSize = pageSize };
+            //var drivers = new CustomersList() { Data = model, PageIndex = pageIndex, Count = (int)totalItems, PageSize = pageSize };
 
-            var customerList = drivers.Data.Select(x => new  CustomerViewModel
-            {
-                Email = x.Email,
-                Commission = x.Commission,
-                CustomerStatus = x.CustomerStatus.Name,
-                CustomerType = x.CustomerType.Name,
-                Id = x.Id,
-                DeliverRadius = x.DeliverRadius,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Phone = x.Phone,
-                DriverLincensePictureUri = x.DriverLincensePictureUri,
-                TransportType = x.TransportType.Name,
-                MaxPackage = x.MaxPackage,
-                PickupRadius = x.PickupRadius,
-            }).ToList();
+            //var customerList = drivers.Data.Select(x => new  CustomerViewModel
+            //{
+            //    Email = x.Email,
+            //    Commission = x.Commission,
+            //    CustomerStatus = x.CustomerStatus.Name,
+            //    CustomerType = x.CustomerType.Name,
+            //    Id = x.Id,
+            //    DeliverRadius = x.DeliverRadius,
+            //    FirstName = x.FirstName,
+            //    LastName = x.LastName,
+            //    Phone = x.Phone,
+            //    DriverLincensePictureUri = x.DriverLincensePictureUri,
+            //    TransportType = x.TransportType.Name,
+            //    MaxPackage = x.MaxPackage,
+            //    PickupRadius = x.PickupRadius,
+            //}).ToList();
 
             var vm = new CustomerIndex()
             {
-                 CustomerList = customerList,
+                 CustomerList = model.Data,
                  TypeFilterApplied = customertype,
                 StatusFilterApplied = statusId,
                 TransportFilterApplied = transporTypeId,
                 LastName = LastName,
                 PaginationInfo = new PaginationInfo()
                 {
-                    ActualPage = pageIndex ,
-                    ItemsPerPage = drivers.Data.Count,
-                    TotalItems = drivers.Count,
-                    TotalPages = int.Parse(Math.Ceiling(((decimal)drivers.Count / pageSize)).ToString())
+                    ActualPage = pageIndex,
+                    ItemsPerPage = model.Data.Count(),
+                    TotalItems =(int)model.Count,
+                    TotalPages = int.Parse(Math.Ceiling(((decimal)model.Count / pageSize)).ToString())
                 }
             };
 
@@ -172,58 +179,62 @@ namespace DriveDrop.Api.Controllers
 
             try
             {
-                var root = await _context.Customers
-                 .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PriorityType)
-                 .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
-                 //.Include(d => d.ShipmentDrivers)
-                //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.ShippingStatus)
-                //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PickupAddress)
-                //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.DeliveryAddress)
-                //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.Sender)
-               // .Include(d => d.ShipmentSenders)
-                //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.ShippingStatus)
-               //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.PickupAddress)
-                //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.DeliveryAddress)
-                //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.Sender)
+                var customer = await _context.Customers.FindAsync(id);
 
-                 .FirstOrDefaultAsync(x=>x.Id == id);
-
-                if (root == null)
-                    return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
-
-                var name = root.FullName;
-
-                //var shipmentDrivers = root.ShipmentDrivers.ToList();
-                //var shipmentSenders = root.ShipmentSenders.ToList();
-
-
-                var customer = new CustomerViewModel
-                {
-                    Id = root.Id,
-                    Commission = root.Commission,
-                    CustomerStatus = root.CustomerStatus.Name,
-                    CustomerStatusId = root.CustomerStatusId,
-                    CustomerType = root.CustomerType.Name,
-                    CustomerTypeId = root.CustomerTypeId,
-                    DeliverRadius = root.DeliverRadius,
-                    DriverLincensePictureUri = root.DriverLincensePictureUri,
-                    Email = root.Email,
-                    FirstName = root.FirstName,
-                    IdentityGuid = root.IdentityGuid,
-                    LastName = root.LastName,
-                    MaxPackage = root.MaxPackage,
-                    Phone = root.Phone,
-                    PickupRadius = root.PickupRadius,
-                    TransportType = root.TransportType.Name,
-                    TransportTypeId = root.TransportTypeId,
-                    UserGuid = root.UserGuid,
-                    ShipmentDrivers = root.ShipmentDrivers,
-                    ShipmentSenders =root.ShipmentSenders
-                    //ShipmentDrivers = shipmentDrivers,
-                    //ShipmentSenders = shipmentSenders
-
-                };
                 return Ok(customer);
+
+                // var root = await _context.Customers
+                //  .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PriorityType)
+                //  .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
+                //  //.Include(d => d.ShipmentDrivers)
+                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.ShippingStatus)
+                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PickupAddress)
+                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.DeliveryAddress)
+                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.Sender)
+                //// .Include(d => d.ShipmentSenders)
+                // //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.ShippingStatus)
+                ////.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.PickupAddress)
+                // //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.DeliveryAddress)
+                // //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.Sender)
+
+                //  .FirstOrDefaultAsync(x=>x.Id == id);
+
+                // if (root == null)
+                //     return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
+
+                // var name = root.FullName;
+
+                // //var shipmentDrivers = root.ShipmentDrivers.ToList();
+                // //var shipmentSenders = root.ShipmentSenders.ToList();
+
+
+                // var customer = new CustomerViewModel
+                // {
+                //     Id = root.Id,
+                //     Commission = root.Commission,
+                //     CustomerStatus = root.CustomerStatus.Name,
+                //     CustomerStatusId = root.CustomerStatusId,
+                //     CustomerType = root.CustomerType.Name,
+                //     CustomerTypeId = root.CustomerTypeId,
+                //     DeliverRadius = root.DeliverRadius,
+                //     DriverLincensePictureUri = root.DriverLincensePictureUri,
+                //     Email = root.Email,
+                //     FirstName = root.FirstName,
+                //     IdentityGuid = root.IdentityGuid,
+                //     LastName = root.LastName,
+                //     MaxPackage = root.MaxPackage,
+                //     Phone = root.Phone,
+                //     PickupRadius = root.PickupRadius,
+                //     TransportType = root.TransportType.Name,
+                //     TransportTypeId = root.TransportTypeId,
+                //     UserGuid = root.UserGuid,
+                //     ShipmentDrivers = root.ShipmentDrivers,
+                //     ShipmentSenders =root.ShipmentSenders
+                //     //ShipmentDrivers = shipmentDrivers,
+                //     //ShipmentSenders = shipmentSenders
+
+                // };
+                // return Ok(customer);
             }
             catch (Exception exe)
             {

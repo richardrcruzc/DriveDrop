@@ -1,4 +1,5 @@
-﻿using DriveDrop.Api.ViewModels;
+﻿using ApplicationCore.Entities.ClientAgregate;
+using DriveDrop.Api.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace DriveDrop.Api.ViewModels
 {
     public class CustomerIndex
     {
-        public IEnumerable<CustomerViewModel> CustomerList { get; set; }
+        public IEnumerable<Customer> CustomerList { get; set; }
         public IEnumerable<SelectListItem> CustomerType { get; set; }
         public IEnumerable<SelectListItem> CustomerStatus { get; set; }
         public IEnumerable<SelectListItem> TransportType { get; set; }

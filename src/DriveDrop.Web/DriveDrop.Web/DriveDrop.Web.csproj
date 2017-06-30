@@ -532,6 +532,17 @@
     <Content Include="wwwroot\lib\tether\src\js\shift.js" />
     <Content Include="wwwroot\lib\tether\src\js\tether.js" />
     <Content Include="wwwroot\lib\tether\src\js\utils.js" />
+    <Content Include="wwwroot\Uploads\Img\Driver\0b72eab8-cafe-4928-a432-b15f1246bf87.tif">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\Uploads\Img\Driver\DLsample-New-Adult-EDL.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Driver\DLsample-Old-Adult-Standard.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\Uploads\Img\Shipment\62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\_references.js" />
   </ItemGroup>
 

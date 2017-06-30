@@ -1,101 +1,116 @@
 ﻿@model  DriveDrop.Web.ViewModels.Customer
 
-@{
-    ViewData["Title"] = "Details";
-}
-<div class="container">
-<h2>Details</h2>
-
- 
-    <h4>Sender</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt>
-            Customer Status
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CustomerStatus)
-        </dd>
-        <dt>
-            Customer Type
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CustomerType)
-        </dd>
-        <dt>
-            E-Mail
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            Phone
-        </dt>
-        <dd>
-           @*@Model.Phone*@
-        </dd>
-    </dl>
-     
-    <div>
-        <table class="table">
-            <tr>
-                <th colspan="5">    <button type="button" id="button" class="btn btn-default">Add new Shipping</button></th>
-
-            </tr>
-            <tr id="newShipmentTr" class="sr-only">
-                <td colspan="5">
-
-                    <div id="newShipment">
-                        <label class="title">Add New Shipment</label>
-                        @*@await Component.InvokeAsync("NewShipment", new { id = @Model.Id })*@
-                    </div>
-
-                </td>
-            </tr>
-            </table>
-
-
-</div>
-
-   <div>
-       @*@await Component.InvokeAsync("ShippingByCustomer", new { customerId = @Model.Id })*@
-   </div>
-     <div>
-        @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |*@
-        @*<a asp-action="Index">Back to List</a>*@
-    </div>
-    </div>
-   
-
-<script>
-
-    var theDiv = document.getElementById("newShipmentTr");
-    var button = document.getElementById("button");
-
-    function removeRed() {
-        
-        var classContent = theDiv.className;
-
-        theDiv.className = classContent.replace("sr-only", "").trim();
+    @{
+        ViewData["Title"] = "Details";
     }
 
-    button.addEventListener("click", removeRed, false);
-</script>
+
+    <section class="esh-catalog-filters">
+        <div class="container">
+            <h2>Sender Details</h2>
+
+             
+            </div>
+        </section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.LastName)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.LastName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.FirstName)
+                            </dd>
+                            <dt>
+                                Customer Status
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.CustomerStatus.Name)
+                            </dd>
+                           
+                        </dl>
+                    </div>
+                    <div class="col-md-5">
+                        <dl class="dl-horizontal">
+                          
+                            <dt>
+                                Customer Type
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.CustomerType.Name)
+                            </dd>
+                            <dt>
+                                E-Mail
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                            <dt>
+                                Phone
+                            </dt>
+                            <dd>
+                                @Model.Phone
+                            </dd>
+                        </dl>
+                    </div>
+                </div>  
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th colspan="5">    
+                            <button type="button" id="button" class="btn btn-default btn-brand btn-brand-big">Add new Shipping</button>
+
+                            </th>
+
+                        </tr>
+                        <tr id="newShipmentTr" class="sr-only">
+                            <td colspan="5">
+
+                                <div id="newShipment">
+                                    
+                                    @await Component.InvokeAsync("NewShipment", new { id = @Model.Id })
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+                </div>
+
+                <div>
+                    @await Component.InvokeAsync("ShippingByCustomer", new { customerId = @Model.Id })
+                </div>
+                <div> 
+                    <a asp-controller="admin" asp-action="Index">Back to List</a>
+                </div>
+            </div>
+
+
+            <script>
+
+                var theDiv = document.getElementById("newShipmentTr");
+                var button = document.getElementById("button");
+
+                function removeRed() {
+
+                    var classContent = theDiv.className;
+
+                    theDiv.className = classContent.replace("sr-only", "").trim();
+                }
+
+                button.addEventListener("click", removeRed, false);
+            </script>
+
+
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }

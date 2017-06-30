@@ -26,16 +26,19 @@ namespace DriveDrop.Web.ViewComponents
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
+        private readonly string _remoteServiceShippingUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
 
-        public ShippingNoAssignedViewComponent(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
+        public ShippingNoAssignedViewComponent(IOptionsSnapshot<AppSettings> settings, 
+            IHttpContextAccessor httpContextAccesor,
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/admin";
+            _remoteServiceShippingUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -52,13 +55,47 @@ namespace DriveDrop.Web.ViewComponents
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetNotAssignedShipping(_remoteServiceCommonUrl);
+            var allnotassignedshipings = API.Shipping.GetNotAssignedShipping(_remoteServiceShippingUrl);
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
-            var shippings = JsonConvert.DeserializeObject<List<Shipment>>((dataString));
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
              if(shippings==null)
-                return View(new List<Shipment>());
+                return View(new PaginatedShippings());
+            
+
+            //var model = shippings.Select(x => new Shipment
+            //{
+            //    Amount = x.Amount,
+            //    DeliveredPictureUri = x.DeliveredPictureUri,
+            //    DeliveryAddress = x.DeliveryAddress,
+            //    Discount = x.Discount,
+            //    Driver = x.Driver,
+            //    DriverId = x.DriverId,
+            //    Id = x.Id,
+            //    IdentityCode = x.IdentityCode,
+            //    Note = x.Note,
+            //    PickupAddress = x.PickupAddress,
+            //    PickupPictureUri = x.PickupPictureUri,
+            //    PriorityType = x.PriorityType,
+            //    PriorityTypeId = x.PriorityTypeId,
+            //    PriorityTypeLevel = x.PriorityTypeLevel,
+            //    PromoCode = x.PromoCode,
+            //    Sender = x.Sender,
+            //    SenderId = x.SenderId,
+            //    ShippingCreateDate = x.ShippingCreateDate,
+            //    ShippingStatus = x.ShippingStatus,
+            //    ShippingStatusId = x.ShippingStatusId,
+            //    ShippingUpdateDate = x.ShippingUpdateDate,
+            //    Tax = x.Tax,
+            //    TransportType = x.TransportType,
+            //    TransportTypeId = x.TransportTypeId
+
+                //}).ToList();
+
+
+
+
             return View(shippings);
 
             //var model = await _context.Shipments
