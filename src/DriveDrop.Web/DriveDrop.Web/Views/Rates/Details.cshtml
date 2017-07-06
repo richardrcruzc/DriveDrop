@@ -1,0 +1,123 @@
+﻿@model DriveDrop.Web.ViewModels.RateModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+ 
+<section class="esh-catalog-filters">
+    <div class="container">
+        <p> <h4>Rate Details</h4></p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EndDate)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-5">
+            <dl class="dl-horizontal">
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.FixChargePerShipping)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FixChargePerShipping)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FixChargePercentage)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FixChargePercentage)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ChargePerItem)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ChargePerItem)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tax)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Tax)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Active)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Active)
+                </dd>
+            </dl>
+        </div>
+    </div>
+        <div >
+            @{
+                if (Model.RateDetails.Count() > 0)
+                {
+
+                    <div class="row">
+                        <div class="col-md-5"><h4><label>Weight</label></h4></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4"><label>From</label></div>
+                        <div class="col-md-4"><label>To</label></div>
+                        <div class="col-md-4"><label>Charge per Lbs</label></div> 
+                    </div>
+
+                    foreach (var item in Model.RateDetails.Where(c => c.WeightOrDistance == "weight"))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">@item.From</div>
+                            <div class="col-md-4">@item.To</div>
+                            <div class="col-md-4">@item.Charge.ToString("0.##")</div>
+
+                        </div>
+
+                    }
+
+                    <div class="row">
+                        <div class="col-md-5"><h4><label>Distance</label></h4></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4"><label>From</label></div>
+                        <div class="col-md-4"><label>To</label> </div>
+                        <div class="col-md-4"><label>Charge per Miles</label></div> 
+                    </div>
+
+                    foreach (var item in Model.RateDetails.Where(c => c.WeightOrDistance == "distance"))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">@item.From</div>
+                            <div class="col-md-4">@item.To</div>
+                            <div class="col-md-4">@item.Charge.ToString("0.##")</div>
+
+                        </div>
+
+                    }
+
+                }
+            }
+        </div>
+
+
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+</div>

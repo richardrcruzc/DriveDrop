@@ -232,7 +232,7 @@ namespace DriveDrop.Api.Controllers
 
 
 
-                    var shipment = new Shipment(pickUpAddres, deliveryAddres, sender, 0, 0, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId, c.Note, c.PickupPictureUri, "");
+                    var shipment = new Shipment(pickUpAddres, deliveryAddres, sender,c.Amount,c.Discount,c.ShippingWeight, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId, c.Note, c.PickupPictureUri, "");
                     _context.Add(shipment);
 
                     _context.SaveChanges();

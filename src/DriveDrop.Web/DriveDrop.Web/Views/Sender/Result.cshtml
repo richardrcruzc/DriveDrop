@@ -97,20 +97,53 @@
 
             <script>
 
-                var theDiv = document.getElementById("newShipmentTr");
-                var button = document.getElementById("button");
+               
 
-                function removeRed() {
 
-                    var classContent = theDiv.className;
 
-                    theDiv.className = classContent.replace("sr-only", "").trim();
-                }
-
-                button.addEventListener("click", removeRed, false);
             </script>
 
 
             @section Scripts {
                 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    var theDiv = document.getElementById("newShipmentTr");
+    var button = document.getElementById("button");
+
+    function removeRed() {
+
+        var classContent = theDiv.className;
+
+        theDiv.className = classContent.replace("sr-only", "").trim();
+    }
+
+    button.addEventListener("click", removeRed, false);
+
+                     jQuery('#PickupZipCode').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+                     jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+
+
+
+
+                     function UpdateRate() {
+                        // var myLength = $("#PickupZipCode").val().length;
+                         var delLength = $("#DeliveryZipCode").val().length;
+                         var delZip = $("#DeliveryZipCode").val();
+                         if (delLength < 5)
+                             return;
+
+                         var pickupLength = $("#PickupZipCode").val().length;
+                         var  pickupZip = $("#PickupZipCode").val();
+                         if (pickupLength < 5)
+                             return;
+
+
+                         alert( 1);
+
+                     }
+</script>
             }

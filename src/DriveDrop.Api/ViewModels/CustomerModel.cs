@@ -27,6 +27,7 @@ namespace DriveDrop.Api.ViewModels
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
         public int CustomerId { get; set; }
+        public decimal ShippingWeight { get; set; }
 
         public IFormFile file { get; set; }
 
@@ -342,7 +343,7 @@ namespace DriveDrop.Api.ViewModels
         public string PickupPictureUri { get; set; }
 
 
-
+        public Decimal ShippingWeight { get; private set; }
 
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]

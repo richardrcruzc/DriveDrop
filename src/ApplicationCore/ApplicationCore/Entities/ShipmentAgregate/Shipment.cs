@@ -11,6 +11,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
          : Entity, IAggregateRoot
     {
 
+        public int Quantity { get; private set; }
         public string IdentityCode { get; private set; }
 
         public DateTime ShippingCreateDate { get; private set; }
@@ -19,7 +20,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public  int SenderId { get; private set; }
         public int? DriverId { get; private set; }
 
+       // [InverseProperty("Author")]
         public virtual Customer Sender { get; private set; }
+        //[InverseProperty("Author")]
         public virtual Customer Driver { get; private set; }
        
 
@@ -43,18 +46,16 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public int TransportTypeId { get; private set; }
         public TransportType TransportType { get; private set; }
+        
+        public Decimal ShippingWeight { get; private set; }
+        public Decimal ShippingValue { get; private set; }
 
-
-        public Decimal Amount { get; private set; }
-        public Decimal Tax { get; private set; }
+        public Decimal Distance { get; private set; }
+        public Decimal ChargeAmount { get; private set; }
         public Decimal Discount { get; private set; }
-        public string PromoCode { get; private set; }
-
-     
-       
-
-
-
+        public string PromoCode { get; private set; }        
+        public Decimal Tax { get; private set; }
+        
         public string PickupPictureUri { get; private set; }
         public string DeliveredPictureUri { get; private set; }
 
@@ -62,21 +63,30 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public string Note { get; private set; }
 
 
-
         protected Shipment()
         {
             _paymentMethods = new List<PaymentMethod>();
-            
-
         }
 
-        public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, int priorityTypeId, int priorityTypeLevel,
-                            int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri) : this()
+
+        public Shipment SetupPayAmount(decimal distance, decimal chargeAmount, decimal discount, string promoCode, decimal tax, int qty = 1)
+        {
+            Distance = distance;
+            ChargeAmount = chargeAmount;
+            Discount = discount;
+            PromoCode = promoCode;
+            Tax = tax;
+            Quantity = qty;
+            return this;
+        }
+
+        public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal weight, int priorityTypeId, int priorityTypeLevel,
+                            int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri, int qty = 1) : this()
         {
             ShippingStatusId = ShippingStatus.PendingPickUp.Id;
             ShippingCreateDate = DateTime.Now;
             ShippingUpdateDate = DateTime.Now;
-            Amount = amount;
+            ShippingValue = amount;
             Discount = discount;
             PriorityTypeId = priorityTypeId;
             PriorityTypeLevel = priorityTypeLevel;
@@ -94,6 +104,8 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
             IdentityCode = string.Format("WA-{0}-{1}",pickup.ZipCode, RandomString());
 
+            ShippingWeight = weight;
+            Quantity = qty;
         }
         public static string RandomString()
         {

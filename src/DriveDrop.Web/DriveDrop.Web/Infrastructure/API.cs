@@ -8,7 +8,29 @@ namespace DriveDrop.Web.Infrastructure
 {
     public static class API
     {
-        public static class Admin
+        public static class Rate
+        {
+
+            public static string Get(string baseUri) { 
+                return $"{baseUri}";
+            }
+            public static string GetbyId(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                var filterQs = $"{idQs}";
+                return $"{baseUri}get/{filterQs}";
+            }
+
+            public static string SaveRate(string baseUri)
+            {
+                return $"{baseUri}Save";
+            }
+            public static string NewRate(string baseUri)
+            {
+                return $"{baseUri}New";
+            }
+        }
+            public static class Admin
         {
             public static string GetAllCustomers(string baseUri, int pageIndex, int pageSize, int? status, int? type, int? transporType, string LastName = null)
             {

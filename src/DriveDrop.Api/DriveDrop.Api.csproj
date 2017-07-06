@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="3.3.7" />
@@ -50,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore\ApplicationCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />
   </ItemGroup>
 
 </Project>

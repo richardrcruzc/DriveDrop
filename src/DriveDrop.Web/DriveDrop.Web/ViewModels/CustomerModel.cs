@@ -405,9 +405,11 @@ namespace DriveDrop.Web.ViewModels
         public int TransportTypeId { get; set; }
         public TransportType TransportType { get; set; }
 
+        [Required(ErrorMessage = "Your must provide a Quantity")]
+        public int? Quantity { get; set; } 
 
-
-        public Decimal Amount { get; set; }
+        [Required(ErrorMessage = "Your must provide a Shipping value")]
+        public Decimal? Amount { get; set; }
         public Decimal Tax { get; set; }
         public Decimal Discount { get; set; }
         public string PromoCode { get; set; }
@@ -426,7 +428,7 @@ namespace DriveDrop.Web.ViewModels
         public String CardNumber { get; set; }
         [Required]
         [Display(Name = "Security Number")]
-        public int SecurityNumber { get; set; }
+        public int? SecurityNumber { get; set; }
         [Required]
         [Display(Name = "Card Holder Name")]
         public String CardHolderName { get; set; }

@@ -30,6 +30,14 @@ namespace DriveDrop.Api.Infrastructure
 
         public DbSet<CustomerStatus> CustomerStatuses { get; set; }
 
+        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<ZipCodeState> ZipCodeStates { get; set; }
+
+        public DbSet<Rate> Rates { get; set; }
+        public DbSet<RateDetail> RateDetails { get; set; }
+        public DbSet<RatePriority> RatePriorities { get; set; }
+        public DbSet<RateTranportType> RateTranportTypes { get; set; }
+
 
         //public DbSet<ShipmentAddress> ShipmentAddresses { get; set; }
         //public DbSet<ShipmentCustomer> ShipmentCustomers { get; set; }
@@ -53,13 +61,17 @@ namespace DriveDrop.Api.Infrastructure
             modelBuilder.Entity<Customer>(ConfigureCustomer);
             modelBuilder.Entity<Shipment>(ConfigureShipment);
             modelBuilder.Entity<Address>(ConfigureAddress);
- 
+
+            //modelBuilder.Entity<RateDetail>()
+            // .HasOne(p => p.Rate)
+            // .WithMany(b => b.RateDetails)
+            // .HasForeignKey(p=>p.RateId)
+            // .IsRequired();
+
         }
+ 
 
-  
-
-
-        void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
+            void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
         {
             addressConfiguration.ToTable("address", DEFAULT_SCHEMA);
 

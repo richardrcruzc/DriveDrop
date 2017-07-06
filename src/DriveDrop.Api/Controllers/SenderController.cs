@@ -80,7 +80,7 @@ namespace DriveDrop.Api.Controllers
                     _context.Add(newCustomer);
                     _context.SaveChanges(); 
 
-                    var shipment = new Shipment(pickUpAddres, deliveryAddres, newCustomer, 0, 0, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId ?? 0, c.Note, c.FilePath, "");
+                    var shipment = new Shipment(pickUpAddres, deliveryAddres, newCustomer,c.Amount,c.Discount,c.ShippingWeight, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId ?? 0, c.Note, c.FilePath, "");
                     _context.Add(shipment);
 
                     _context.SaveChanges();
@@ -131,7 +131,7 @@ namespace DriveDrop.Api.Controllers
 
 
 
-                    var shipment = new Shipment(pickUpAddres, deliveryAddres, sender, 0, 0, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId, c.Note, c.PickupPictureUri , "");
+                    var shipment = new Shipment(pickUpAddres, deliveryAddres, sender,c.Amount,c.Discount,c.ShippingWeight, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId, c.Note, c.PickupPictureUri , "");
                     _context.Add(shipment);
 
                     _context.SaveChanges();

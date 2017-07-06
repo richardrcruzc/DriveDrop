@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Http;
 using DriveDrop.Api.Infrastructure.Services;
 using Polly;
 using System.Data.SqlClient;
+using DriveDrop.Api.Services;
+using Newtonsoft.Json;
 
 namespace DriveDrop.Api
 {
@@ -58,7 +60,11 @@ namespace DriveDrop.Api
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
-                                            
+
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });//Circular References  https://github.com/aspnet/EntityFramework/issues/4646
+
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<DriveDropContext>(options =>
@@ -99,13 +105,16 @@ namespace DriveDrop.Api
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IRateService, RateService>();
+            services.AddTransient<IDistanceService, DistanceService>();
+            
 
             _services = services;
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IHostingEnvironment _env, IRateService rate, IDistanceService distance)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(); 
@@ -125,7 +134,7 @@ namespace DriveDrop.Api
                });
 
 
-            WaitForSqlAvailabilityAsync(loggerFactory, app).Wait();
+            WaitForSqlAvailabilityAsync(loggerFactory, app, _env, rate, distance).Wait();
 
              
              
@@ -142,13 +151,13 @@ namespace DriveDrop.Api
             });
         }
 
-        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, int retries = 0)
+        private async Task WaitForSqlAvailabilityAsync(ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment _env, IRateService rate, IDistanceService distance, int retries = 0)
         {
             var logger = loggerFactory.CreateLogger(nameof(Startup));
             var policy = CreatePolicy(retries, logger, nameof(WaitForSqlAvailabilityAsync));
             await policy.ExecuteAsync(async () =>
             {
-                await DriveDropSeed.SeedAsync(app, loggerFactory);
+                await DriveDropSeed.SeedAsync(app, loggerFactory, _env, rate, distance);
             });
 
         }

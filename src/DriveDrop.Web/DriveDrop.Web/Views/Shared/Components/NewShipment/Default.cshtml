@@ -161,6 +161,18 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
+                                <input asp-for="Amount" class="form-control" placeholder="Shipping value"/>  
+                                <span asp-validation-for="Amount" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input asp-for="Quantity" class="form-control" placeholder="Quantity" />
+                                <span asp-validation-for="Quantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
                                 @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
                                 <textarea name="Note" class="span6" rows="3" placeholder="Note to the driver"></textarea>
                                 <span asp-validation-for="Note" class="text-danger"></span>
@@ -226,8 +238,12 @@
                 <div class="col-md-10">
                     <h2>Shipment Total</h2>
                     <hr />
-                    <div class="form-group">
-                        <label for="basic-url">Total $0.00 </label>
+                    <div class="form-group float-xs-right">
+                        <h4><label>Total Charge:</label><label id="total" class="float-xs-right label-info">$0.00 </label></h4>  
+                        <h4><label>Discount:</label><label id="TaxDiscount"  class="float-xs-right">$0.00 </label></h4>  
+                        <h4><label>Taxes:</label><label id="totalTax"  class="float-xs-right">$0.00 </label></h4>  
+                        <h4><label>Total:</label><label id="total"  class="float-xs-right">$0.00 </label></h4>  
+                        
 
                     </div>
 
