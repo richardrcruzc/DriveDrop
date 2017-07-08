@@ -8,8 +8,8 @@ using Identity.Api.Data;
 namespace Identity.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170624221211_initial")]
-    partial class initial
+    [Migration("20170707232614_app")]
+    partial class app
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

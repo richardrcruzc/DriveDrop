@@ -3,7 +3,7 @@
     @{
         ViewData["Title"] = "Details";
     }
-
+ 
 
     <section class="esh-catalog-filters">
         <div class="container">
@@ -125,11 +125,26 @@
                      jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
                          UpdateRate()
                      });
+                     jQuery('#Quantity').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+                     jQuery('#Amount').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+
+                     $("#TransportTypeId").change(function () {
+                         UpdateRate()
+                     });
+
+                     $("#PriorityTypeId").change(function () {
+                         UpdateRate()
+                       });
 
 
 
+                     function UpdateRate( ) {
 
-                     function UpdateRate() {
+
                         // var myLength = $("#PickupZipCode").val().length;
                          var delLength = $("#DeliveryZipCode").val().length;
                          var delZip = $("#DeliveryZipCode").val();
@@ -142,8 +157,57 @@
                              return;
 
 
-                         alert( 1);
 
+                         var weight = $("#Weight").val();
+                         var quantity = $("#Quantity").val();
+                         var amount = $("#Amount").val();
+                         var transportTypeId = $("#TransportTypeId").val();
+                         if (transportTypeId == 'Prority')
+                             return;
+                         var priorityTypeId = $("#PriorityTypeId").val();
+                         if (priorityTypeId == 'Transport Type')
+                             return;
+
+
+                         if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
+                             alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
+
+                             $.ajax({
+                                 url: '@Url.Action("CalculateAmount","rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC
+                               // dataType: "json", //to work with json format
+                                 type: "POST", //to do a post request
+                              //   contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                 cache: false, //avoid caching results
+                                 data: { zipFrom: pickupZip, zipTo: delZip, weight: weight, qty: quantity, priority: priorityTypeId, transportTypeId: transportTypeId}, // here you can pass arguments to your request if you need
+                                 success: function (data) {
+                                     // data is your result from controller
+                                     if (data) {
+                                         var len = data.length;
+
+                                       
+                                         var txt = "";
+                                         if (len > 0) {
+                                             alert(len);
+                                             alert(len);
+                                             for (var i = 0; i < len; i++) {
+                                                 $("#total").val(data[i].PriorityAmount);
+                                                 $("#TaxDiscount").val(0);
+                                                 $("#totalTax").val(data[i].TaxAmount);
+                                                 $("#total").val(data[i].AmountToCharge); 
+                                             }
+                                         }
+                                     }
+                                         alert("Data: "+data );
+                                     
+                                 },
+                                 error: function (xhr, ajaxOptions, thrownError) {
+                                     alert(xhr.responseText);
+                                     alert(xhr.status);
+                                     alert(thrownError);
+
+                                 }
+                             });
+                         }
                      }
 </script>
             }

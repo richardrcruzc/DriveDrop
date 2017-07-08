@@ -22,6 +22,7 @@ namespace DriveDrop.Web.ViewComponents
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
+        private readonly string _remoteServiceRatesUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
@@ -32,14 +33,18 @@ namespace DriveDrop.Web.ViewComponents
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/admin";
+            _remoteServiceRatesUrl = $"{settings.Value.DriveDropUrl}/api/v1/rates";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _appUserParser = appUserParser;
 
+          
+
         }
         public async Task<IViewComponentResult> InvokeAsync(int id)
         {
+           
             var model = new NewShipment();
             await PrepareCustomerModelAsync(model);
             model.CustomerId = id;

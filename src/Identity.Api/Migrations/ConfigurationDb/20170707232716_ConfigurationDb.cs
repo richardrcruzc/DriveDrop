@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Identity.Api.Migrations.ConfigurationDb
 {
-    public partial class initialconfigurtion : Migration
+    public partial class ConfigurationDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -10,7 +10,20 @@ namespace DriveDrop.Web.Infrastructure
     {
         public static class Rate
         {
+            public static string Amount(string baseUri, int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId)
+            {
+                var fromQs = zipFrom.ToString();
+                  var toQs = zipTo.ToString();
+                var weightQs = weight.ToString();
+                var qtyQs = qty.ToString();
+                var priorityQs = priority.ToString();
+                var ttQs = transportTypeId.ToString();
 
+                var filterQs = $"zipFrom={fromQs}&zipTo={toQs}&weight={weightQs}&qty={qtyQs}&priority={priorityQs}&transportTypeId={ttQs}";
+              
+               
+                return $"{baseUri}CalculateAmount?{filterQs}";
+            }
             public static string Get(string baseUri) { 
                 return $"{baseUri}";
             }

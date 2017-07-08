@@ -30,6 +30,7 @@ namespace DriveDrop.Web.Controllers
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
         private readonly string _remoteServiceShippingsUrl;
+        private readonly string _remoteServiceRatesUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
@@ -44,12 +45,15 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
+            _remoteServiceRatesUrl = $"{settings.Value.DriveDropUrl}/api/v1/rates/";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _appUserParser = appUserParser;
 
             _env = env;
+
+        
 
         }
 
@@ -61,6 +65,8 @@ namespace DriveDrop.Web.Controllers
 
         public async Task<IActionResult> Result(int? id)
         {
+            ViewBag.Url = _remoteServiceRatesUrl;
+
             if (id == null)
             {
                 return NotFound();

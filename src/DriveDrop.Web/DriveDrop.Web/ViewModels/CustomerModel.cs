@@ -367,7 +367,7 @@ namespace DriveDrop.Web.ViewModels
         //public Double PickupLatitude { get;  set; }
         //public Double PickupLongitude { get;  set; }
 
-
+        public decimal Weight { get; set; }
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
