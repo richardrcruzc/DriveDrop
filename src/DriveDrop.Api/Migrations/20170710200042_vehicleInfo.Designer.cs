@@ -9,9 +9,10 @@ using ApplicationCore.Entities.Helpers;
 namespace DriveDrop.Api.Migrations
 {
     [DbContext(typeof(DriveDropContext))]
-    partial class DriveDropContextModelSnapshot : ModelSnapshot
+    [Migration("20170710200042_vehicleInfo")]
+    partial class vehicleInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

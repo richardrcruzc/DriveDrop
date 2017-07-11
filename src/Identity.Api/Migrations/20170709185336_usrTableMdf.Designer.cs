@@ -8,9 +8,10 @@ using Identity.Api.Data;
 namespace Identity.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170709185336_usrTableMdf")]
+    partial class usrTableMdf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -23,17 +24,33 @@ namespace Identity.Api.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("CardHolderName");
+
+                    b.Property<string>("CardNumber");
+
+                    b.Property<int>("CardType");
+
+                    b.Property<string>("City");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<string>("Country");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("Expiration");
+
+                    b.Property<string>("LastName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -47,12 +64,20 @@ namespace Identity.Api.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("SecurityNumber");
+
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("State");
+
+                    b.Property<string>("Street");
 
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("ZipCode");
 
                     b.HasKey("Id");
 

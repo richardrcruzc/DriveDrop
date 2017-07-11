@@ -53,11 +53,11 @@ namespace DriveDrop.Web.Controllers
          
         
          
-        public async Task<IActionResult> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId)
+        public async Task<IActionResult> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode)
         {
             var token = await GetUserTokenAsync();
 
-            var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl,  zipFrom,  zipTo,  weight,  qty,  priority,  transportTypeId);
+            var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl,  zipFrom,  zipTo,  weight,  qty,  priority,  transportTypeId, promoCode);
 
             var dataString = await _apiClient.GetStringAsync(allRatesUri, token);
 

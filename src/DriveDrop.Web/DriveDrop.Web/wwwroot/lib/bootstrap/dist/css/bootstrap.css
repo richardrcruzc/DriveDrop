@@ -4678,10 +4678,14 @@ a.tag:focus, a.tag:hover {
 }
 
 .jumbotron {
-  padding: 2rem 1rem;
-  margin-bottom: 2rem;
-  background-color: #eceeef;
-  border-radius: 0.3rem;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    border-radius: 0.3rem;
+    background-image: url('../../../../images/slider_img.jpg');
+    height: 600px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 }
 
 @media (min-width: 576px) {

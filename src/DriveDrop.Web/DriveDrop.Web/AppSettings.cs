@@ -9,6 +9,7 @@ namespace DriveDrop.Web
     {
         public Connectionstrings ConnectionStrings { get; set; } 
         public string DriveDropUrl { get; set; }
+        public string IdentityUrl { get; set; }
         public Logging Logging { get; set; }
     }
 

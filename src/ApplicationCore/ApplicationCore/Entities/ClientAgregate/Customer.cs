@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities.ClientAgregate
     public class Customer : Entity, IAggregateRoot
     {
         public string IdentityGuid { get; private set; }
-        public string UserGuid { get; private set; }
+        public string UserName { get; private set; }
 
         public string Email { get; private set; }
         public string Phone { get; private set; }
@@ -29,6 +29,8 @@ namespace ApplicationCore.Entities.ClientAgregate
 
         public decimal Commission { get; private set; }
 
+        public string VehicleInfo { get; private set; }
+
         public Address DefaultAddress { get; private set; }
 
         //  public List<Shipment> Driver { get; private set; }
@@ -37,7 +39,12 @@ namespace ApplicationCore.Entities.ClientAgregate
 
         public string DriverLincensePictureUri { get; private set; }
 
+        public Customer AddUserName(string userName)
+        {
+            UserName  = userName;
 
+            return this;
+        }
         public Customer AddDefaultAddress(Address address)
         {
             DefaultAddress = address;
@@ -87,7 +94,7 @@ namespace ApplicationCore.Entities.ClientAgregate
       int customerTypeId = 2,
       int maxPackage=0,
       int pickupRadius=0,
-      int deliverRadius=0, decimal commission =10) : this()
+      int deliverRadius=0, decimal commission =10, string userName="", string vehicleInfo="") : this()
         {
             LastName = lastName;
             FirstName = firstName;            
@@ -103,6 +110,8 @@ namespace ApplicationCore.Entities.ClientAgregate
             Phone = phone;
 
             Commission = commission;
+            UserName = userName;
+            VehicleInfo = vehicleInfo;
         } 
 
         public Customer Update( 

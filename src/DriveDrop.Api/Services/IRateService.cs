@@ -18,7 +18,7 @@ namespace DriveDrop.Api.Services
         // Task<decimal> Distance(string fromZip, string toZip);
 
 
-        Task<CalculatedCharge> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId);
+        Task<CalculatedCharge> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode);
 
     }
 }

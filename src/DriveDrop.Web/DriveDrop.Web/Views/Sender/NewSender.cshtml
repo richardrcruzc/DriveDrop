@@ -11,10 +11,12 @@
 <div class="container">
     <form asp-action="NewSender" enctype="multipart/form-data" method="post">
 
+@Html.HiddenFor(m => m.CustomerTypeId)
+
         <div class="row">
 
             <div class="col-md-10">
-               
+
 
                 <hr />
 
@@ -22,6 +24,7 @@
 
 
             </div>
+        
         </div>
         <div class="row">
 
@@ -136,41 +139,7 @@
             </div>
 
 
-            @*<div class="col-md-5">
-
-
-                    <div class="form-horizontal">
-
-                        <div class="form-group">
-
-                            <div class="col-md-10">
-                                <input asp-for="MaxPackage" class="form-control"  placeholder="Max Package"/>
-                                <span asp-validation-for="MaxPackage" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="PickupRadius" class="form-control" placeholder="Pickup Radius"/>
-                                <span asp-validation-for="PickupRadius" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="DeliverRadius" class="form-control"  placeholder="Deliver Radius" />
-                                <span asp-validation-for="DeliverRadius" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="Phone" class="form-control" placeholder="Phone"/>
-                                <span asp-validation-for="Phone" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
+         
 
         </div>
 
@@ -237,6 +206,7 @@
             </div>
 
             <div class="col-md-5">
+
                 <h2>
                     Delivery Information
 
@@ -245,26 +215,38 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-12">
-                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, "-- Select Priority --", new { @class = "form-control" })
+                              @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
                             <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="PriorityTypeLevel" class="form-control" placeholder="Priority level" />
-                            <span asp-validation-for="PriorityTypeLevel" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select transport type required --", new { @class = "form-control" })
+                             @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, new { @class = "form-control" })
                             <span asp-validation-for="TransportTypeId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
-                            <textarea name="Note" class="span6" rows="3" placeholder="Note to the driver"></textarea>
+                            <input asp-for="Amount" class="form-control" placeholder="Shipping value" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="Weight" class="form-control" placeholder="Weight lbs" />
+                            <span asp-validation-for="Weight" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="Quantity" class="form-control" placeholder="Quantity" />
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                             <textarea name="Note" class="span6" rows="3" placeholder="Note to the driver"></textarea>
                             <span asp-validation-for="Note" class="text-danger"></span>
                         </div>
                     </div>
@@ -277,6 +259,7 @@
 
                 </div>
             </div>
+             
         </div>
 
         <div class="row">
@@ -358,10 +341,15 @@
 
         <div class="row">
             <div class="col-md-10">
-                <h2>Shipment Total</h2>
                 <hr />
-                <div class="form-group">
-                    <label for="basic-url">Total $0.00 </label>
+                <h2>Shipping Total</h2>
+                <hr />
+                <div class="form-group float-xs-right">
+                    <h4><label class="float-lg-left">Sub Total:</label><label id="subtotal" class="float-xs-right label-info">0.00 </label></h4>
+                    <h4><label class="float-lg-left">Discount:</label><label id="TaxDiscount" class="float-xs-right">0.00 </label></h4>
+                    <h4><label class="float-lg-left">Taxes:</label><label id="totalTax" class="float-xs-right">0.00 </label></h4>
+                    <h4><label class="float-lg-left">Total:</label><label id="total" class="float-xs-right">0.00 </label></h4>
+
 
                 </div>
 
@@ -381,9 +369,101 @@
     </form>
 
     <div>
+        <hr />
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script>
+                jQuery('#PickupZipCode').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+                     jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+                     jQuery('#Quantity').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+                     jQuery('#Amount').on('input propertychange paste', function () {
+                         UpdateRate()
+                     });
+
+                     $("#TransportTypeId").change(function () {
+                         UpdateRate()
+                     });
+
+                     $("#PriorityTypeId").change(function () {
+                         UpdateRate()
+                       });
+
+                     $("#PromoCode").change(function () {
+                         UpdateRate()
+                     });
+
+                     function UpdateRate( ) {
+
+                         alert(1);
+                        // var myLength = $("#PickupZipCode").val().length;
+                         var delLength = $("#DeliveryZipCode").val().length;
+                         var delZip = $("#DeliveryZipCode").val();
+                         if (delLength < 5)
+                             return;
+
+                         var pickupLength = $("#PickupZipCode").val().length;
+                         var  pickupZip = $("#PickupZipCode").val();
+                         if (pickupLength < 5)
+                             return;
+
+
+
+                         var weight = $("#Weight").val();
+                         var quantity = $("#Quantity").val();
+                         var amount = $("#Amount").val();
+                         var transportTypeId = $("#TransportTypeId").val();
+                         if (transportTypeId == 'Prority')
+                             return;
+                         var priorityTypeId = $("#PriorityTypeId").val();
+                         if (priorityTypeId == 'Transport Type')
+                             return;
+
+
+                         var promoCode = $("#PromoCode").val();
+
+                         if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
+                             alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
+
+                             $.ajax({
+                                 url: '@Url.Action("CalculateAmount", "rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "POST", //to do a post request
+
+                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { zipFrom: pickupZip, zipTo: delZip, weight: weight, qty: quantity, priority: priorityTypeId, transportTypeId: transportTypeId, promoCode: promoCode}, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                // data is your result from controller
+                                if (data) {
+
+                                $("#subtotal").text(data.strSubTotal);
+                                $("#TaxDiscount").text(data.strDiscount);
+                                $("#totalTax").text(data.strTaxAmount);
+                                $("#total").text(data.strAmountToCharge);
+
+                                }
+
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                alert(xhr.responseText);
+                                //alert(xhr.status);
+                                //alert(thrownError);
+
+                                }
+                                });
+                                }
+                                }
+
+</script>
 }

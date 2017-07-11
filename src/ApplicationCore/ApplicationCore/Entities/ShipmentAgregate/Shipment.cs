@@ -80,16 +80,17 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             return this;
         }
 
-        public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal weight, int priorityTypeId, int priorityTypeLevel,
-                            int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri, int qty = 1) : this()
+        public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal weight, int priorityTypeId ,
+                            int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri,
+                            decimal distance, decimal chargeAmount,  string promoCode, decimal tax, 
+                            int qty = 1) : this()
         {
             ShippingStatusId = ShippingStatus.PendingPickUp.Id;
             ShippingCreateDate = DateTime.Now;
             ShippingUpdateDate = DateTime.Now;
             ShippingValue = amount;
             Discount = discount;
-            PriorityTypeId = priorityTypeId;
-            PriorityTypeLevel = priorityTypeLevel;
+            PriorityTypeId = priorityTypeId; 
             TransportTypeId = transportTypeId;
             Note = note;
             PickupPictureUri = pickupPictureUri;
@@ -100,12 +101,18 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
             Sender = sender;
             // SenderId = sender.Id;
+            
 
 
             IdentityCode = string.Format("WA-{0}-{1}",pickup.ZipCode, RandomString());
 
             ShippingWeight = weight;
-            Quantity = qty;
+            Quantity = qty; 
+            Distance = distance;
+            ChargeAmount = chargeAmount; 
+            PromoCode = promoCode;
+            Tax = tax;
+
         }
         public static string RandomString()
         {

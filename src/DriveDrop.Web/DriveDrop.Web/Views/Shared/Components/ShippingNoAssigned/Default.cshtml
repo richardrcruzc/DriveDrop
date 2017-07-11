@@ -11,6 +11,7 @@
                 <th><div>Amount</div>discount</th>
                 <th>Pickup Address</th>
                 <th>Delivery Address</th>
+                <th>Get Address info</th>
 
             </tr>
 
@@ -55,6 +56,14 @@
                         </div>
                         @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
                     </td>
+                    <td><div><button id="@item.Id" 
+                                     pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                     delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"                                     
+                                     onClick="javascript:SetAddressFunction(this);"><img src="~/images/service-icon-04.png" class="img-rounded" alt="get Address" width="45" height="30"></button></div>
+                        
+                    </td>
+
+                    
                 </tr>
             }
         </table>

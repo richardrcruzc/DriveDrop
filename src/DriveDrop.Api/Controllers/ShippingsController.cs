@@ -2,6 +2,7 @@
 using ApplicationCore.Entities.ClientAgregate.ShipmentAgregate;
 using DriveDrop.Api.Infrastructure;
 using DriveDrop.Api.Infrastructure.Services;
+using DriveDrop.Api.Services;
 using DriveDrop.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -22,11 +23,15 @@ namespace DriveDrop.Api.Controllers
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
-        public ShippingsController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService)
+        private readonly IRateService _rateService;
+
+        
+        public ShippingsController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, IRateService rateService)
         {
             _context = context;
             _env = env;
             _identityService = identityService;
+            _rateService = rateService;
         }
         [HttpGet]
         [Route("[action]/{id:int}")]
@@ -231,8 +236,13 @@ namespace DriveDrop.Api.Controllers
                     var tmpUser = Guid.NewGuid().ToString();
 
 
+                    var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, c.Quantity, c.PriorityTypeId, c.TransportTypeId, c.PromoCode);
 
-                    var shipment = new Shipment(pickUpAddres, deliveryAddres, sender,c.Amount,c.Discount,c.ShippingWeight, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId, c.Note, c.PickupPictureUri, "");
+
+                    var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
+                        weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId,note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "", 
+                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount,qty:c.Quantity);
+
                     _context.Add(shipment);
 
                     _context.SaveChanges();

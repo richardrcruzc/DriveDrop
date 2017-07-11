@@ -204,7 +204,8 @@ namespace DriveDrop.Api.ViewModels
         public int CustomerId { get; set; }
 
         public IFormFile file { get; set; }
-
+        
+        public string VehicleInfo { get; set; }
         public string FilePath { get; set; }
 
         [Required]
@@ -336,6 +337,7 @@ namespace DriveDrop.Api.ViewModels
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
+        public int Quantity { get; set; }
         public int CustomerId { get; set; }
 
         public IFormFile file { get; set; }

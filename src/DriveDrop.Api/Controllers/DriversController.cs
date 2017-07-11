@@ -167,6 +167,7 @@ namespace DriveDrop.Api.Controllers
         }
 
         // POST api/values
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> NewDriver(int id,[FromBody]DriverModel c )
         {
@@ -186,7 +187,7 @@ namespace DriveDrop.Api.Controllers
 
                 var tmpUser = Guid.NewGuid().ToString();
 
-                var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, c.TransportTypeId, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Driver.Id, c.MaxPackage ?? 0, c.PickupRadius ?? 0, c.DeliverRadius ?? 0, c.Commission);
+                var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, c.TransportTypeId, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Driver.Id, c.MaxPackage ?? 0, c.PickupRadius ?? 0, c.DeliverRadius ?? 0, c.Commission, c.UserEmail, c.VehicleInfo);
 
                 _context.Add(newCustomer);
                 _context.SaveChanges();

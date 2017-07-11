@@ -53,7 +53,80 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             _clientStore = clientStore;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _userManager = userManager;
+        } 
+         
+        //
+        // GET: /Account/RegisterUser
+        [HttpGet]
+        [AllowAnonymous] 
+        public async Task<IActionResult> RegisterUser(string userName, string password)
+        {
+            
+            if (ModelState.IsValid)
+            {
+
+                // delete authentication cookie
+                await HttpContext.Authentication.SignOutAsync();
+
+                // set this so UI rendering sees an anonymous user
+                HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+
+                var user = new ApplicationUser
+                {
+                    UserName = userName,
+                    Email = userName,
+                     
+                }; 
+
+                var result = await _userManager.CreateAsync(user, password);
+               
+                if (result.Errors.Count() > 0)
+                {
+                   
+                    // If we got this far, something failed, redisplay form
+                    return Ok(result);
+                }
+
+                var actualUser = await _loginService.FindByUsername(userName);
+                if (await _loginService.ValidateCredentials(user, password))
+                {
+                    AuthenticationProperties props = null;
+                    //if (model.RememberMe)
+                    //{
+                    props = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)
+                    };
+                    //};
+
+                    await _loginService.SignIn(actualUser);
+                    // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
+                    
+                }
+
+
+
+
+                //await _loginService.FindByUsername(userName);
+
+            }
+ 
+                if (HttpContext.User.Identity.IsAuthenticated)
+                return Ok("IsAuthenticated");
+            else
+                return Ok("IsNotAuthenticated");
         }
+
+           
+        
+
+
+
+
+
+
 
         /// <summary>
         /// Show login page
@@ -270,19 +343,19 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    CardHolderName = model.User.CardHolderName,
-                    CardNumber = model.User.CardNumber,
-                    CardType = model.User.CardType,
-                    City = model.User.City,
-                    Country = model.User.Country,
-                    Expiration = model.User.Expiration,
-                    LastName = model.User.LastName,
-                    Name = model.User.Name,
-                    Street = model.User.Street,
-                    State = model.User.State,
-                    ZipCode = model.User.ZipCode,
-                    PhoneNumber = model.User.PhoneNumber,
-                    SecurityNumber = model.User.SecurityNumber
+                    //CardHolderName = model.User.CardHolderName,
+                    //CardNumber = model.User.CardNumber,
+                    //CardType = model.User.CardType,
+                    //City = model.User.City,
+                    //Country = model.User.Country,
+                    //Expiration = model.User.Expiration,
+                    //LastName = model.User.LastName,
+                    //Name = model.User.Name,
+                    //Street = model.User.Street,
+                    //State = model.User.State,
+                    //ZipCode = model.User.ZipCode,
+                    //PhoneNumber = model.User.PhoneNumber,
+                    //SecurityNumber = model.User.SecurityNumber
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Errors.Count() > 0)

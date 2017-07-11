@@ -8,9 +8,16 @@ namespace DriveDrop.Web.Infrastructure
 {
     public static class API
     {
-        public static class Rate
+        public static class Identity
         {
-            public static string Amount(string baseUri, int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId)
+            public static string RegisterUser(string baseUri, string userName, string password)
+            { 
+                return $"{baseUri}RegisterUser?userName={userName}&password={password}";
+            }
+        }
+            public static class Rate
+        {
+            public static string Amount(string baseUri, int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode="")
             {
                 var fromQs = zipFrom.ToString();
                   var toQs = zipTo.ToString();
@@ -18,8 +25,10 @@ namespace DriveDrop.Web.Infrastructure
                 var qtyQs = qty.ToString();
                 var priorityQs = priority.ToString();
                 var ttQs = transportTypeId.ToString();
+                
+                    var pcQs = promoCode;
 
-                var filterQs = $"zipFrom={fromQs}&zipTo={toQs}&weight={weightQs}&qty={qtyQs}&priority={priorityQs}&transportTypeId={ttQs}";
+                var filterQs = $"zipFrom={fromQs}&zipTo={toQs}&weight={weightQs}&qty={qtyQs}&priority={priorityQs}&transportTypeId={ttQs}&promoCode={pcQs}";
               
                
                 return $"{baseUri}CalculateAmount?{filterQs}";

@@ -29,6 +29,9 @@ namespace DriveDrop.Web.Controllers
         private readonly string _remoteServiceCommonUrl;
         private readonly string _remoteServiceShippingsUrl;
         private readonly string _remoteServiceDriversUrl;
+
+        private readonly string _remoteServiceIdentityUrl;
+
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
@@ -41,6 +44,7 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _remoteServiceDriversUrl = $"{settings.Value.DriveDropUrl}/api/v1/drivers";
+            _remoteServiceIdentityUrl = $"{settings.Value.IdentityUrl}/account/";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -68,8 +72,7 @@ namespace DriveDrop.Web.Controllers
         public async Task<IActionResult> NewDriver(DriverModel c)
         {
             try
-            {
-
+            { 
 
                 foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
                 {
@@ -77,9 +80,28 @@ namespace DriveDrop.Web.Controllers
                 }
 
                 if (ModelState.IsValid)
-                {
+                { 
 
-                    var user = _appUserParser.Parse(HttpContext.User);
+                    //try register new user
+
+                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, c.UserEmail, c.Password);
+
+                    var dataString = await _apiClient.GetStringAsync(addNewUserUri);
+
+                    // var isCreated = JsonConvert.DeserializeObject<string>((dataString));
+
+                    if (dataString == null)
+                    {
+                        await PrepareCustomerModel(c);
+                        return View(c);
+                    }
+                        if(!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
+                    {
+                        await PrepareCustomerModel(c);
+                        return View(c);
+                    }
+                    
+                var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
 
                     var addNewDriverUri = API.Driver.NewDriver(_remoteServiceDriversUrl);
@@ -91,15 +113,12 @@ namespace DriveDrop.Web.Controllers
                         throw new Exception("Error creating Shipping, try later.");
                     }
 
-                    response.EnsureSuccessStatusCode();
+                    return RedirectToAction("index", "admin");
 
+                    // response.EnsureSuccessStatusCode(); 
 
-                    
-
-
-
-                    //return RedirectToAction("result", new { id = c.CustomerId });
-                    return CreatedAtAction(nameof(Result), new {  }, null);
+                    // return RedirectToAction("result", new { id = c.CustomerId });
+                    //  return CreatedAtAction(nameof(Result), new {  }, null);
                 }
             }
             catch (DbUpdateException ex)

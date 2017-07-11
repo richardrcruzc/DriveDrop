@@ -9,9 +9,10 @@ using ApplicationCore.Entities.Helpers;
 namespace DriveDrop.Api.Migrations
 {
     [DbContext(typeof(DriveDropContext))]
-    partial class DriveDropContextModelSnapshot : ModelSnapshot
+    [Migration("20170709194216_UserNameAdded")]
+    partial class UserNameAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -96,8 +97,6 @@ namespace DriveDrop.Api.Migrations
                     b.Property<int?>("TransportTypeId");
 
                     b.Property<string>("UserName");
-
-                    b.Property<string>("vehicleInfo");
 
                     b.HasKey("Id");
 

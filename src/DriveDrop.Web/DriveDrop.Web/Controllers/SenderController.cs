@@ -31,6 +31,7 @@ namespace DriveDrop.Web.Controllers
         private readonly string _remoteServiceCommonUrl;
         private readonly string _remoteServiceShippingsUrl;
         private readonly string _remoteServiceRatesUrl;
+        private readonly string _remoteServiceIdentityUrl;
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
@@ -46,6 +47,8 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _remoteServiceRatesUrl = $"{settings.Value.DriveDropUrl}/api/v1/rates/";
+            _remoteServiceIdentityUrl= $"{settings.Value.IdentityUrl}/account/";
+
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -153,24 +156,21 @@ namespace DriveDrop.Web.Controllers
                     }
                     if (!string.IsNullOrWhiteSpace(fileName))
                     {
-
                         c.PickupPictureUri = fileName;
-                        var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceShippingsUrl);
-
-                        var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
-
-                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            throw new Exception("Error creating Shipping, try later.");
-                        }
                     }
 
- 
+                    var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceShippingsUrl);
+
+                    var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception("Error creating Shipping, try later.");
+                    }
 
 
-                   // response.EnsureSuccessStatusCode();
-                    //return RedirectToAction("result", new { id = c.CustomerId });
-                    return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
+                    // response.EnsureSuccessStatusCode();
+                   return RedirectToAction("result", new { id = c.CustomerId });
+                   // return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
                 }
             }
             catch (DbUpdateException ex)
@@ -186,7 +186,7 @@ namespace DriveDrop.Web.Controllers
 
             await PrepareCustomerModel(c);
 
-            return ViewComponent("NewShipment", c);
+            return View(c);
 
         }
         
@@ -200,6 +200,7 @@ namespace DriveDrop.Web.Controllers
         {
             CustomerModel c = new CustomerModel();
             await PrepareCustomerModel(c);
+            c.CustomerTypeId = 2;
             return View(c);
         }
         [HttpPost]
@@ -208,18 +209,36 @@ namespace DriveDrop.Web.Controllers
         {
             try
             {
+                foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
+                {
+                    var tt = state.Errors.ToString();
+                }
+
                 if (ModelState.IsValid)
                 {
+                    var token = await GetUserTokenAsync();
+
+                    //try register new user
+
+                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl,c.UserEmail, c.Password);
+
+                    var dataString = await _apiClient.GetStringAsync(addNewUserUri, token);
+
+                    //var isCreated = JsonConvert.DeserializeObject<string>((dataString));
+
+                    if (dataString == null)
+                    {
+                        await PrepareCustomerModel(c);
+                        return View(c);
+                    }
+
+                    if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
+                    {
+                        await PrepareCustomerModel(c);
+                        return View(c);
+                    }
+
                     var user = _appUserParser.Parse(HttpContext.User);
-                    var token = await GetUserTokenAsync();  
-
-                    // response.EnsureSuccessStatusCode();
-                    //return RedirectToAction("result", new { id = c.CustomerId });
-
-
-
-                   // var response = JsonConvert.DeserializeObject<Customer>((response.));
-
 
                     Guid extName = Guid.NewGuid();
                     //saving files
@@ -261,19 +280,20 @@ namespace DriveDrop.Web.Controllers
                     {
 
                         c.FilePath = fileName;
-                        var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
-
-                        var response = await _apiClient.PostAsync(addNewSenderUri, c, token);
-
-                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                        {
-                            throw new Exception("Error creating Shipping, try later.");
-                        }
+                        
                     }
 
+                    var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
 
+                    var response = await _apiClient.PostAsync(addNewSenderUri, c, token);
 
-                    return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception("Error creating Shipping, try later.");
+                    }
+
+                    // return RedirectToAction("result", new { id = c.CustomerId });
+                    return RedirectToAction("index","admin");
                 }
             }               
                 catch (DbUpdateException ex)
@@ -291,96 +311,7 @@ namespace DriveDrop.Web.Controllers
              return View(c);
 
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> New(CustomerModel c, List<IFormFile> files)
-        //{
-        //    //try
-        //    //{
-        //    //    if (ModelState.IsValid)
-        //    //    {
-        //    //        var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, "WA", "USA", c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-        //    //        var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, "WA", "USA", c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
-
-        //    //        var tmpUser = Guid.NewGuid().ToString();
-
-        //    //        var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Sender.Id, 0, 0, 0);
-
-        //    //        _context.Add(newCustomer);
-        //    //          _context.SaveChanges();
-
-
-
-        //    //        var shipment = new Shipment(pickUpAddres, deliveryAddres, newCustomer, 0, 0, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId ?? 0, c.Note, "", "");
-        //    //        _context.Add(shipment);
-
-        //    //        _context.SaveChanges();  
-
-        //    //        await _context.SaveChangesAsync();
-
-
-        //    //        Guid extName = Guid.NewGuid();
-        //    //        //saving files
-        //    //        long size = files.Sum(f => f.Length);
-
-        //    //        // full path to file in temp location
-        //    //        var filePath = Path.GetTempFileName();
-        //    //        var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\sender");
-        //    //        var fileName = "";
-
-        //    //        foreach (var formFile in files)
-        //    //        {
-
-        //    //            if (formFile.Length > 0)
-        //    //            {
-        //    //                var extension = ".jpg";
-        //    //                if (formFile.FileName.ToLower().EndsWith(".jpg"))
-        //    //                    extension = ".jpg";
-        //    //                if (formFile.FileName.ToLower().EndsWith(".tif"))
-        //    //                    extension = ".tif";
-        //    //                if (formFile.FileName.ToLower().EndsWith(".png"))
-        //    //                    extension = ".png";
-        //    //                if (formFile.FileName.ToLower().EndsWith(".gif"))
-        //    //                    extension = ".gif";
-
-
-
-
-        //    //                filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-        //    //                fileName = string.Format("uploads\\img\\sender\\{0}{1}", extName, extension);
-
-        //    //                using (var stream = new FileStream(filePath, FileMode.Create))
-        //    //                {
-        //    //                    await formFile.CopyToAsync(stream);
-        //    //                }
-        //    //            }
-        //    //        }
-        //    //        if (!string.IsNullOrWhiteSpace(fileName))
-        //    //        {
-        //    //            shipment.SetPickupPictureUri(fileName);
-        //    //            _context.SaveChanges();
-        //    //            await _context.SaveChangesAsync();
-        //    //        }
-        //    //        return CreatedAtAction(nameof(Result), new { id = newCustomer.Id }, null);
-        //    //    }
-        //    //}
-        //    //catch (DbUpdateException ex)
-        //    //{
-        //    //    //Log the error (uncomment ex variable name and write a log.
-        //    //    var error = string.Format("Unable to save changes. " +
-        //    //        "Try again, and if the problem persists " +
-        //    //        "see your system administrator. {0}", ex.Message);
-
-        //    //    ModelState.AddModelError("", error);
-        //    //}
-
-        //    PrepareCustomerModel(c);
-        //    return View(c);
-        //}
-
-
-
-
+      
         public JsonResult ValidateUserName(string UserEmail)
         {
             return Json(!UserEmail.Equals("duplicate"));
@@ -451,7 +382,7 @@ namespace DriveDrop.Web.Controllers
             var getUri = API.Common.GetAllCustomerTypes(_remoteServiceCommonUrl);
             var dataString = await _apiClient.GetStringAsync(getUri);
             var CustomerTypes = new List<SelectListItem>();
-            CustomerTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            CustomerTypes.Add(new SelectListItem() { Value = null, Text = "Customer Type", Selected = true });
 
             var gets = JArray.Parse(dataString);
 
@@ -468,7 +399,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllCustomerStatus(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var customerStatus = new List<SelectListItem>();
-            customerStatus.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            customerStatus.Add(new SelectListItem() { Value = null, Text = "Customer Status", Selected = true });
 
             gets = JArray.Parse(dataString);
 
@@ -485,7 +416,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllTransportTypes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var transportTypes = new List<SelectListItem>();
-            transportTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            transportTypes.Add(new SelectListItem() { Value = null, Text = "transport Types", Selected = true });
 
             gets = JArray.Parse(dataString);
 
@@ -503,7 +434,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllPriorityTypes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var priority = new List<SelectListItem>();
-            priority.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            priority.Add(new SelectListItem() { Value = null, Text = "Priority", Selected = true });
 
             gets = JArray.Parse(dataString);
 

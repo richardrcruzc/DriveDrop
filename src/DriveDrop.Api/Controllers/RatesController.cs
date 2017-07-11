@@ -31,9 +31,9 @@ namespace DriveDrop.Api.Controllers
         }
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId)
+        public async Task<IActionResult> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode="")
         {             
-            return Ok(await _rate.CalculateAmount( zipFrom,  zipTo,  weight,  qty,  priority,  transportTypeId));
+            return Ok(await _rate.CalculateAmount( zipFrom,  zipTo,  weight,  qty,  priority,  transportTypeId, promoCode));
         }
         [HttpGet]        
         public async Task<List<Rate>> Get()

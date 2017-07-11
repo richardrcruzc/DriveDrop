@@ -66,8 +66,10 @@ namespace DriveDrop.Api.Infrastructure
                 if (!context.PriorityTypes.Any())
                 {
                     context.PriorityTypes.Add(PriorityType.Asap);
-                    context.PriorityTypes.Add(PriorityType.Days);
-                    context.PriorityTypes.Add(PriorityType.Hours);
+                    context.PriorityTypes.Add(PriorityType.FourHours);
+                    context.PriorityTypes.Add(PriorityType.SixHours);
+                    context.PriorityTypes.Add(PriorityType.EODSameDay);
+                    context.PriorityTypes.Add(PriorityType.EODNextDay);
                     await context.SaveChangesAsync();
                 }
                 if (!context.ShippingStatuses.Any())
@@ -263,16 +265,16 @@ namespace DriveDrop.Api.Infrastructure
                     var addressDelivery5 = new Address("7304 Lakewood Dr W #1", "WA", "Lakewood", "USA", "98499", "1234567890", "Contact three", 0, 0);
 
 
-                    context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2,5, PriorityType.Asap.Id, 4, TransportType.Van.Id, "This is closed gate community", "/Uploads/Img/Shipment/download1.jpg", "/Uploads/Img/Shipment/download1.jpg"));
-                    context.Shipments.Add(new Shipment(addressPickup1, addressDelivery1, serder, 20, 2, 5, PriorityType.Hours.Id, 6, TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg"));
+                    context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2,5, PriorityType.Asap.Id, TransportType.Van.Id, "This is closed gate community", "/Uploads/Img/Shipment/download1.jpg", "/Uploads/Img/Shipment/download1.jpg",4,234,"",12,1));
+                    context.Shipments.Add(new Shipment(addressPickup1, addressDelivery1, serder, 20, 2, 5, PriorityType.FourHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
 
-                    context.Shipments.Add(new Shipment(addressPickup2, addressDelivery2, serder1, 20, 2, 10, PriorityType.Asap.Id, 4, TransportType.Van.Id, "ring the bell", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg"));
+                    context.Shipments.Add(new Shipment(addressPickup2, addressDelivery2, serder1, 20, 2, 10, PriorityType.Asap.Id,   TransportType.Van.Id, "ring the bell", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
                     
-                    context.Shipments.Add(new Shipment(addressPickup3, addressDelivery3, serder2, 20, 2, 2, PriorityType.Hours.Id, 6, TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg"));
+                    context.Shipments.Add(new Shipment(addressPickup3, addressDelivery3, serder2, 20, 2, 2, PriorityType.SixHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
 
-                    context.Shipments.Add(new Shipment(addressPickup4, addressDelivery4, serder3, 20, 2, 7, PriorityType.Days.Id, 6, TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg"));
+                    context.Shipments.Add(new Shipment(addressPickup4, addressDelivery4, serder3, 20, 2, 7, PriorityType.EODNextDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
 
-                    context.Shipments.Add(new Shipment(addressPickup5, addressDelivery5, serder3, 20, 2, 15, PriorityType.Hours.Id, 6, TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg"));
+                    context.Shipments.Add(new Shipment(addressPickup5, addressDelivery5, serder3, 20, 2, 15, PriorityType.EODSameDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", 4, 234, "", 12, 1));
 
 
                     await context.SaveChangesAsync();

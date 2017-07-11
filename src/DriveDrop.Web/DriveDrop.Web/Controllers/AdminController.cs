@@ -46,7 +46,7 @@ namespace DriveDrop.Web.Controllers
         {
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
-
+            
             var itemsPage = 3;
             if (page < 0)
                 page = 0;

@@ -35,15 +35,24 @@
     <Content Include="wwwroot\fonts\Montserrat-Regular.woff2" />
     <Content Include="wwwroot\images\arrow-down.png" />
     <Content Include="wwwroot\images\arrow-right.svg" />
+    <Content Include="wwwroot\images\brand - Copy.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\images\Brand-dark.png" />
     <Content Include="wwwroot\images\brand.png" />
-    <Content Include="wwwroot\images\brand_dark.png" />
     <Content Include="wwwroot\images\cart.png" />
+    <Content Include="wwwroot\images\logo.png" />
     <Content Include="wwwroot\images\logout.png" />
     <Content Include="wwwroot\images\main_banner.png" />
     <Content Include="wwwroot\images\main_banner_text.png" />
     <Content Include="wwwroot\images\main_banner_text.svg" />
     <Content Include="wwwroot\images\my_orders.png" />
     <Content Include="wwwroot\images\refresh.svg" />
+    <Content Include="wwwroot\images\service-icon-01.png" />
+    <Content Include="wwwroot\images\service-icon-02.png" />
+    <Content Include="wwwroot\images\service-icon-03.png" />
+    <Content Include="wwwroot\images\service-icon-04.png" />
+    <Content Include="wwwroot\images\slider_img.jpg" />
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\js\site.min.js" />
     <Content Include="wwwroot\lib\bootstrap\.bower.json" />

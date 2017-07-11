@@ -1,11 +1,11 @@
 ﻿@model  DriveDrop.Web.ViewModels.Customer
 
 @{
-    ViewData["Title"] = "Details"; 
+    ViewData["Title"] = "Driver dashboard"; 
 }
 <section class="esh-catalog-filters">
     <div class="container">
-        <p>   <h4>Driver Details </h4></p>
+        <p>   <h4>Driver dashboard </h4></p>
     </div>
 </section>
 <div class="container">
@@ -38,11 +38,25 @@
                 <dd>
                     @Html.DisplayFor(model => model.CustomerType.Name)
                 </dd>
+                <dt>
+                    Transportation Type
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TransportType.Name)
+                </dd>
                 
-                
+                <dt>
+                    Vehicle Info
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.VehicleInfo)
+                </dd>
 
             </dl>
         </div>
+
+
+
         <div class="col-md-5">
             <dl class="dl-horizontal">
                
@@ -155,6 +169,7 @@
                                 </div>
                                 @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
                             </td>
+                            <td><div>Get Address info</div></td>
                         </tr>
                     }
                 </table>
@@ -166,6 +181,184 @@
         <a asp-controller="admin" asp-action="Index">Back to List</a>
     </div>
 </div>
+
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #right-panel select, #right-panel input {
+        font-size: 15px;
+      }
+
+      #right-panel select {
+        width: 100%;
+      }
+
+      #right-panel i {
+        font-size: 12px;
+      }
+      #right-panel {
+        height: 100%;
+        float: right;
+        width: 390px;
+        overflow: auto;
+      }
+      #map {
+        margin-right: 400px;
+      }
+      #floating-panel {
+        background: #fff;
+        padding: 5px;
+        font-size: 14px;
+        font-family: Arial;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+        display: none;
+      }
+    #warnings-panel {
+        width: 100%;
+        height: 10%;
+        text-align: center;
+    }
+      
+</style>
+<div id="floating-panel">
+    <input id="start" type="text" value="7304 Lakewood Dr W #1
+WA
+98499">
+    <input id="end" type="text" value="5402 S Washington St
+WA
+98409">
+    <input id="submit" type="button" value="Geocode">
+</div>
+<div id="right-panel"></div>
+<div id="map"></div>
+<script>
+
+    
+    $('.clickMe').click(function () {
+        var clickedID = this.id;
+        alert(clickedID);
+    });
+
+
+    function SetAddressFunction(obj) {
+
+
+        var pu = $(obj).attr('pickup-id');
+        var dl = $(obj).attr('delivery-id');
+
+        $("#start").val($(obj).attr('pickup-id'));
+        $("#end").val($(obj).attr('delivery-id'));
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+        //var id = obj.id;
+        //var pu = obj.pickup;
+        //alert(pu);
+    }
+    function initMap() {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 7,
+            center: { lat: 41.85, lng: -87.65 }
+        });
+        
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('right-panel'));
+
+        var control = document.getElementById('floating-panel');
+        control.style.display = 'block';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+        //calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+        //var onChangeHandler = function () {
+        //    calculateAndDisplayRoute(directionsService, directionsDisplay);
+        //};
+        //document.getElementById('start').addEventListener('change', onChangeHandler);
+        //document.getElementById('end').addEventListener('change', onChangeHandler);
+    }
+
+    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+            origin: document.getElementById('start').value,
+            destination: document.getElementById('end').value,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+
+    //function initMap() {
+    //    var map = new google.maps.Map(document.getElementById('map'), {
+    //        zoom: 8,
+    //        center: { lat: -34.397, lng: 150.644 }
+    //    });
+    //    var geocoder = new google.maps.Geocoder();
+    //    geocodeAddress(geocoder, map);
+    //    document.getElementById('submit').addEventListener('click', function () {
+    //        geocodeAddress(geocoder, map);
+    //    });
+    //}
+
+    //function geocodeAddress(geocoder, resultsMap) {
+    //    var address = document.getElementById('address').value;
+    //    address = "5215 90th st ct e wa 98446";
+
+    //    geocoder.geocode({ 'address': address }, function (results, status) {
+    //        if (status === 'OK') {
+    //            resultsMap.setCenter(results[0].geometry.location);
+    //            var marker = new google.maps.Marker({
+    //                map: resultsMap,
+    //                position: results[0].geometry.location
+    //            });
+    //        } else {
+    //            alert('Geocode was not successful for the following reason: ' + status);
+    //        }
+    //    });
+    //}
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&callback=initMap">
+</script>
+
+
+
+   
    <script>
        //$(document).ready(function () {
        //$(".btnAssingShipping").click(function () { alert(1); });

@@ -3,6 +3,7 @@ using ApplicationCore.Entities.ClientAgregate.ShipmentAgregate;
 using ApplicationCore.Interfaces;
 using DriveDrop.Api.Infrastructure;
 using DriveDrop.Api.Infrastructure.Services;
+using DriveDrop.Api.Services;
 using DriveDrop.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -25,11 +26,14 @@ namespace DriveDrop.Api.Controllers
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
-        public SenderController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService)
+        private readonly IRateService _rateService;
+
+        public SenderController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, IRateService rateService)
         {
             _context = context;
             _env = env;
             _identityService = identityService;
+            _rateService = rateService;
         }
 
 
@@ -64,6 +68,7 @@ namespace DriveDrop.Api.Controllers
         //PUT api/v1/[controller]/New
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> NewSender([FromBody]CustomerModel c) //, [FromBody]List<IFormFile> files)
         {
             try
@@ -75,12 +80,18 @@ namespace DriveDrop.Api.Controllers
 
                     var tmpUser = Guid.NewGuid().ToString();
 
-                    var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Sender.Id, 0, 0, 0);
+                    var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Sender.Id, 0, 0, 0,0,c.UserEmail);
 
                     _context.Add(newCustomer);
-                    _context.SaveChanges(); 
+                    _context.SaveChanges();
 
-                    var shipment = new Shipment(pickUpAddres, deliveryAddres, newCustomer,c.Amount,c.Discount,c.ShippingWeight, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId ?? 0, c.Note, c.FilePath, "");
+                    var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId??0, c.PromoCode);
+
+                    var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: newCustomer, amount: c.Amount, discount: rate.Discount,
+                       weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, deliveredPictureUri: "",
+                       distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, qty: 1);
+                    
+
                     _context.Add(shipment);
 
                     _context.SaveChanges();
@@ -129,9 +140,13 @@ namespace DriveDrop.Api.Controllers
 
                     var tmpUser = Guid.NewGuid().ToString();
 
+                    var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId  , c.PromoCode);
 
 
-                    var shipment = new Shipment(pickUpAddres, deliveryAddres, sender,c.Amount,c.Discount,c.ShippingWeight, c.PriorityTypeId, c.PriorityTypeLevel, c.TransportTypeId, c.Note, c.PickupPictureUri , "");
+                    var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
+                     weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId  , note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "",
+                     distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, qty: 1);
+                     
                     _context.Add(shipment);
 
                     _context.SaveChanges();

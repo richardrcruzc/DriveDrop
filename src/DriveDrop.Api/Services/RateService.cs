@@ -26,7 +26,7 @@ namespace DriveDrop.Api.Services
 
 
 
-        public async Task<CalculatedCharge> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId) {
+        public async Task<CalculatedCharge> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode) {
 
             var miles = await _distance.FromZipToZipInMile(zipFrom, zipTo);
             decimal milesDecimal = (decimal)miles;
@@ -38,8 +38,7 @@ namespace DriveDrop.Api.Services
 
             var chargePerPriority = _context.RatePriorities.Where(x => x.RateId == myRate.Id && x.PriorityId == priority).FirstOrDefault();
             var chargePerTransport = _context.RateTranportTypes.Where(x => x.RateId == myRate.Id && x.TranportTypeId == transportTypeId).FirstOrDefault();
-
-
+             
 
             var amountToCharge = 1 * myRate.FixChargePerShipping
                                  + weight * rateWeight.Charge
@@ -47,6 +46,24 @@ namespace DriveDrop.Api.Services
                                  + qty * myRate.ChargePerItem
                                  + chargePerPriority.Charge
                                  + chargePerTransport.Charge;
+
+
+            var totalDiscount = 0M;
+            var promo = _context.Coupons
+              .Where(x => x.Code == promoCode && x.StartDate.Date<= DateTime.Now   && x.EndDate.Date>=DateTime.Now.Date)
+              .FirstOrDefault();
+
+
+            if (promo != null)
+            {
+
+                if (promo.Percentage)
+                    totalDiscount = amountToCharge * promo.Amount / 100;
+                else
+                    totalDiscount =  promo.Amount;
+
+            } 
+
 
             var model = new CalculatedCharge
             {
@@ -58,6 +75,7 @@ namespace DriveDrop.Api.Services
                 PriorityAmount = chargePerPriority.Charge,
                 TransportTypeAmount = chargePerTransport.Charge,
                 WeightAmount = rateWeight.Charge,
+                Discount = totalDiscount,
 
             };
 

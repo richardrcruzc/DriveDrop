@@ -30,6 +30,8 @@ namespace DriveDrop.Web.ViewModels
         public int? PickupRadius { get;  set; }
         public int? DeliverRadius { get;  set; }
 
+        public string VehicleInfo { get; set; }
+
         public decimal Commission { get;  set; }
 
        // public Address DefaultAddress { get;  set; }

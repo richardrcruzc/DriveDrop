@@ -7,7 +7,7 @@
 
     <section class="esh-catalog-filters">
         <div class="container">
-            <h2>Sender Details</h2>
+            <h2>Sender dashboard</h2>
 
              
             </div>
@@ -140,7 +140,9 @@
                          UpdateRate()
                        });
 
-
+                     $("#PromoCode").change(function () {
+                         UpdateRate()
+                     });
 
                      function UpdateRate( ) {
 
@@ -169,41 +171,35 @@
                              return;
 
 
+                         var promoCode = $("#PromoCode").val();
+
                          if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
                              alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
 
                              $.ajax({
                                  url: '@Url.Action("CalculateAmount","rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC
-                               // dataType: "json", //to work with json format
+                               dataType: "json", //to work with json format
                                  type: "POST", //to do a post request
-                              //   contentType: 'application/json; charset=utf-8', //define a contentType of your request
+
+                             //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
                                  cache: false, //avoid caching results
-                                 data: { zipFrom: pickupZip, zipTo: delZip, weight: weight, qty: quantity, priority: priorityTypeId, transportTypeId: transportTypeId}, // here you can pass arguments to your request if you need
+                                 data: { zipFrom: pickupZip, zipTo: delZip, weight: weight, qty: quantity, priority: priorityTypeId, transportTypeId: transportTypeId, promoCode: promoCode}, // here you can pass arguments to your request if you need
                                  success: function (data) {
                                      // data is your result from controller
-                                     if (data) {
-                                         var len = data.length;
-
-                                       
-                                         var txt = "";
-                                         if (len > 0) {
-                                             alert(len);
-                                             alert(len);
-                                             for (var i = 0; i < len; i++) {
-                                                 $("#total").val(data[i].PriorityAmount);
-                                                 $("#TaxDiscount").val(0);
-                                                 $("#totalTax").val(data[i].TaxAmount);
-                                                 $("#total").val(data[i].AmountToCharge); 
-                                             }
-                                         }
+                                     if (data) { 
+                                        
+                                         $("#subtotal").text(data.strSubTotal);
+                                         $("#TaxDiscount").text(data.strDiscount);
+                                         $("#totalTax").text(data.strTaxAmount);
+                                         $("#total").text(data.strAmountToCharge); 
+                                         
                                      }
-                                         alert("Data: "+data );
-                                     
+                                         
                                  },
                                  error: function (xhr, ajaxOptions, thrownError) {
                                      alert(xhr.responseText);
-                                     alert(xhr.status);
-                                     alert(thrownError);
+                                     //alert(xhr.status);
+                                     //alert(thrownError);
 
                                  }
                              });

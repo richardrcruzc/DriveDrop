@@ -11,8 +11,10 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
          : Enumeration
     {
         public static PriorityType Asap = new PriorityType(1, nameof(Asap).ToLowerInvariant());
-        public static PriorityType Hours = new PriorityType(2, nameof(Hours).ToLowerInvariant());
-        public static PriorityType Days = new PriorityType(3, nameof(Days).ToLowerInvariant());
+        public static PriorityType FourHours = new PriorityType(2, nameof(FourHours).ToLowerInvariant());
+        public static PriorityType SixHours = new PriorityType(3, nameof(SixHours).ToLowerInvariant());
+        public static PriorityType EODSameDay = new PriorityType(3, nameof(EODSameDay).ToLowerInvariant());
+        public static PriorityType EODNextDay = new PriorityType(3, nameof(EODNextDay).ToLowerInvariant());
 
         protected PriorityType()
         {
@@ -25,7 +27,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public static IEnumerable<PriorityType> List()
         {
-            return new[] { Asap, Hours, Days };
+            return new[] { Asap, FourHours, SixHours, EODSameDay, EODNextDay };
         }
 
         public static PriorityType FromName(string name)

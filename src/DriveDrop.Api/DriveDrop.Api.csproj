@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\images\brand.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />
   </ItemGroup>
   <ItemGroup>

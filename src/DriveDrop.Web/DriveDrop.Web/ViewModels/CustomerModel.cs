@@ -72,8 +72,15 @@ namespace DriveDrop.Web.ViewModels
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
-        public CustomerType CustomerType { get; set; }        
+        public CustomerType CustomerType { get; set; }
+        [Display(Name = "Customer Type")]
+        [Required(ErrorMessage = "Customer Type required")]
+        [Range(1, 999, ErrorMessage = "Select a valid Customer type")]
         public int CustomerTypeId { get; set; }
+
+        [Display(Name = "Transport Type")]
+        [Required(ErrorMessage = "Transport Type required")]
+        [Range(1,999, ErrorMessage="Select a valid transport type")]
         public int? TransportTypeId { get; set; }
         public TransportType TransportType { get; set; }
         public int CustomerStatusId { get; set; }
@@ -82,8 +89,14 @@ namespace DriveDrop.Web.ViewModels
         public int? PickupRadius { get; set; }
         public int? DeliverRadius { get; set; }
 
+        [Display(Name = "Quantity")]
+        [Required(ErrorMessage = "required")]
+        public int? Quantity { get; set; }
+        [Display(Name = "Weight")]
+        [Required(ErrorMessage = "required")]
+        public decimal? Weight { get; set; }
 
-
+        public string VehicleInfo { get; set; }
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
@@ -148,12 +161,16 @@ namespace DriveDrop.Web.ViewModels
         public TransportType TransportTypeS { get;  set; }
 
 
-
-        public Decimal Amount { get;  set; }
+        [Display(Name = "Shipping Value")]
+        [Required(ErrorMessage = "required")]
+        public Decimal? Amount { get;  set; }
         public Decimal Tax { get;  set; }
         public Decimal Discount { get;  set; }
         public string PromoCode { get;  set; }
 
+        [Display(Name = "Priority Type")]
+        [Required(ErrorMessage = "Priority Type required")]
+        [Range(1, 999, ErrorMessage = "Select a valid Priority Type")]
         public int PriorityTypeId { get;  set; }
 
         [DataType(DataType.MultilineText)]
@@ -205,9 +222,9 @@ namespace DriveDrop.Web.ViewModels
        // [FileExtensions(Extensions = "JPG,TIF,PNG,GIF")]
         [DataType(DataType.Upload)]
         public IEnumerable<IFormFile> Files { get; set; }
-
-        public string FilePath { get; set; }
-
+         public string FilePath { get; set; }
+        public string VehicleInfo { get; set; }
+        
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -367,7 +384,7 @@ namespace DriveDrop.Web.ViewModels
         //public Double PickupLatitude { get;  set; }
         //public Double PickupLongitude { get;  set; }
 
-        public decimal Weight { get; set; }
+        public decimal? Weight { get; set; }
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
