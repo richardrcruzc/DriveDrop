@@ -21,7 +21,7 @@
     @foreach (var item in Model )
     {
 
-        var url = "http://localhost:5206/" + item.PickupPictureUri;
+        var url = ViewBag.Uri + item.PickupPictureUri;
         <tr>
            
             <td>

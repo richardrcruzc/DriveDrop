@@ -178,7 +178,7 @@ namespace DriveDrop.Web.Controllers
                     }
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                catch 
                 {
                 }
             }

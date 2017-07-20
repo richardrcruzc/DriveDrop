@@ -241,7 +241,7 @@ namespace DriveDrop.Api.Controllers
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
                         weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId,note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "", 
-                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount,qty:c.Quantity);
+                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount,qty:c.Quantity, packageSizeId: c.PackageSizeId);
 
                     _context.Add(shipment);
 

@@ -185,7 +185,11 @@ namespace DriveDrop.Web.Infrastructure
             public static string GetAllTransportTypes(string baseUri)
             {
                 return $"{baseUri}TransportTypes";
-            } 
+            }
+            public static string GetAllPackageSizes(string baseUri)
+            {
+                return $"{baseUri}PackageSizes";
+            }
         }
     }
 }

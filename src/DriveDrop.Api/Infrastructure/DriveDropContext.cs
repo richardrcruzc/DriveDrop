@@ -27,6 +27,7 @@ namespace DriveDrop.Api.Infrastructure
         public DbSet<PriorityType> PriorityTypes { get; set; }
         public DbSet<ShippingStatus> ShippingStatuses { get; set; }
         public DbSet<TransportType> TransportTypes { get; set; }
+        public DbSet<PackageSize> PackageSizes { get; set; }
 
         public DbSet<CustomerStatus> CustomerStatuses { get; set; }
 
@@ -37,8 +38,9 @@ namespace DriveDrop.Api.Infrastructure
         public DbSet<RateDetail> RateDetails { get; set; }
         public DbSet<RatePriority> RatePriorities { get; set; }
         public DbSet<RateTranportType> RateTranportTypes { get; set; }
+        public DbSet<RatePackageSize> RatePackageSizes { get; set; }
 
-
+        
         //public DbSet<ShipmentAddress> ShipmentAddresses { get; set; }
         //public DbSet<ShipmentCustomer> ShipmentCustomers { get; set; }
 
@@ -49,6 +51,7 @@ namespace DriveDrop.Api.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PackageSize>(ConfigurePackageSize);
             modelBuilder.Entity<CardType>(ConfigureCardTypes);
             modelBuilder.Entity<AddressType>(ConfigureAddressType);
             modelBuilder.Entity<CustomerType>(ConfigureClientType);
@@ -250,6 +253,23 @@ namespace DriveDrop.Api.Infrastructure
                 .IsRequired();
 
             cardTypesConfiguration.Property(ct => ct.Name)
+                .HasMaxLength(200)
+                .IsRequired();
+        }
+
+
+        void ConfigurePackageSize(EntityTypeBuilder<PackageSize> config)
+        {
+            config.ToTable("packageSizes", DEFAULT_SCHEMA);
+
+            config.HasKey(o => o.Id);
+
+            config.Property(o => o.Id)
+                .HasDefaultValue(1)
+                .ValueGeneratedNever()
+                .IsRequired();
+
+            config.Property(o => o.Name)
                 .HasMaxLength(200)
                 .IsRequired();
         }

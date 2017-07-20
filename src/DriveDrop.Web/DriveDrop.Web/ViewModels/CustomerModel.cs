@@ -19,6 +19,8 @@ namespace DriveDrop.Web.ViewModels
             CustomerStatusList = new List<SelectListItem>();
             PriorityTypeList = new List<SelectListItem>();
 
+            PackageSizeList = new List<SelectListItem>();
+
         }
 
         public IEnumerable<SelectListItem> CustomerTypeList { get; set; }
@@ -26,7 +28,10 @@ namespace DriveDrop.Web.ViewModels
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
+        public IEnumerable<SelectListItem> PackageSizeList { get; set; }
+
         public int CustomerId { get; set; }
+        public int PackageSizeId { get; set; }
 
         public IFormFile file { get; set; }
 
@@ -208,6 +213,7 @@ namespace DriveDrop.Web.ViewModels
             TransportTypeList = new List<SelectListItem>();
             CustomerStatusList = new List<SelectListItem>();
             PriorityTypeList = new List<SelectListItem>();
+            PackageSizeList = new List<SelectListItem>();
 
         }
 
@@ -215,7 +221,10 @@ namespace DriveDrop.Web.ViewModels
         public IEnumerable<SelectListItem> TransportTypeList { get; set; }
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
+        public IEnumerable<SelectListItem> PackageSizeList { get; set; }
 
+        public int PackageSizeId { get; set; }
+        
         public int CustomerId { get; set; }
 
         [Display(Name = "Images")]
@@ -355,6 +364,9 @@ namespace DriveDrop.Web.ViewModels
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
         public int CustomerId { get; set; }
+
+        public int PackageSizeId { get; set; }
+        
 
         public IFormFile file { get; set; }
 

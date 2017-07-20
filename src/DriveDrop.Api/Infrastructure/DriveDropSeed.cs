@@ -12,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static ApplicationCore.Entities.Helpers.HelperTable;
+ 
 
 
 namespace DriveDrop.Api.Infrastructure
@@ -93,6 +93,14 @@ namespace DriveDrop.Api.Infrastructure
                     await context.SaveChangesAsync();
                 }
 
+                if (!context.PackageSizes.Any())
+                {
+                    context.PackageSizes.Add(PackageSize.Envelopes);
+                    context.PackageSizes.Add(PackageSize.SmallPackages);
+                    context.PackageSizes.Add(PackageSize.MidiunPackages);
+                    context.PackageSizes.Add(PackageSize.LargePackages);                    
+                    await context.SaveChangesAsync();
+                }
 
                 if (!context.Rates.Any())
                 {
@@ -181,7 +189,28 @@ namespace DriveDrop.Api.Infrastructure
                     }
                     await context.SaveChangesAsync();
                 }
+                if (!context.RatePackageSizes.Any())
+                {
+                    var first = context.Rates.Where(x => x.Id > 0).FirstOrDefault();
+                    if (first != null)
+                    {
+                        context.RatePackageSizes.Add(new RatePackageSize(first.Id, 1, 5, false));
+                        context.RatePackageSizes.Add(new RatePackageSize(first.Id, 2, 6, false));
+                        context.RatePackageSizes.Add(new RatePackageSize(first.Id, 3, 7, false));
+                        context.RatePackageSizes.Add(new RatePackageSize(first.Id, 4, 8, false));
+                    }
+                    var second = context.Rates.Where(x => x.Id > 0).LastOrDefault();
+                    if (second != null)
+                    {
 
+                        context.RatePackageSizes.Add(new RatePackageSize(second.Id, 1, 5, false));
+                        context.RatePackageSizes.Add(new RatePackageSize(second.Id, 2, 6, false));
+                        context.RatePackageSizes.Add(new RatePackageSize(second.Id, 3,7, false));
+                        context.RatePackageSizes.Add(new RatePackageSize(second.Id, 4, 8, false));
+
+                    }
+                    await context.SaveChangesAsync();
+                }
 
                 if (!context.Coupons.Any())
                 {

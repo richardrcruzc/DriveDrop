@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\DriveDropApi - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\DriveDropApi20170717021542 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\DriveDropApi20170717040707 - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\images\brand.png">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -57,6 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>

@@ -16,14 +16,32 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Identity.Api": {
+    "Identity.Api (Development)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:58652/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:58652"
+      "applicationUrl": "http://localhost:58652/"
+    },
+    "Identity.Api (Staging)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://identityapi20170717040137.azurewebsites.net/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://identityapi20170717040137.azurewebsites.net/"
+    },
+    "Identity.Api (Production)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://identityapi20170717040137.azurewebsites.net/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://identityapi20170717040137.azurewebsites.net/"
     }
   }
 }

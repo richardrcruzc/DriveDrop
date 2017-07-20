@@ -26,7 +26,7 @@ namespace DriveDrop.Api.Services
 
 
 
-        public async Task<CalculatedCharge> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode) {
+        public async Task<CalculatedCharge> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode, int packageSizeId=0) {
 
             var miles = await _distance.FromZipToZipInMile(zipFrom, zipTo);
             decimal milesDecimal = (decimal)miles;
@@ -40,12 +40,20 @@ namespace DriveDrop.Api.Services
             var chargePerTransport = _context.RateTranportTypes.Where(x => x.RateId == myRate.Id && x.TranportTypeId == transportTypeId).FirstOrDefault();
              
 
+            var chargePerSize = _context.RatePackageSizes.Where(x => x.RateId == myRate.Id && x.PackageSizeId == packageSizeId).FirstOrDefault();
+            decimal rateSize = chargePerSize.Charge;
+            //if (chargePerSize.ChargePercentage)
+            //    rateSize = chargePerSize.Charge / 100;
+            //else
+            //    rateSize = chargePerSize.Charge;
+
             var amountToCharge = 1 * myRate.FixChargePerShipping
-                                 + weight * rateWeight.Charge
-                                 + (decimal)miles * rateDistance.Charge
-                                 + qty * myRate.ChargePerItem
-                                 + chargePerPriority.Charge
-                                 + chargePerTransport.Charge;
+                                     + weight * rateWeight.Charge
+                                     + (decimal)miles * rateDistance.Charge
+                                     + qty * myRate.ChargePerItem
+                                     + chargePerPriority.Charge
+                                     + chargePerTransport.Charge
+                                     + rateSize;
 
 
             var totalDiscount = 0M;
@@ -76,6 +84,7 @@ namespace DriveDrop.Api.Services
                 TransportTypeAmount = chargePerTransport.Charge,
                 WeightAmount = rateWeight.Charge,
                 Discount = totalDiscount,
+                AmountPerSize = rateSize
 
             };
 
@@ -130,5 +139,7 @@ namespace DriveDrop.Api.Services
             var model = await _context.Rates.FindAsync(1);
             return 0M;
         }
+
+        
     }
 }

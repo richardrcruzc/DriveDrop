@@ -147,18 +147,24 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var getById = API.Admin.GetbyId(_remoteServiceDriversUrl, id ?? 0);
+            var getById = API.Driver.GetbyId(_remoteServiceDriversUrl, id ?? 0);
 
+             var dataString = await _apiClient.GetStringAsync(getById, token);
 
-            var dataString = await _apiClient.GetStringAsync(getById, token);
+             var response = JsonConvert.DeserializeObject<Customer>((dataString));
 
-
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
-
-            response.DriverLincensePictureUri = "http://localhost:5206/" + response.DriverLincensePictureUri;
+            response.DriverLincensePictureUri = string.Format("{0}{1}",_settings.Value.CallBackUrl, response.DriverLincensePictureUri);
             ViewBag.DriverId = id;
 
+            ViewBag.Uri = _settings.Value.CallBackUrl;
+
             return View(response);
+
+
+            //var model = new Customer();
+            //model.FirstName = getById;
+            //model.Id = 9;
+            //return View(model);
         }
          
 

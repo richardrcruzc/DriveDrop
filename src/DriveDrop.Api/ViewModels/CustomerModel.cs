@@ -343,7 +343,8 @@ namespace DriveDrop.Api.ViewModels
         public IFormFile file { get; set; }
 
         public string PickupPictureUri { get; set; }
-
+        
+        public int PackageSizeId { get; set; }
 
         public Decimal ShippingWeight { get; private set; }
 

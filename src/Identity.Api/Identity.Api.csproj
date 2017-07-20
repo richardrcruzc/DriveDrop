@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <None Remove="Certificate\idsrv3test.pfx" />
+    <None Remove="Properties\PublishProfiles\drivedropIdentity - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\drivedropIdentityApi - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityApi20170717020138 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityApi20170717023407 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityApi20170717035807 - Web Deploy.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,8 +37,10 @@
     <Content Include="wwwroot\images\banner2.svg" />
     <Content Include="wwwroot\images\banner3.svg" />
     <Content Include="wwwroot\images\banner4.svg" />
-    <Content Include="wwwroot\images\brand.PNG" />
-    <Content Include="wwwroot\images\brand_dark.PNG" />
+    <Content Include="wwwroot\images\Brand_dark.png" />
+    <Content Include="wwwroot\images\brand.PNG">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\images\cart.png" />
     <Content Include="wwwroot\images\logout.PNG" />
     <Content Include="wwwroot\images\main_banner.png" />
@@ -131,6 +138,13 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Certificate\idsrv3test.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>

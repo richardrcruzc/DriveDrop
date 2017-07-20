@@ -53,6 +53,17 @@
                         </div>
                         @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
                     </td>
+                    <td>
+                        <div>
+                            <button id="@item.Id"
+                                    pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                    delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                                    onClick="javascript:SetAddressFunction(this);">
+                                <i class="material-icons" style="font-size:48px;color:red">directions</i>
+                            </button>
+                        </div>
+
+                    </td>
                 </tr>
             }
         </table>

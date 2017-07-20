@@ -174,7 +174,7 @@
                          var promoCode = $("#PromoCode").val();
 
                          if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
-                             alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
+                            // alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
 
                              $.ajax({
                                  url: '@Url.Action("CalculateAmount","rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC

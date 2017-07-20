@@ -20,12 +20,13 @@ namespace DriveDrop.Web
 {
     public class Startup
     {
-        private IServiceCollection _services;
+       // private IServiceCollection _services;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
 
@@ -94,16 +95,17 @@ namespace DriveDrop.Web
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            app.UseDeveloperExceptionPage();
+            app.UseBrowserLink();
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseBrowserLink();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Home/Error");
+            //}
 
             app.UseStaticFiles();
 
@@ -139,7 +141,7 @@ namespace DriveDrop.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Admin}/{action=Index}/{id?}");
+                    template: "{controller=home}/{action=Index}/{id?}");
             });
         }
     }

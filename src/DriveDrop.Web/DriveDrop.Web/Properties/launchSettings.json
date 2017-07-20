@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DriveDrop.Web": {
+    "DriveDrop.Web (Development)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5206",
@@ -24,6 +24,24 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5206"
+    },
+    "DriveDrop.Web (Staging)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://drivedropweb20170717041204.azurewebsites.net",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://drivedropweb20170717041204.azurewebsites.net"
+    },
+    "DriveDrop.Web (Production)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://drivedropweb20170717041204.azurewebsites.net",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://drivedropweb20170717041204.azurewebsites.net"
     }
   }
 }

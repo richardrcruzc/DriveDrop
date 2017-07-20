@@ -4686,7 +4686,7 @@ a.tag:focus, a.tag:hover {
     background-repeat: no-repeat;
     background-size: contain;
 }
-}
+ 
 
 @media (min-width: 576px) {
   .jumbotron {

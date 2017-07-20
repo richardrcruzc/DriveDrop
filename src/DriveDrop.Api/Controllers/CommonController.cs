@@ -178,7 +178,26 @@ namespace DriveDrop.Api.Controllers
             }
         }
 
-        
+
+        // GET api/v1/Common/CustomerTypes
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> PackageSizes()
+        {
+            try
+            {
+                var types = await _context.PackageSizes.Select(x => new { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
+
+                return Ok(types);
+            }
+            catch (Exception)
+            {
+                return BadRequest("PackageSizesNotFound");
+            }
+        }
+
+
+
         //[Route("[action]/{uri}")]
         //// GET: /<controller>/
         //public IActionResult GetImage(string uri)

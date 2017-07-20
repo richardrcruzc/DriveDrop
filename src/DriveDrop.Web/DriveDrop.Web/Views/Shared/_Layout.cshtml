@@ -18,12 +18,30 @@
         <link rel="stylesheet" href="~/css/orders/orders.component.css" />
         <link rel="stylesheet" href="~/css/orders/orders-detail/orders-detail.component.css" />
         <link rel="stylesheet" href="~/css/orders/orders-new/orders-new.component.css" />
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+        <title>jQuery UI Autocomplete - Default functionality</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
+
+        <title>jQuery UI Autocomplete - Default functionality</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     </environment>
 </head>
 <body>
@@ -34,7 +52,8 @@
                 <section class="col-lg-7 col-md-6 col-xs-12">
                     <a class="navbar-brand" routerLink="catalog"></a>
                         <a asp-area="" asp-controller="Home" asp-action="Index">
-                            <div> <img src="~/images/brand.png" /></div>
+                            <div>DriveDrop </div>
+                            @*<div> <img src="~/images/brand.png" /></div>*@
                             @*<img src="~/images/brand.png" />*@
                         </a>
                 </section>
@@ -64,7 +83,9 @@
     </footer>
 
     <environment names="Development">
+
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -73,6 +94,7 @@
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
+        <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">

@@ -10,6 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\DriveDropWeb - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\DriveDropWeb20170717022737 - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\css\app.component.css" />
     <Content Include="wwwroot\css\app.css" />
     <Content Include="wwwroot\css\basket\basket-status\basket-status.component.css" />
@@ -35,9 +40,6 @@
     <Content Include="wwwroot\fonts\Montserrat-Regular.woff2" />
     <Content Include="wwwroot\images\arrow-down.png" />
     <Content Include="wwwroot\images\arrow-right.svg" />
-    <Content Include="wwwroot\images\brand - Copy.png">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="wwwroot\images\Brand-dark.png" />
     <Content Include="wwwroot\images\brand.png" />
     <Content Include="wwwroot\images\cart.png" />
@@ -587,11 +589,10 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Pics\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install --allow-root" />
-    <Exec Command="dotnet bundle" Condition="'$(ASPNETCORE_ENVIRONMENT)'!='Development'" />
-  </Target>
+ 
 
   <ItemGroup>
     <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.4.337" />

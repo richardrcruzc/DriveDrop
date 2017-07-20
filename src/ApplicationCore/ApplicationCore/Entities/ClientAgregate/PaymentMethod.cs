@@ -18,7 +18,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         private DateTime _expiration;
 
         private int _cardTypeId;
-        public HelperTable CardType { get; private set; }
+        public CardType CardType { get; private set; }
 
 
         protected PaymentMethod() { }

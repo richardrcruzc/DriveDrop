@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DriveDrop.Api.Controllers
 {
     [Route("api/v1/[controller]")]
-   [Authorize]
+    [Authorize]
     public class DriversController : Controller
     {
         private readonly DriveDropContext _context;
@@ -98,8 +98,11 @@ namespace DriveDrop.Api.Controllers
                 //var customer = await _context.Customers.FindAsync(id);
 
                 var customer = await _context.Customers 
-                .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType) 
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .Include(s => s.TransportType)
+                .Include(t => t.CustomerStatus)
+                .Include(s => s.CustomerType) 
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
 
                 if (customer == null)
                     return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");

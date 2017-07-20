@@ -13,6 +13,7 @@ namespace DriveDrop.Api.ViewModels
         public Decimal DistanceAmount { get; set; }
         public Decimal WeightAmount { get; set; }
         public Decimal TransportTypeAmount { get; set; }
+        public Decimal AmountPerSize { get; set; }
 
         public Decimal TaxRate { get; set; }
         public Decimal TaxAmount { get; set; }

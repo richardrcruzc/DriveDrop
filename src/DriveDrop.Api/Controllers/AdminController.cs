@@ -18,7 +18,7 @@ namespace DriveDrop.Api.Controllers
 {
 
     [Route("api/v1/[controller]")]
-     [Authorize]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly DriveDropContext _context;

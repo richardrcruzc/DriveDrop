@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using DriveDrop.Api.Infrastructure;
-using ApplicationCore.Entities.Helpers;
 
 namespace DriveDrop.Api.Migrations
 {
@@ -97,7 +96,7 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("UserName");
 
-                    b.Property<string>("vehicleInfo");
+                    b.Property<string>("VehicleInfo");
 
                     b.HasKey("Id");
 
@@ -203,6 +202,8 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("Note");
 
+                    b.Property<int?>("PackageSizeId");
+
                     b.Property<int?>("PickupAddressId");
 
                     b.Property<string>("PickupPictureUri");
@@ -236,6 +237,8 @@ namespace DriveDrop.Api.Migrations
                     b.HasIndex("DeliveryAddressId");
 
                     b.HasIndex("DriverId");
+
+                    b.HasIndex("PackageSizeId");
 
                     b.HasIndex("PickupAddressId");
 
@@ -300,18 +303,22 @@ namespace DriveDrop.Api.Migrations
                     b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Entities.Helpers.HelperTable", b =>
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.PackageSize", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasDefaultValue(1);
 
-                    b.Property<int>("HelperType");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200);
 
-                    b.Property<string>("Name");
+                    b.Property<int?>("RateId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("HelperTable");
+                    b.HasIndex("RateId");
+
+                    b.ToTable("packageSizes","shippings");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.Rate", b =>
@@ -360,6 +367,26 @@ namespace DriveDrop.Api.Migrations
                     b.HasIndex("RateId");
 
                     b.ToTable("RateDetails");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.RatePackageSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Charge");
+
+                    b.Property<bool>("ChargePercentage");
+
+                    b.Property<int>("PackageSizeId");
+
+                    b.Property<int>("RateId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RateId");
+
+                    b.ToTable("RatePackageSizes");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.RatePriority", b =>
@@ -447,7 +474,7 @@ namespace DriveDrop.Api.Migrations
 
             modelBuilder.Entity("ApplicationCore.Entities.ClientAgregate.PaymentMethod", b =>
                 {
-                    b.HasOne("ApplicationCore.Entities.Helpers.HelperTable", "CardType")
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.CardType", "CardType")
                         .WithMany()
                         .HasForeignKey("CardTypeId");
                 });
@@ -461,6 +488,10 @@ namespace DriveDrop.Api.Migrations
                     b.HasOne("ApplicationCore.Entities.ClientAgregate.Customer", "Driver")
                         .WithMany("ShipmentDrivers")
                         .HasForeignKey("DriverId");
+
+                    b.HasOne("ApplicationCore.Entities.Helpers.PackageSize", "PackageSize")
+                        .WithMany()
+                        .HasForeignKey("PackageSizeId");
 
                     b.HasOne("ApplicationCore.Entities.ClientAgregate.Address", "PickupAddress")
                         .WithMany()
@@ -487,10 +518,25 @@ namespace DriveDrop.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.PackageSize", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.Helpers.Rate")
+                        .WithMany("PackageSizes")
+                        .HasForeignKey("RateId");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.RateDetail", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.Helpers.Rate", "Rate")
                         .WithMany("RateDetails")
+                        .HasForeignKey("RateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.RatePackageSize", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.Helpers.Rate", "Rate")
+                        .WithMany()
                         .HasForeignKey("RateId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

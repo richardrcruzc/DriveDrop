@@ -226,6 +226,15 @@
                             <span asp-validation-for="TransportTypeId" class="text-danger"></span>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
+                            <span asp-validation-for="PackageSizeId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
                     <div class="form-group">
                         <div class="col-md-12">
                             <input asp-for="Amount" class="form-control" placeholder="Shipping value" />
@@ -405,7 +414,7 @@
 
                      function UpdateRate( ) {
 
-                         alert(1);
+                        // alert(1);
                         // var myLength = $("#PickupZipCode").val().length;
                          var delLength = $("#DeliveryZipCode").val().length;
                          var delZip = $("#DeliveryZipCode").val();
@@ -433,7 +442,7 @@
                          var promoCode = $("#PromoCode").val();
 
                          if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
-                             alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
+                           //  alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
 
                              $.ajax({
                                  url: '@Url.Action("CalculateAmount", "rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC

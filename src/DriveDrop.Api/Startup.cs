@@ -69,7 +69,7 @@ namespace DriveDrop.Api
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<DriveDropContext>(options =>
                     {
-                        options.UseSqlServer(Configuration["DriveDropConnection"],
+                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                             sqlServerOptionsAction: sqlOptions =>
                             {
                                 sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
@@ -117,7 +117,10 @@ namespace DriveDrop.Api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IHostingEnvironment _env, IRateService rate, IDistanceService distance)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug(); 
+            loggerFactory.AddDebug();
+
+            app.UseDeveloperExceptionPage();
+               app.UseBrowserLink();
 
             // Use frameworks
             app.UseCors("CorsPolicy");

@@ -27,14 +27,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
        
 
         public Address PickupAddress { get; private set; }
-        public Address DeliveryAddress { get; private set; }
-        //public Address BillingAddress { get; private set; }
-
-        // public Customer Sender { get; private set; }
-        //public int SenderId { get; private set; }
-
-        //public Customer Driver { get; private set; }
-        //public int DriverId { get; private set; }         
+        public Address DeliveryAddress { get; private set; } 
 
         public ShippingStatus ShippingStatus { get; private set; }
         public int ShippingStatusId { get; private set; }
@@ -62,6 +55,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public string Note { get; private set; }
 
+        public int? PackageSizeId { get; private set; }
+        public PackageSize PackageSize { get; private set; }        
+
 
         protected Shipment()
         {
@@ -83,7 +79,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal weight, int priorityTypeId ,
                             int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri,
                             decimal distance, decimal chargeAmount,  string promoCode, decimal tax, 
-                            int qty = 1) : this()
+                            int qty = 1, int packageSizeId=1) : this()
         {
             ShippingStatusId = ShippingStatus.PendingPickUp.Id;
             ShippingCreateDate = DateTime.Now;
@@ -101,8 +97,6 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
             Sender = sender;
             // SenderId = sender.Id;
-            
-
 
             IdentityCode = string.Format("WA-{0}-{1}",pickup.ZipCode, RandomString());
 
@@ -112,6 +106,8 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             ChargeAmount = chargeAmount; 
             PromoCode = promoCode;
             Tax = tax;
+
+            PackageSizeId = packageSizeId;
 
         }
         public static string RandomString()

@@ -449,6 +449,27 @@ namespace DriveDrop.Web.Controllers
             model.PriorityTypeList = priority;
 
 
+
+
+            getUri = API.Common.GetAllPackageSizes(_remoteServiceCommonUrl);
+            dataString = await _apiClient.GetStringAsync(getUri);
+            var packageSize = new List<SelectListItem>();
+            packageSize.Add(new SelectListItem() { Value = null, Text = "PackageSize", Selected = true });
+
+            gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                packageSize.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.PackageSizeList = packageSize;
+
+
+
             return model;
              
         }

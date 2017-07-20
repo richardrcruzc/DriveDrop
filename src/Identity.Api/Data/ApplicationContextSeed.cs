@@ -60,20 +60,20 @@
                 //CardType = 1,
                 //City = "Redmond",
                 //Country = "U.S.",
-                //Email = "demouser@microsoft.com",
+                Email = "demouser@pununo.com",
                 //Expiration = "12/20",
-                //Id = Guid.NewGuid().ToString(), 
-                //LastName = "DemoLastName", 
-                //Name = "DemoUser", 
-                //PhoneNumber = "1234567890", 
-                //UserName = "demouser@microsoft.com", 
-                //ZipCode = "98052", 
-                //State = "WA", 
-                //Street = "15703 NE 61st Ct", 
-                //SecurityNumber = "535", 
-                //NormalizedEmail = "DEMOUSER@MICROSOFT.COM", 
-                //NormalizedUserName = "DEMOUSER@MICROSOFT.COM", 
-                //SecurityStamp = Guid.NewGuid().ToString("D")
+                Id = Guid.NewGuid().ToString(),
+                //LastName = "DemoLastName",
+                //Name = "DemoUser",
+                PhoneNumber = "1234567890",
+                UserName = "demouser@pununo.com",
+                //ZipCode = "98052",
+                //State = "WA",
+                //Street = "15703 NE 61st Ct",
+                //SecurityNumber = "535",
+                NormalizedEmail = "DEMOUSER@pununo.COM",
+                NormalizedUserName = "DEMOUSER@pununo.COM",
+                SecurityStamp = Guid.NewGuid().ToString("D")
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");

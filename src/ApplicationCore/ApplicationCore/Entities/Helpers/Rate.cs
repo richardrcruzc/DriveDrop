@@ -19,6 +19,7 @@ namespace ApplicationCore.Entities.Helpers
 
         public List<RateDetail> RateDetails { get; private set; }
         public List<RatePriority> RatePriorities { get; private set; }
+        public List<PackageSize> PackageSizes { get; private set; }
 
 
         public Rate() { RateDetails = new List<RateDetail>(); }

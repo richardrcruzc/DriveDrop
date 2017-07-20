@@ -13,8 +13,8 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public static PriorityType Asap = new PriorityType(1, nameof(Asap).ToLowerInvariant());
         public static PriorityType FourHours = new PriorityType(2, nameof(FourHours).ToLowerInvariant());
         public static PriorityType SixHours = new PriorityType(3, nameof(SixHours).ToLowerInvariant());
-        public static PriorityType EODSameDay = new PriorityType(3, nameof(EODSameDay).ToLowerInvariant());
-        public static PriorityType EODNextDay = new PriorityType(3, nameof(EODNextDay).ToLowerInvariant());
+        public static PriorityType EODSameDay = new PriorityType(4, nameof(EODSameDay).ToLowerInvariant());
+        public static PriorityType EODNextDay = new PriorityType(5, nameof(EODNextDay).ToLowerInvariant());
 
         protected PriorityType()
         {
