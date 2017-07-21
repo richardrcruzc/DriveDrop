@@ -196,6 +196,7 @@ namespace DriveDrop.Web.Controllers
 
             return await context.Authentication.GetTokenAsync("access_token");
         }
+        [AllowAnonymous]
         public async Task<IActionResult> NewSender()
         {
             CustomerModel c = new CustomerModel();
@@ -203,6 +204,7 @@ namespace DriveDrop.Web.Controllers
             c.CustomerTypeId = 2;
             return View(c);
         }
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewSender(CustomerModel c, List<IFormFile> files)

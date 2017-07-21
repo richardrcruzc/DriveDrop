@@ -57,6 +57,7 @@ namespace DriveDrop.Web.Controllers
 
             return View();
         }
+        [AllowAnonymous]
         public async Task<IActionResult> NewDriver()
         {
 
@@ -67,7 +68,7 @@ namespace DriveDrop.Web.Controllers
 
             return View(model);
         }
-         
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> NewDriver(DriverModel c)
         {

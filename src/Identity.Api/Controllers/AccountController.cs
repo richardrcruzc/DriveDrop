@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Authorization;
 using Identity.Api.Models.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Options;
+using Identity.Api;
 
 namespace IdentityServer4.Quickstart.UI.Controllers
 {
@@ -39,15 +41,19 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         private readonly ILogger _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+
         public AccountController(
-            
-            //InMemoryUserLoginService loginService,
-            ILoginService<ApplicationUser> loginService,
+
+            IOptionsSnapshot<AppSettings> settings,
+        //InMemoryUserLoginService loginService,
+        ILoginService<ApplicationUser> loginService,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             ILoggerFactory loggerFactory, 
             UserManager<ApplicationUser> userManager)
         {
+            _settings = settings;
             _loginService = loginService;
             _interaction = interaction;
             _clientStore = clientStore;
@@ -143,6 +149,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient+"/home";
 
             return View(vm);
         }
