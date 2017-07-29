@@ -9,6 +9,8 @@ namespace ApplicationCore.Entities.ClientAgregate
     public class Address
        : ValueObject
     {
+        public String TypeAddress { get; private set; }
+
         public String Street { get; private set; }
 
         public String City { get; private set; }
@@ -27,8 +29,9 @@ namespace ApplicationCore.Entities.ClientAgregate
         public Double Longitude { get; private set; }
         protected Address() { }
 
-        public Address(string street, string city, string state, string country, string zipcode,string phone, string contact, Double latitude, Double longitude )
+        public Address(string street, string city, string state, string country, string zipcode,string phone, string contact, Double latitude, Double longitude, string typeAddress ="home" )
         {
+            TypeAddress = typeAddress;
             Street = street;
             City = city;
             State = state;
@@ -42,6 +45,7 @@ namespace ApplicationCore.Entities.ClientAgregate
 
         protected override IEnumerable<object> GetAtomicValues()
         {
+            yield return TypeAddress;
             yield return Street;
             yield return City;
             yield return State;

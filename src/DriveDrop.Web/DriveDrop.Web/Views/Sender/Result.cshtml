@@ -3,110 +3,109 @@
     @{
         ViewData["Title"] = "Details";
     }
- 
+ <div class="side-2">
 
-    <section class="esh-catalog-filters">
-        <div class="container">
-            <h2>Sender dashboard</h2>
 
-             
-            </div>
-        </section>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5">
-                        <dl class="dl-horizontal">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.LastName)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.LastName)
-                            </dd>
+     @await Html.PartialAsync("CustomerNavigation", Model.Id)
 
-                            <dt>
-                                @Html.DisplayNameFor(model => model.FirstName)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.FirstName)
-                            </dd>
-                            <dt>
-                                Customer Status
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.CustomerStatus.Name)
-                            </dd>
-                           
-                        </dl>
-                    </div>
-                    <div class="col-md-5">
-                        <dl class="dl-horizontal">
-                          
-                            <dt>
-                                Customer Type
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.CustomerType.Name)
-                            </dd>
-                            <dt>
-                                E-Mail
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.Email)
-                            </dd>
-                            <dt>
-                                Phone
-                            </dt>
-                            <dd>
-                                @Model.Phone
-                            </dd>
-                        </dl>
-                    </div>
-                </div>  
-                <div>
-                    <table class="table">
-                        <tr>
-                            <th colspan="5">    
-                            <button type="button" id="button" class="btn btn-default btn-brand btn-brand-big">Add new Shipping</button>
 
-                            </th>
+</div>
+<div class="center-2">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h1>Sender dashboard</h1>
+        </div>
 
-                        </tr>
-                        <tr id="newShipmentTr" class="sr-only">
-                            <td colspan="5">
+        <div class="page-body">
+            <form method="post" asp-action="NewServer" enctype="multipart/form-data">
+                   
+                        <div class="fieldset"> 
+                             
+                                <div class="title">
+                                    <strong>Your Personal Details</strong>
+                                </div>
+                            <div class="form-fields">
+                                <div class="inputs">
+                                    <label for="CustomerStatus">Status</label>
+                                    <div class="gender">
+                                        <span>
 
-                                <div id="newShipment">
-                                    
-                                    @await Component.InvokeAsync("NewShipment", new { id = @Model.Id })
+                                            <label class="male">@Model.CustomerStatus.Name</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="inputs">
+                                    <label for="FirstName">First name</label>
+
+                                    <input asp-for="FirstName" placeholder="First name" />
+                                    <span class="required">*</span>
+
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+
+
+                                </div>
+                                <div class="inputs">
+                                    <label for="LastName">Last name</label>
+                                    <input asp-for="LastName" placeholder="Last name" />
+                                    <span class="required">*</span>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
 
-                            </td>
-                        </tr>
-                    </table>
+                                <div class="inputs">
+                                    <label for="Email">Email</label>
+                                    <input asp-for="Email" placeholder="Email" />
+                                    <span class="required">*</span>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="inputs">
+
+                                    <label for="Phone">Phone</label>
+                                    <input asp-for="Phone" placeholder="Phone" />
+                                    <span class="required">*</span>
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                                <div class="inputs">
+                                    <div class="title">
+                                        <strong>Photo</strong>
+                                    </div>
+                                    <div class="avatar-page">
+                                        <input type='file' id="imgFoto" />
+                                        <img id="blah" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="200" height="200" />
+                                    </div>
+                                </div>
+                                <div class="buttons">
+                                    <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+                                </div>
+                            </div>
+                                
+                            </div>
+                        
+</form>
+        </div>
 
 
-                </div>
+    </div>
+</div>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+            function readURL(input) {
 
-                <div>
-                    @await Component.InvokeAsync("ShippingByCustomer", new { customerId = @Model.Id })
-                </div>
-                <div> 
-                    <a asp-controller="admin" asp-action="Index">Back to List</a>
-                </div>
-            </div>
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#blah').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#imgFoto").change(function () {
+                readURL(this);
+            });
 
 
-            <script>
-
-               
-
-
-
-            </script>
-
-
-            @section Scripts {
-                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
     var theDiv = document.getElementById("newShipmentTr");
     var button = document.getElementById("button");
 
@@ -174,7 +173,7 @@
                          var promoCode = $("#PromoCode").val();
 
                          if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
-                            // alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
+                            alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
 
                              $.ajax({
                                  url: '@Url.Action("CalculateAmount","rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC
@@ -186,15 +185,15 @@
                                  data: { zipFrom: pickupZip, zipTo: delZip, weight: weight, qty: quantity, priority: priorityTypeId, transportTypeId: transportTypeId, promoCode: promoCode}, // here you can pass arguments to your request if you need
                                  success: function (data) {
                                      // data is your result from controller
-                                     if (data) { 
-                                        
+                                     if (data) {
+
                                          $("#subtotal").text(data.strSubTotal);
                                          $("#TaxDiscount").text(data.strDiscount);
                                          $("#totalTax").text(data.strTaxAmount);
-                                         $("#total").text(data.strAmountToCharge); 
-                                         
+                                         $("#total").text(data.strAmountToCharge);
+
                                      }
-                                         
+
                                  },
                                  error: function (xhr, ajaxOptions, thrownError) {
                                      alert(xhr.responseText);
@@ -205,5 +204,5 @@
                              });
                          }
                      }
-</script>
-            }
+        </script>
+    }

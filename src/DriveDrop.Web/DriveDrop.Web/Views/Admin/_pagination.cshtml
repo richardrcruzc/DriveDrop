@@ -1,31 +1,29 @@
 ﻿@model DriveDrop.Web.ViewModels.PaginationInfo
 
-<div class="esh-pager">
-    <div class="container">
-        <article class="esh-pager-wrapper row">
-            <nav>
-                <a class="esh-pager-item esh-pager-item--navigable @Model.Previous"
+<div class="pager">
+    
+         
+                <a class="previous-page @Model.Previous"
                    id="Previous"
                    asp-controller="Admin"
                    asp-action="Index"
                    asp-route-page="@(Model.ActualPage -1)"
                    aria-label="Previous">
-                    Previous
+                    <img title="" alt="DriveDrop" src="~/images/first.png">
                 </a>
 
-                <span class="esh-pager-item">
+                <span class="span">
                     Showing @Model.ItemsPerPage of @Model.TotalItems products - Page @(Model.ActualPage + 1) - @Model.TotalPages
                 </span>
 
-                <a class="esh-pager-item esh-pager-item--navigable @Model.Next"
+                <a class="next-page @Model.Next"
                    id="Next"
                    asp-controller="Admin"
                    asp-action="Index"
                    asp-route-page="@(Model.ActualPage + 1)"
                    aria-label="Next">
-                    Next
+                    <img title="" alt="DriveDrop" src="~/images/last.png">
                 </a>
-            </nav>
-        </article>
+            
     </div>
-</div>
+ 

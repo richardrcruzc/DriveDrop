@@ -149,7 +149,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
             ViewData["ReturnUrl"] = returnUrl;
-            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient+"/home";
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient;
 
             return View(vm);
         }

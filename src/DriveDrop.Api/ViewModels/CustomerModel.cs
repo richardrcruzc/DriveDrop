@@ -18,19 +18,30 @@ namespace DriveDrop.Api.ViewModels
             TransportTypeList = new List<SelectListItem>();
             CustomerStatusList = new List<SelectListItem>();
             PriorityTypeList = new List<SelectListItem>();
+            Addresses = new List<AddressModel>();
 
         }
+        public IEnumerable<AddressModel> Addresses { get; set; }
 
         public IEnumerable<SelectListItem> CustomerTypeList { get; set; }
         public IEnumerable<SelectListItem> TransportTypeList { get; set; }
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
+        public string DriverLincensePictureUri { get;   set; }
+        public string PersonalPhotoUri { get;   set; }
+        public string VehiclePhotoUri { get;   set; }
+        public string InsurancePhotoUri { get;   set; }
+
+         
+        public string VehicleInfo { get; set; }
+
         public int CustomerId { get; set; }
         public decimal ShippingWeight { get; set; }
 
         public IFormFile file { get; set; }
 
+        public string PrimaryPhone { get; set; }
         public string FilePath { get; set; }
 
         [Required]
@@ -200,6 +211,13 @@ namespace DriveDrop.Api.ViewModels
         public IEnumerable<SelectListItem> TransportTypeList { get; set; }
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
+
+        
+            public string PrimaryPhone { get; set; }
+        public string DriverLincensePictureUri { get; set; }
+        public string PersonalPhotoUri { get; set; }
+        public string VehiclePhotoUri { get; set; }
+        public string InsurancePhotoUri { get; set; }
 
         public int CustomerId { get; set; }
 

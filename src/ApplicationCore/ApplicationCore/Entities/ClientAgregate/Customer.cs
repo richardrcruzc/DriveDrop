@@ -14,6 +14,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         public string UserName { get; private set; }
 
         public string Email { get; private set; }
+        public string PrimaryPhone { get; private set; }
         public string Phone { get; private set; }
         public string LastName { get; private set; }
         public string FirstName { get; private set; }
@@ -33,12 +34,18 @@ namespace ApplicationCore.Entities.ClientAgregate
 
         public Address DefaultAddress { get; private set; }
 
+        public string PaymentMethodId { get; private set; }
+
+
         //  public List<Shipment> Driver { get; private set; }
         public virtual ICollection<Shipment> ShipmentDrivers { get; private  set; }
         public virtual ICollection<Shipment> ShipmentSenders { get; private set; }
 
         public string DriverLincensePictureUri { get; private set; }
-
+        public string PersonalPhotoUri { get; private set; }
+        public string VehiclePhotoUri { get; private set; }
+        public string InsurancePhotoUri { get; private set; }
+        
         public Customer AddUserName(string userName)
         {
             UserName  = userName;
@@ -52,10 +59,17 @@ namespace ApplicationCore.Entities.ClientAgregate
             return this;
         }
 
-
-        public Customer AddPicture(string url)
+        
+        public Customer AddPicture(string url, string type = "driver")
         {
+            if(type == "driver")
             DriverLincensePictureUri = url;
+            if (type == "personal")
+                PersonalPhotoUri = url;
+            if (type == "vehicle")
+                VehiclePhotoUri = url;
+            if (type == "insurance")
+                InsurancePhotoUri = url;
 
             return this;
         }
@@ -69,11 +83,12 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
 
         private List<PaymentMethod> _paymentMethods;
- 
+        public List<Address> Addresses { get; private set; }
+
         protected Customer()
         {
             _paymentMethods = new List<PaymentMethod>();
-
+            Addresses = new List<Address>();
         }
 
 
@@ -91,10 +106,18 @@ namespace ApplicationCore.Entities.ClientAgregate
       int statusId  ,
       string email,
       string phone,
-      int customerTypeId = 2,
-      int maxPackage=0,
-      int pickupRadius=0,
-      int deliverRadius=0, decimal commission =10, string userName="", string vehicleInfo="") : this()
+      int customerTypeId  ,
+      int maxPackage ,
+      int pickupRadius ,
+      int deliverRadius , 
+      decimal commission , 
+      string userName , 
+      string vehicleInfo , 
+      string primaryPhone,
+      string DriverLincensePictureUri, 
+      string PersonalPhotoUri, 
+      string VehiclePhotoUri, 
+      string InsurancePhotoUri) : this()
         {
             LastName = lastName;
             FirstName = firstName;            
@@ -112,6 +135,10 @@ namespace ApplicationCore.Entities.ClientAgregate
             Commission = commission;
             UserName = userName;
             VehicleInfo = vehicleInfo;
+
+            CustomerStatusId = CustomerStatus.WaitingApproval.Id;
+
+            PrimaryPhone = primaryPhone;
         } 
 
         public Customer Update( 
@@ -123,7 +150,10 @@ namespace ApplicationCore.Entities.ClientAgregate
        int maxPackage,
        int pickupRadius,
        int deliverRadius,
-       int customerTypeId = 2)
+        string email,
+      string phone,
+       int customerTypeId = 2,      
+        decimal commission = 10, string userName = "", string vehicleInfo = "", string primaryPhone = "")
         {
             
             LastName = lastName;
@@ -136,6 +166,13 @@ namespace ApplicationCore.Entities.ClientAgregate
             CustomerTypeId = customerTypeId;
             IdentityGuid = !string.IsNullOrWhiteSpace(identity) ? identity : throw new ArgumentNullException(nameof(identity));
 
+            Email = email;
+            Phone = phone;
+
+            Commission = commission;
+            UserName = userName;
+            VehicleInfo = vehicleInfo;
+            PrimaryPhone = primaryPhone;
             return this;
         }
 
@@ -146,9 +183,21 @@ namespace ApplicationCore.Entities.ClientAgregate
 
             return this;
         }
+        public Address AddAddress(Address address)
+        {
+            var existing = Addresses.Where(a => a.Equals(address)).SingleOrDefault();
+
+            if (existing != null)            
+                return existing;
 
 
+            Addresses.Add(address);
  
+            return address;
+        }
+
+
+
 
 
         public PaymentMethod VerifyOrAddPaymentMethod(
@@ -177,3 +226,4 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
     }
 }
+

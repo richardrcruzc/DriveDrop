@@ -16,8 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\ie8.css" />
+    <Content Include="wwwroot\css\print.css" />
     <Content Include="wwwroot\css\site.css" />
     <Content Include="wwwroot\css\site.min.css" />
+    <Content Include="wwwroot\css\styles.css" />
+    <Content Include="wwwroot\css\styles.rtl.css" />
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\fonts\Montserrat-Bold.eot" />
     <Content Include="wwwroot\fonts\Montserrat-Bold.svg" />
@@ -31,8 +35,10 @@
     <Content Include="wwwroot\fonts\Montserrat-Regular.woff2" />
     <Content Include="wwwroot\icon.jpg" />
     <Content Include="wwwroot\icon.png" />
+    <Content Include="wwwroot\images\ajax-loader-small.gif" />
     <Content Include="wwwroot\images\arrow-down.png" />
     <Content Include="wwwroot\images\arrow-right.svg" />
+    <Content Include="wwwroot\images\back-button.png" />
     <Content Include="wwwroot\images\banner1.svg" />
     <Content Include="wwwroot\images\banner2.svg" />
     <Content Include="wwwroot\images\banner3.svg" />
@@ -41,13 +47,60 @@
     <Content Include="wwwroot\images\brand.PNG">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="wwwroot\images\calendar-next.png" />
+    <Content Include="wwwroot\images\calendar-prev.png" />
     <Content Include="wwwroot\images\cart.png" />
+    <Content Include="wwwroot\images\close.png" />
+    <Content Include="wwwroot\images\compare-button.png" />
+    <Content Include="wwwroot\images\details.png" />
+    <Content Include="wwwroot\images\discontinued-product-icon.png" />
+    <Content Include="wwwroot\images\download-button.png" />
+    <Content Include="wwwroot\images\edit.png" />
+    <Content Include="wwwroot\images\edit_.png" />
+    <Content Include="wwwroot\images\email-button.png" />
+    <Content Include="wwwroot\images\first.png" />
+    <Content Include="wwwroot\images\ie_warning.jpg" />
+    <Content Include="wwwroot\images\last.png" />
+    <Content Include="wwwroot\images\loading.gif" />
+    <Content Include="wwwroot\images\logo.png" />
     <Content Include="wwwroot\images\logout.PNG" />
     <Content Include="wwwroot\images\main_banner.png" />
     <Content Include="wwwroot\images\main_banner_text.png" />
     <Content Include="wwwroot\images\main_banner_text.svg" />
+    <Content Include="wwwroot\images\menu-icon.png" />
+    <Content Include="wwwroot\images\move.png" />
     <Content Include="wwwroot\images\my_orders.PNG" />
+    <Content Include="wwwroot\images\new.png" />
+    <Content Include="wwwroot\images\next.png" />
+    <Content Include="wwwroot\images\pointer.png" />
+    <Content Include="wwwroot\images\prev.png" />
+    <Content Include="wwwroot\images\rating1.png" />
+    <Content Include="wwwroot\images\rating2.png" />
     <Content Include="wwwroot\images\refresh.svg" />
+    <Content Include="wwwroot\images\remove.png" />
+    <Content Include="wwwroot\images\remove_.png" />
+    <Content Include="wwwroot\images\reply.png" />
+    <Content Include="wwwroot\images\retry.png" />
+    <Content Include="wwwroot\images\return.png" />
+    <Content Include="wwwroot\images\rss.png" />
+    <Content Include="wwwroot\images\shipping.png" />
+    <Content Include="wwwroot\images\shopping-bag.png" />
+    <Content Include="wwwroot\images\social-sprite.png" />
+    <Content Include="wwwroot\images\subscribe-button.png" />
+    <Content Include="wwwroot\images\toggle-black.png" />
+    <Content Include="wwwroot\images\toggle-gray.png" />
+    <Content Include="wwwroot\images\toggle-white.png" />
+    <Content Include="wwwroot\images\topic-type1.png" />
+    <Content Include="wwwroot\images\topic-type2.png" />
+    <Content Include="wwwroot\images\topic-type3.png" />
+    <Content Include="wwwroot\images\view-grid.png" />
+    <Content Include="wwwroot\images\view-list.png" />
+    <Content Include="wwwroot\images\vote-down-selected.png" />
+    <Content Include="wwwroot\images\vote-down.png" />
+    <Content Include="wwwroot\images\vote-up-selected.png" />
+    <Content Include="wwwroot\images\vote-up.png" />
+    <Content Include="wwwroot\images\watch.png" />
+    <Content Include="wwwroot\images\wishlist-button.png" />
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\js\site.min.js" />
     <Content Include="wwwroot\lib\bootstrap\.bower.json" />
@@ -99,6 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.LinkedIn" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />

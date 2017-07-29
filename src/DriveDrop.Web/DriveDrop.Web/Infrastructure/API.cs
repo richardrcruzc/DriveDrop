@@ -95,6 +95,11 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}/NewSender";
             }
+
+            public static string AddAddress(string baseUri)
+            {
+                return $"{baseUri}/AddAddress";
+            }
         }
         public static class Driver
         {

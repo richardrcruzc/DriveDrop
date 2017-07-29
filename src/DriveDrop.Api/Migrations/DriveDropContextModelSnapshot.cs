@@ -28,6 +28,8 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("Country");
 
+                    b.Property<int?>("CustomerId");
+
                     b.Property<double>("Latitude");
 
                     b.Property<double>("Longitude");
@@ -38,9 +40,13 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("Street");
 
+                    b.Property<string>("TypeAddress");
+
                     b.Property<string>("ZipCode");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("address","shippings");
                 });
@@ -84,19 +90,29 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("IdentityGuid");
 
+                    b.Property<string>("InsurancePhotoUri");
+
                     b.Property<string>("LastName");
 
                     b.Property<int?>("MaxPackage");
 
+                    b.Property<string>("PaymentMethodId");
+
+                    b.Property<string>("PersonalPhotoUri");
+
                     b.Property<string>("Phone");
 
                     b.Property<int?>("PickupRadius");
+
+                    b.Property<string>("PrimaryPhone");
 
                     b.Property<int?>("TransportTypeId");
 
                     b.Property<string>("UserName");
 
                     b.Property<string>("VehicleInfo");
+
+                    b.Property<string>("VehiclePhotoUri");
 
                     b.HasKey("Id");
 
@@ -449,6 +465,13 @@ namespace DriveDrop.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ZipCodeStates");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.ClientAgregate.Address", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.Customer")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.ClientAgregate.Customer", b =>

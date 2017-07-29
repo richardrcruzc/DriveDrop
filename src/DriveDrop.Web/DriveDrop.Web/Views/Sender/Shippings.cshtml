@@ -1,0 +1,49 @@
+@model IEnumerable<DriveDrop.Web.ViewModels.Shipment>
+    @{
+    
+
+    }
+<div class="side-2">
+
+
+    @await Html.PartialAsync("CustomerNavigation",(int)@ViewBag.Id)
+
+
+</div>
+                      <div class="center-2">
+                          <div class="page account-page order-list-page">
+                              <div class="page-title">
+                                  <h1>Sender dashboard</h1>
+                              </div>
+
+                              <div class="page-body">
+
+                                  <div class="order-list">
+                                      @foreach (var item in Model )
+{
+                                      var url = ViewBag.Uri + item.PickupPictureUri;
+                                      <div class="section order-item">
+                                          <div class="title">
+                                              <strong>Shipping #: @item.IdentityCode</strong>
+                                          </div>
+                                          <ul class="info">
+                                              <li>Status: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
+                                              <li>Date: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                                              <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                                              <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
+                                              <li>Pickup Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
+                                              <li>Delivery Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
+                                             <li><img src="@url" class="img-rounded" alt="no package image" width="100" height="75"></li>
+                                          </ul>
+                                          
+                                          <div class="buttons">
+                                              <input type="button" value="Details" class="button-2 order-details-button" onclick="setLocation('/orderdetails/6')" />
+                                          </div>
+                                      </div>
+                                      }
+                                  </div>
+                                   
+
+                              </div>
+                          </div>
+                      </div>

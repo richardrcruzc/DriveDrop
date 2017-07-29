@@ -20,8 +20,8 @@ namespace DriveDrop.Web.ViewModels
             PriorityTypeList = new List<SelectListItem>();
 
             PackageSizeList = new List<SelectListItem>();
-
-        }
+            Addresses = new List<AddressModel>();
+            }
 
         public IEnumerable<SelectListItem> CustomerTypeList { get; set; }
         public IEnumerable<SelectListItem> TransportTypeList { get; set; }
@@ -30,11 +30,13 @@ namespace DriveDrop.Web.ViewModels
 
         public IEnumerable<SelectListItem> PackageSizeList { get; set; }
 
+        public string PersonalPhotoUri { get; set; }
         public int CustomerId { get; set; }
         public int PackageSizeId { get; set; }
 
         public IFormFile file { get; set; }
 
+        public string PrimaryPhone { get; set; }
         public string FilePath { get; set; }
         [Required]
         [EmailAddress]
@@ -85,7 +87,7 @@ namespace DriveDrop.Web.ViewModels
 
         [Display(Name = "Transport Type")]
         [Required(ErrorMessage = "Transport Type required")]
-        [Range(1,999, ErrorMessage="Select a valid transport type")]
+        [Range(1, 999, ErrorMessage = "Select a valid transport type")]
         public int? TransportTypeId { get; set; }
         public TransportType TransportType { get; set; }
         public int CustomerStatusId { get; set; }
@@ -103,27 +105,30 @@ namespace DriveDrop.Web.ViewModels
 
         public string VehicleInfo { get; set; }
 
+        public List<AddressModel> Addresses { get; set; }
+
+
+        public int AddressTypeId { get; set; }
+
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
-        [Display(Name = "Phone")] 
-        public String PickupPhone { get;  set; }
-
+        [Display(Name = "Phone")]
+        public String PickupPhone { get; set; }
         [Display(Name = "Contact person")]
-        public String PickupContact { get;  set; }
-
+        public String PickupContact { get; set; }
         [Display(Name = "Street")]
         [Required(ErrorMessage = "Your must provide a pickup street")]
-        public String PickupStreet { get;  set; }
+        public String PickupStreet { get; set; }
         [Display(Name = "City")]
         [Required(ErrorMessage = "Your must provide a pickup city")]
-        public String PickupCity { get;  set; }
-        public String PickupState { get;  set; }
-        public String PickupCountry { get;  set; }
+        public String PickupCity { get; set; }
+        public String PickupState { get; set; }
+        public String PickupCountry { get; set; }
         [Display(Name = "Postal code")]
         [Required(ErrorMessage = "Your must provide a pickup Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String PickupZipCode { get;  set; }
+        public String PickupZipCode { get; set; }
         //public Double PickupLatitude { get;  set; }
         //public Double PickupLongitude { get;  set; }
 
@@ -133,22 +138,22 @@ namespace DriveDrop.Web.ViewModels
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Phone")]
-        public String DeliveryPhone { get;  set; }
+        public String DeliveryPhone { get; set; }
         [Display(Name = "Contact person")]
-        public String DeliveryContact { get;  set; }
+        public String DeliveryContact { get; set; }
 
         [Display(Name = "Street")]
         [Required(ErrorMessage = "Your must provide a delivery street")]
-        public String DeliveryStreet { get;  set; }
+        public String DeliveryStreet { get; set; }
         [Display(Name = "City")]
         [Required(ErrorMessage = "Your must provide a delivery City")]
-        public String DeliveryCity { get;  set; }
-        public String DeliveryState { get;  set; }
-        public String DeliveryCountry { get;  set; }
+        public String DeliveryCity { get; set; }
+        public String DeliveryState { get; set; }
+        public String DeliveryCountry { get; set; }
         [Display(Name = "Postal Code")]
         [Required(ErrorMessage = "Your must provide a delivery Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String DeliveryZipCode { get;  set; }
+        public String DeliveryZipCode { get; set; }
         //public Double DeliveryLatitude { get;  set; }
         //public Double DeliveryLongitude { get;  set; }
 
@@ -158,37 +163,37 @@ namespace DriveDrop.Web.ViewModels
         /// <summary>
         /// Shipment
         /// </summary>
-        public string IdentityCode { get;  set; }
-        public PriorityType PriorityType { get;  set; }
-        public int PriorityTypeLevel { get;  set; }
+        public string IdentityCode { get; set; }
+        public PriorityType PriorityType { get; set; }
+        public int PriorityTypeLevel { get; set; }
 
-        public int TransportTypeIdS { get;  set; }
-        public TransportType TransportTypeS { get;  set; }
+        public int TransportTypeIdS { get; set; }
+        public TransportType TransportTypeS { get; set; }
 
 
         [Display(Name = "Shipping Value")]
         [Required(ErrorMessage = "required")]
-        public Decimal? Amount { get;  set; }
-        public Decimal Tax { get;  set; }
-        public Decimal Discount { get;  set; }
-        public string PromoCode { get;  set; }
+        public Decimal? Amount { get; set; }
+        public Decimal Tax { get; set; }
+        public Decimal Discount { get; set; }
+        public string PromoCode { get; set; }
 
         [Display(Name = "Priority Type")]
         [Required(ErrorMessage = "Priority Type required")]
         [Range(1, 999, ErrorMessage = "Select a valid Priority Type")]
-        public int PriorityTypeId { get;  set; }
+        public int PriorityTypeId { get; set; }
 
         [DataType(DataType.MultilineText)]
         public string Note { get; set; }
 
-         
+
         //[CreditCard]
         [DataType(DataType.CreditCard)]
         [Display(Name = "Credit Card Number")]
         [Required(ErrorMessage = "required")]
         //[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
         public String CardNumber { get; set; }
-        [Required]        
+        [Required]
         [Display(Name = "Security Number")]
         public int SecurityNumber { get; set; }
         [Required]
@@ -197,8 +202,8 @@ namespace DriveDrop.Web.ViewModels
         [Required]
         [Display(Name = "Expiration")]
         public String Expiration { get; set; }
-        
-        
+
+
 
 
 
@@ -223,17 +228,24 @@ namespace DriveDrop.Web.ViewModels
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
         public IEnumerable<SelectListItem> PackageSizeList { get; set; }
 
+
+        public string DriverLincensePictureUri { get; set; }
+        public string PersonalPhotoUri { get; set; }
+        public string VehiclePhotoUri { get; set; }
+        public string InsurancePhotoUri { get; set; }
+
+
         public int PackageSizeId { get; set; }
-        
+
         public int CustomerId { get; set; }
 
         [Display(Name = "Images")]
-       // [FileExtensions(Extensions = "JPG,TIF,PNG,GIF")]
+        // [FileExtensions(Extensions = "JPG,TIF,PNG,GIF")]
         [DataType(DataType.Upload)]
         public IEnumerable<IFormFile> Files { get; set; }
-         public string FilePath { get; set; }
+        public string FilePath { get; set; }
         public string VehicleInfo { get; set; }
-        
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -366,7 +378,7 @@ namespace DriveDrop.Web.ViewModels
         public int CustomerId { get; set; }
 
         public int PackageSizeId { get; set; }
-        
+
 
         public IFormFile file { get; set; }
 
@@ -435,7 +447,7 @@ namespace DriveDrop.Web.ViewModels
         public TransportType TransportType { get; set; }
 
         [Required(ErrorMessage = "Your must provide a Quantity")]
-        public int? Quantity { get; set; } 
+        public int? Quantity { get; set; }
 
         [Required(ErrorMessage = "Your must provide a Shipping value")]
         public Decimal? Amount { get; set; }
@@ -469,5 +481,31 @@ namespace DriveDrop.Web.ViewModels
 
 
 
+    }
+    public class AddressModel {
+
+        [Required(ErrorMessage = "Your must provide a PhoneNumber")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
+        [Display(Name = "Phone")]
+        public String Phone { get; set; }
+        [Display(Name = "Contact person")]
+        public String Contact { get; set; }
+        [Display(Name = "Street")]
+        [Required(ErrorMessage = "Your must provide a pickup street")]
+        public String Street { get; set; }
+        [Display(Name = "City")]
+        [Required(ErrorMessage = "Your must provide a pickup city")]
+        public String City { get; set; }
+        public String State { get; set; }
+        public String Country { get; set; }
+        [Display(Name = "Postal code")]
+        [Required(ErrorMessage = "Your must provide a pickup Postal Code")]
+        [DataType(DataType.PostalCode)]
+        public String ZipCode { get; set; }
+        public Double Latitude { get;  set; }
+        public Double Longitude { get;  set; }
+        public String TypeAddress { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -65,6 +65,44 @@ namespace DriveDrop.Api.Controllers
         }
 
 
+        [Route("[action]")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddAddress([FromBody]CustomerModel c) //, [FromBody]List<IFormFile> files)
+        {
+            try
+            { 
+                    var updateCustomer = await _context.Customers
+                   .Include(s => s.TransportType)
+                   .Include(t => t.CustomerStatus)
+                   .Include(s => s.CustomerType)                   
+               .FirstOrDefaultAsync(x => x.Id == c.CustomerId);
+
+                    foreach (var a in c.Addresses)
+                    {
+                        var newA = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);
+                        updateCustomer.AddAddress(newA);
+                    }
+                    _context.Customers.Update(updateCustomer);
+                    
+                    await _context.SaveChangesAsync();
+
+                    return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+                
+            }
+            catch (DbUpdateException ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                var error = string.Format("Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator. {0}", ex.Message);
+
+                return NotFound("UnableToSaveChanges");
+            }
+             
+        }
+
         //PUT api/v1/[controller]/New
         [Route("[action]")]
         [HttpPost]
@@ -80,7 +118,11 @@ namespace DriveDrop.Api.Controllers
 
                     var tmpUser = Guid.NewGuid().ToString();
 
-                    var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Sender.Id, 0, 0, 0,0,c.UserEmail);
+                    var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, email:c.Email,phone: c.Phone,
+                        customerTypeId:CustomerType.Sender.Id, maxPackage: c.MaxPackage??0,pickupRadius: c.PickupRadius??0, 
+                       deliverRadius: c.DeliverRadius??0,commission: 0,userName: c.UserEmail, vehicleInfo: c.VehicleInfo, 
+                       primaryPhone: c.PrimaryPhone, DriverLincensePictureUri:  c.DriverLincensePictureUri,PersonalPhotoUri: c.PersonalPhotoUri,
+                       VehiclePhotoUri: c.VehiclePhotoUri, InsurancePhotoUri: c.InsurancePhotoUri);
 
                     _context.Add(newCustomer);
                     _context.SaveChanges();

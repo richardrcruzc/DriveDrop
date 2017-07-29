@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,101 +8,191 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/app.css" />
-        <link rel="stylesheet" href="~/css/app.component.css" />
-        <link rel="stylesheet" href="~/css/shared/components/header/header.css" />
-        <link rel="stylesheet" href="~/css/shared/components/identity/identity.css" />
-        <link rel="stylesheet" href="~/css/shared/components/pager/pager.css" />
-        <link rel="stylesheet" href="~/css/basket/basket.component.css" />
-        <link rel="stylesheet" href="~/css/basket/basket-status/basket-status.component.css" />
-        <link rel="stylesheet" href="~/css/catalog/catalog.component.css" />
-        <link rel="stylesheet" href="~/css/orders/orders.component.css" />
-        <link rel="stylesheet" href="~/css/orders/orders-detail/orders-detail.component.css" />
-        <link rel="stylesheet" href="~/css/orders/orders-new/orders-new.component.css" />
-
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
-        <title>jQuery UI Autocomplete - Default functionality</title>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-
-
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/styles.css" />
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-
-
-        <title>jQuery UI Autocomplete - Default functionality</title>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+        <link rel="stylesheet" href="~/css/styles.min.css" />
     </environment>
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
-<body>
-    <header class="navbar navbar-light navbar-static-top">
-        <div class="container">
-            <article class="row">
+<body> 
 
-                <section class="col-lg-7 col-md-6 col-xs-12">
-                    <a class="navbar-brand" routerLink="catalog"></a>
-                        <a asp-area="" asp-controller="Home" asp-action="Index">
-                            <div>DriveDrop </div>
-                            @*<div> <img src="~/images/brand.png" /></div>*@
-                            @*<img src="~/images/brand.png" />*@
-                        </a>
-                </section>
+    <div class="master-wrapper-page">
+        @*<div class="admin-header-links">
+            <a href="/admin" class="administration">Administration</a>
+        </div>*@
 
-                @await Html.PartialAsync("_LoginPartial")
-            </article>
+        <div class="header">
+
+            <div class="header-upper">
+                <div class="header-selectors-wrapper">
+ 
+
+                </div>
+                <div class="header-links-wrapper">
+                    <div class="header-links">
+                        @await Html.PartialAsync("_LoginPartial")
+                      
+                    </div>
+
+                    
+
+                </div>
+            </div>
+            <div class="header-lower">
+                <div class="header-logo">
+                    <a href="/">
+                        <img title="" alt="DriveDrop" src="~/images/logo.png">
+                    </a>
+                </div>
+                
+            </div>
         </div>
-    </header>
 
-    @RenderBody()
+      
+        
+        <div class="master-wrapper-content">
 
 
-    <footer class="esh-app-footer">
-        <div class="container">
-            <article class="row">
+            <div class="master-column-wrapper">
 
-                <section class="col-sm-6">
-                    @*<img class="esh-app-footer-brand" src="~/images/brand_dark.png" />*@
-                </section>
+                
+                    @RenderBody()
+ 
 
-                <section class="col-sm-6">
-                    <div class="esh-app-footer-text hidden-xs"> DriveDrop </div>
-                </section>
+            </div>
 
-            </article>
         </div>
-    </footer>
+
+        <div class="footer">
+            <div class="footer-upper">
+                <div class="footer-block information">
+                    <div class="title">
+                        <strong>Information</strong>
+                    </div>
+                    <ul class="list">
+                        <li><a href="/sitemap">Sitemap</a></li>
+                        <li><a href="/shipping-returns">Shipping &amp; returns</a></li>
+                        <li><a href="/privacy-notice">Privacy notice</a></li>
+                        <li><a href="/conditions-of-use">Conditions of Use</a></li>
+                        <li><a href="/about-us">About us</a></li>
+                        <li><a href="/contactus">Contact us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-block customer-service">
+                    <div class="title">
+                        <strong>Customer service</strong>
+                    </div>
+                    <ul class="list">
+                        <li><a href="/search">Search</a> </li>
+                        <li><a href="/news">News</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="footer-block my-account">
+                    <div class="title">
+                        <strong>My account</strong>
+                    </div>
+                    <ul class="list">
+                        <li><a href="/customer/info">My account</a></li>
+                        <li><a href="/order/history">Shippings</a></li>
+                        <li><a href="/customer/addresses">Addresses</a></li>
+                        
+                        <li><a href="/vendor/apply">Apply for vendor account</a></li>
+                    </ul>
+                </div>
+                <div class="footer-block follow-us">
+                    <div class="social">
+                        <div class="title">
+                            <strong>Follow us</strong>
+                        </div>
+                        <ul class="networks">
+                            <li class="facebook"><a href="http://www.facebook.com/drivedrop" target="_blank">Facebook</a></li>
+                            <li class="twitter"><a href="https://twitter.com/drivedrop" target="_blank">Twitter</a></li>
+                            <li class="rss"><a href="/news/rss/1">RSS</a></li>
+                            <li class="youtube"><a href="http://www.youtube.com/user/drivedrop" target="_blank">YouTube</a></li>
+                            <li class="google-plus"><a href="https://plus.google.com/+drivedrop" target="_blank">Google+</a></li>
+                        </ul>
+                    </div>
+                    <div class="newsletter">
+                        <div class="title">
+                            <strong>Newsletter</strong>
+                        </div>
+                        <div class="newsletter-subscribe" id="newsletter-subscribe-block">
+                            <div class="newsletter-email">
+                                <input class="newsletter-subscribe-text" id="newsletter-email" name="NewsletterEmail" placeholder="Enter your email here..." type="text" value="" />
+                                <input type="button" value="Subscribe" id="newsletter-subscribe-button" class="button-1 newsletter-subscribe-button" />
+                            </div>
+                            <div class="newsletter-validation">
+                                <span id="subscribe-loading-progress" style="display: none;" class="please-wait">Wait...</span>
+                                <span class="field-validation-valid" data-valmsg-for="NewsletterEmail" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="newsletter-result" id="newsletter-result-block"></div>
+                      
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer-lower">
+                <div class="footer-info">
+                    <span class="footer-disclaimer">Copyright &copy; 2017 Your store name. All rights reserved.</span>
+                </div>
+                <div class="footer-powered-by">
+
+                    Powered by <a href="http://www.drivedrop.com/">drivedrop</a>
+                </div>
+
+            </div>
+
+        </div>
+       
+    </div>
+
+
 
     <environment names="Development">
 
-        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+
+
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
         </script>
         <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+
     </environment>
 
+
+
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
+
+
+
+
+ 

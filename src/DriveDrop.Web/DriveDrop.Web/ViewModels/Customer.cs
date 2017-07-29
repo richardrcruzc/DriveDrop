@@ -40,7 +40,10 @@ namespace DriveDrop.Web.ViewModels
        public virtual ICollection<Shipment> ShipmentDrivers { get;  set; }
         public virtual ICollection<Shipment> ShipmentSenders { get;  set; }
 
-        public string DriverLincensePictureUri { get;  set; }
+        public List<AddressModel> Addresses { get;  set; }
+
+
+    public string DriverLincensePictureUri { get;  set; }
          
         public string FullName
         {

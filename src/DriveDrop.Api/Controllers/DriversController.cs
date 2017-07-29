@@ -190,7 +190,11 @@ namespace DriveDrop.Api.Controllers
 
                 var tmpUser = Guid.NewGuid().ToString();
 
-                var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, c.TransportTypeId, CustomerStatus.WaitingApproval.Id, c.Email, c.Phone, CustomerType.Driver.Id, c.MaxPackage ?? 0, c.PickupRadius ?? 0, c.DeliverRadius ?? 0, c.Commission, c.UserEmail, c.VehicleInfo);
+                var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, email: c.Email, phone: c.Phone,
+                        customerTypeId: CustomerType.Sender.Id, maxPackage: c.MaxPackage ?? 0, pickupRadius: c.PickupRadius ?? 0,
+                       deliverRadius: c.DeliverRadius ?? 0, commission: 0, userName: c.UserEmail, vehicleInfo: c.VehicleInfo,
+                       primaryPhone: c.PrimaryPhone, DriverLincensePictureUri: c.DriverLincensePictureUri, PersonalPhotoUri: c.PersonalPhotoUri,
+                       VehiclePhotoUri: c.VehiclePhotoUri, InsurancePhotoUri: c.InsurancePhotoUri);
 
                 _context.Add(newCustomer);
                 _context.SaveChanges();

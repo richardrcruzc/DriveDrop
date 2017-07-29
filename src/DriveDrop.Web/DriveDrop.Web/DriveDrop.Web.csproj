@@ -15,55 +15,78 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\css\app.component.css" />
-    <Content Include="wwwroot\css\app.css" />
-    <Content Include="wwwroot\css\basket\basket-status\basket-status.component.css" />
-    <Content Include="wwwroot\css\basket\basket.component.css" />
-    <Content Include="wwwroot\css\catalog\catalog.component.css" />
-    <Content Include="wwwroot\css\orders\orders-detail\orders-detail.component.css" />
-    <Content Include="wwwroot\css\orders\orders-new\orders-new.component.css" />
-    <Content Include="wwwroot\css\orders\orders.component.css" />
-    <Content Include="wwwroot\css\shared\components\header\header.css" />
-    <Content Include="wwwroot\css\shared\components\identity\identity.css" />
-    <Content Include="wwwroot\css\shared\components\pager\pager.css" />
+    <Content Include="wwwroot\css\ie8.css" />
+    <Content Include="wwwroot\css\print.css" />
+    <Content Include="wwwroot\css\site.css" />
     <Content Include="wwwroot\css\site.min.css" />
+    <Content Include="wwwroot\css\styles.css" />
+    <Content Include="wwwroot\css\styles.rtl.css" />
     <Content Include="wwwroot\favicon.ico" />
-    <Content Include="wwwroot\fonts\Montserrat-Bold.eot" />
-    <Content Include="wwwroot\fonts\Montserrat-Bold.svg" />
-    <Content Include="wwwroot\fonts\Montserrat-Bold.ttf" />
-    <Content Include="wwwroot\fonts\Montserrat-Bold.woff" />
-    <Content Include="wwwroot\fonts\Montserrat-Bold.woff2" />
-    <Content Include="wwwroot\fonts\Montserrat-Regular.eot" />
-    <Content Include="wwwroot\fonts\Montserrat-Regular.svg" />
-    <Content Include="wwwroot\fonts\Montserrat-Regular.ttf" />
-    <Content Include="wwwroot\fonts\Montserrat-Regular.woff" />
-    <Content Include="wwwroot\fonts\Montserrat-Regular.woff2" />
-    <Content Include="wwwroot\images\arrow-down.png" />
-    <Content Include="wwwroot\images\arrow-right.svg" />
+    <Content Include="wwwroot\images\ajax-loader-small.gif" />
+    <Content Include="wwwroot\images\back-button.png" />
+    <Content Include="wwwroot\images\banner1.svg" />
+    <Content Include="wwwroot\images\banner2.svg" />
+    <Content Include="wwwroot\images\banner3.svg" />
+    <Content Include="wwwroot\images\banner4.svg" />
     <Content Include="wwwroot\images\Brand-dark.png" />
     <Content Include="wwwroot\images\brand.png" />
-    <Content Include="wwwroot\images\cart.png" />
+    <Content Include="wwwroot\images\calendar-next.png" />
+    <Content Include="wwwroot\images\calendar-prev.png" />
+    <Content Include="wwwroot\images\close.png" />
+    <Content Include="wwwroot\images\compare-button.png" />
+    <Content Include="wwwroot\images\DefaultProfileImage.png" />
+    <Content Include="wwwroot\images\details.png" />
+    <Content Include="wwwroot\images\discontinued-product-icon.png" />
+    <Content Include="wwwroot\images\download-button.png" />
+    <Content Include="wwwroot\images\Dropbox.lnk" />
+    <Content Include="wwwroot\images\edit.png" />
+    <Content Include="wwwroot\images\edit_.png" />
+    <Content Include="wwwroot\images\email-button.png" />
+    <Content Include="wwwroot\images\first.png" />
+    <Content Include="wwwroot\images\ie_warning.jpg" />
+    <Content Include="wwwroot\images\last.png" />
+    <Content Include="wwwroot\images\loading.gif" />
     <Content Include="wwwroot\images\logo.png" />
-    <Content Include="wwwroot\images\logout.png" />
-    <Content Include="wwwroot\images\main_banner.png" />
-    <Content Include="wwwroot\images\main_banner_text.png" />
-    <Content Include="wwwroot\images\main_banner_text.svg" />
-    <Content Include="wwwroot\images\my_orders.png" />
-    <Content Include="wwwroot\images\refresh.svg" />
-    <Content Include="wwwroot\images\service-icon-01.png" />
-    <Content Include="wwwroot\images\service-icon-02.png" />
-    <Content Include="wwwroot\images\service-icon-03.png" />
-    <Content Include="wwwroot\images\service-icon-04.png" />
+    <Content Include="wwwroot\images\menu-icon.png" />
+    <Content Include="wwwroot\images\move.png" />
+    <Content Include="wwwroot\images\new.png" />
+    <Content Include="wwwroot\images\next.png" />
+    <Content Include="wwwroot\images\pointer.png" />
+    <Content Include="wwwroot\images\prev.png" />
+    <Content Include="wwwroot\images\rating1.png" />
+    <Content Include="wwwroot\images\rating2.png" />
+    <Content Include="wwwroot\images\remove.png" />
+    <Content Include="wwwroot\images\remove_.png" />
+    <Content Include="wwwroot\images\reply.png" />
+    <Content Include="wwwroot\images\retry.png" />
+    <Content Include="wwwroot\images\return.png" />
+    <Content Include="wwwroot\images\rss.png" />
+    <Content Include="wwwroot\images\shipping.png" />
+    <Content Include="wwwroot\images\shopping-bag.png" />
+    <Content Include="wwwroot\images\Skype.lnk" />
     <Content Include="wwwroot\images\slider_img.jpg" />
+    <Content Include="wwwroot\images\social-sprite.png" />
+    <Content Include="wwwroot\images\subscribe-button.png" />
+    <Content Include="wwwroot\images\TeamViewer 12.lnk" />
+    <Content Include="wwwroot\images\toggle-black.png" />
+    <Content Include="wwwroot\images\toggle-gray.png" />
+    <Content Include="wwwroot\images\toggle-white.png" />
+    <Content Include="wwwroot\images\topic-type1.png" />
+    <Content Include="wwwroot\images\topic-type2.png" />
+    <Content Include="wwwroot\images\topic-type3.png" />
+    <Content Include="wwwroot\images\view-grid.png" />
+    <Content Include="wwwroot\images\view-list.png" />
+    <Content Include="wwwroot\images\vote-down-selected.png" />
+    <Content Include="wwwroot\images\vote-down.png" />
+    <Content Include="wwwroot\images\vote-up-selected.png" />
+    <Content Include="wwwroot\images\vote-up.png" />
+    <Content Include="wwwroot\images\watch.png" />
+    <Content Include="wwwroot\images\wishlist-button.png" />
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\js\site.min.js" />
     <Content Include="wwwroot\lib\bootstrap\.bower.json" />
     <Content Include="wwwroot\lib\bootstrap\bower.json" />
     <Content Include="wwwroot\lib\bootstrap\CHANGELOG.md" />
-    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-flex.css" />
-    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-flex.css.map" />
-    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-flex.min.css" />
-    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-flex.min.css.map" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
@@ -72,17 +95,25 @@
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
     <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
     <Content Include="wwwroot\lib\bootstrap\Gemfile" />
     <Content Include="wwwroot\lib\bootstrap\Gemfile.lock" />
     <Content Include="wwwroot\lib\bootstrap\Gruntfile.js" />
-    <Content Include="wwwroot\lib\bootstrap\grunt\bs-sass-compile\libsass.js" />
-    <Content Include="wwwroot\lib\bootstrap\grunt\bs-sass-compile\sass.js" />
     <Content Include="wwwroot\lib\bootstrap\grunt\change-version.js" />
     <Content Include="wwwroot\lib\bootstrap\grunt\configBridge.json" />
     <Content Include="wwwroot\lib\bootstrap\grunt\gcp-key.json.enc" />
@@ -93,7 +124,6 @@
     <Content Include="wwwroot\lib\bootstrap\ISSUE_TEMPLATE.md" />
     <Content Include="wwwroot\lib\bootstrap\js\.babelrc" />
     <Content Include="wwwroot\lib\bootstrap\js\.eslintrc.json" />
-    <Content Include="wwwroot\lib\bootstrap\js\.jscsrc" />
     <Content Include="wwwroot\lib\bootstrap\js\dist\alert.js" />
     <Content Include="wwwroot\lib\bootstrap\js\dist\alert.js.map" />
     <Content Include="wwwroot\lib\bootstrap\js\dist\button.js" />
@@ -136,12 +166,12 @@
     <Content Include="wwwroot\lib\bootstrap\README.md" />
     <Content Include="wwwroot\lib\bootstrap\sache.json" />
     <Content Include="wwwroot\lib\bootstrap\scss\.scss-lint.yml" />
-    <Content Include="wwwroot\lib\bootstrap\scss\bootstrap-flex.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\bootstrap-grid.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\bootstrap-reboot.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\bootstrap.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_alert.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_background-variant.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_badge.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_border-radius.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_breakpoints.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_buttons.scss" />
@@ -159,18 +189,16 @@
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_nav-divider.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_navbar-align.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_pagination.scss" />
-    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_progress.scss" />
-    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_reset-filter.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_reset-text.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_resize.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_screen-reader.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_size.scss" />
-    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_tab-focus.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_table-row.scss" />
-    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_tag.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_text-emphasis.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_text-hide.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\mixins\_text-truncate.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_transforms.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\mixins\_visibility.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_align.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_background.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_borders.scss" />
@@ -178,12 +206,14 @@
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_display.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_flex.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_float.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\utilities\_position.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_screenreaders.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\utilities\_sizing.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_spacing.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_text.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\utilities\_visibility.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_alert.scss" />
-    <Content Include="wwwroot\lib\bootstrap\scss\_animation.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\_badge.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_breadcrumb.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_button-group.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_buttons.scss" />
@@ -213,8 +243,8 @@
     <Content Include="wwwroot\lib\bootstrap\scss\_reboot.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_responsive-embed.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_tables.scss" />
-    <Content Include="wwwroot\lib\bootstrap\scss\_tags.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_tooltip.scss" />
+    <Content Include="wwwroot\lib\bootstrap\scss\_transitions.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_type.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_utilities.scss" />
     <Content Include="wwwroot\lib\bootstrap\scss\_variables.scss" />
@@ -543,18 +573,26 @@
     <Content Include="wwwroot\lib\tether\src\js\shift.js" />
     <Content Include="wwwroot\lib\tether\src\js\tether.js" />
     <Content Include="wwwroot\lib\tether\src\js\utils.js" />
-    <Content Include="wwwroot\Uploads\Img\Driver\0b72eab8-cafe-4928-a432-b15f1246bf87.tif">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <Content Include="wwwroot\Uploads\Img\Driver\0b72eab8-cafe-4928-a432-b15f1246bf87.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Driver\0b72eab8-cafe-4928-a432-b15f1246bf87.tif" />
     <Content Include="wwwroot\Uploads\Img\Driver\DLsample-New-Adult-EDL.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Driver\DLsample-New-Minor-Standard.jpg" />
     <Content Include="wwwroot\Uploads\Img\Driver\DLsample-Old-Adult-Standard.jpg" />
-    <Content Include="wwwroot\Uploads\Img\Shipment\5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\Uploads\Img\Shipment\62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\_references.js" />
+    <Content Include="wwwroot\Uploads\Img\Sender\2d1dc2ae-8e34-48d0-aa79-4ef72cf091c0.tif" />
+    <Content Include="wwwroot\Uploads\Img\Sender\2de6b95c-d8d6-43aa-98e8-b6a2151678c4.tif" />
+    <Content Include="wwwroot\Uploads\Img\Sender\371df87a-3aab-4d99-95f6-20bf8c8f2360.tif" />
+    <Content Include="wwwroot\Uploads\Img\Sender\62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Sender\7fefab59-6832-4914-85eb-bb7d15d8126e.tif" />
+    <Content Include="wwwroot\Uploads\Img\Sender\a84bae80-0dca-41f2-93c0-aa5cfaa20545.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Sender\e2353390-d8ac-48c8-84ff-800e43607730.tif" />
+    <Content Include="wwwroot\Uploads\Img\Sender\e4109d0f-9f58-4771-bea8-2f64be90fe57.tif" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\7b1be145-5935-424a-b02b-2079d91c4536.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\88649e9d-e70f-4c7c-9c6e-3aeda453f5c4.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\download1.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\download2.jpg" />
+    <Content Include="wwwroot\Uploads\Img\Shipment\e340d8c5-af7e-4643-be2f-ab879233209e.jpg" />
   </ItemGroup>
 
 
@@ -569,6 +607,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />

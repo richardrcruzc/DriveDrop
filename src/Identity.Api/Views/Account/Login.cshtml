@@ -7,59 +7,64 @@
 @{
     ViewData["Title"] = "Log in";
 }
-<div class="brand-header-block">
-    <ul class="container">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">REGISTER</a></li>
-        <li class="active" style="margin-right: 65px;">LOGIN</li>
-    </ul>
-</div>
-<div class="container account-login-container">
-    <div class="row">
-        <div class="col-md-12">
-            <section>
+
+<div class="page login-page">
+    <div class="page-title">
+        <h1>Welcome</h1>
+    </div>
+
+    <div class="page-body">
+        <div class="customer-blocks">
+            <div class="new-wrapper register-block">
+                <div class="title">
+                    <strong> New Customer</strong>
+                </div>
+                <div class="text">
+                    By creating an account on our website you will be able to shop faster, be up to date on an orders status, and keep track of the orders you have previously made.
+                </div>
+                <div class="buttons">                
+                    <a href="@ViewData["ReturnHomeUrl"]/sender/NewSender" class="button-1 register-button">Driver?</a>
+                    <a href="@ViewData["ReturnHomeUrl"]/Driver/NewDriver" class="button-1 register-button">Sender?</a>
+
+                </div>
+            </div>
+            <div class="returning-wrapper fieldset">
+                <div class="title">
+                    <strong>Returning Customer </strong>
+                </div>
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                    <input type="hidden" asp-for="ReturnUrl" />
-                    <h4>ARE YOU REGISTERED?</h4>
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Email" class="control-label form-label"></label>
-                        <input asp-for="Email" class="form-control form-input form-input-center" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label form-label"></label>
-                        <input asp-for="Password" class="form-control form-input form-input-center" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
-                                @Html.DisplayNameFor(m => m.RememberMe)
-                            </label>
+
+                    <div class="form-fields">
+                        <div class="inputs">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" autofocus="autofocus" class="username email"  />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
+                        <div class="inputs">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="inputs reversed">
+                            <input asp-for="RememberMe" />
+                            <label for="RememberMe">Remember me?</label>
+                            <span class="forgot-password">
+                                <a href="/passwordrecovery">Forgot password?</a>
+                            </span>
+                        </div>
+
+                        <div class="buttons">
+                            <button type="submit" class="button-1 login-button">LOG IN</button>
+                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;LOG IN&nbsp;</button>
-                    </div>
-                    <p >
-                        <a  href="@ViewData["ReturnHomeUrl"]" class="text">Register as a new user?</a>
-                    </p>
-                    <p>
-                        Note that for demo purposes you don't need to register and can login with these credentials:
-                    </p>
-                    <p>
-                        User:     <b>demouser@pununo.com</b>
-                    </p>
-                    <p>
-                        Password: <b>Pass@word1</b>
-                    </p>
                 </form>
-            </section>
+</div>
         </div>
     </div>
 </div>
+ 
+            @section Scripts {
+                @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+            }
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}

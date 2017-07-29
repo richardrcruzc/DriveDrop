@@ -64,7 +64,60 @@ namespace DriveDrop.Web.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> AddressAdd(int id)
+        {
+            ViewBag.Id = id;
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            return View(new AddressModel());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]       
+        public async Task<IActionResult> AddressAdd(AddressModel model)
+        {
+            ViewBag.Id = model.Id;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            return View(model);
+        }
+            public async Task<IActionResult> Address(int id)
+        {
+            ViewBag.Id = id;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
 
+            var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id  );
+
+
+            var dataString = await _apiClient.GetStringAsync(getById, token);
+
+
+            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+
+
+            return View(response.Addresses);
+
+                    }
+
+        public async Task<IActionResult> Shippings(int id)
+        {
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetShippingByCustomerId(_remoteServiceShippingsUrl, id);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            ViewBag.Id = id;
+            var shippings = JsonConvert.DeserializeObject<List<Shipment>>((dataString));
+            if (shippings == null)
+                return View(new List<Shipment>());
+            return View(shippings);
+
+        }
 
         public async Task<IActionResult> Result(int? id)
         {
@@ -96,7 +149,110 @@ namespace DriveDrop.Web.Controllers
 
             return View(response);
         }
-        
+
+        public async Task<IActionResult> NewShipping(int id)
+        {
+            var model = new NewShipment();
+            await PrepareCustomerModel(model);
+            model.CustomerId = id;
+            return View(model);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewShipping(NewShipment c, List<IFormFile> files)
+        {
+            try
+            {
+
+
+                foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
+                {
+                    var tt = state.Errors.ToString();
+                }
+
+                if (ModelState.IsValid)
+                {
+
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
+
+
+
+                    Guid extName = Guid.NewGuid();
+                    //saving files
+                    long size = files.Sum(f => f.Length);
+
+                    // full path to file in temp location
+                    var filePath = Path.GetTempFileName();
+                    var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\Shipment");
+                    var fileName = "";
+
+                    foreach (var formFile in files)
+                    {
+
+                        if (formFile.Length > 0)
+                        {
+                            var extension = ".jpg";
+                            if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                                extension = ".jpg";
+                            if (formFile.FileName.ToLower().EndsWith(".tif"))
+                                extension = ".tif";
+                            if (formFile.FileName.ToLower().EndsWith(".png"))
+                                extension = ".png";
+                            if (formFile.FileName.ToLower().EndsWith(".gif"))
+                                extension = ".gif";
+
+
+
+
+                            filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                            fileName = string.Format("uploads\\img\\Shipment\\{0}{1}", extName, extension);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await formFile.CopyToAsync(stream);
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                    {
+                        c.PickupPictureUri = fileName;
+                    }
+
+                    var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceShippingsUrl);
+
+                    var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception("Error creating Shipping, try later.");
+                    }
+
+
+                    // response.EnsureSuccessStatusCode();
+                    return RedirectToAction("result", new { id = c.CustomerId });
+                    // return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                var error = string.Format("Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator. {0}", ex.Message);
+
+                ModelState.AddModelError("", error);
+            }
+
+
+            await PrepareCustomerModel(c);
+
+            return View(c);
+
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveNewShipment(NewShipment c, List<IFormFile> files)
@@ -475,6 +631,6 @@ namespace DriveDrop.Web.Controllers
             return model;
              
         }
-
+       
     }
 }
