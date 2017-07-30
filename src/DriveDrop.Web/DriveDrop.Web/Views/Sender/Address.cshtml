@@ -47,7 +47,7 @@
                                 </li>
                             </ul>
                             <div class="buttons">
-                                <input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />
+                                @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
                                 <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
                             </div>
                         </div>
@@ -59,8 +59,9 @@
                                 var postData = {
                                     addressId: addressId
                                 };
+                                alert(addressId);
                                 addAntiForgeryToken(postData);
-
+                                alert(addressId);
                                 $.ajax({
                                     cache: false,
                                     type: 'POST',

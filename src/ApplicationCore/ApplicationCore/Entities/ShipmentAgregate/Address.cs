@@ -9,6 +9,7 @@ namespace ApplicationCore.Entities.ClientAgregate
     public class Address
        : ValueObject
     {
+       public int Id { get; private set; }
         public String TypeAddress { get; private set; }
 
         public String Street { get; private set; }

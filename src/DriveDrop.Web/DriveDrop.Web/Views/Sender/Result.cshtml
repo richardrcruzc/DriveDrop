@@ -1,4 +1,4 @@
-﻿@model  DriveDrop.Web.ViewModels.Customer
+﻿@model  DriveDrop.Web.ViewModels.CustomerInfoModel
 
     @{
         ViewData["Title"] = "Details";
@@ -17,70 +17,101 @@
         </div>
 
         <div class="page-body">
-            <form method="post" asp-action="NewServer" enctype="multipart/form-data">
-                   
-                        <div class="fieldset"> 
-                             
+            <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data"
+                  data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification" >                 
+
+                    @Html.AntiForgeryToken()
+
+
+                    <input asp-for="Id" hidden />
+                    <input asp-for="StatusId" hidden />
+                    <input asp-for="CustomerStatus" hidden />
+                <input asp-for="PhotoUrl" hidden />
+                
+                    <div class="fieldset">
+
+                        <div class="title">
+                            <strong>Your Personal Details</strong>
+                        </div>
+
+
+
+                        <div asp-validation-summary="ModelOnly" class="result"></div>
+
+
+
+
+
+                        <div class="form-fields">
+                            <div class="inputs">
+                                <label for="CustomerStatus">Status</label>
+                                <div class="gender">
+                                    <span>
+
+                                        <label class="male">@Model.CustomerStatus</label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="inputs">
+                                <label for="FirstName">First name</label>
+
+                                <input asp-for="FirstName" placeholder="First name" />
+                                <span class="required">*</span>
+
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+
+                            </div>
+                            <div class="inputs">
+                                <label for="LastName">Last name</label>
+                                <input asp-for="LastName" placeholder="Last name" />
+                                <span class="required">*</span>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+
+                            <div class="inputs">
+                                <label for="Email">Email</label>
+                                <input asp-for="Email" placeholder="Email" />
+                                <span class="required">*</span>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="inputs">
+
+                                <label for="PrimaryPhone">Primary Phone</label>
+                                <input asp-for="PrimaryPhone" placeholder="Phone" />
+                                <span class="required">*</span>
+                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                            </div>
+                            <div class="inputs">
+
+                                <label for="Phone">Phone</label>
+                                <input asp-for="Phone" placeholder="Phone" />
+                                <span class="required">*</span>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="inputs">
                                 <div class="title">
-                                    <strong>Your Personal Details</strong>
+                                    <strong>Photo</strong>
                                 </div>
-                            <div class="form-fields">
-                                <div class="inputs">
-                                    <label for="CustomerStatus">Status</label>
-                                    <div class="gender">
-                                        <span>
-
-                                            <label class="male">@Model.CustomerStatus.Name</label>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="inputs">
-                                    <label for="FirstName">First name</label>
-
-                                    <input asp-for="FirstName" placeholder="First name" />
-                                    <span class="required">*</span>
-
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
-
-
-                                </div>
-                                <div class="inputs">
-                                    <label for="LastName">Last name</label>
-                                    <input asp-for="LastName" placeholder="Last name" />
-                                    <span class="required">*</span>
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                <div class="avatar-page">
+                                    <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
+                                    <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="200" height="200" />
                                 </div>
 
-                                <div class="inputs">
-                                    <label for="Email">Email</label>
-                                    <input asp-for="Email" placeholder="Email" />
-                                    <span class="required">*</span>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                                <div class="inputs">
-
-                                    <label for="Phone">Phone</label>
-                                    <input asp-for="Phone" placeholder="Phone" />
-                                    <span class="required">*</span>
-                                    <span asp-validation-for="Phone" class="text-danger"></span>
-                                </div>
-                                <div class="inputs">
-                                    <div class="title">
-                                        <strong>Photo</strong>
-                                    </div>
-                                    <div class="avatar-page">
-                                        <input type='file' id="imgFoto" />
-                                        <img id="blah" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="200" height="200" />
-                                    </div>
-                                </div>
-                                <div class="buttons">
-                                    <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
-                                </div>
                             </div>
-                                
+                            <div class="buttons">
+                                <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+
                             </div>
-                        
-</form>
+                            <div class="center-block bg-primary text-center" id="bar-notification">
+                               
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+         
         </div>
 
 
@@ -89,6 +120,44 @@
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         <script>
+
+            $(function () {
+                $('form').submit(function () {
+                    var data = new FormData();
+                    i = 0;
+
+                    $(".file-select").each(function () { data.append($(this).val(), $(this).get(0).files[0]); i++; })
+
+                    var postData = $('#fields :input');
+                    
+                    $.each(postData, function (key, input) {
+                        alert(input.name);
+                        alert(input.value);
+                        data.append(input.name, input.value);
+                    });
+
+
+
+                    if ($(this).valid()) {
+                        $.ajax({
+                            url: this.action,
+                            type: this.method,
+                            data: $(this).serialize(),
+                            success: function (result) {
+                                $('#bar-notification').html(result);
+                                alert(result);
+                            },
+                            error: function (response) {
+                                alert("Error:" + response);
+                            }
+                        });
+                    }
+                    return false;
+                });
+            });
+
+
+
             function readURL(input) {
 
                 if (input.files && input.files[0]) {
@@ -101,7 +170,7 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             }
-            $("#imgFoto").change(function () {
+            $("#photoUrl").change(function () {
                 readURL(this);
             });
 
@@ -116,7 +185,7 @@
         theDiv.className = classContent.replace("sr-only", "").trim();
     }
 
-    button.addEventListener("click", removeRed, false);
+    //button.addEventListener("click", removeRed, false);
 
                      jQuery('#PickupZipCode').on('input propertychange paste', function () {
                          UpdateRate()
@@ -204,5 +273,10 @@
                              });
                          }
                      }
+
+
+
+
+
         </script>
-    }
+        }

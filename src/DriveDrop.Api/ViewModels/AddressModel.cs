@@ -8,6 +8,7 @@ namespace DriveDrop.Api.ViewModels
 {
     public class AddressModel 
     {
+        public int CustomerId { get; set; }
         public String TypeAddress { get;  set; }
 
         public String Street { get;  set; }

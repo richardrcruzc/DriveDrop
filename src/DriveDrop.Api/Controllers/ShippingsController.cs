@@ -33,23 +33,55 @@ namespace DriveDrop.Api.Controllers
             _identityService = identityService;
             _rateService = rateService;
         }
+
         [HttpGet]
         [Route("[action]/{id:int}")]
-        public async Task<IActionResult> UpdatePackageStatus(int id)
+        public async Task<IActionResult> UpdateDriver(int id, int driverId)
         {
             try
             {
                 var shipping = await _context.Shipments.FindAsync(id);
-                if(shipping!=null)
+                if (shipping != null)
                 {
-                    if (shipping.ShippingStatusId == 1)
-                        shipping.ChangeStatus(2);
-                    else if (shipping.ShippingStatusId == 2)
-                        shipping.ChangeStatus(3);
-                    else if (shipping.ShippingStatusId == 3)
-                        shipping.ChangeStatus(4);
-                    else if (shipping.ShippingStatusId == 4)
-                        shipping.ChangeStatus(5);
+                    var driver = _context.Customers.Where(c => c.Id == driverId).FirstOrDefault();
+                    if (driver != null)
+                    { 
+                        shipping.SetDriver(driver);
+                        _context.Update(shipping);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                return Ok("updated");
+
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> UpdatePackageStatus(int id, int shippingStatusId=1)
+        {
+            try
+            {
+                var shipping = await _context.Shipments.FindAsync(id);
+                if (shipping != null)
+                {
+                    shipping.ChangeStatus(shippingStatusId);
+
+
+                    //    if (shipping.ShippingStatusId == 1)
+                    //        shipping.ChangeStatus(2);
+                    //    else if (shipping.ShippingStatusId == 2)
+                    //        shipping.ChangeStatus(3);
+                    //    else if (shipping.ShippingStatusId == 3)
+                    //        shipping.ChangeStatus(4);
+                    //    else if (shipping.ShippingStatusId == 4)
+                    //        shipping.ChangeStatus(5);
 
                     _context.Update(shipping);
                     await _context.SaveChangesAsync();
@@ -64,8 +96,7 @@ namespace DriveDrop.Api.Controllers
                 return BadRequest("CustomerTypesNotFound");
             }
         }
-
-
+        
         [HttpGet]
         [Route("[action]/{id:int}")]
         public async Task<IActionResult> GetShippingByDriverId(int id, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)

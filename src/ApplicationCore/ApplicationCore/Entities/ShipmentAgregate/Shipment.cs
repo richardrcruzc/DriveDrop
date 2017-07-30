@@ -142,7 +142,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public Shipment SetDriver(Customer driver)
         {
             Driver = driver;
-
+            DriverId = driver.Id;
             return this;
         }
 

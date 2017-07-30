@@ -64,22 +64,37 @@ namespace DriveDrop.Web.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> AddressAdd(int id)
+
+       
+        public IActionResult AddressAdd(int id)
         {
             ViewBag.Id = id;
-            var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
-            return View(new AddressModel());
+            var model = new AddressModel { CustomerId = id };
+
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]       
-        public async Task<IActionResult> AddressAdd(AddressModel model)
+        public async Task<string> AddressAdd(AddressModel model)
         {
-            ViewBag.Id = model.Id;
+            var result = "Address added";
+            ViewBag.Id = model.CustomerId;
             //call shipping api service
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
-            return View(model);
+
+            var updateInfo = API.Sender.AddAddress(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PostAsync(updateInfo, model, token);
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                //throw new Exception("Error creating Shipping, try later.");
+
+                ModelState.AddModelError("", "Error creating Shipping, try later.");
+                result = "Error creating Shipping, try later.";
+            }
+
+            return result;
         }
             public async Task<IActionResult> Address(int id)
         {
@@ -96,6 +111,7 @@ namespace DriveDrop.Web.Controllers
 
             var response = JsonConvert.DeserializeObject<Customer>((dataString));
 
+             
 
             return View(response.Addresses);
 
@@ -121,6 +137,7 @@ namespace DriveDrop.Web.Controllers
 
         public async Task<IActionResult> Result(int? id)
         {
+
             ViewBag.Url = _remoteServiceRatesUrl;
 
             if (id == null)
@@ -138,16 +155,100 @@ namespace DriveDrop.Web.Controllers
 
             var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id ?? 0);
 
-
-            var dataString = await _apiClient.GetStringAsync(getById, token);
-
+            var dataString = await _apiClient.GetStringAsync(getById, token); 
 
             var response = JsonConvert.DeserializeObject<Customer>((dataString));
+            var model = new CustomerInfoModel {
+                    CustomerStatus = response.CustomerStatus.Name,
+                    Email = response.Email,
+                    FirstName = response.FirstName,
+                    LastName = response.LastName,
+                    Id = id??0,
+                    Phone = response.Phone, 
+                    PhotoUrl = response.PersonalPhotoUri,
+                    PrimaryPhone = response.PrimaryPhone,
+                    StatusId = response.CustomerStatusId, 
+            };
+            if (string.IsNullOrWhiteSpace(model.PhotoUrl))
+                model.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+             else
+                model.PhotoUrl =  model.PhotoUrl ;
+
+            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/" + model.PhotoUrl;
 
 
 
 
-            return View(response);
+            return View(model);
+        }
+ 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> DeleteAddress(AddressModel model)
+        {
+            var result = "Address deleted";
+            ViewBag.Id = model.CustomerId;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var updateInfo = API.Sender.DeleteAddress(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PostAsync(updateInfo, model, token);
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                //throw new Exception("Error creating Shipping, try later.");
+
+                ModelState.AddModelError("", "Error creating deleting, try later.");
+                result = "Error deleting address, try later.";
+            }
+
+            return result;
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> UpdateInfo(CustomerInfoModel model, List<IFormFile> photoUrl)
+        {
+            var result = "Info updated";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                var fileName = await SaveFile(photoUrl, "sender");
+ 
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                model.PhotoUrl = fileName;
+
+                var user = _appUserParser.Parse(HttpContext.User);
+                var token = await GetUserTokenAsync();
+
+                var updateInfo = API.Sender.UpdateInfo(_remoteServiceBaseUrl);
+
+                var response = await _apiClient.PostAsync(updateInfo, model, token);
+                if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    //throw new Exception("Error creating Shipping, try later.");
+
+                    ModelState.AddModelError("", "Error creating Shipping, try later.");
+
+                }
+                }
+                catch (DbUpdateException ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    var error = string.Format("Unable to save changes. " +
+                        "Try again, and if the problem persists " +
+                        "see your system administrator. {0}", ex.Message);
+
+                    ModelState.AddModelError("", error);
+                      result = error;
+                }
+            }
+
+            return result;
         }
 
         public async Task<IActionResult> NewShipping(int id)
@@ -186,7 +287,7 @@ namespace DriveDrop.Web.Controllers
 
                     // full path to file in temp location
                     var filePath = Path.GetTempFileName();
-                    var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\Shipment");
+                    var uploads = Path.Combine(_env.WebRootPath, "uploads/img/Shipment");
                     var fileName = "";
 
                     foreach (var formFile in files)
@@ -207,8 +308,8 @@ namespace DriveDrop.Web.Controllers
 
 
 
-                            filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                            fileName = string.Format("uploads\\img\\Shipment\\{0}{1}", extName, extension);
+                            filePath = string.Format("{0}/{1}{2}", uploads, extName, extension);
+                            fileName = string.Format("/uploads/img/Shipment/{0}{1}", extName, extension);
 
                             using (var stream = new FileStream(filePath, FileMode.Create))
                             {
@@ -630,6 +731,51 @@ namespace DriveDrop.Web.Controllers
 
             return model;
              
+        }
+
+
+        [NonAction]
+        public async Task<string> SaveFile(List<IFormFile> files, string belong)
+        {
+
+            Guid extName = Guid.NewGuid();
+            //saving files
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+            var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
+            var fileName = "";
+
+            foreach (var formFile in files)
+            {
+
+                if (formFile.Length > 0)
+                {
+                    var extension = ".jpg";
+                    if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                        extension = ".jpg";
+                    if (formFile.FileName.ToLower().EndsWith(".tif"))
+                        extension = ".tif";
+                    if (formFile.FileName.ToLower().EndsWith(".png"))
+                        extension = ".png";
+                    if (formFile.FileName.ToLower().EndsWith(".gif"))
+                        extension = ".gif";
+
+
+
+
+                    filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                    fileName = string.Format("uploads/img/{0}/{1}{2}", belong, extName, extension);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+            return fileName;
+
         }
        
     }

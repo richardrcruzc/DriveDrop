@@ -28,8 +28,110 @@ namespace DriveDrop.Api.Controllers
             _context = context;
             _env = env;
         }
+        // GET api/values/5
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> GetbyId(int id)
+        {
+            try
+            {
+                // var customer = await _context.Customers.FindAsync(id);
+
+                var customer = await _context.Customers
+                    .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (customer == null)
+                    return StatusCode(StatusCodes.Status409Conflict, "CustomerNotFound");
+
+                return Ok(customer);
+
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest("CustomerNotFound" + exe.Message);
+            }
+
+        }
+        [Route("[action]")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> DeleteAddress([FromBody]AddressModel a)
+        {
+            try
+            {
+                var updateCustomer = await _context.Customers
+               .Include(s => s.TransportType)
+               .Include(t => t.CustomerStatus)
+               .Include(s => s.CustomerType)
+           .FirstOrDefaultAsync(x => x.Id == a.CustomerId);
+
+                var newD = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);
+                updateCustomer.DeleteAddress(newD);
+                     
+                _context.Customers.Update(updateCustomer);
+
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+
+            }
+            catch (DbUpdateException ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                var error = string.Format("Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator. {0}", ex.Message);
+
+                return NotFound("UnableToSaveChanges");
+            }
+
+        }
+        [Route("[action]")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddAddress([FromBody]AddressModel a) 
+        {
+            try
+            {
+                var updateCustomer = await _context.Customers
+               .Include(s => s.TransportType)
+               .Include(t => t.CustomerStatus)
+               .Include(s => s.CustomerType)
+           .FirstOrDefaultAsync(x => x.Id == a.CustomerId);
+
+                foreach (var na in updateCustomer.Addresses)
+                {
+                    var newA = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);
+                    updateCustomer.AddAddress(newA);
+                }
+                _context.Customers.Update(updateCustomer);
+
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+
+            }
+            catch (DbUpdateException ex)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                var error = string.Format("Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator. {0}", ex.Message);
+
+                return NotFound("UnableToSaveChanges");
+            }
+
+        }
+
+
+
+
         // POST api/Attachments
-       // [Authorize]
+        // [Authorize]
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> PostFiles([FromBody]ICollection<IFormFile> files)

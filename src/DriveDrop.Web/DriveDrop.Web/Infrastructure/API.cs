@@ -100,6 +100,15 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}/AddAddress";
             }
+            public static string DeleteAddress(string baseUri)
+            {
+                return $"{baseUri}/DeleteAddress";
+            }
+            public static string UpdateInfo(string baseUri)
+            {
+                return $"{baseUri}/UpdateInfo";
+            }
+
         }
         public static class Driver
         {

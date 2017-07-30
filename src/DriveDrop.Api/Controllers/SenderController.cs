@@ -47,7 +47,10 @@ namespace DriveDrop.Api.Controllers
                 // var customer = await _context.Customers.FindAsync(id);
 
                 var customer = await _context.Customers
-                    .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
+                    .Include(s => s.TransportType)
+                    .Include(t => t.CustomerStatus)
+                    .Include(s => s.CustomerType)
+                    .Include(a=>a.Addresses)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (customer == null)
@@ -64,45 +67,68 @@ namespace DriveDrop.Api.Controllers
 
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateInfo([FromBody]CustomerInfoModel c)
+        {
+            var updateCustomer = _context.Customers.Where(x => x.Id == c.Id).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+
+                updateCustomer.UpdateInfo(c.StatusId, c.FirstName, c.LastName, c.Email, c.PrimaryPhone, c.Phone, c.PhotoUrl);
+
+                _context.Update(updateCustomer);
+                await _context.SaveChangesAsync();
+            }
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
+
+
+
+        [Route("[action]/{customerId:int}/{addressId:int}")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteAddress(int customerId, int addressId)
+        {            
+            var updateCustomer = _context.Customers
+                .Include(a=>a.Addresses)
+                .Where(x => x.Id == customerId).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+                foreach (var a in updateCustomer.Addresses)
+                    if (a.Id == addressId)
+                    {
+                        updateCustomer.DeleteAddress(a);
+                        _context.Update(updateCustomer);
+                        await _context.SaveChangesAsync();
+
+                        break;
+                    }
+               
+            }
+
+            
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
 
         [Route("[action]")]
         [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> AddAddress([FromBody]CustomerModel c) //, [FromBody]List<IFormFile> files)
+        public async Task<IActionResult> AddAddress([FromBody]AddressModel c)
         {
-            try
-            { 
-                    var updateCustomer = await _context.Customers
-                   .Include(s => s.TransportType)
-                   .Include(t => t.CustomerStatus)
-                   .Include(s => s.CustomerType)                   
-               .FirstOrDefaultAsync(x => x.Id == c.CustomerId);
-
-                    foreach (var a in c.Addresses)
-                    {
-                        var newA = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);
-                        updateCustomer.AddAddress(newA);
-                    }
-                    _context.Customers.Update(updateCustomer);
-                    
-                    await _context.SaveChangesAsync();
-
-                    return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
-
-                
-            }
-            catch (DbUpdateException ex)
+            var updateCustomer = _context.Customers.Where(x => x.Id == c.CustomerId).FirstOrDefault();
+            if (updateCustomer != null)
             {
-                //Log the error (uncomment ex variable name and write a log.
-                var error = string.Format("Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator. {0}", ex.Message);
+                var addres = new Address(c.Street, c.City, c.State, c.Country, c.ZipCode, c.Phone, c.Contact, c.Longitude, c.Longitude, c.TypeAddress);
 
-                return NotFound("UnableToSaveChanges");
+                updateCustomer.AddAddress(addres);
+
+                _context.Update(updateCustomer);
+                await _context.SaveChangesAsync();
             }
-             
-        }
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
 
+        }
         //PUT api/v1/[controller]/New
         [Route("[action]")]
         [HttpPost]

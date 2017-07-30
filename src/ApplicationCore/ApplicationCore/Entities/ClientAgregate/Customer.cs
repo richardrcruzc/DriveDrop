@@ -58,7 +58,25 @@ namespace ApplicationCore.Entities.ClientAgregate
 
             return this;
         }
-
+        public Customer UpdateVehicleInfo(string lincensePictureUri, string vehiclePhotoUri, string insurancePhotoUri, int vehicleTypeId)
+        {
+            DriverLincensePictureUri = lincensePictureUri;
+            VehiclePhotoUri = vehiclePhotoUri;
+            InsurancePhotoUri = insurancePhotoUri;
+            TransportTypeId = vehicleTypeId;
+            return this;
+        }
+        public Customer UpdateInfo(int statusId, string firstName, string lastName, string email, string primaryPhone, string phone , string photoUrl)
+        {
+            CustomerStatusId = statusId;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PrimaryPhone = primaryPhone;
+            Phone = phone;
+            PersonalPhotoUri = photoUrl;
+            return this;
+        }
         
         public Customer AddPicture(string url, string type = "driver")
         {
@@ -83,7 +101,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
 
         private List<PaymentMethod> _paymentMethods;
-        public List<Address> Addresses { get; private set; }
+        public ICollection<Address> Addresses { get; private set; }
 
         protected Customer()
         {
@@ -190,14 +208,22 @@ namespace ApplicationCore.Entities.ClientAgregate
             if (existing != null)            
                 return existing;
 
-
             Addresses.Add(address);
  
             return address;
         }
 
+        public Address DeleteAddress(Address address)
+        {
+            var existing = Addresses.Where(a => a.Equals(address)).SingleOrDefault();
 
+            if (existing == null)
+                return existing;
 
+            Addresses.Remove(address);
+
+            return address;
+        }
 
 
         public PaymentMethod VerifyOrAddPaymentMethod(

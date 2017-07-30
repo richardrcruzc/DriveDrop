@@ -506,6 +506,7 @@ namespace DriveDrop.Web.ViewModels
         public Double Latitude { get;  set; }
         public Double Longitude { get;  set; }
         public String TypeAddress { get; set; }
+        public int CustomerId { get; set; }
         public int Id { get; set; }
     }
 }

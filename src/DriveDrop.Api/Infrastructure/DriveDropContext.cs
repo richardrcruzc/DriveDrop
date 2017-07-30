@@ -108,7 +108,8 @@ namespace DriveDrop.Api.Infrastructure
        .WithMany()
        .HasForeignKey(ci => ci.CustomerStatusId);
 
-
+            builder.HasMany(b => b.Addresses)
+            .WithOne();
         }
 
         void ConfigureShipment(EntityTypeBuilder<Shipment> builder)

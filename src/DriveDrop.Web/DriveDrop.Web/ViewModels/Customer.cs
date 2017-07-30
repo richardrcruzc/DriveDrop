@@ -12,7 +12,7 @@ namespace DriveDrop.Web.ViewModels
         public int Id { get;  set; }
         public string IdentityGuid { get;  set; }
         public string UserGuid { get;  set; }
-
+        public string PrimaryPhone { get;   set; }
         public string Email { get;  set; }
         public string Phone { get;  set; }
         public string LastName { get;  set; }
@@ -29,7 +29,7 @@ namespace DriveDrop.Web.ViewModels
         public int? MaxPackage { get;  set; }
         public int? PickupRadius { get;  set; }
         public int? DeliverRadius { get;  set; }
-
+        public string PersonalPhotoUri { get;  set; }
         public string VehicleInfo { get; set; }
 
         public decimal Commission { get;  set; }
