@@ -1,0 +1,27 @@
+
+@{
+    ViewData["Title"] = "Return";
+}
+
+<div class="side-2">
+
+
+
+    @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.CustomerId)
+
+
+</div>
+<div class="center-2">
+
+
+    <div class="page account-page address-list-page">
+        <div class="page-title">
+            <h1>My account - Addresses</h1>
+        </div>
+        <div class="page-body">
+            <h2>Shipping have been processed</h2>
+        </div>
+    </div>
+</div>
+
+

@@ -38,6 +38,7 @@
     <Content Include="wwwroot\images\details.png" />
     <Content Include="wwwroot\images\discontinued-product-icon.png" />
     <Content Include="wwwroot\images\download-button.png" />
+    <Content Include="wwwroot\images\DriveDroplogo.png" />
     <Content Include="wwwroot\images\Dropbox.lnk" />
     <Content Include="wwwroot\images\edit.png" />
     <Content Include="wwwroot\images\edit_.png" />
@@ -652,5 +653,6 @@
 
   <ItemGroup>
     <None Include="ViewComponents\ShippingByCustomerViewComponent.cs" />
+    <None Include="Views\Sender\PostToPayPalAsync.cshtml" />
   </ItemGroup>
 </Project>

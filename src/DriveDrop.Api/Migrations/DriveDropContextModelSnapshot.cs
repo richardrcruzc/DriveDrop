@@ -202,6 +202,8 @@ namespace DriveDrop.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<decimal>("AmountPay");
+
                     b.Property<decimal>("ChargeAmount");
 
                     b.Property<string>("DeliveredPictureUri");

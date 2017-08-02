@@ -48,7 +48,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public Decimal Discount { get; private set; }
         public string PromoCode { get; private set; }        
         public Decimal Tax { get; private set; }
-        
+
+        public Decimal AmountPay { get; private set; }
+
         public string PickupPictureUri { get; private set; }
         public string DeliveredPictureUri { get; private set; }
 
@@ -63,9 +65,14 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         {
             _paymentMethods = new List<PaymentMethod>();
         }
+        public Shipment ApplyPayment(decimal amountPay)
+        {
+            AmountPay = amountPay;
+            return this;
+        }
 
 
-        public Shipment SetupPayAmount(decimal distance, decimal chargeAmount, decimal discount, string promoCode, decimal tax, int qty = 1)
+        public Shipment SetupPayAmount(decimal distance, decimal chargeAmount, decimal discount, string promoCode, decimal tax, int qty = 1, decimal amountPay=0)
         {
             Distance = distance;
             ChargeAmount = chargeAmount;
@@ -73,10 +80,11 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             PromoCode = promoCode;
             Tax = tax;
             Quantity = qty;
+            AmountPay = amountPay;
             return this;
         }
 
-        public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal weight, int priorityTypeId ,
+        public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal shippingWeight, int priorityTypeId ,
                             int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri,
                             decimal distance, decimal chargeAmount,  string promoCode, decimal tax, 
                             int qty = 1, int packageSizeId=1) : this()
@@ -86,8 +94,12 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             ShippingUpdateDate = DateTime.Now;
             ShippingValue = amount;
             Discount = discount;
-            PriorityTypeId = priorityTypeId; 
+            PriorityTypeId = priorityTypeId;
+            if (transportTypeId == 0)
+                TransportTypeId = 1;
+            else
             TransportTypeId = transportTypeId;
+
             Note = note;
             PickupPictureUri = pickupPictureUri;
             DeliveredPictureUri = deliveredPictureUri;
@@ -100,7 +112,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
             IdentityCode = string.Format("WA-{0}-{1}",pickup.ZipCode, RandomString());
 
-            ShippingWeight = weight;
+            ShippingWeight = shippingWeight;
             Quantity = qty; 
             Distance = distance;
             ChargeAmount = chargeAmount; 

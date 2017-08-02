@@ -12,7 +12,17 @@ namespace DriveDrop.Web
         public string IdentityUrl { get; set; }
         public string CallBackUrl { get; set; }
         public Logging Logging { get; set; }
-        
+
+        public string BusinessAccountKey { get; set; }
+        public bool UseSandbox { get; set; }
+        public string CancelURL { get; set; }
+        public string ReturnURL { get; set; }
+        public string NotifyURL { get; set; }
+        public string CurrencyCode { get; set; }
+
+
+
+
     }
 
     public class Connectionstrings

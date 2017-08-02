@@ -159,6 +159,7 @@ namespace DriveDrop.Api.Controllers
                .Include(d => d.PickupAddress)
                .Include(d => d.ShippingStatus)
                .Include(d => d.PriorityType)
+               .OrderByDescending(x=>x.Id)
                .ToListAsync();
 
                 return Ok(model);
@@ -255,8 +256,8 @@ namespace DriveDrop.Api.Controllers
                     var tt = state.Errors.ToString();
                 }
 
-                if (ModelState.IsValid)
-                {
+                //if (ModelState.IsValid)
+                //{
 
                     var sender = _context.Customers.Find(c.CustomerId);
 
@@ -267,11 +268,12 @@ namespace DriveDrop.Api.Controllers
                     var tmpUser = Guid.NewGuid().ToString();
 
 
-                    var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, c.Quantity, c.PriorityTypeId, c.TransportTypeId, c.PromoCode);
+                // var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, c.Quantity, c.PriorityTypeId, c.TransportTypeId, c.PromoCode);
+                var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode);
 
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
-                        weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId,note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "", 
+                        shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId,note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "", 
                         distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount,qty:c.Quantity, packageSizeId: c.PackageSizeId);
 
                     _context.Add(shipment);
@@ -329,7 +331,7 @@ namespace DriveDrop.Api.Controllers
 
                     //return RedirectToAction("result", new { id = sender.Id });
                     //return CreatedAtAction(nameof(Result), new { id = sender.Id }, null);
-                }
+                //}
             }
             catch (DbUpdateException ex)
             {

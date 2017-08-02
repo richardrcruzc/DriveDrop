@@ -1,0 +1,34 @@
+@model DriveDrop.Web.ViewModels.Paypal
+@{
+    ViewData["Title"] = "PostToPayPal";
+}
+
+<form id="frm" action="@(ViewBag.actionURL)">
+
+    <input asp-for="cmd" hidden />
+    <input asp-for="business" hidden />
+    <input asp-for="no_shipping" hidden />
+    <input asp-for="returN" hidden />
+    <input asp-for="cancel_return" hidden />
+    <input asp-for="notify_url" hidden />
+    <input asp-for="currency_code" hidden />
+    <input asp-for="item_name" hidden />
+    <input asp-for="amount" hidden />
+
+</form>
+
+<div class="center-block bg-primary text-center" id="bar-notification">
+    <h3>Redirecting to paypal...</h3>
+</div>
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+            $(this.document).ready(function () {
+                var frm = $("form");
+                frm.submit();
+            });
+        </script>
+    }

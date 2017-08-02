@@ -153,10 +153,11 @@ namespace DriveDrop.Api.Controllers
                     _context.Add(newCustomer);
                     _context.SaveChanges();
 
-                    var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId??0, c.PromoCode);
+                    //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId??0, c.PromoCode);
+                    var rate = await _rateService.CalculateAmount(0,0,0,"");
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: newCustomer, amount: c.Amount, discount: rate.Discount,
-                       weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, deliveredPictureUri: "",
+                       shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, deliveredPictureUri: "",
                        distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, qty: 1);
                     
 
@@ -208,11 +209,13 @@ namespace DriveDrop.Api.Controllers
 
                     var tmpUser = Guid.NewGuid().ToString();
 
-                    var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId  , c.PromoCode);
+                    //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId  , c.PromoCode);
+                    var rate = await _rateService.CalculateAmount(0, 0, 0,"");
+
 
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
-                     weight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId  , note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "",
+                     shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId  , note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "",
                      distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, qty: 1);
                      
                     _context.Add(shipment);

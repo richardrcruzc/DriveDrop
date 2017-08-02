@@ -101,7 +101,7 @@ namespace DriveDrop.Web.ViewModels
         public int? Quantity { get; set; }
         [Display(Name = "Weight")]
         [Required(ErrorMessage = "required")]
-        public decimal? Weight { get; set; }
+        public decimal? ShippingWeight { get; set; }
 
         public string VehicleInfo { get; set; }
 
@@ -367,14 +367,28 @@ namespace DriveDrop.Web.ViewModels
             TransportTypeList = new List<SelectListItem>();
             CustomerStatusList = new List<SelectListItem>();
             PriorityTypeList = new List<SelectListItem>();
+            PickupAddresses = new List<SelectListItem>();
+            DropAddresses = new List<SelectListItem>();
+
+            PackageSizeList = new List<SelectListItem>();
 
         }
+        public int PickupAddressId { get; set; }
+        public int DropAddressId { get; set; } 
+
+        public IEnumerable<SelectListItem> PickupAddresses { get; set; }
+        public IEnumerable<SelectListItem> DropAddresses { get; set; }
+
 
         public IEnumerable<SelectListItem> CustomerTypeList { get; set; }
         public IEnumerable<SelectListItem> TransportTypeList { get; set; }
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
+
+        public IEnumerable<SelectListItem> PackageSizeList { get; set; }
+
+        public decimal Distance { get; set; }
         public int CustomerId { get; set; }
 
         public int PackageSizeId { get; set; }
@@ -384,7 +398,7 @@ namespace DriveDrop.Web.ViewModels
 
         public string PickupPictureUri { get; set; }
 
-        [Required(ErrorMessage = "Your must provide a PhoneNumber")]
+        [Required(ErrorMessage = "Your must provide a Pickup PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Phone")]
@@ -410,7 +424,7 @@ namespace DriveDrop.Web.ViewModels
 
         public decimal? Weight { get; set; }
 
-        [Required(ErrorMessage = "Your must provide a PhoneNumber")]
+        [Required(ErrorMessage = "Your must provide a drop phone,Number")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Phone")]
@@ -443,16 +457,16 @@ namespace DriveDrop.Web.ViewModels
         public PriorityType PriorityType { get; set; }
         public int PriorityTypeLevel { get; set; }
 
-        public int TransportTypeId { get; set; }
-        public TransportType TransportType { get; set; }
+        //public int TransportTypeId { get; set; }
+        //public TransportType TransportType { get; set; }
 
-        [Required(ErrorMessage = "Your must provide a Quantity")]
-        public int? Quantity { get; set; }
+        //[Required(ErrorMessage = "Your must provide a Quantity")]
+        //public int? Quantity { get; set; }
 
         [Required(ErrorMessage = "Your must provide a Shipping value")]
         public Decimal? Amount { get; set; }
-        public Decimal Tax { get; set; }
-        public Decimal Discount { get; set; }
+        public Decimal ShippingWeight { get; set; }
+        //public Decimal Discount { get; set; }
         public string PromoCode { get; set; }
 
         public int PriorityTypeId { get; set; }
@@ -461,21 +475,21 @@ namespace DriveDrop.Web.ViewModels
         public string Note { get; set; }
 
 
-        //[CreditCard]
-        [DataType(DataType.CreditCard)]
-        [Display(Name = "Credit Card Number")]
-        [Required(ErrorMessage = "required")]
-        //[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
-        public String CardNumber { get; set; }
-        [Required]
-        [Display(Name = "Security Number")]
-        public int? SecurityNumber { get; set; }
-        [Required]
-        [Display(Name = "Card Holder Name")]
-        public String CardHolderName { get; set; }
-        [Required]
-        [Display(Name = "Expiration")]
-        public String Expiration { get; set; }
+        ////[CreditCard]
+        //[DataType(DataType.CreditCard)]
+        //[Display(Name = "Credit Card Number")]
+        //[Required(ErrorMessage = "required")]
+        ////[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
+        //public String CardNumber { get; set; }
+        //[Required]
+        //[Display(Name = "Security Number")]
+        //public int? SecurityNumber { get; set; }
+        //[Required]
+        //[Display(Name = "Card Holder Name")]
+        //public String CardHolderName { get; set; }
+        //[Required]
+        //[Display(Name = "Expiration")]
+        //public String Expiration { get; set; }
 
 
 

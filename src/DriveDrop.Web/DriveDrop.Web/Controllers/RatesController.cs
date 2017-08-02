@@ -50,21 +50,26 @@ namespace DriveDrop.Web.Controllers
             _env = env;
 
         }
-         
-        
-         
-        public async Task<IActionResult> CalculateAmount(int zipFrom, int zipTo, decimal weight, int qty, int priority, int transportTypeId, string promoCode)
+
+
+        public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode)
         {
             var token = await GetUserTokenAsync();
 
-            var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl,  zipFrom,  zipTo,  weight,  qty,  priority,  transportTypeId, promoCode);
+            var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl, distance,  weight,   priority, packageSizeId, promoCode);
 
             var dataString = await _apiClient.GetStringAsync(allRatesUri, token);
 
-           // var response = JsonConvert.DeserializeObject<string>(dataString);
-            return Content(dataString);
-            //return Content(response, "application/json");
+             var response = JsonConvert.DeserializeObject<CalculatedChargeModel>(dataString);
+
+            return Json(response);
+
+            //  return Content(response);
+            // return Content(dataString, "application/json");
         }
+
+
+
         public async Task<IActionResult> Index()
         {
 
