@@ -6,7 +6,7 @@
  
 <div class="jumbotron" style="background-image: url('../../../../images/slider_img.jpg');  height: 600px;    background-repeat: no-repeat;    background-size: contain; padding: 2rem 1rem;    margin-bottom: 2rem;    border-radius: 0.3rem;">
     <img src="~/images/DriveDroplogo.png" />
-
+    
 
 </div>
 <div class="row">
@@ -19,9 +19,12 @@
             </div>
         </div>    
     </div>
-    <form>
+    <div class="row">
+        <br /><br /> 
+    </div>
+  
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-horizontal">
                     <div class="form-group">
 
@@ -32,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-horizontal">
 
 
@@ -45,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-12">
@@ -55,19 +58,52 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+
+            <div class="col-md-2">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
+                            <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             
+            <div class="col-md-2">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input id="weight" class="form-control autocomplete" placeholder="weight" />
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-12">
 
-                            <button type="button" id="quote" class="btn btn-info">submit</button>
+                            <button type="button" id="calcTotal" class="btn btn-info">submit</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-   
+    
+
+
+    <div class="row">
+        <div class="center text-center">
+                        <br /><br /><h3>
+                <label id="AmountEstimated"></label>
+            </h3>
+        </div>
+        <br /><br />
+        <br /><br />
+    </div>
 
     <div class="row">
         <p></p>
@@ -95,52 +131,58 @@
         <p></p>
     </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <a class="btn btn-default" href="admin/index">
-                    <h2>Super administrator</h2>
-                    <p>
-                        Impersonate an admin user .
-                    </p>
-                    Test &raquo;
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a class="btn btn-default" href="/sender/result/2">
-                    <h2>Sender dashboard</h2>
-                    <p>impersonate a sender user</p>
-                    Test &raquo;
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a class="btn btn-default" href="/Driver/result/9">
-                    <h2>Driver dashboard</h2>
-                    <p>Impersonate a driver user.</p>
-                    Test &raquo;
-                </a>
-            </div>
+    <div class="row">
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
         </div>
+        @*<div class="row">
+                <div class="col-md-4">
+                    <a class="btn btn-default" href="admin/index">
+                        <h2>Super administrator</h2>
+                        <p>
+                            Impersonate an admin user .
+                        </p>
+                        Test &raquo;
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-default" href="/sender/result/2">
+                        <h2>Sender dashboard</h2>
+                        <p>impersonate a sender user</p>
+                        Test &raquo;
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-default" href="/Driver/result/9">
+                        <h2>Driver dashboard</h2>
+                        <p>Impersonate a driver user.</p>
+                        Test &raquo;
+                    </a>
+                </div>
+            </div>*@
 
-    @*<ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-        <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-        <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-    </ul>
+        @*<ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+                <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+            </ul>
 
-    <div class="tab-content">
-        <div id="home" class="tab-pane fade in active">
-            <h3>HOME</h3>
-            <p>Some content.</p>
-        </div>
-        <div id="menu1" class="tab-pane fade">
-            <h3>Menu 1</h3>
-            <p>Some content in menu 1.</p>
-        </div>
-        <div id="menu2" class="tab-pane fade">
-            <h3>Menu 2</h3>
-            <p>Some content in menu 2.</p>
-        </div>
-    </div>*@
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <h3>HOME</h3>
+                    <p>Some content.</p>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Menu 1</h3>
+                    <p>Some content in menu 1.</p>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>Menu 2</h3>
+                    <p>Some content in menu 2.</p>
+                </div>
+            </div>*@
 
 
     </div>
@@ -151,4 +193,155 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+
+
+        // This example displays an address form, using the autocomplete feature
+        // of the Google Places API to help users fill in the information.
+
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+        var placeSearch, autocomplete, autocomplete1;
+        var componentForm = {
+            street_number: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+        };
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** type {!HTMLInputElement} */
+                (document.getElementById('start')),
+                { types: ['geocode'] });
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            //autocomplete.addListener('place_changed', fillInAddress);
+
+            autocomplete1 = new google.maps.places.Autocomplete(
+                /** type {!HTMLInputElement} */
+                (document.getElementById('end')),
+                { types: ['geocode'] });
+
+            ///autocomplete1.addListener('place_changed', fillInAddress1);
+
+
+        }
+
+
+ 
+        // Bias the autocomplete object to the user's geographical location,
+        // as supplied by the browser's 'navigator.geolocation' object.
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var geolocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    var circle = new google.maps.Circle({
+                        center: geolocation,
+                        radius: position.coords.accuracy
+                    });
+                    autocomplete.setBounds(circle.getBounds());
+                });
+            }
+        }
+
+        //*******************
+
+            $(function () {
+
+               
+                $('#calcTotal').click(function (event) {
+                    
+
+            var pAdrress = $('#start').val();
+            var dAddress = $('#end').val();
+                     
+
+                    var geocoder = new google.maps.Geocoder;
+
+                    var service = new google.maps.DistanceMatrixService;
+                    service.getDistanceMatrix({
+                        origins: [pAdrress],
+                        destinations: [dAddress],
+                        travelMode: 'DRIVING',
+                        unitSystem: google.maps.UnitSystem.METRIC,
+                        avoidHighways: false,
+                        avoidTolls: false
+                    }, function (response, status) {
+                        if (status !== 'OK') {
+                            alert('Error was: ' + status);
+                        } else {
+                            var originList = response.originAddresses;
+                            var destinationList = response.destinationAddresses;
+
+                            var results = response.rows[0].elements;
+                            var distance = results[0].distance.text.split(" ");
+
+
+                            var km = distance[0];
+                            var transportTypeId = $("#TransportTypeId").val();
+                            var priorityTypeId = $("#PriorityTypeId").val();
+                            var promoCode = $("#PromoCode").val();
+
+                            $.ajax({
+                                url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "POST", //to do a post request
+
+                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { distance: km, weight: 9, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    // data is your result from controller
+                                    if (data) {
+                                        //$("#distance").value = km;
+                                        //$(".value-Sub").text(data.strSubTotal);
+                                        //$(".value-Discount").text(data.strDiscount);
+                                        //$(".value-Tax").text(data.strTaxAmount);
+                                        $("#AmountEstimated").text(data.strAmountToCharge);
+
+                                    }
+
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    //alert(thrownError);
+
+                                }
+                            });
+
+
+                             
+                            }
+                        });
+                     
+
+                });
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+        async defer></script>
 }
