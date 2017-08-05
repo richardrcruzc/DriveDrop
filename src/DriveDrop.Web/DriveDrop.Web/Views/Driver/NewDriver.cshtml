@@ -155,7 +155,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="VehicleInfo" class="form-control" placeholder="VehicleInfo" />
+                            <tex asp-for="VehicleInfo" class="form-control" placeholder="VehicleInfo" />
                             <span asp-validation-for="VehicleInfo" class="text-danger"></span>
                         </div>
                     </div>
@@ -164,74 +164,89 @@
         </div>
 
 
-
-
-
         <div class="row">
 
-            <div class="col-md-10">
+            <div class="col-md-5">
+
+
+                <h2>Personal picture </h2>
+                <hr />
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="btn btn-primary" for="my-file-selector-Personal">
+                            <input id="my-file-selector-Personal" name="personalfiles" type="file" style="display:none;" onchange="$('#upload-file-info-Personal').html($(this).val());">
+                            <img id="Personal-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
+                            Click here to upload package picture
+                        </label>
+                        <span class='label label-info' id="upload-file-info-Personal"></span>
+                    </div>
+                </div>
+            </div>
+     
+
+            <div class="col-md-5">
 
 
                 <h2>Driver license picture </h2>
                 <hr />
                 <div class="form-horizontal">
 
-                    <div class="form-group">
-                        <label class="btn btn-primary" for="Files">
-                            <input id="Files" type="file" name="Files" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
-                            Click here to upload license picture
-                        </label>
-                        <span class='label label-info' id="upload-file-info"></span>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="btn btn-primary" for="my-file-selector-license">
+                                <input id="my-file-selector-license" name="licensefiles" type="file" style="display:none;" onchange="$('#upload-file-info-license').html($(this).val());">
+                                <img id="license-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
+                                Click here to upload package picture
+                            </label>
+                            <span class='label label-info' id="upload-file-info-license"></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="row">
+
+            <div class="col-md-5">
 
 
+                <h2>Vehicle picture </h2>
+                <hr />
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <label class="btn btn-primary" for="my-file-selector-Vehicle">
+                            <input id="my-file-selector-Vehicle" name="Vehiclefiles" type="file" style="display:none;" onchange="$('#upload-file-info-Vehicle').html($(this).val());">
+                            <img id="Vehicle-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
+                            Click here to upload package picture
+                        </label>
+                        <span class='label label-info' id="upload-file-info-Vehicle"></span>
+                    </div>
+                </div>
+            </div>
+       
+      
+
+        <div class="col-md-5">
+            <h2>Proof of insurance picture </h2>
+            <hr />
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    <label class="btn btn-primary" for="my-file-selector-insurance">
+                        <input id="my-file-selector-insurance" name="insurancefiles" type="file" style="display:none;" onchange="$('#upload-file-info-insurance').html($(this).val());">
+                        <img id="insurance-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
+                        Click here to upload package picture
+                    </label>
+                    <span class='label label-info' id="upload-file-info-insurance"></span>
+                </div>
+            </div>
+        </div>
+        </div>
 
 
         <div class="row">
-            <div class="col-md-5">
-
-                <div class="form-group">
-
-                    <div class="form-horizontal">
-
-                        <h2>
-                            Payment Info
-                        </h2>
-                        <hr />
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="CardHolderName" class="form-control" placeholder="Card Holder Name" />
-                                <span asp-validation-for="CardHolderName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="CardNumber" class="form-control" placeholder="Card Number" />
-                                <span asp-validation-for="CardNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="Expiration" class="form-control" placeholder="Expiration" />
-                                <span asp-validation-for="Expiration" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="SecurityNumber" class="form-control" placeholder="Security Number" />
-                                <span asp-validation-for="SecurityNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
+           
             <div class="col-md-5">
                 <div class="form-horizontal">
 
@@ -268,17 +283,94 @@
             <div class="col-md-10">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Register" class="btn btn-default" />
+                        <input type="submit" value="Register" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
         </div>
     </form>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+     
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+
+        function readURL4(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#insurance-image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#my-file-selector-insurance").change(function () {
+            readURL4(this);
+        });
+
+
+
+
+        function readURL3(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#Vehicle-image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#my-file-selector-Vehicle").change(function () {
+            readURL3(this);
+        });
+
+
+
+        function readURL2(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#Personal-image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#my-file-selector-Personal").change(function () {
+            readURL2(this);
+        });
+
+
+        function readURL1(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#license-image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#my-file-selector-license").change(function () {
+            readURL1(this);
+        });
+
+
+</script>
+
 }

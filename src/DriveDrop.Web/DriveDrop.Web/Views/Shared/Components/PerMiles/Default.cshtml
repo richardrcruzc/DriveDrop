@@ -1,0 +1,11 @@
+@using DriveDrop.Web.ViewModels;
+@model  IEnumerable<DriveDrop.Web.ViewModels.RateDetailModel>
+                       @if (Model == null || Model.Count() == 0)
+                            {
+                           <p>None.</p>
+                            }
+                            else
+                            {
+   @Html.EditorFor(m => m)
+}
+

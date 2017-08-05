@@ -1,42 +1,46 @@
 ﻿@using DriveDrop.Web.ViewModels;
 @model  RateDetailModel
+<div class="row">
+    
 
-<tr>
-    @if (Model.WeightOrDistance =="")
+    @if (Model.WeightOrDistance == "")
     {
 
-        <td>
+        <div class="col-md-2">
 
-            <select asp-for="WeightOrDistance" class = "form-control text-box single-line">
+            <select asp-for="WeightOrDistance" class="form-control text-box single-line">
                 <option value="">Please select Type</option>
                 <option value="distance">Distance</option>
                 <option value="weight">Weight</option>
             </select>
- 
+
             @Html.ValidationMessageFor(modelItem => modelItem.To, "", new { @class = "text-danger" })
 
-        </td>
-
+        </div>
     }
-    <td>
-        
+    <div class="col-md-2">
+
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.RateId)
         @Html.HiddenFor(model => model.MileOrLbs)
         @Html.HiddenFor(model => model.WeightOrDistance)
         @Html.TextBoxFor(model => model.From, htmlAttributes: new { @class = "form-control text-box single-line" })
         @Html.ValidationMessageFor(modelItem => modelItem.From, "", new { @class = "text-danger" })
-    </td>
-    <td>
+        
+    </div>
+    <div class="col-md-2">
         @Html.TextBoxFor(model => model.To, htmlAttributes: new { @class = "form-control text-box single-line" })
         @Html.ValidationMessageFor(modelItem => modelItem.To, "", new { @class = "text-danger" })
 
-    </td>
-    
-
-    <td>
+    </div>
+    <div class="col-md-2">
         @Html.TextBoxFor(model => model.Charge, htmlAttributes: new { @class = "form-control text-box single-line" })
         @Html.ValidationMessageFor(modelItem => modelItem.Charge, "", new { @class = "text-danger" })
 
-    </td>
-</tr>
+    </div>
+    <div class="col-md-2">
+         
+        <a href="@Url.Action("Delete","rates", new {id=Model.Id , rateId  =  Model.RateId, type = 1})"  >Delete</a>
+        @*<input type="submit" class="button delete-address-button" onclick="deletecustomeraddress(@(Model.Id))" value="Delete" />*@
+    </div>
+</div>

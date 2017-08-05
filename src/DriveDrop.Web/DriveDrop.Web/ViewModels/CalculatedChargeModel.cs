@@ -7,8 +7,7 @@ namespace DriveDrop.Web.ViewModels
 {
     public class CalculatedChargeModel
     {
-
-        public Decimal Distance { get; set; }
+ public Decimal Distance { get;  set; }
         public Decimal PriorityAmount { get; set; }
         public Decimal DistanceAmount { get; set; }
         public Decimal WeightAmount { get; set; }
@@ -21,7 +20,7 @@ namespace DriveDrop.Web.ViewModels
         public Decimal Discount { get; set; }
 
 
-        public Decimal AmountToCharge { get; set; }
+        public Decimal AmountToCharge { get;  set; }
 
         public string StrSubTotal
         {

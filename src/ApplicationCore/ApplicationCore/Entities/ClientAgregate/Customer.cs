@@ -132,10 +132,10 @@ namespace ApplicationCore.Entities.ClientAgregate
       string userName , 
       string vehicleInfo , 
       string primaryPhone,
-      string DriverLincensePictureUri, 
-      string PersonalPhotoUri, 
-      string VehiclePhotoUri, 
-      string InsurancePhotoUri) : this()
+      string driverLincensePictureUri, 
+      string personalPhotoUri, 
+      string vehiclePhotoUri, 
+      string insurancePhotoUri) : this()
         {
             LastName = lastName;
             FirstName = firstName;            
@@ -157,6 +157,10 @@ namespace ApplicationCore.Entities.ClientAgregate
             CustomerStatusId = CustomerStatus.WaitingApproval.Id;
 
             PrimaryPhone = primaryPhone;
+            PersonalPhotoUri = personalPhotoUri;
+            DriverLincensePictureUri = driverLincensePictureUri;
+            VehiclePhotoUri = vehiclePhotoUri;
+            InsurancePhotoUri = InsurancePhotoUri;
         } 
 
         public Customer Update( 

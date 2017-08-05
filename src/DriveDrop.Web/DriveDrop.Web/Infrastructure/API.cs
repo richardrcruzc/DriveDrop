@@ -47,8 +47,20 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}New";
             }
+            public static string DeleteDetail(string baseUri)
+            {
+                return $"{baseUri}DeleteDetail";
+            }
+            public static string DeleteRate(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                var filterQs = $"{idQs}";
+                return $"{baseUri}DeleteRate/{filterQs}";
+            }
+
+
         }
-            public static class Admin
+        public static class Admin
         {
             public static string GetAllCustomers(string baseUri, int pageIndex, int pageSize, int? status, int? type, int? transporType, string LastName = null)
             {

@@ -36,9 +36,10 @@ namespace DriveDrop.Web.Controllers
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
+        private readonly IHostingEnvironment _env;
 
         public DriverController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
-            IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
+            IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser, IHostingEnvironment env)
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
@@ -49,6 +50,7 @@ namespace DriveDrop.Web.Controllers
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _appUserParser = appUserParser;
+            _env = env;
 
         }
 
@@ -70,7 +72,7 @@ namespace DriveDrop.Web.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> NewDriver(DriverModel c)
+        public async Task<IActionResult> NewDriver(DriverModel c, List<IFormFile> personalfiles, List<IFormFile> licensefiles, List<IFormFile> Vehiclefiles, List<IFormFile> insurancefiles)
         {
             try
             { 
@@ -101,8 +103,13 @@ namespace DriveDrop.Web.Controllers
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
+
+                   c.PersonalPhotoUri =await SaveFile(personalfiles, "driver");
+                    c.DriverLincensePictureUri = await SaveFile(licensefiles, "driver");
+                   c.VehiclePhotoUri = await SaveFile(Vehiclefiles, "driver");
+                   c.InsurancePhotoUri = await SaveFile(insurancefiles, "driver");
                     
-                var user = _appUserParser.Parse(HttpContext.User);
+                    var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
 
                     var addNewDriverUri = API.Driver.NewDriver(_remoteServiceDriversUrl);
@@ -207,6 +214,49 @@ namespace DriveDrop.Web.Controllers
 
 
             return RedirectToAction("Result", new { id = customerId });
+
+        }
+        [NonAction]
+        public async Task<string> SaveFile(List<IFormFile> files, string belong)
+        {
+
+            Guid extName = Guid.NewGuid();
+            //saving files
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+            var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
+            var fileName = "";
+
+            foreach (var formFile in files)
+            {
+
+                if (formFile.Length > 0)
+                {
+                    var extension = ".jpg";
+                    if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                        extension = ".jpg";
+                    if (formFile.FileName.ToLower().EndsWith(".tif"))
+                        extension = ".tif";
+                    if (formFile.FileName.ToLower().EndsWith(".png"))
+                        extension = ".png";
+                    if (formFile.FileName.ToLower().EndsWith(".gif"))
+                        extension = ".gif";
+
+
+
+
+                    filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                    fileName = string.Format("uploads/img/{0}/{1}{2}", belong, extName, extension);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+            return fileName;
 
         }
 

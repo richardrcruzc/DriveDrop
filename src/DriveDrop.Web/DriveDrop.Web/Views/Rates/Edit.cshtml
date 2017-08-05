@@ -4,365 +4,204 @@
     ViewData["Title"] = "Edit";
 }
 
-<section class="esh-catalog-filters">
-    <div class="row">
-        <p> <h4>Edit Rate</h4></p>
+ 
+
+<div class="side-2">
 
 
-    </div>
-</section>
-
-<div class="row">
-
-    <form asp-action="Edit">
-        <div class="form-horizontal">
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-
-            <div class="form-group">
-                <label asp-for="Active" class="col-md-2 control-label"></label>
-
-                <label class="control-label">
-                    <input asp-for="Active" />
-                </label>
-                <span asp-validation-for="Active" class="text-danger"></span>
-            </div>
+    @await Html.PartialAsync("AdminNavigation", 1)
 
 
-            <div class="form-group">
-                <label asp-for="StartDate" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="StartDate" class="form-control" />
-                    <span asp-validation-for="StartDate" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="EndDate" class="form-control" />
-                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="FixChargePerShipping" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="FixChargePerShipping" class="form-control" />
-                    <span asp-validation-for="FixChargePerShipping" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="FixChargePercentage" class="col-md-2 control-label"></label>
-
-                <label class="control-label">
-                    <input asp-for="FixChargePercentage" />
-                </label>
-                <span asp-validation-for="FixChargePercentage" class="text-danger"></span>
-            </div>
-
-            
-
-            <div class="form-group">
-                <label asp-for="ChargePerItem" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="ChargePerItem" class="form-control" />
-                    <span asp-validation-for="ChargePerItem" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Tax" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Tax" class="form-control" />
-                    <span asp-validation-for="Tax" class="text-danger"></span>
-                </div>
-            </div>
-
-      
-
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="4">
-                    Add new Charge per Distance/Weight
-
-                </th>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.RateDetail)
-
-        </tbody>
-
-    </table>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+</div>
+<div class="center-2">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h1>Edit Rate</h1>
         </div>
-    </div>
-</div>
+        <div class="page-body">
+            <form asp-action="Edit">
+
+                 
+
+                <div class="fieldset">
+                    <div class="form-fields">  
+
+                      
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                         
+                            <div class="inputs">
+                                <label asp-for="Active" class="col-md-2 control-label">Active</label>
+                                 
+                                    <input asp-for="Active" /> 
+                                <span asp-validation-for="Active" class="text-danger"></span>
+                            </div>
+
+                            <div class="inputs">
+                                <label asp-for="StartDate"></label>
+
+                                <input asp-for="StartDate" placeholder="Start Date" />
+                                <span class="required">*</span>
+
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
 
 
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="3">
-                    Charge per miles
+                            </div>
 
-                </th>
-            </tr>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.MileRateDetails)
+                            <div class="inputs">
+                                <label asp-for="EndDate" class="col-md-2 control-label"></label>
+                               
+                                    <input asp-for="EndDate" class="form-control" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                 
+                            </div>
+                            <div class="inputs">
+                                <label asp-for="FixChargePerShipping" class="col-md-2 control-label"></label>
+                                 
+                                    <input asp-for="FixChargePerShipping" class="form-control" />
+                                    <span asp-validation-for="FixChargePerShipping" class="text-danger"></span>
+                                 
+                            </div>
 
-        </tbody>
+                            <div class="inputs">
+                                <label asp-for="FixChargePercentage" class="col-md-2 control-label"></label>
 
-    </table>
-</div>
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="3">
-                    Charge per Weight
-
-                </th>
-            </tr>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.WeightRateDetails)
-
-        </tbody>
-
-    </table>
-
-
-
-    @*<table class="table table-bordered table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th colspan="3">
-                                            Charge per Mile
-
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>From</th>
-                                        <th>To</th>
-                                        <th>Charge</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @Html.EditorFor(m => m.RateDetails)
-
-        @for (var j = 0; j < Model.RateDetails.Count(); j++)
-        {
-
-            if (Model.RateDetails[j].WeightOrDistance.ToLower() != "distance")
-            {
-                continue;
-
-            }
-
-            @Html.HiddenFor(model => model.RateDetails[j].Id)
+                                
+                                    <input asp-for="FixChargePercentage" />
+                                
+                                <span asp-validation-for="FixChargePercentage" class="text-danger"></span>
+                            </div>
 
 
 
-            <tr>
-                <td>
-                    @Html.TextBoxFor(model => model.RateDetails[j].From, new { @class = "form-control text-right" })
-                </td>
-                <td>
-                    @Html.TextBoxFor(model => model.RateDetails[j].To, new { @class = "form-control text-right" })
-                </td>
-                <td>
-                    @Html.TextBoxFor(model => model.RateDetails[j].Charge, new { @class = "form-control text-right" })
-                </td>
+                            <div class="inputs">
+                                <label asp-for="ChargePerItem" class="col-md-2 control-label"></label>
+                                 
+                                    <input asp-for="ChargePerItem" class="form-control" />
+                                    <span asp-validation-for="ChargePerItem" class="text-danger"></span>
+                                 
+                            </div>
 
-            </tr>
-        }
-                                </tbody>
+                            <div class="inputs">
+                                <label asp-for="Tax" class="col-md-2 control-label"></label>
+                                
+                                    <input asp-for="Tax" class="form-control" />
+                                    <span asp-validation-for="Tax" class="text-danger"></span>
+                                 
+                            </div>
+                            
+                                <div class="buttons">
+                                    <input type="submit" value="Save" class="button-1 save-customer-info-button" />
 
-                            </table>*@
-
-    @*<table class="table table-bordered table-responsive">
-            <thead>
-                <tr>
-                    <th colspan="3">
-                        Charge per Weight
-
-                    </th>
-                </tr>
-                <tr>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Charge</th>
-                </tr>
-            </thead>
-            <tbody>
+                                
+                            </div>
+                        </div> 
+                        
+                    
+                </div>
 
 
-                @for (var j = 0; j < Model.RateDetails.Count(); j++)
-                {
-                    if (Model.RateDetails[j].WeightOrDistance.ToLower() != "weight")
-                    {
-                        continue;
+                <div class="fieldset">
+                    <div class="form-fields">
 
-                    }
+                             <ul class="nav nav-tabs" id="myTab">
+                                <li class="active"><a data-toggle="tab" href="#distance">Distance</a></li>
+                                <li><a data-toggle="tab" href="#Weight">Weight</a></li>
+                                <li><a data-toggle="tab" href="#priority">Priority</a></li>
+                                <li><a data-toggle="tab" href="#size">Size</a></li>
+                            </ul>
 
-                    @Html.HiddenFor(model => model.RateDetails[j].Id)
+                            <div class="tab-content">
+                                <div id="distance" class="tab-pane fade in active">
+                                    <h3>Charge per distance</h3>
+                                    <p>Edit rate  charge per miles</p>
+                                     
+                                        <div class="row">
+                                            <div class="col-md-2">From</div>
+                                            <div class="col-md-2">To</div>
+                                            <div class="col-md-2">Charge</div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                        <div class="row">
+                                            @Html.EditorFor(m => m.MileRateDetails)
+                                        </div>
+                                    </div> 
+                                <div id="Weight" class="tab-pane fade">
+                                    <h3>Charge per Weight</h3>
+                                     
+                                         <div class="row">
+                                            <div class="col-md-2">From</div>
+                                            <div class="col-md-2">To</div>
+                                            <div class="col-md-2">Charge</div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                        <div class="row">
+                                            @Html.EditorFor(m => m.WeightRateDetails)
+                                        </div>
+                                </div>
+                                <div id="priority" class="tab-pane fade">
+                                    <h3> Charge per priority</h3>
+                                   
+                                     
+                                        <div class="row">
+                                            <div class="col-md-3">Size</div>
+                                            <div class="col-md-2">Charge</div>
+                                            <div class="col-md-2">isPercentage?</div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                        <div class="row">
+                                            @Html.EditorFor(m => m.RatePriorities)
+                                        </div>
+                                     
+                                </div>
+                                <div id="size" class="tab-pane fade">
+                                    <h3> Charge per size</h3>
+                                     
+                                     
+                                        <div class="row">
+                                            <div class="col-md-3">Size</div>
+                                            <div class="col-md-2">Charge</div>
+                                            <div class="col-md-2">isPercentage?</div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                        <div class="row">
+                                            @Html.EditorFor(m => m.PackageSizes)
+                                        
+                                </div>
+                            </div>
+                        </div>
 
 
 
-                    <tr>
-                        <td>
-                              @Html.TextBoxFor(model => model.RateDetails[j].From, new { @class = "form-control text-right" })
-                        </td>
-                        <td>
-                            @Html.TextBoxFor(model => model.RateDetails[j].To, new { @class = "form-control text-right" })
-                        </td>
-                        <td>
-                            @Html.TextBoxFor(model => model.RateDetails[j].Charge, new { @class = "form-control text-right" })
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-
-        </table>*@
-</div>
+                    </div>
+                    <div class="buttons">
+                        <input type="submit" value="Save" class="button-1 save-customer-info-button" />
 
 
-
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="4">
-                    Add new Charge per tranport type
-
-                </th>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.RateDetail)
-
-        </tbody>
-
-    </table>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
-
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="3">
-                    Charge per tranport type
-
-                </th>
-            </tr>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.MileRateDetails)
-
-        </tbody>
-
-    </table>
-</div>
-
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="3">
-                    Charge per priority
-
-                </th>
-            </tr>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.MileRateDetails)
-
-        </tbody>
-
-    </table>
-</div>
-<div class="form-group">
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th colspan="3">
-                    Charge per package size
-
-                </th>
-            </tr>
-            <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Charge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.EditorFor(m => m.MileRateDetails)
-
-        </tbody>
-
-    </table>
-</div>
-
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Save" class="btn btn-default" />
-    </div>
-</div>
+                    </div>
+                </div>
+            </form>
             </div>
-    </form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // store the currently selected tab in the hash value
+        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        $('#myTab a[href="' + hash + '"]').tab('show');
+    </script>
 }
-</div>
+

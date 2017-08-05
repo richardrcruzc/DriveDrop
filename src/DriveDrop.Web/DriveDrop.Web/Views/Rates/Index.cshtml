@@ -3,76 +3,95 @@
 @{
     ViewData["Title"] = "Index";
 }
-<section class="esh-catalog-filters">
-    <div class="row">
-        <p> <h4>List Rates </h4></p>
-    </div>
-</section>
 
-<div class="row">
-    
-    <p>
-        <a asp-action="Create">Create New Rate</a>
-    </p>
-    <table class="table table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FixChargePerShipping)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FixChargePercentage)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ChargePerItem)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Tax)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Active)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FixChargePerShipping)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FixChargePercentage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ChargePerItem)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Tax)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Active)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+
+<div class="side-2">
+
+
+    @await Html.PartialAsync("AdminNavigation",1)
+
+
 </div>
+<div class="center-2">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h1>List Rates</h1>
+        </div>
+        <div class="page-body">
+            <div class="page-title">
+                <h3><a asp-action="Create">Create New Rate</a></h3>
+            </div>
+             
+            <div class="fieldset">
+                <div class="form-fields">
+                   
+
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FixChargePerShipping)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FixChargePercentage)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ChargePerItem)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Tax)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Active)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EndDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FixChargePerShipping)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FixChargePercentage)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ChargePerItem)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tax)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Active)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="DeleteRate" asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 

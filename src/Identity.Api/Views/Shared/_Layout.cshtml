@@ -115,46 +115,46 @@
                         </div>
                         <div class="newsletter-result" id="newsletter-result-block"></div>
                         <script type="text/javascript">
-                        function newsletter_subscribe(subscribe) {
-                            var subscribeProgress = $("#subscribe-loading-progress");
-                            subscribeProgress.show();
-                            var postData = {
-                                subscribe: subscribe,
-                                email: $("#newsletter-email").val()
-                            };
-                            $.ajax({
-                                cache: false,
-                                type: "POST",
-                                url: "/subscribenewsletter",
-                                data: postData,
-                                success: function (data) {
-                                    subscribeProgress.hide();
-                                    $("#newsletter-result-block").html(data.Result);
-                                    if (data.Success) {
-                                        $('#newsletter-subscribe-block').hide();
-                                        $('#newsletter-result-block').show();
-                                    } else {
-                                        $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
-                                    }
-                                },
-                                error: function (xhr, ajaxOptions, thrownError) {
-                                    alert('Failed to subscribe.');
-                                    subscribeProgress.hide();
-                                }
-                            });
-                        }
+                        //function newsletter_subscribe(subscribe) {
+                        //    var subscribeProgress = $("#subscribe-loading-progress");
+                        //    subscribeProgress.show();
+                        //    var postData = {
+                        //        subscribe: subscribe,
+                        //        email: $("#newsletter-email").val()
+                        //    };
+                        //    $.ajax({
+                        //        cache: false,
+                        //        type: "POST",
+                        //        url: "/subscribenewsletter",
+                        //        data: postData,
+                        //        success: function (data) {
+                        //            subscribeProgress.hide();
+                        //            $("#newsletter-result-block").html(data.Result);
+                        //            if (data.Success) {
+                        //                $('#newsletter-subscribe-block').hide();
+                        //                $('#newsletter-result-block').show();
+                        //            } else {
+                        //                $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
+                        //            }
+                        //        },
+                        //        error: function (xhr, ajaxOptions, thrownError) {
+                        //            alert('Failed to subscribe.');
+                        //            subscribeProgress.hide();
+                        //        }
+                        //    });
+                        //}
 
-                        $(document).ready(function () {
-                            $('#newsletter-subscribe-button').click(function () {
-                                newsletter_subscribe('true');
-                            });
-                            $("#newsletter-email").keydown(function (event) {
-                                if (event.keyCode == 13) {
-                                    $("#newsletter-subscribe-button").click();
-                                    return false;
-                                }
-                            });
-                        });
+                        //$(document).ready(function () {
+                        //    $('#newsletter-subscribe-button').click(function () {
+                        //        newsletter_subscribe('true');
+                        //    });
+                        //    $("#newsletter-email").keydown(function (event) {
+                        //        if (event.keyCode == 13) {
+                        //            $("#newsletter-subscribe-button").click();
+                        //            return false;
+                        //        }
+                        //    });
+                        //});
                         </script>
                     </div>
 

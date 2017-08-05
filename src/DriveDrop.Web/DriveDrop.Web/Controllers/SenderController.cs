@@ -473,6 +473,9 @@ namespace DriveDrop.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> NewSender()
         {
+            //await HttpContext.Authentication.SignOutAsync("Cookies");
+            //await  HttpContext.Authentication.SignOutAsync("oidc");
+
             CustomerModel c = new CustomerModel();
             await PrepareCustomerModel(c);
             c.CustomerTypeId = 2;
@@ -481,7 +484,7 @@ namespace DriveDrop.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewSender(CustomerModel c, List<IFormFile> files, List<IFormFile> files1)
+        public async Task<IActionResult> NewSender(CustomerModel c, List<IFormFile> packageImage, List<IFormFile> imgeFoto)
         {
             try
             {
@@ -492,76 +495,43 @@ namespace DriveDrop.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var token = await GetUserTokenAsync();
+                    //var token = await GetUserTokenAsync();
 
                     //try register new user
 
                     var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl,c.UserEmail, c.Password);
 
-                    var dataString = await _apiClient.GetStringAsync(addNewUserUri, token);
+                    var dataString = await _apiClient.GetStringAsync(addNewUserUri);
 
                     //var isCreated = JsonConvert.DeserializeObject<string>((dataString));
 
                     if (dataString == null)
                     {
+                        ModelState.AddModelError("", "Unable to register user");
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
 
                     if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
                     {
+
+                        ModelState.AddModelError("", "Unable to register user");
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
 
-                    var user = _appUserParser.Parse(HttpContext.User);
+                    //var user = _appUserParser.Parse(HttpContext.User);
 
-                    Guid extName = Guid.NewGuid();
-                    //saving files
-                    long size = files.Sum(f => f.Length);
+                    var packageUri = await SaveFile(packageImage, "Shipment");
+                    var ppersonalUri = await SaveFile(imgeFoto, "Sender");
 
-                    // full path to file in temp location
-                    var filePath = Path.GetTempFileName();
-                    var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\Shipment");
-                    var fileName = "";
+                    c.FilePath = packageUri;
+                    c.PersonalPhotoUri = ppersonalUri;
 
-                    foreach (var formFile in files)
-                    {
-
-                        if (formFile.Length > 0)
-                        {
-                            var extension = ".jpg";
-                            if (formFile.FileName.ToLower().EndsWith(".jpg"))
-                                extension = ".jpg";
-                            if (formFile.FileName.ToLower().EndsWith(".tif"))
-                                extension = ".tif";
-                            if (formFile.FileName.ToLower().EndsWith(".png"))
-                                extension = ".png";
-                            if (formFile.FileName.ToLower().EndsWith(".gif"))
-                                extension = ".gif";
-
-
-
-
-                            filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                            fileName = string.Format("uploads\\img\\Shipment\\{0}{1}", extName, extension);
-
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await formFile.CopyToAsync(stream);
-                            }
-                        }
-                    }
-                    if (!string.IsNullOrWhiteSpace(fileName))
-                    {
-
-                        c.FilePath = fileName;
-                        
-                    }
 
                     var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
 
-                    var response = await _apiClient.PostAsync(addNewSenderUri, c, token);
+                    var response = await _apiClient.PostAsync(addNewSenderUri, c);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                     {
@@ -569,7 +539,7 @@ namespace DriveDrop.Web.Controllers
                     }
 
                     // return RedirectToAction("result", new { id = c.CustomerId });
-                    return RedirectToAction("index","admin");
+                    return RedirectToAction("SignIn", "Account");
                 }
             }               
                 catch (DbUpdateException ex)

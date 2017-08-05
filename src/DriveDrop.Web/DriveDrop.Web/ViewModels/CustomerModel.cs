@@ -23,6 +23,8 @@ namespace DriveDrop.Web.ViewModels
             Addresses = new List<AddressModel>();
             }
 
+
+        public decimal Distance { get; set; }
         public IEnumerable<SelectListItem> CustomerTypeList { get; set; }
         public IEnumerable<SelectListItem> TransportTypeList { get; set; }
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
@@ -40,7 +42,7 @@ namespace DriveDrop.Web.ViewModels
         public string FilePath { get; set; }
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Email Address")]
         [Remote("ValidateUserName", "Sender", ErrorMessage = "Username is not available.")]
         public string UserEmail { get; set; }
 
@@ -59,7 +61,7 @@ namespace DriveDrop.Web.ViewModels
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
-        [Display(Name = "Phone")]
+        [Display(Name = "Cell Number")]
         public string Phone { get; set; }
         public string IdentityGuid { get; set; }
         public string UserGuid { get; set; }
@@ -85,10 +87,10 @@ namespace DriveDrop.Web.ViewModels
         [Range(1, 999, ErrorMessage = "Select a valid Customer type")]
         public int CustomerTypeId { get; set; }
 
-        [Display(Name = "Transport Type")]
-        [Required(ErrorMessage = "Transport Type required")]
-        [Range(1, 999, ErrorMessage = "Select a valid transport type")]
-        public int? TransportTypeId { get; set; }
+        //[Display(Name = "Transport Type")]
+        //[Required(ErrorMessage = "Transport Type required")]
+        //[Range(1, 999, ErrorMessage = "Select a valid transport type")]
+        //public int? TransportTypeId { get; set; }
         public TransportType TransportType { get; set; }
         public int CustomerStatusId { get; set; }
         public CustomerStatus CustomerStatus { get; set; }
@@ -96,9 +98,9 @@ namespace DriveDrop.Web.ViewModels
         public int? PickupRadius { get; set; }
         public int? DeliverRadius { get; set; }
 
-        [Display(Name = "Quantity")]
-        [Required(ErrorMessage = "required")]
-        public int? Quantity { get; set; }
+        //[Display(Name = "Quantity")]
+        //[Required(ErrorMessage = "required")]
+        //public int? Quantity { get; set; }
         [Display(Name = "Weight")]
         [Required(ErrorMessage = "required")]
         public decimal? ShippingWeight { get; set; }
@@ -187,21 +189,21 @@ namespace DriveDrop.Web.ViewModels
         public string Note { get; set; }
 
 
-        //[CreditCard]
-        [DataType(DataType.CreditCard)]
-        [Display(Name = "Credit Card Number")]
-        [Required(ErrorMessage = "required")]
-        //[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
-        public String CardNumber { get; set; }
-        [Required]
-        [Display(Name = "Security Number")]
-        public int SecurityNumber { get; set; }
-        [Required]
-        [Display(Name = "Card Holder Name")]
-        public String CardHolderName { get; set; }
-        [Required]
-        [Display(Name = "Expiration")]
-        public String Expiration { get; set; }
+        ////[CreditCard]
+        //[DataType(DataType.CreditCard)]
+        //[Display(Name = "Credit Card Number")]
+        //[Required(ErrorMessage = "required")]
+        ////[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
+        //public String CardNumber { get; set; }
+        //[Required]
+        //[Display(Name = "Security Number")]
+        //public int SecurityNumber { get; set; }
+        //[Required]
+        //[Display(Name = "Card Holder Name")]
+        //public String CardHolderName { get; set; }
+        //[Required]
+        //[Display(Name = "Expiration")]
+        //public String Expiration { get; set; }
 
 
 
@@ -387,6 +389,7 @@ namespace DriveDrop.Web.ViewModels
 
 
         public IEnumerable<SelectListItem> PackageSizeList { get; set; }
+
 
         public decimal Distance { get; set; }
         public int CustomerId { get; set; }

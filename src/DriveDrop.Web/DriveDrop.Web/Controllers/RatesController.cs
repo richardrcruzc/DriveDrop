@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,11 +56,11 @@ namespace DriveDrop.Web.Controllers
 
         public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode)
         {
-            var token = await GetUserTokenAsync();
+           // var token = await GetUserTokenAsync();
 
             var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl, distance,  weight,   priority, packageSizeId, promoCode);
 
-            var dataString = await _apiClient.GetStringAsync(allRatesUri, token);
+            var dataString = await _apiClient.GetStringAsync(allRatesUri);
 
              var response = JsonConvert.DeserializeObject<CalculatedChargeModel>(dataString);
 
@@ -103,9 +105,28 @@ namespace DriveDrop.Web.Controllers
 
             return View(response);
         }
+        public async Task<IActionResult> Create()
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
 
-        // GET: Rates/Edit/5
-        public async Task<IActionResult> Edit(int id)
+            RateModel model = new RateModel { Active = true, EndDate = DateTime.Today, StartDate=DateTime.Today, Tax=0 };
+
+            var allRatesUri = API.Rate.NewRate(_remoteServiceRatessUrl);
+
+            var response = await _apiClient.PostAsync(allRatesUri, model, token); 
+
+            var allRatesUri1 = API.Rate.Get(_remoteServiceRatessUrl);
+            var dataString = await _apiClient.GetStringAsync(allRatesUri1, token);
+            var rates = JsonConvert.DeserializeObject<List<RateModel>>(dataString);
+            var last = rates.OrderByDescending(x => x.Id).FirstOrDefault();
+
+            return RedirectToAction("Edit", new { id = last.Id});
+
+        }
+
+            // GET: Rates/Edit/5
+            public async Task<IActionResult> Edit(int id)
         {
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
@@ -118,16 +139,18 @@ namespace DriveDrop.Web.Controllers
 
             response.WeightRateDetails = new List<RateDetailModel>();
             foreach (var item in response.RateDetails)
-                if (item.WeightOrDistance.ToLower() == "distance")
+                if (item.WeightOrDistance!=null && item.WeightOrDistance.ToLower() == "distance")
                     response.MileRateDetails.Add(item);
                 else
                     response.WeightRateDetails.Add(item);
+             
+            await PrepareRate(response);
 
-            response.RateDetail.WeightOrDistance = "";
-            response.RateDetail.MileOrLbs = "miles";
+
+          
 
             return View(response);
-        }
+        } 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -139,15 +162,10 @@ namespace DriveDrop.Web.Controllers
             foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
             {
                 var tt = state.Errors.ToString();
-            }
-            if (model.RateDetail.WeightOrDistance != null)
-                if (model.RateDetail.WeightOrDistance == "weight")
-                    model.RateDetail.MileOrLbs = "lbs";
-            else
-                    model.RateDetail.MileOrLbs = "miles";
+            } 
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
@@ -163,40 +181,150 @@ namespace DriveDrop.Web.Controllers
                     {
                         model.RateDetails = new List<RateDetailModel>();
 
-                        if (model.RateDetail.From > 0 && model.RateDetail.To > 0 && model.RateDetail.Charge > 0 
-                            && model.RateDetail.WeightOrDistance != null 
-                            && (model.RateDetail.WeightOrDistance.Contains("weight") || model.RateDetail.WeightOrDistance.Contains("distance")))
-                        {
-                            model.RateDetails.Add(model.RateDetail);
-                             
-                        }
+                    foreach (var item in model.MileRateDetails)
+                    {
+                        if (item.Charge == 0 || item.From == 0 || item.To == 0)
+                            continue;
+                        item.WeightOrDistance = "distance";
+                        item.MileOrLbs = "miles";
+                        model.RateDetails.Add(item);
+                    }
+                    foreach (var item in model.WeightRateDetails)
+                    {
+                        if (item.Charge == 0 || item.From == 0 || item.To == 0)
+                            continue;
 
-                        foreach (var item in model.MileRateDetails)
-                            model.RateDetails.Add(item);
-
-                        foreach (var item in model.WeightRateDetails)
-                            model.RateDetails.Add(item);
-
+                        item.WeightOrDistance = "weight";
+                        item.MileOrLbs = "lbs";
+                        model.RateDetails.Add(item);
+                    }
+                        
                         var allRatesUri = API.Rate.SaveRate(_remoteServiceRatessUrl);
 
                         var response = await _apiClient.PostAsync(allRatesUri, model, token);
                     }
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Index");
                 }
                 catch 
                 {
                 }
-            }
+           // }
 
-                    return View(model);
+            await PrepareRate(model);
+            return View(model);
         }
+        public async Task<IActionResult> DeleteRate(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var deleteRateUri = API.Rate.DeleteRate(_remoteServiceRatessUrl, id);
+
+            var dataString = await _apiClient.GetStringAsync(deleteRateUri, token);
 
 
+
+            return RedirectToAction("Index");
+        }
+            public async Task<IActionResult> Delete(int id, int rateId, int type)
+        {
+            var del = new RateDeleteDetailModel();
+            del.RateId = rateId;
+            if(type==1)
+            del.RateDetails.Add(new RateDetailModel { RateId = rateId, Id=id });
+            if (type == 2)
+                del.RatePackageSizes.Add(new RatePackageSizeModel { RateId = rateId, Id = id });
+            if (type == 3)
+                del.RatePriorities.Add(new RatePriorityModel { RateId = rateId, Id = id });
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var deleteRateUri = API.Rate.DeleteDetail(_remoteServiceRatessUrl);
+
+            var response = await _apiClient.PostAsync(deleteRateUri, del, token);
+
+            return RedirectToAction("edit", new { id = rateId });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MileRateDetail(List<RateDetailModel> model)
+        {
+
+            return ViewComponent("PerMiles", new { model = model });
+        }
         async Task<string> GetUserTokenAsync()
         {
             var context = _httpContextAccesor.HttpContext;
 
             return await context.Authentication.GetTokenAsync("access_token");
         }
+
+        public async Task<RateModel>  PrepareRate(RateModel model)
+        { 
+            var CustomerTypes = new List<SelectListItem>();
+            CustomerTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+
+
+            var getUri = API.Common.GetAllPriorityTypes(_remoteServiceCommonUrl);
+            var dataString = await _apiClient.GetStringAsync(getUri);
+            var priority = new List<SelectListItem>();
+            priority.Add(new SelectListItem() { Value = null, Text = "Select a priority", Selected = true });
+            
+            var gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                priority.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.PriorityTypeList = priority;
+
+            getUri = API.Common.GetAllPackageSizes(_remoteServiceCommonUrl);
+            dataString = await _apiClient.GetStringAsync(getUri);
+            var packageSize = new List<SelectListItem>();
+            packageSize.Add(new SelectListItem() { Value = null, Text = "PackageSize", Selected = true });
+
+            gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                packageSize.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            model.PackageSizeList = packageSize; 
+
+            ViewBag.PackageSizeList = model.PackageSizeList;
+            ViewBag.PriorityTypeList = model.PriorityTypeList;
+
+
+            var ps = model.PackageSizes.FirstOrDefault(x => x.Charge == 0 && x.PackageSizeId == 0);
+            if (ps==null || model.PackageSizes.Count()==0)
+                model.PackageSizes.Add(new RatePackageSizeModel { RateId = model.Id });
+
+            var rp = model.RatePriorities.FirstOrDefault(x => x.Charge == 0 && x.PriorityId == 0);
+            if (rp == null || model.RatePriorities.Count() == 0)
+                model.RatePriorities.Add(new RatePriorityModel { RateId = model.Id });
+
+
+            var md = model.MileRateDetails.FirstOrDefault(x=>x.Charge==0 && x.From==0 && x.To==0 );
+            if(md == null || model.MileRateDetails.Count()==0)
+                model.MileRateDetails.Add(new RateDetailModel { RateId = model.Id });
+
+
+            var wd = model.WeightRateDetails.FirstOrDefault(x => x.Charge == 0 && x.From == 0 && x.To == 0);
+            if (wd == null || model.WeightRateDetails.Count() == 0)
+                model.WeightRateDetails.Add(new RateDetailModel { RateId = model.Id });
+
+ 
+
+            return model;
+        }
+
+
     }
 }

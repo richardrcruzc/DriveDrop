@@ -97,8 +97,9 @@
     
         <form asp-controller="Sender" asp-action="NewSender" data-ajax="true" role="form" data-ajax-method="POST" enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">
 
-            @Html.HiddenFor(m => m.CustomerTypeId)
-
+            <input asp-for="Distance" hidden /> 
+            <input asp-for="CustomerTypeId" hidden /> 
+             
             <div class="row">
 
                 <div class="col-md-10">
@@ -174,7 +175,7 @@
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input type='file' id="imgFoto" />
+                                    <input type='file' id="imgFoto" name="imgeFoto" />
                                     <img id="blah" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
                                 </div>
                             </div>
@@ -355,7 +356,7 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="btn btn-primary" for="my-file-selector">
-                                <input id="my-file-selector" name="files" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+                                <input id="my-file-selector"    name="packageImage" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
                                 <img id="blah1" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
                                 Click here to upload package picture
                             </label>
@@ -414,7 +415,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <textarea name="Note" class="span6" rows="3" placeholder="Note to the driver"></textarea>
+                                <textarea name="Note" class="span6" rows="3" cols="50" placeholder="Note for driver"></textarea>
                                 <span asp-validation-for="Note" class="text-danger"></span>
                             </div>
                         </div>
@@ -523,7 +524,7 @@
                 <div class="col-md-5">
                    
                     <h2>
-                        <strong> Payment Info </strong>
+                        <strong> Payment method </strong>
                     </h2>
                     <hr />
                     <div class="buttons">
@@ -569,31 +570,100 @@
 
 
 
-    jQuery('#PickupZipCode').on('input propertychange paste', function () {
-        UpdateRate()
-    });
-    jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
-        UpdateRate()
-    });
-    jQuery('#Quantity').on('input propertychange paste', function () {
-        UpdateRate()
-    });
-    jQuery('#Amount').on('input propertychange paste', function () {
-        UpdateRate()
-    });
+    //jQuery('#PickupZipCode').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+    //jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+    //jQuery('#Quantity').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+    //jQuery('#Amount').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
 
-    $("#TransportTypeId").change(function () {
-        UpdateRate()
-    });
+    //$("#TransportTypeId").change(function () {
+    //    UpdateRate()
+    //});
 
-    $("#PriorityTypeId").change(function () {
-        UpdateRate()
-    });
+    //$("#PriorityTypeId").change(function () {
+    //    UpdateRate()
+    //});
 
-    $("#PromoCode").change(function () {
-        UpdateRate()
-    });
+    //$("#PromoCode").change(function () {
+    //    UpdateRate()
+    //});
 
+      $('#calcTotal').click(function (event) {
+                    //alert(1);
+
+          var pAdrress = $('#PickupStreet').val() + "," + $('#PickupCity').val() + "," + $('#PickupZipCode').val() + "," + $('#PickupState').val() + "," + $('#PickupCountry').val();
+          var dAddress = $('#DeliveryStreet').val() + "," + $('#DeliveryCity').val() + "," + $('#DeliveryZipCode').val() + "," + $('#DeliveryState').val() + "," + $('#DeliveryCountry').val();;
+
+                    var geocoder = new google.maps.Geocoder;
+
+                    var service = new google.maps.DistanceMatrixService;
+                    service.getDistanceMatrix({
+                        origins: [pAdrress],
+                        destinations: [dAddress],
+                        travelMode: 'DRIVING',
+                        unitSystem: google.maps.UnitSystem.METRIC,
+                        avoidHighways: false,
+                        avoidTolls: false
+                    }, function (response, status) {
+                        if (status !== 'OK') {
+                            alert('Error was: ' + status);
+                        } else {
+                            var originList = response.originAddresses;
+                            var destinationList = response.destinationAddresses;
+
+                            var results = response.rows[0].elements;
+                            var distancekm = results[0].distance.text.split(" ");
+
+
+                            var km = distancekm[0];
+                            var transportTypeId = $("#TransportTypeId").val();
+                            var priorityTypeId = $("#PriorityTypeId").val();
+                            var promoCode = $("#PromoCode").val();
+                            var shippingWeight = $("#ShippingWeight").val();
+
+                            $.ajax({
+                                url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "POST", //to do a post request
+
+                               //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    // data is your result from controller
+
+                                    if (data) {
+                                        $("#distance").value = km;
+                                        $(".value-Sub").text(data.strSubTotal);
+                                        $(".value-Discount").text(data.strDiscount);
+                                        $(".value-Tax").text(data.strTaxAmount);
+                                        $(".value-total").text(data.strAmountToCharge);
+
+                                    }
+
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    //alert(thrownError);
+
+                                }
+                            });
+
+
+                            }
+                        });
+
+
+
+                });
 
 
                      function readURL1(input) {
@@ -664,6 +734,11 @@
 
                          document.getElementById('PickupPhone').disabled = false;
                          document.getElementById('PickupContact').disabled = false;
+                         document.getElementById('PickupStreet').disabled = false;
+                         document.getElementById('PickupCity').disabled = false;
+                         document.getElementById('PickupState').disabled = false;
+                         document.getElementById('PickupCountry').disabled = false;
+                         document.getElementById('PickupZipCode').disabled = false;
 
                          document.getElementById('autocomplete').value = '';
                      });
@@ -698,6 +773,12 @@
 
                              }
                          }
+
+                         document.getElementById('DeliveryStreet').disabled = false;
+                         document.getElementById('DeliveryCity').disabled = false;
+                         document.getElementById('DeliveryState').disabled = false;
+                         document.getElementById('DeliveryCountry').disabled = false;
+                         document.getElementById('DeliveryZipCode').disabled = false;
 
                          document.getElementById('DeliveryPhone').disabled = false;
                          document.getElementById('DeliveryContact').disabled = false;

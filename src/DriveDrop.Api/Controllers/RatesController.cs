@@ -52,43 +52,123 @@ namespace DriveDrop.Api.Controllers
             /*    JSON.NET Error Self referencing loop detected for type
             https://stackoverflow.com/questions/7397207/json-net-error-self-referencing-loop-detected-for-type
             */
-
-            var rate = await _rate.Get(id);
-
+             
+            var rate = await _context.Rates
+                .Include(x => x.RatePriorities)
+                .Include(c => c.PackageSizes)
+                .Include(x => x.RateDetails)
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
             return rate;
 
         }
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<bool> New([FromBody]RateModel model)
+        public async Task<IActionResult> New([FromBody]RateModel m)
         {
-            var rate = new Rate();
+            if (m == null)
+                return null;
+             
 
-            var oldRate = _context.Rates
-                .Include(x=>x.RateDetails)
-                .Where(x => x.Id == model.Id).FirstOrDefault();
+            var rate = new Rate(m.StartDate, m.EndDate, m.FixChargePerShipping, m.ChargePerItem, m.Tax); 
+             
+            //foreach (var i in m.RateDetails)
+            //    rate.AddDetails(new RateDetail(i.RateId, i.WeightOrDistance, i.MileOrLbs, i.From, i.To, i.Charge));
+             
+            //foreach (var d in m.PackageSizes)
+            //    rate.AddSize(new RatePackageSize(d.RateId, d.PackageSizeId, d.Charge, d.ChargePercentage ));
 
-            if (oldRate == null)
-                return false;
+            //foreach (var d in m.RatePriorities)
+            //    rate.AddPriority(new RatePriority(d.RateId, d.PriorityId, d.Charge, d.ChargePercentage));
 
-            //oldRate.Update(model.StartDate, model.EndDate, model.MarkUp, model.ChargePerItem, model.Tax);
-            //foreach (var item in model.RateDetails)
-            //    oldRate.AddDetails(item);
-
-
-            
             var save = await _rate.Add(rate);
-            return save;
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Get), new { id = rate.Id } );
         }
         [HttpPost]
         [Route("[action]")]
-        public async Task<bool> Save([FromBody]RateModel model)
+        public async Task<bool> Save([FromBody]RateModel m)
         {
-            var rate = new Rate();
+            if (m == null)
+                return false;
+            if (m.Id == 0)
+                return false;
 
-            var update = await _rate.Update(rate);
+            var oldRate =await _context.Rates
+                .Include(x=>x.RatePriorities)
+                .Include(c=>c.PackageSizes)
+                .Include(x=>x.RateDetails)
+                .Where(x => x.Id == m.Id).FirstOrDefaultAsync();
+            if (oldRate == null)
+                return false;
+
+
+            oldRate.Update(m.StartDate, m.EndDate, m.FixChargePerShipping, m.ChargePerItem, m.Tax, m.Active);
+
+
+            foreach (var i in m.RateDetails)    
+                oldRate.AddDetails(new RateDetail(i.RateId, i.WeightOrDistance, i.MileOrLbs, i.From, i.To, i.Charge));
+
+            foreach (var d in m.PackageSizes)
+                oldRate.AddSize(new RatePackageSize(d.RateId, d.PackageSizeId, d.Charge, d.ChargePercentage));
+
+            foreach (var d in m.RatePriorities)
+                oldRate.AddPriority(new RatePriority(d.RateId, d.PriorityId, d.Charge, d.ChargePercentage));
+            
+            var update = await _rate.Update(oldRate);
+
+            await _context.SaveChangesAsync();
+
             return update;
+        }
+
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<bool> DeleteRate(int id)
+        {
+            var rate = await _context.Rates
+             .Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (rate != null)
+            { _context.Remove(rate);
+                await _context.SaveChangesAsync();
+            }
+
+            return true;
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<bool> DeleteDetail([FromBody]RateDeleteDetailModel m)
+        {
+            if (m == null)
+                return false; 
+
+            var rate = await _context.Rates
+              .Include(x => x.RatePriorities)
+              .Include(c => c.PackageSizes)
+              .Include(x => x.RateDetails)
+              .Where(x => x.Id == m.RateId).FirstOrDefaultAsync();
+
+            if (rate == null)
+                return false;
+
+            foreach (var d in m.RateDetails)
+            {                 
+                rate.RemoveDetails(d.Id);             
+            }
+            foreach (var d in m.RatePackageSizes)
+            {
+                rate.RemoveSize(d.Id);
+            }
+            foreach (var d in m.RatePriorities)
+            {
+                rate.RemovePriority(d.Id);
+            }
+            await _rate.Update(rate);
+
+            return true;
         }
     }
 }

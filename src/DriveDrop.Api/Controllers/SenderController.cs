@@ -36,7 +36,36 @@ namespace DriveDrop.Api.Controllers
             _rateService = rateService;
         }
 
+        // GET api/values/5
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> GetByUserName(string userName)
+        {
+            try
+            {
+                // var customer = await _context.Customers.FindAsync(id);
 
+                var customer = await _context.Customers.Where(X=>X.UserName == userName)
+                    .Include(s => s.TransportType)
+                    .Include(t => t.CustomerStatus)
+                    .Include(s => s.CustomerType)
+                    .Include(a => a.Addresses)
+                    .Include(a=>a.ShipmentSenders)
+                .FirstOrDefaultAsync();
+
+                if (customer == null)
+                    return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
+
+                return Ok(customer);
+
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest("DriverNotFound" + exe.Message);
+            }
+
+        }
         // GET api/values/5
         [HttpGet]
         [Route("[action]/{id:int}")]
@@ -139,22 +168,23 @@ namespace DriveDrop.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, "WA", "USA", c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, "WA", "USA", c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
 
                     var tmpUser = Guid.NewGuid().ToString();
 
                     var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, email:c.Email,phone: c.Phone,
                         customerTypeId:CustomerType.Sender.Id, maxPackage: c.MaxPackage??0,pickupRadius: c.PickupRadius??0, 
                        deliverRadius: c.DeliverRadius??0,commission: 0,userName: c.UserEmail, vehicleInfo: c.VehicleInfo, 
-                       primaryPhone: c.PrimaryPhone, DriverLincensePictureUri:  c.DriverLincensePictureUri,PersonalPhotoUri: c.PersonalPhotoUri,
-                       VehiclePhotoUri: c.VehiclePhotoUri, InsurancePhotoUri: c.InsurancePhotoUri);
+                       primaryPhone: c.PrimaryPhone, driverLincensePictureUri:  c.DriverLincensePictureUri,personalPhotoUri: c.PersonalPhotoUri,
+                       vehiclePhotoUri: c.VehiclePhotoUri, insurancePhotoUri: c.InsurancePhotoUri);
 
                     _context.Add(newCustomer);
                     _context.SaveChanges();
 
                     //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId??0, c.PromoCode);
-                    var rate = await _rateService.CalculateAmount(0,0,0,"");
+                    var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,  c.PackageSizeId );
+
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: newCustomer, amount: c.Amount, discount: rate.Discount,
                        shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, deliveredPictureUri: "",
@@ -204,13 +234,13 @@ namespace DriveDrop.Api.Controllers
                     var sender = _context.Customers.Find(c.CustomerId);
 
 
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, "WA", "USA", c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, "WA", "USA", c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
 
                     var tmpUser = Guid.NewGuid().ToString();
 
                     //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId  , c.PromoCode);
-                    var rate = await _rateService.CalculateAmount(0, 0, 0,"");
+                    var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode, c.PackageSizeId);
 
 
 
@@ -295,25 +325,7 @@ namespace DriveDrop.Api.Controllers
 
 
 
-        //public async Task<NewShipment> PrepareCustomerModel(NewShipment model)
-        //{
-        //    model.CustomerTypeList = await _context.CustomerTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
-        //    model.TransportTypeList = await _context.TransportTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
-        //    model.CustomerStatusList =await  _context.CustomerStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
-        //    model.PriorityTypeList = await _context.PriorityTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToListAsync();
-
-        //    return model;
-        //}
-        //public CustomerModel PrepareCustomerModel(CustomerModel model)
-        //{
-        //    model.CustomerTypeList = _context.CustomerTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-        //    model.TransportTypeList = _context.TransportTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-        //    model.CustomerStatusList = _context.CustomerStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-
-        //    model.PriorityTypeList = _context.PriorityTypes.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-
-        //    return model;
-        //}
+       
 
     }
 }

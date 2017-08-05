@@ -342,17 +342,19 @@
                             var transportTypeId = $("#TransportTypeId").val();
                             var priorityTypeId = $("#PriorityTypeId").val();
                             var promoCode = $("#PromoCode").val();
+                            var shippingWeight = $("#ShippingWeight").val();
 
                             $.ajax({
                                 url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
                                 type: "POST", //to do a post request
 
-                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                               //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
                                 cache: false, //avoid caching results
-                                data: { distance: km, weight: 9, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
                                 success: function (data) {
                                     // data is your result from controller
+                                    
                                     if (data) { 
                                         $("#distance").value = km;
                                         $(".value-Sub").text(data.strSubTotal);

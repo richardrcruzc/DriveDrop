@@ -186,15 +186,15 @@ namespace DriveDrop.Api.Controllers
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.DriverIDInUse.ToString());
                 }
 
-                var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity, "WA", "USA", c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
+                var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
 
                 var tmpUser = Guid.NewGuid().ToString();
 
                 var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, email: c.Email, phone: c.Phone,
                         customerTypeId: CustomerType.Sender.Id, maxPackage: c.MaxPackage ?? 0, pickupRadius: c.PickupRadius ?? 0,
                        deliverRadius: c.DeliverRadius ?? 0, commission: 0, userName: c.UserEmail, vehicleInfo: c.VehicleInfo,
-                       primaryPhone: c.PrimaryPhone, DriverLincensePictureUri: c.DriverLincensePictureUri, PersonalPhotoUri: c.PersonalPhotoUri,
-                       VehiclePhotoUri: c.VehiclePhotoUri, InsurancePhotoUri: c.InsurancePhotoUri);
+                       primaryPhone: c.PrimaryPhone, driverLincensePictureUri: c.DriverLincensePictureUri, personalPhotoUri: c.PersonalPhotoUri,
+                       vehiclePhotoUri: c.VehiclePhotoUri, insurancePhotoUri: c.InsurancePhotoUri);
 
                 _context.Add(newCustomer);
                 _context.SaveChanges();
