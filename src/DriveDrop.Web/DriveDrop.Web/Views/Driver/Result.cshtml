@@ -264,6 +264,9 @@
 </div>
 <div id="right-panel"></div>
 <div id="map"></div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
 <script>
 
     
@@ -400,6 +403,5 @@
         </script>
 
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} 
+    
     }

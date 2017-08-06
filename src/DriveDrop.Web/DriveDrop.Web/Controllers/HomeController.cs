@@ -11,6 +11,8 @@ using DriveDrop.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DriveDrop.Web.Infrastructure;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authentication;
+using Newtonsoft.Json;
 
 namespace DriveDrop.Web.Controllers
 {
@@ -43,6 +45,35 @@ namespace DriveDrop.Web.Controllers
             _appUserParser = appUserParser;
 
         }
+
+        public async Task<IActionResult> myAccount()
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (isAdminResponse)
+                return RedirectToAction("index", "admin");
+            else
+            {
+                var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+                var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                var customer = JsonConvert.DeserializeObject<Customer>(userString);
+                if(customer!=null)
+                    if(customer.CustomerTypeId==2)
+                    return RedirectToAction("result", "sender", new { id = customer.Id});
+                else
+                        return RedirectToAction("result", "driver", new { id = customer.Id });
+
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
 
         public async Task<IActionResult> Index()
         {
@@ -132,6 +163,7 @@ namespace DriveDrop.Web.Controllers
             return View();
         }
 
+    
 
 
         public IActionResult Contact()
@@ -145,5 +177,13 @@ namespace DriveDrop.Web.Controllers
         {
             return View();
         }
+        [NonAction]
+        async Task<string> GetUserTokenAsync()
+        {
+            var context = _httpContextAccesor.HttpContext;
+
+            return await context.Authentication.GetTokenAsync("access_token");
+        }
+
     }
 }

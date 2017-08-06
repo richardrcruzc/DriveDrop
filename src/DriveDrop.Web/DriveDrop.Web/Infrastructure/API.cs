@@ -212,6 +212,28 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}PackageSizes";
             }
+
+            public static string ValidateUserName(string baseUri,string  userName)
+            {
+                return $"{baseUri}ValidateUserName/{userName}"; 
+            }
+
+            public static string IsAdmin(string baseUri, string userName)
+            {
+                return $"{baseUri}IsAdmin/{userName}";
+            } 
+            public static string IdIsUser(string baseUri, string userName, int id)
+            { 
+                var idQs = id.ToString(); 
+
+                return $"{baseUri}IdIsUser/user/{userName}/id/{idQs}";
+            }
+
+            public static string GetUser(string baseUri, string userName)
+            {
+                return $"{baseUri}GetUser/user/{userName}";
+            }
+
         }
     }
 }

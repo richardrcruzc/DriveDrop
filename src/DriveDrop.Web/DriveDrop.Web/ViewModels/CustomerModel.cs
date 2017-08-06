@@ -105,6 +105,8 @@ namespace DriveDrop.Web.ViewModels
         [Required(ErrorMessage = "required")]
         public decimal? ShippingWeight { get; set; }
 
+        [Display(Name = "Vehicle Info")]
+        [Required(ErrorMessage = "provide your vehicle info")]
         public string VehicleInfo { get; set; }
 
         public List<AddressModel> Addresses { get; set; }
@@ -211,6 +213,14 @@ namespace DriveDrop.Web.ViewModels
 
     }
 
+    public class NewSenderResult
+    {
+        public string UserName { get; set; }
+        public string Amount { get; set; }
+        public string Message { get; set; }
+        
+
+    }
 
     public class DriverModel
     {
@@ -246,6 +256,7 @@ namespace DriveDrop.Web.ViewModels
         [DataType(DataType.Upload)]
         public IEnumerable<IFormFile> Files { get; set; }
         public string FilePath { get; set; }
+        [Required(ErrorMessage = "Your must provide a Vehicle Info")]
         public string VehicleInfo { get; set; }
 
         [Required]
@@ -289,15 +300,19 @@ namespace DriveDrop.Web.ViewModels
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
-        public CustomerType CustomerType { get; set; }
-        public int CustomerTypeId { get; set; }
-        public int? TransportTypeId { get; set; }
+        public int TransportTypeId { get; set; }
         public TransportType TransportType { get; set; }
         public int CustomerStatusId { get; set; }
         public CustomerStatus CustomerStatus { get; set; }
-        public int? MaxPackage { get; set; }
-        public int? PickupRadius { get; set; }
-        public int? DeliverRadius { get; set; }
+        [Required(ErrorMessage = "Your must provide a MaxPackage")]
+        [Display(Name = "Max Package")]
+        public int MaxPackage { get; set; }
+        [Display(Name = "Pick up Radius")]
+        [Required(ErrorMessage = "Your must provide a Pickup Radius")]
+        public int PickupRadius { get; set; }
+        [Display(Name = "Deliver Radius")]
+        [Required(ErrorMessage = "Your must provide a Deliver Radius")]
+        public int DeliverRadius { get; set; }
 
 
 
@@ -337,27 +352,7 @@ namespace DriveDrop.Web.ViewModels
 
         [DataType(DataType.MultilineText)]
         public string Note { get; set; }
-
-
-        //[CreditCard]
-        [DataType(DataType.CreditCard)]
-        [Display(Name = "Credit Card Number")]
-        [Required(ErrorMessage = "required")]
-        //[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
-        public String CardNumber { get; set; }
-        [Required]
-        [Display(Name = "Security Number")]
-        public int SecurityNumber { get; set; }
-        [Required]
-        [Display(Name = "Card Holder Name")]
-        public String CardHolderName { get; set; }
-        [Required]
-        [Display(Name = "Expiration")]
-        public String Expiration { get; set; }
-
-
-
-
+         
 
     }
 

@@ -153,6 +153,22 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
+
+            var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
+
+            var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
+
+            var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
+
+            if (!idIsUserresponse)
+            {
+                return NotFound();
+            }
+
+
+
+
+
             var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id ?? 0);
 
             var dataString = await _apiClient.GetStringAsync(getById, token); 
@@ -479,6 +495,7 @@ namespace DriveDrop.Web.Controllers
             CustomerModel c = new CustomerModel();
             await PrepareCustomerModel(c);
             c.CustomerTypeId = 2;
+            c.Distance = 0;
             return View(c);
         }
         [AllowAnonymous]
@@ -531,6 +548,8 @@ namespace DriveDrop.Web.Controllers
 
                     var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
 
+                    c.CustomerTypeId = 2;
+
                     var response = await _apiClient.PostAsync(addNewSenderUri, c);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
@@ -539,7 +558,10 @@ namespace DriveDrop.Web.Controllers
                     }
 
                     // return RedirectToAction("result", new { id = c.CustomerId });
-                    return RedirectToAction("SignIn", "Account");
+                    //return RedirectToAction("SignIn", "Account");
+                   // var results = new NewSenderResult { Amount = "", Message="", UserName =c.UserEmail };
+
+                    return RedirectToAction("NewSenderResults", new { user = c.UserEmail });
                 }
             }               
                 catch (DbUpdateException ex)
@@ -556,11 +578,21 @@ namespace DriveDrop.Web.Controllers
            await  PrepareCustomerModel(c);
              return View(c);
 
-        }
-      
-        public JsonResult ValidateUserName(string UserEmail)
+        } 
+        [AllowAnonymous]
+        public IActionResult NewSenderResults(string user)
         {
-            return Json(!UserEmail.Equals("duplicate"));
+            return View("NewSenderResults",user);
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> ValidateUserName(string UserEmail)
+        {
+            var validateUri = API.Common.ValidateUserName(_remoteServiceCommonUrl, UserEmail);
+
+            var response = await _apiClient.GetStringAsync(validateUri); 
+
+            return Json(!response.Equals("duplicate"));
         }
 
         private ActionResult Json(bool v, object allowGet)
@@ -803,6 +835,7 @@ namespace DriveDrop.Web.Controllers
             return model;
         }
 
+        [AllowAnonymous]
         [NonAction]
         public async Task<CustomerModel> PrepareCustomerModel(CustomerModel model)
         {

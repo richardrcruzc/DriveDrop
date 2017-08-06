@@ -262,8 +262,8 @@ namespace DriveDrop.Api.Controllers
                     var sender = _context.Customers.Find(c.CustomerId);
 
 
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, "WA", "USA", c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, "WA", "USA", c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity,c.PickupState,c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
 
                     var tmpUser = Guid.NewGuid().ToString();
 
@@ -274,7 +274,7 @@ namespace DriveDrop.Api.Controllers
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
                         shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId,note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "", 
-                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount,qty:c.Quantity, packageSizeId: c.PackageSizeId);
+                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount, packageSizeId: c.PackageSizeId);
 
                     _context.Add(shipment);
 

@@ -3,12 +3,23 @@
 @{
     ViewData["Title"] = "Home Page";
 }
- 
+ @if (User.FindFirst(x => x.Type == "preferred_username") == null)
+ {
 <div class="jumbotron" style="background-image: url('../../../../images/slider_img.jpg');  height: 600px;    background-repeat: no-repeat;    background-size: contain; padding: 2rem 1rem;    margin-bottom: 2rem;    border-radius: 0.3rem;">
     <img src="~/images/DriveDroplogo.png" />
     
 
 </div>
+ }
+ else
+ {
+
+    <div class="jumbotron">
+        <img src="~/images/DriveDroplogo.png" />
+
+
+    </div>
+ }
 <div class="row">
    
     <div class="row">
@@ -108,6 +119,24 @@
     <div class="row">
         <p></p>
     </div>
+    @if (User.FindFirst(x => x.Type == "preferred_username") != null)
+    {
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <a class="btn btn-default" href="/home/myAccount">
+                    <h2>Go to myAccount&raquo;</h2>
+
+                </a>
+            </div>
+             
+            <div class="col-md-1">
+            </div>
+        </div>
+    }
+    else
+    {
         <div class="row">
             <div class="col-md-1">
             </div>
@@ -126,7 +155,7 @@
             <div class="col-md-1">
             </div>
         </div>
-
+    }
     <div class="row">
         <p></p>
     </div>

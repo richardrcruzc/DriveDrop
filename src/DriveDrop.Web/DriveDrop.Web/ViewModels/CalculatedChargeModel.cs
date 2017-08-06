@@ -22,6 +22,9 @@ namespace DriveDrop.Web.ViewModels
 
         public Decimal AmountToCharge { get;  set; }
 
+
+        public bool Valid { get; set; }
+
         public string StrSubTotal
         {
             get

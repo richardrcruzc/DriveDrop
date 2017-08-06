@@ -178,17 +178,26 @@ namespace DriveDrop.Api.Controllers
                        deliverRadius: c.DeliverRadius??0,commission: 0,userName: c.UserEmail, vehicleInfo: c.VehicleInfo, 
                        primaryPhone: c.PrimaryPhone, driverLincensePictureUri:  c.DriverLincensePictureUri,personalPhotoUri: c.PersonalPhotoUri,
                        vehiclePhotoUri: c.VehiclePhotoUri, insurancePhotoUri: c.InsurancePhotoUri);
-
+                    
                     _context.Add(newCustomer);
                     _context.SaveChanges();
+
+
+                    newCustomer.AddAddress(deliveryAddres);
+                    newCustomer.AddAddress(pickUpAddres);
+                    newCustomer.AddDefaultAddress(pickUpAddres);
+
+                    _context.Update(newCustomer);
+                    _context.SaveChanges();
+
 
                     //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId??0, c.PromoCode);
                     var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,  c.PackageSizeId );
 
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: newCustomer, amount: c.Amount, discount: rate.Discount,
-                       shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, deliveredPictureUri: "",
-                       distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, qty: 1);
+                       shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, 
+                       deliveredPictureUri: "", distance: c.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, packageSizeId: c.PackageSizeId);
                     
 
                     _context.Add(shipment);
@@ -246,7 +255,7 @@ namespace DriveDrop.Api.Controllers
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
                      shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId  , note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "",
-                     distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, qty: 1);
+                     distance: rate.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount,packageSizeId: c.PackageSizeId);
                      
                     _context.Add(shipment);
 

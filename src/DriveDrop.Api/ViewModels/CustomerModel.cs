@@ -318,21 +318,21 @@ namespace DriveDrop.Api.ViewModels
         public string Note { get; set; }
 
 
-        //[CreditCard]
-        [DataType(DataType.CreditCard)]
-        [Display(Name = "Credit Card Number")]
-        [Required(ErrorMessage = "required")]
-        //[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
-        public String CardNumber { get; set; }
-        [Required]
-        [Display(Name = "Security Number")]
-        public int SecurityNumber { get; set; }
-        [Required]
-        [Display(Name = "Card Holder Name")]
-        public String CardHolderName { get; set; }
-        [Required]
-        [Display(Name = "Expiration")]
-        public String Expiration { get; set; }
+        ////[CreditCard]
+        //[DataType(DataType.CreditCard)]
+        //[Display(Name = "Credit Card Number")]
+        //[Required(ErrorMessage = "required")]
+        ////[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
+        //public String CardNumber { get; set; }
+        //[Required]
+        //[Display(Name = "Security Number")]
+        //public int SecurityNumber { get; set; }
+        //[Required]
+        //[Display(Name = "Card Holder Name")]
+        //public String CardHolderName { get; set; }
+        //[Required]
+        //[Display(Name = "Expiration")]
+        //public String Expiration { get; set; }
 
 
 

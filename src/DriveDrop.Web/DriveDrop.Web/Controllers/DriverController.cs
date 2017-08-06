@@ -79,7 +79,9 @@ namespace DriveDrop.Web.Controllers
 
                 foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
                 {
+
                     var tt = state.Errors.ToString();
+                   // ModelState.AddModelError("", state.Errors[0].ErrorMessage);
                 }
 
                 if (ModelState.IsValid)
@@ -95,11 +97,13 @@ namespace DriveDrop.Web.Controllers
 
                     if (dataString == null)
                     {
+                        ModelState.AddModelError("", "Unable to register user 1");
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
                         if(!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
                     {
+                        ModelState.AddModelError("", "Unable to register user 2");
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
@@ -118,10 +122,16 @@ namespace DriveDrop.Web.Controllers
 
                     if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                     {
-                        throw new Exception("Error creating Shipping, try later.");
+                        //throw new Exception("Error creating Shipping, try later.");
+                        ModelState.AddModelError("", "Error creating Shipping, try later.");
+                        await PrepareCustomerModel(c);
+                        return View(c);
                     }
 
-                    return RedirectToAction("index", "admin");
+
+                    return RedirectToAction("NewDriverResults", new { user = c.UserEmail });
+
+                    //return RedirectToAction("index", "admin");
 
                     // response.EnsureSuccessStatusCode(); 
 
@@ -142,7 +152,11 @@ namespace DriveDrop.Web.Controllers
             await PrepareCustomerModel(c);
             return View(c);
         }
-
+        [AllowAnonymous]
+        public IActionResult NewDriverResults(string user)
+        {
+            return View("NewDriverResults", user);
+        }
 
         public async Task<IActionResult> Result(int? id)
         {
@@ -153,7 +167,19 @@ namespace DriveDrop.Web.Controllers
              
 
             var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
+            var token = await GetUserTokenAsync(); 
+
+            var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id??0);
+
+            var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
+
+            var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
+
+            if (!idIsUserresponse)
+            {
+                return NotFound();
+            }
+
 
             var getById = API.Driver.GetbyId(_remoteServiceDriversUrl, id ?? 0);
 
@@ -173,8 +199,7 @@ namespace DriveDrop.Web.Controllers
             //model.FirstName = getById;
             //model.Id = 9;
             //return View(model);
-        }
-         
+        }         
 
 
         public async Task<IActionResult> AssignDriver(int id, int shipingId)
@@ -423,10 +448,14 @@ namespace DriveDrop.Web.Controllers
 
         //    //return View(c);
         //}
-
-        public IActionResult ValidateUserName(string UserEmail)
+        [AllowAnonymous]
+        public async Task<JsonResult> ValidateUserName(string UserEmail)
         {
-            return Json(!UserEmail.Equals("duplicate") );
+            var validateUri = API.Common.ValidateUserName(_remoteServiceCommonUrl, UserEmail);
+
+            var response = await _apiClient.GetStringAsync(validateUri);
+
+            return Json(!response.Equals("duplicate"));
         }
 
         private ActionResult Json(bool v, object allowGet)

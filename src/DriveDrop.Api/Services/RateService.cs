@@ -88,6 +88,9 @@ namespace DriveDrop.Api.Services
 
             };
 
+            if (model.AmountToCharge>0)
+                model.Valid = true;
+
             return model;
         }
 

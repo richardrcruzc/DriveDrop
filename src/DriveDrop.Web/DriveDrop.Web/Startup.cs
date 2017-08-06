@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.eShopOnContainers.BuildingBlocks; 
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.HealthChecks;
+using Microsoft.AspNetCore;
 
 namespace DriveDrop.Web
 {
@@ -44,7 +45,10 @@ namespace DriveDrop.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
+            services.AddMvc();
+           // services.AddSession();
+
 
             if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
@@ -84,7 +88,7 @@ namespace DriveDrop.Web
             }
 
 
-            services.AddMvc();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

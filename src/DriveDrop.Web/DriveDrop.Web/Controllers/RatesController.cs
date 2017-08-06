@@ -53,7 +53,7 @@ namespace DriveDrop.Web.Controllers
 
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode)
         {
            // var token = await GetUserTokenAsync();

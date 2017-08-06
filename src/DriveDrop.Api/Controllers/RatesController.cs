@@ -44,7 +44,7 @@ namespace DriveDrop.Api.Controllers
             return rates;
           
         }
-
+        
         [HttpGet]
         [Route("[action]/{id:int}")]
         public async Task<Rate> Get(int id)

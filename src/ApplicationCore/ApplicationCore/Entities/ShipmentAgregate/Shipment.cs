@@ -86,8 +86,8 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal shippingWeight, int priorityTypeId ,
                             int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri,
-                            decimal distance, decimal chargeAmount,  string promoCode, decimal tax, 
-                            int qty = 1, int packageSizeId=1) : this()
+                            decimal distance, decimal chargeAmount,  string promoCode, decimal tax, int packageSizeId 
+                            ) : this()
         {
             ShippingStatusId = ShippingStatus.PendingPickUp.Id;
             ShippingCreateDate = DateTime.Now;
@@ -113,7 +113,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             IdentityCode = string.Format("WA-{0}-{1}",pickup.ZipCode, RandomString());
 
             ShippingWeight = shippingWeight;
-            Quantity = qty; 
+            Quantity = 1; 
             Distance = distance;
             ChargeAmount = chargeAmount; 
             PromoCode = promoCode;

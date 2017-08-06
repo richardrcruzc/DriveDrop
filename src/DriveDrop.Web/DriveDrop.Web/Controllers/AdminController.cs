@@ -44,9 +44,18 @@ namespace DriveDrop.Web.Controllers
 
         public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
         {
-            var user = _appUserParser.Parse(HttpContext.User);
+            try
+            {
+                var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
-            
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString =await  _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            //if (!isAdminResponse)
+            //    return RedirectToAction("myAccount", "home");
+
             var itemsPage = 3;
             if (page < 0)
                 page = 0;
@@ -60,7 +69,17 @@ namespace DriveDrop.Web.Controllers
 
              
 
-            return View(response); 
+            return View(response);
+
+        }
+            catch (BrokenCircuitException)
+            {
+                // Catch error when Basket.api is in circuit-opened mode                 
+                HandleBrokenCircuitException();
+    }
+
+
+            return View(new List<CustomerIndex>());
 
         }
 
@@ -210,6 +229,11 @@ namespace DriveDrop.Web.Controllers
             var context = _httpContextAccesor.HttpContext;
 
             return await context.Authentication.GetTokenAsync("access_token");
+        }
+
+        private void HandleBrokenCircuitException()
+        {
+            TempData["DriveDropInoperativeMsg"] = "DriveDrop Service is inoperative, please try later on. (Business Msg Due to Circuit-Breaker)";
         }
     }
 }

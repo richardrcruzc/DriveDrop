@@ -18,10 +18,12 @@ namespace DriveDrop.Api.ViewModels
         public Decimal TaxRate { get; set; }
         public Decimal TaxAmount { get; set; }
 
-        public Decimal Discount { get; set; }
-
+        public Decimal Discount { get; set; } 
 
         public Decimal AmountToCharge { get;  set; }
+
+
+        public bool Valid { get; set; }
 
         //public string StrSubTotal
         //{

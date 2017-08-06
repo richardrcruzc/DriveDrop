@@ -256,17 +256,17 @@ namespace DriveDrop.Api.Infrastructure
                     await context.SaveChangesAsync();
                 }
 
-                var serderA = context.Customers.Where(x => x.CustomerTypeId == 2).FirstOrDefault();
-                if (!serderA.Addresses.Any())
-                {
-                    var addressPickup1 = new Address("5211 20th St E", "WA", "Fife", "USA", "98424", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery1 = new Address("5215 25th ave se", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two", 0, 0);
+                //var serderA = context.Customers.Include(a=>a.Addresses).Where(x => x.CustomerTypeId == 2).FirstOrDefault();
+                //if (!serderA.Addresses.Any())
+                //{
+                //    var addressPickup1 = new Address("5211 20th St E", "WA", "Fife", "USA", "98424", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery1 = new Address("5215 25th ave se", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two", 0, 0);
 
-                    serderA.AddAddress(addressPickup1);
-                    serderA.AddAddress(addressDelivery1);
+                //    serderA.AddAddress(addressPickup1);
+                //    serderA.AddAddress(addressDelivery1);
 
-                    await context.SaveChangesAsync();
-                }
+                //    await context.SaveChangesAsync();
+                //}
 
                 if (!context.Shipments.Any())
                 {

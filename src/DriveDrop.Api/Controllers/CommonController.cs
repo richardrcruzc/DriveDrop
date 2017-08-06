@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DriveDrop.Api.Controllers
 {
-    //[Authorize]
+     //[Authorize]
     [Route("api/v1/[controller]")]
     public class CommonController : Controller
     {
@@ -28,6 +28,111 @@ namespace DriveDrop.Api.Controllers
             _context = context;
             _env = env;
         }
+
+        [HttpGet]
+        [Route("[action]/user/{userName}")]
+        public async Task<IActionResult> GetUser(string userName)
+        {
+            try
+            {
+                
+                var customer = await _context.Customers
+                   .Include(s => s.TransportType)
+                   .Include(t => t.CustomerStatus)
+                   .Include(s => s.CustomerType)
+                   .Include(a => a.Addresses)
+               .Where(u => u.UserName == userName).FirstOrDefaultAsync();
+
+                if (customer != null)
+                {
+                    return Ok(customer);
+                }
+
+
+            }
+            catch (Exception exe)
+            {
+                //return BadRequest("CustomerNotFound" + exe.Message);
+            }
+
+            return Ok(null);
+
+        }
+        [HttpGet]
+        [Route("[action]/user/{userName}/id/{id:int}")]
+        public async Task<IActionResult> IdIsUser(  string userName,  int id)
+        {
+            try
+            {
+                var customer = await _context.Customers.Where(u => u.UserName == userName && u.Id==id).FirstOrDefaultAsync();
+
+
+                if (customer != null)
+                {                   
+                        return Ok(true);
+                }
+                    
+
+            }
+            catch (Exception exe)
+            {
+                //return BadRequest("CustomerNotFound" + exe.Message);
+            }
+
+            return Ok(false);
+
+        }
+        [HttpGet]
+        [Route("[action]/{userName}")]
+        public async Task<IActionResult> IsAdmin(string userName)
+        {
+            try
+            {
+                var customer = await _context.Customers.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+
+
+                if (customer != null)
+                {
+                    if (customer.CustomerTypeId==1)
+                        return Ok(true);
+
+                }
+
+
+            }
+            catch (Exception exe)
+            {
+                //return BadRequest("CustomerNotFound" + exe.Message);
+            }
+
+            return Ok(false);
+
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("[action]/{userName}")]
+        public async Task<IActionResult> ValidateUserName(string userName)
+        {
+            try
+            { 
+                var customer = await _context.Customers.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+                    
+
+                if (customer== null)
+                    return Ok("valid"); 
+
+            }
+            catch (Exception exe)
+            {
+                //return BadRequest("CustomerNotFound" + exe.Message);
+            }
+
+            return Ok("duplicate");
+
+        }
+
         // GET api/values/5
         [HttpGet]
         [Route("[action]/{id:int}")]
@@ -132,6 +237,7 @@ namespace DriveDrop.Api.Controllers
 
         // POST api/Attachments
         // [Authorize]
+        [AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> PostFiles([FromBody]ICollection<IFormFile> files)
@@ -199,6 +305,7 @@ namespace DriveDrop.Api.Controllers
         }
 
         // GET api/v1/Common/CustomerTypes
+        [AllowAnonymous]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> CustomerTypes()
@@ -215,6 +322,7 @@ namespace DriveDrop.Api.Controllers
             }
         }
         // GET api/v1/Common/CustomerTypes
+        [AllowAnonymous]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> ShippingStatuses()
@@ -231,6 +339,7 @@ namespace DriveDrop.Api.Controllers
             }
         }
         // GET api/v1/Common/CustomerTypes
+        [AllowAnonymous]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> PriorityTypes()
@@ -248,6 +357,7 @@ namespace DriveDrop.Api.Controllers
             }
         }
         // GET api/v1/Common/CustomerTypes
+        [AllowAnonymous]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> CustomerStatuses()
@@ -264,6 +374,7 @@ namespace DriveDrop.Api.Controllers
             }
         }
         // GET api/v1/Common/CustomerTypes
+        [AllowAnonymous]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> TransportTypes()
@@ -282,6 +393,7 @@ namespace DriveDrop.Api.Controllers
 
 
         // GET api/v1/Common/CustomerTypes
+        [AllowAnonymous]
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> PackageSizes()
@@ -312,12 +424,7 @@ namespace DriveDrop.Api.Controllers
         //    return File(buffer, "image/png");
         //}
 
-        [HttpGet]
-        [Route("[action]/{useremail}")]
-        public JsonResult ValidateUserName(string UserEmail)
-        {
-            return Json(!UserEmail.Equals("duplicate"));
-        }
+         
      
     }
 }
