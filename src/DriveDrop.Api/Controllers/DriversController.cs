@@ -168,7 +168,48 @@ namespace DriveDrop.Api.Controllers
             }
 
         }
+        [Route("[action]/{customerId:int}/{addressId:int}")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteAddress(int customerId, int addressId)
+        {
+            var updateCustomer = _context.Customers
+                .Include(a => a.Addresses)
+                .Where(x => x.Id == customerId).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+                foreach (var a in updateCustomer.Addresses)
+                    if (a.Id == addressId)
+                    {
+                        updateCustomer.DeleteAddress(a);
+                        _context.Update(updateCustomer);
+                        await _context.SaveChangesAsync();
 
+                        break;
+                    }
+
+            }
+
+
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> AddAddress([FromBody]AddressModel c)
+        {
+            var updateCustomer = _context.Customers.Where(x => x.Id == c.CustomerId).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+                var addres = new Address(c.Street, c.City, c.State, c.Country, c.ZipCode, c.Phone, c.Contact, c.Longitude, c.Longitude, c.TypeAddress);
+
+                updateCustomer.AddAddress(addres);
+
+                _context.Update(updateCustomer);
+                await _context.SaveChangesAsync();
+            }
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
         // POST api/values
         [AllowAnonymous]
         [HttpPost("[action]")]

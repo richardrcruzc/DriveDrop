@@ -1,0 +1,344 @@
+﻿@model  DriveDrop.Web.ViewModels.Customer
+
+@{
+    ViewData["Title"] = "Driver dashboard"; 
+}
+<div class="side-2">
+
+
+    @await Html.PartialAsync("DriverNavigation", Model.Id)
+
+
+</div>
+<div class="center-2">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h1>Driver dashboard</h1>
+        </div>
+        <div class="page-body">
+
+ 
+            <div class="row">
+                <div id="newShipment">
+                    <h3> <label class="title">My Pickup/Delivery</label></h3>
+                    @await Component.InvokeAsync("ShippingByDriver", new { driverId = Model.Id })
+                </div>
+                <hr />
+            </div>
+            <div class="row">
+                <div id="newShipment">
+                    <h3><label class="title">Shipments  not assigned / Ready to Pickup </label></h3>
+                    @await Component.InvokeAsync("ShippingNoAssigned")
+                </div>
+            </div>
+
+
+            <div class="row">
+
+
+                @if (Model.ShipmentDrivers != null && Model.ShipmentDrivers.Count > 0)
+            {
+
+                    <table class="table">
+
+                        <tr>
+                            <th colspan="5">  <label> Shipment Assigned to me</label></th>
+
+
+                        <tr>
+                            <th>#</th>
+                            <th><div>Date </div> Status</th>
+                            <th>Priority</th>
+                            <th><div>Amount</div>discount</th>
+                            <th>Pickup Address</th>
+                            <th>Delivery Address</th>
+
+                        </tr>
+
+                        @foreach (var item in Model.ShipmentDrivers)
+                            {
+                            <tr>
+                                <td class="btnAssingShipping"> @item.Id</td>
+                                <td>
+                                    <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                                    <div>
+                                        <div>
+                                            @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+
+                                        </div>
+
+                                        <form asp-action="ChangeShippingStatus">
+                                            <input name="customerId" type="hidden" value="@Model.Id" />
+                                            <input name="shipingId" type="hidden" value="@item.Id" />
+                                            <select name="ShippingStatusId" asp-items="@ViewBag.ShippingStatuses" class="dropdown form-control"></select>
+                                            <input type="submit" value="Change" />
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                                    @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)/
+                                    @Html.DisplayFor(modelItem => item.Discount)
+                                </td>
+                                <td>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                                    </div>
+                                    <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                                    @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                                </td>
+                                <td>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                                    </div>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                                    </div>
+                                    @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                                </td>
+                                <td><div>Get Address info</div></td>
+                            </tr>
+                            }
+                    </table>
+
+                    }
+
+            </div>
+
+
+            <style>
+                /* Always set the map height explicitly to define the size of the div
+                * element that contains the map. */
+                #map {
+                    height: 100%;
+                }
+                /* Optional: Makes the sample page fill the window. */
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                #floating-panel {
+                    position: absolute;
+                    top: 10px;
+                    left: 25%;
+                    z-index: 5;
+                    background-color: #fff;
+                    padding: 5px;
+                    border: 1px solid #999;
+                    text-align: center;
+                    font-family: 'Roboto','sans-serif';
+                    line-height: 30px;
+                    padding-left: 10px;
+                }
+
+                #right-panel-map-map {
+                    font-family: 'Roboto','sans-serif';
+                    line-height: 30px;
+                    padding-left: 10px;
+                }
+
+                #right-panel-map select, #right-panel-map input {
+                    font-size: 15px;
+                }
+
+                #right-panel-map select {
+                    width: 100%;
+                }
+
+                #right-panel-map i {
+                    font-size: 12px;
+                }
+
+                #right-panel-map {
+                    height: 100%;
+                    float: right;
+                    width: 390px;
+                    overflow: auto;
+                }
+
+                #map {
+                    margin-right: 400px;
+                }
+
+                #floating-panel {
+                    background: #fff;
+                    padding: 5px;
+                    font-size: 14px;
+                    font-family: Arial;
+                    border: 1px solid #ccc;
+                    box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+                    display: none;
+                }
+
+                #warnings-panel {
+                    width: 100%;
+                    height: 10%;
+                    text-align: center;
+                }
+            </style>
+            <div id="floating-panel">
+
+                @*<select id="start" v>
+                        <option value="Seattle WA">Seattle WA</option>
+                    </select>
+                    <select id="end">
+                        <option value="Seattle WA">Seattle WA</option>
+                    </select>*@
+                <input id="start" value="Seattle WA" />
+                <input id="end" value="Seattle WA" />
+
+
+                <input id="submit" type="button" value="Geocode">
+            </div>
+            <div id="right-panel-map"></div>
+            <div id="mapgoogle"></div>
+        </div>
+    </div>
+</div>
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+            <script>
+
+
+                //$('.clickMe').click(function () {
+                //    var clickedID = this.id;
+                //    alert(clickedID);
+                //});
+
+                function fireEvent(element, event) {
+                    if (document.createEventObject) {
+                        // dispatch for IE
+                        var evt = document.createEventObject();
+                        return element.fireEvent('on' + event, evt)
+                    }
+                    else {
+                        // dispatch for firefox + others
+                        var evt = document.createEvent("HTMLEvents");
+                        evt.initEvent(event, true, true); // event type,bubbling,cancelable
+                        return !element.dispatchEvent(evt);
+                    }
+                }
+                function SetAddressFunction(obj) {
+
+
+                    var pu = $(obj).attr('pickup-id');
+                    var dl = $(obj).attr('delivery-id');
+                    $("#start").val(pu);
+                    $("#end").val(dl);
+
+                    var x = document.getElementById("start");
+                    fireEvent(x, 'change');
+
+
+                    document.getElementById("mapgoogle").scrollIntoView()
+
+
+                }
+
+
+
+                function initMap() {
+                    var directionsService = new google.maps.DirectionsService;
+                    var directionsDisplay = new google.maps.DirectionsRenderer;
+                    var map = new google.maps.Map(document.getElementById('mapgoogle'), {
+                        zoom: 7,
+                        center: { lat: 41.85, lng: -87.65 }
+                    });
+
+                    directionsDisplay.setMap(map);
+                    directionsDisplay.setPanel(document.getElementById('right-panel-map'));
+
+                    var control = document.getElementById('floating-panel');
+                    control.style.display = 'block';
+                    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+                    calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+                    var onChangeHandler = function () {
+                        calculateAndDisplayRoute(directionsService, directionsDisplay);
+                    };
+                    document.getElementById('start').addEventListener('change', onChangeHandler);
+                    document.getElementById('end').addEventListener('change', onChangeHandler);
+                }
+
+                function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                    directionsService.route({
+                        origin: document.getElementById('start').value,
+                        destination: document.getElementById('end').value,
+                        travelMode: 'DRIVING'
+                    }, function (response, status) {
+                        if (status === 'OK') {
+                            directionsDisplay.setDirections(response);
+                        } else {
+                            window.alert('Directions request failed due to ' + status);
+                        }
+                    });
+                }
+
+
+    //function initMap() {
+    //    var map = new google.maps.Map(document.getElementById('map'), {
+    //        zoom: 8,
+    //        center: { lat: -34.397, lng: 150.644 }
+    //    });
+    //    var geocoder = new google.maps.Geocoder();
+    //    geocodeAddress(geocoder, map);
+    //    document.getElementById('submit').addEventListener('click', function () {
+    //        geocodeAddress(geocoder, map);
+    //    });
+    //}
+
+    //function geocodeAddress(geocoder, resultsMap) {
+    //   // var address = document.getElementById('address').value;
+    //    address = "5215 90th st ct e wa 98446";
+
+    //    geocoder.geocode({ 'address': address }, function (results, status) {
+    //        if (status === 'OK') {
+    //            resultsMap.setCenter(results[0].geometry.location);
+    //            var marker = new google.maps.Marker({
+    //                map: resultsMap,
+    //                position: results[0].geometry.location
+    //            });
+    //        } else {
+    //            alert('Geocode was not successful for the following reason: ' + status);
+    //        }
+    //    });
+    //}
+            </script>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&callback=initMap">
+            </script>
+
+
+
+
+            <script>
+       //$(document).ready(function () {
+       //$(".btnAssingShipping").click(function () { alert(1); });
+
+       //});
+      @*       var theDiv = document.getElementById("newShipmentTr");
+            var button = document.getElementById("button");
+
+            function removeRed() {
+
+                var classContent = theDiv.className;
+
+                theDiv.className = classContent.replace("sr-only", "").trim();
+            }
+
+            button.addEventListener("click", removeRed, false);*@
+
+
+            </script>
+
+
+
+        }

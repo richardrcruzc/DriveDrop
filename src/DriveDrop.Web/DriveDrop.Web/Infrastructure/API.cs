@@ -140,8 +140,15 @@ namespace DriveDrop.Web.Infrastructure
                 return $"{baseUri}/AssignDriver{filterQs}";
             }
 
+            public static string UpdateInfo(string baseUri)
+            {
+                return $"{baseUri}/UpdateInfo";
+            }
+             public static string AddAddress(string baseUri)
+            {
+                return $"{baseUri}/AddAddress";
+            }
 
-            
         }
 
         public static class Shipping
@@ -166,12 +173,19 @@ namespace DriveDrop.Web.Infrastructure
                 return $"{baseUri}/GetShippingByDriverId{filterQs}";
             }
 
-
-
-            public static string UpdatePackageStatus(string baseUri, int id)
+            public static string GetByDriverIdAndStatusId(string baseUri, int id, int statusId)
             {
+                var statusidQs = statusId.ToString();
                 var idQs = id.ToString();
                 var filterQs = $"/{idQs}";
+                return $"{baseUri}/GetByDriverIdAndStatusId{filterQs}";
+            }
+
+            public static string UpdatePackageStatus(string baseUri, int shippingId, int shippingStatusId)
+            {
+                var shippingStatusIdQs = shippingId.ToString();
+                var idQs = shippingId.ToString();
+                var filterQs = $"/shippingId/{idQs}/shippingStatusId/{shippingStatusIdQs}";
                 return $"{baseUri}/UpdatePackageStatus{filterQs}";
             }
 

@@ -59,6 +59,119 @@ namespace DriveDrop.Web.Controllers
 
             return View();
         }
+
+
+        
+            public async Task<IActionResult> Canceled(int id)
+        {
+            @ViewBag.CustomerId = id;
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 5);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings ());
+
+            shippings.ShippingStatusList = await PrepareShippingStatus();
+
+            return View(shippings);
+        }
+        public async Task<IActionResult> Deliver(int id)
+        {
+            @ViewBag.CustomerId = id;
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 4);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings { Count = 0, Data = new List<Shipment>(), PageIndex = 0, PageSize = 0 });
+
+            shippings.ShippingStatusList = await PrepareShippingStatus();
+
+            return View(shippings);
+        }
+        public async Task<IActionResult> DeliveryInProcess(int id)
+        {
+            @ViewBag.CustomerId = id;
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 3);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings { Count = 0, Data = new List<Shipment>(), PageIndex = 0, PageSize = 0 });
+
+            shippings.ShippingStatusList = await PrepareShippingStatus();
+
+            return View(shippings);
+        }
+
+        public async Task<IActionResult> PickedUp(int id)
+        {
+            @ViewBag.CustomerId = id;
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id,2);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings { Count=0, Data= new List<Shipment>(), PageIndex=0, PageSize=0 });
+
+            shippings.ShippingStatusList = await PrepareShippingStatus();
+
+            return View(shippings);
+        }
+
+        public async Task<IActionResult> PendingPickUp(int id)
+        {
+            @ViewBag.CustomerId = id;
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetShippingByDriverId(_remoteServiceShippingsUrl, id);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings());
+
+            shippings.ShippingStatusList =await PrepareShippingStatus();
+
+            return View(shippings);
+        }
+        public async Task<IActionResult> ReadyToPickUp(int id)
+        {
+            @ViewBag.CustomerId = id;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetNotAssignedShipping(_remoteServiceShippingsUrl);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings());
+            shippings.ShippingStatusList = await PrepareShippingStatus();
+            return View(shippings);
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> NewDriver()
         {
@@ -157,8 +270,8 @@ namespace DriveDrop.Web.Controllers
         {
             return View("NewDriverResults", user);
         }
-
-        public async Task<IActionResult> Result(int? id)
+        
+        public async Task<IActionResult> DashBoard(int? id)
         {
             if (id == null)
             {
@@ -199,16 +312,178 @@ namespace DriveDrop.Web.Controllers
             //model.FirstName = getById;
             //model.Id = 9;
             //return View(model);
-        }         
+        }
+
+        public async Task<IActionResult> Result(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
 
-        public async Task<IActionResult> AssignDriver(int id, int shipingId)
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
+
+            var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
+
+            var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
+
+            if (!idIsUserresponse)
+            {
+                return NotFound();
+            }
+
+
+            var getById = API.Driver.GetbyId(_remoteServiceDriversUrl, id ?? 0);
+
+            var dataString = await _apiClient.GetStringAsync(getById, token);
+
+            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+
+            response.DriverLincensePictureUri = string.Format("{0}{1}", _settings.Value.CallBackUrl, response.DriverLincensePictureUri);
+            ViewBag.DriverId = id;
+
+            ViewBag.Uri = _settings.Value.CallBackUrl;
+
+            var model = new CustomerInfoModel
+            {
+                CustomerStatus = response.CustomerStatus.Name,
+                Email = response.Email,
+                FirstName = response.FirstName,
+                LastName = response.LastName,
+                Id = id ?? 0,
+                Phone = response.Phone,
+                PhotoUrl = response.PersonalPhotoUri,
+                PrimaryPhone = response.PrimaryPhone,
+                StatusId = response.CustomerStatusId,
+            };
+            if (string.IsNullOrWhiteSpace(model.PhotoUrl))
+                model.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+            else
+                model.PhotoUrl = model.PhotoUrl;
+
+            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/" + model.PhotoUrl; 
+
+
+            return View(model);
+
+
+            //var model = new Customer();
+            //model.FirstName = getById;
+            //model.Id = 9;
+            //return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> UpdateInfo(CustomerInfoModel model, List<IFormFile> photoUrl)
+        {
+            var result = "Info updated";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    var fileName = await SaveFile(photoUrl, "driver");
+
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                        model.PhotoUrl = fileName;
+
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
+
+                    var updateInfo = API.Driver.UpdateInfo(_remoteServiceBaseUrl);
+
+                    var response = await _apiClient.PostAsync(updateInfo, model, token);
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        //throw new Exception("Error creating Shipping, try later.");
+
+                        ModelState.AddModelError("", "Error creating Shipping, try later.");
+
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    var error = string.Format("Unable to save changes. " +
+                        "Try again, and if the problem persists " +
+                        "see your system administrator. {0}", ex.Message);
+
+                    ModelState.AddModelError("", error);
+                    result = error;
+                }
+            }
+
+            return result;
+        }
+
+        public IActionResult AddressAdd(int id)
+        {
+            ViewBag.Id = id;
+            var model = new AddressModel { CustomerId = id };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> AddressAdd(AddressModel model)
+        {
+            var result = "Address added";
+            ViewBag.Id = model.CustomerId;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var updateInfo = API.Driver.AddAddress(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PostAsync(updateInfo, model, token);
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                //throw new Exception("Error creating Shipping, try later.");
+
+                ModelState.AddModelError("", "Error creating Shipping, try later.");
+                result = "Error creating Shipping, try later.";
+            }
+
+            return result;
+        }
+        public async Task<IActionResult> Address(int id)
+        {
+            ViewBag.Id = id;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getById = API.Driver.GetbyId(_remoteServiceBaseUrl, id);
+
+
+            var dataString = await _apiClient.GetStringAsync(getById, token);
+
+
+            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+
+
+
+            return View(response.Addresses);
+
+        }
+
+        public async Task<IActionResult> AssignDriver(int shipingId)
         {
              
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var assign = API.Driver.AssignDriver(_remoteServiceDriversUrl, id, shipingId);
+            var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<Customer>(userString);
+
+            var assign = API.Driver.AssignDriver(_remoteServiceDriversUrl, customer.Id, shipingId);
 
 
             var dataString = await _apiClient.GetStringAsync(assign, token);
@@ -218,27 +493,29 @@ namespace DriveDrop.Web.Controllers
 
 
 
-            return RedirectToAction("Result", new { id = id });
+            return RedirectToAction("PendingPickUp", new { id = customer.Id });
 
         }
 
-        public async Task<IActionResult> UpdatePackageStatus(int id,int customerId )
+        public async Task<IActionResult> UpdatePackageStatus(UpdatePackageStatusModel model )
         {
+            int shippingId = model.ShippingId;
+            int shippingStatusId = model.Item.ShippingStatusId;
 
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, id);
+            var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<Customer>(userString);
+            
+                var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, shippingId, shippingStatusId);
 
 
-            var dataString = await _apiClient.GetStringAsync(assign, token);
+                var dataString = await _apiClient.GetStringAsync(assign, token);
+            
 
-
-            //var response = JsonConvert.DeserializeObject<CustomerViewModel>((dataString));
-
-
-
-            return RedirectToAction("Result", new { id = customerId });
+            return RedirectToAction("PendingPickUp", new { id = customer.Id });
 
         }
         [NonAction]
@@ -458,7 +735,29 @@ namespace DriveDrop.Web.Controllers
             return Json(!response.Equals("duplicate"));
         }
 
-        private ActionResult Json(bool v, object allowGet)
+        public async Task<List<SelectListItem>>  PrepareShippingStatus()
+        {
+            var getUri = API.Common.GetAllShippingStatus(_remoteServiceCommonUrl);
+            var dataString = await _apiClient.GetStringAsync(getUri);
+            var shippingStatus = new List<SelectListItem>();
+            shippingStatus.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+
+            var gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                shippingStatus.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+            
+            return shippingStatus;
+        }
+
+
+            private ActionResult Json(bool v, object allowGet)
         {
             throw new NotImplementedException();
         }

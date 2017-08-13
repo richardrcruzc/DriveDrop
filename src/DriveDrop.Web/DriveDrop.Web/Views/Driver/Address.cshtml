@@ -1,0 +1,91 @@
+@model IEnumerable<DriveDrop.Web.ViewModels.AddressModel>
+    @{
+        ViewData["Title"] = "Details";
+
+    var addresses = Model;
+    }
+
+    <div class="side-2">
+
+
+
+        @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.Id)
+
+
+    </div>
+    <div class="center-2">
+
+
+        <div class="page account-page address-list-page">
+            <div class="page-title">
+                <h1>My account - Addresses</h1>
+            </div>
+            <div class="page-body">
+                @using (Html.BeginForm())
+                {
+                @Html.AntiForgeryToken()
+                        <div class="address-list">
+                           
+                    @foreach(var address in addresses)
+                    {
+                        
+                        <div class="section address-item">
+                            <div class="title">
+                                <strong>@address.Contact @address.Phone</strong>
+                            </div>
+                            <ul class="info">
+                                
+                                <li class="address1">
+                                    Street
+                                    @address.Street
+                                </li>
+                                <li class="city-state-zip">
+                                    @address.City, @address.State, @address.ZipCode
+                                </li>
+                                <li class="country">
+                                    @address.Country
+                                </li>
+                            </ul>
+                            <div class="buttons">
+                                @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
+                            </div>
+                        </div>
+                         } 
+                    </div>
+                    <script type="text/javascript">
+                        function deletecustomeraddress(addressId) {
+                            if (confirm('Are you sure?')) {
+                                var postData = {
+                                    addressId: addressId
+                                };
+                                alert(addressId);
+                                addAntiForgeryToken(postData);
+                                alert(addressId);
+                                $.ajax({
+                                    cache: false,
+                                    type: 'POST',
+                                    url: '/driver/AddressDelete',
+                                    data: postData,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        location.href = data.redirect;
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        alert('Failed to delete');
+                                    }
+                                });
+                            }
+                        }
+                    </script>
+               }
+                <div class="add-button">
+                    <input type="button" class="button-1 add-address-button" onclick="location.href='/driver/addressadd/@(ViewBag.Id)'" value="Add new" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+

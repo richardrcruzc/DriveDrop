@@ -1,0 +1,47 @@
+@model int
+<div class="block block-account-navigation">
+    <div class="title">
+        <strong>Driver dashboard</strong>
+    </div>
+    <div class="listbox">
+        <ul class="list">
+            <li class="customer-info">
+                @Html.ActionLink("Ready to pickup", "readytopickup", "driver", new { id = Model }, null)
+
+            </li>
+            <li class="customer-info">
+                @Html.ActionLink("Pending pickup", "PendingPickUp", "driver", new { id = Model }, null)
+
+            </li>
+            <li class="customer-info">
+                @Html.ActionLink("PickedUp", "PickedUp", "driver", new { id = Model }, null)
+
+            </li>
+            <li class="customer-info">
+                @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, null)
+
+            </li> 
+            <li class="customer-info">
+                @Html.ActionLink("Deliver", "Deliver", "driver", new { id = Model }, null)
+
+            </li> 
+            <li class="customer-info">
+                @Html.ActionLink("Canceled", "Canceled", "driver", new { id = Model }, null)
+
+            </li> 
+            <li class="customer-info">
+                @Html.ActionLink("My Personal info", "result", "driver", new { id = Model }, null)
+                 
+            </li>
+            <li class="customer-info"> 
+                @Html.ActionLink("My Address", "Address", "driver", new { id = Model }, null)
+            </li>
+            
+            <li class="change-password">
+                <a href="/customer/changepassword" class="inactive">Change password</a>
+            </li>
+
+
+        </ul>
+    </div>
+</div>

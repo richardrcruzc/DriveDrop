@@ -63,12 +63,12 @@ namespace DriveDrop.Api.Controllers
 
 
         [HttpGet]
-        [Route("[action]/{id:int}")]
-        public async Task<IActionResult> UpdatePackageStatus(int id, int shippingStatusId=1)
+        [Route("[action]/{shippingId:int}/{shippingStatusId:int}")]
+        public async Task<IActionResult> UpdatePackageStatus(int shippingId, int shippingStatusId)
         {
             try
             {
-                var shipping = await _context.Shipments.FindAsync(id);
+                var shipping = await _context.Shipments.Where(x=>x.Id == shippingId).FirstOrDefaultAsync();
                 if (shipping != null)
                 {
                     shipping.ChangeStatus(shippingStatusId);
@@ -116,6 +116,56 @@ namespace DriveDrop.Api.Controllers
 
                 var root = _context.Shipments
               .Where(x => x.DriverId == id)
+              .Include(d => d.DeliveryAddress)
+              .Include(d => d.PickupAddress)
+              .Include(d => d.ShippingStatus)
+              .Include(d => d.PriorityType);
+
+                var totalItems = await root
+                 .LongCountAsync();
+
+                var itemsOnPage = await root
+               .Skip(pageSize * pageIndex)
+               .Take(pageSize)
+               .ToListAsync();
+
+                itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+
+                var model = new PaginatedItemsViewModel<Shipment>(
+                    pageIndex, pageSize, totalItems, itemsOnPage);
+
+
+
+                return Ok(model);
+
+
+
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+        [HttpGet]
+        [Route("[action]/{id:int}/{statusId:int}")]
+        public async Task<IActionResult> GetByDriverIdAndStatusId(int id,int statusId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        {
+            try
+            {
+                // var model = await _context.Shipments
+                //.Where(x => x.DriverId == id)
+                //.Include(d => d.DeliveryAddress)
+                //.Include(d => d.PickupAddress)
+                //.Include(d => d.ShippingStatus)
+                //.Include(d => d.PriorityType)
+                //.ToListAsync();
+
+                // return Ok(model);
+
+
+                var root = _context.Shipments
+              .Where(x => x.DriverId == id && x.ShippingStatusId == statusId)
               .Include(d => d.DeliveryAddress)
               .Include(d => d.PickupAddress)
               .Include(d => d.ShippingStatus)

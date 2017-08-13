@@ -1,0 +1,100 @@
+
+@model DriveDrop.Web.ViewModels.PaginatedShippings
+
+
+<div class="side-2">
+
+
+
+    @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.CustomerId)
+
+
+</div>
+<div class="center-2">
+
+
+    <div class="page account-page address-list-page">
+        <div class="page-title">
+            <h1>Ready to pickup</h1>
+        </div>
+        <div class="page-body">
+            <h3>Shipping List, ready to pick up, need to assign to yourself</h3>
+            <div class="row">
+                <table class="table">
+
+                    <tr>
+                        <th>#</th>
+                        <th><div>Date </div> Status</th>
+                        <th>Priority</th>
+                        <th><div>Amount</div>discount</th>
+                        <th>Pickup Address</th>
+                        <th>Delivery Address</th>
+                        <th> </th>
+
+                    </tr>
+
+                    @foreach (var item in Model.Data)
+            {
+                var url = ViewBag.Uri + item.PickupPictureUri;
+                        <tr>
+
+                            <td>
+                                @Html.ActionLink("Asign to me!", "AssignDriver", new { id = ViewBag.DriverId, shipingId = item.Id })
+
+                                <img src="@url" class="img-rounded" alt="Cinque Terre" width="90" height="60">
+                            </td>
+                            <td>
+                                <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                                </div>
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                                @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)/
+                                @Html.DisplayFor(modelItem => item.Discount)
+                            </td>
+                            <td>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                                </div>
+                                <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                                @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                            </td>
+                            <td>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                                </div>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                                </div>
+                                @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                            </td>
+                            <td>
+                                <div>
+                                    <button id="@item.Id"
+                                            pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                            delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                                            onClick="javascript:SetAddressFunction(this);">
+                                        <i class="material-icons" style="font-size:12px;color:red">directions</i>
+                                    </button>
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+        }
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
