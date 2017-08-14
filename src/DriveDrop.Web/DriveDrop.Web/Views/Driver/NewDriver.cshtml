@@ -70,7 +70,7 @@
 
 <section class="esh-catalog-filters">
     <div class="row">
-        <h2>Add a new Driver</h2>
+        <h2> New driver information</h2>
     </div>
 </section>
 <div class="row">
@@ -89,7 +89,7 @@
         <div class="row">
 
             <div class="col-md-5">
-                <h2>Driver Contact Info</h2>
+                <h3>Driver information</h3>
                 <hr />
 
                 <div class="form-horizontal">
@@ -135,7 +135,7 @@
             </div>
 
             <div class="col-md-5">
-                <h2>Default Address</h2>
+                <h3>Default address</h3>
                 <hr />
                 <div class="form-horizontal">
 
@@ -173,7 +173,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="DeliveryState" class="form-control" placeholder="state" />
+                            <input asp-for="DeliveryState" class="form-control" placeholder="State" />
                             <span asp-validation-for="DeliveryState" class="text-danger"></span>
                         </div>
                     </div>
@@ -191,7 +191,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="DeliveryContact" class="form-control" placeholder="Contact person" />
+                            <input asp-for="DeliveryContact" class="form-control" placeholder="Contact Person" />
                             <span asp-validation-for="DeliveryContact" class="text-danger"></span>
                         </div>
                     </div>
@@ -204,24 +204,25 @@
 
         <div class="row">
             <div class="col-md-10">
-                <h2>Pick Info </h2>
+                <h3>Driver package and drive information  </h3>
                 <hr />
             </div>
         </div>
         <div class="row">
             <div class="col-md-5">
                 <div class="form-horizontal">
-
+                    MaxPackage
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="MaxPackage" class="form-control" placeholder="Max Package" />
+
+                            <input asp-for="MaxPackage" class="form-control" placeholder="Maximum package to pickup" />
                             <span asp-validation-for="MaxPackage" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="PickupRadius" class="form-control" placeholder="PickupRadius" />
+                            <input asp-for="PickupRadius" class="form-control" placeholder="Maximum drive package radius" />
                             <span asp-validation-for="PickupRadius" class="text-danger"></span>
                         </div>
                     </div>
@@ -232,7 +233,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="DeliverRadius" class="form-control" placeholder="DeliverRadius" />
+                            <input asp-for="DeliverRadius" class="form-control" placeholder="Maximum drive deliver package radius" />
                             <span asp-validation-for="DeliverRadius" class="text-danger"></span>
                         </div>
                     </div>
@@ -259,17 +260,18 @@
             <div class="col-md-5">
 
 
-                <h2>Personal picture </h2>
+                <h3>Profile photo </h3>
                 <hr />
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="btn btn-primary" for="my-file-selector-Personal">
                             <input id="my-file-selector-Personal" name="personalfiles" type="file" style="display:none;" onchange="$('#upload-file-info-Personal').html($(this).val());">
-                            <img id="Personal-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
-                            Click here to upload package picture
+                            <img id="Personal-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                        
                         </label>
                         <span class='label label-info' id="upload-file-info-Personal"></span>
                     </div>
+                    Click here to upload Profile photo
                 </div>
             </div>
      
@@ -277,7 +279,7 @@
             <div class="col-md-5">
 
 
-                <h2>Driver license picture </h2>
+                <h3>Driver license  photo</h3>
                 <hr />
                 <div class="form-horizontal">
 
@@ -285,12 +287,13 @@
                         <div class="form-group">
                             <label class="btn btn-primary" for="my-file-selector-license">
                                 <input id="my-file-selector-license" name="licensefiles" type="file" style="display:none;" onchange="$('#upload-file-info-license').html($(this).val());">
-                                <img id="license-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
-                                Click here to upload package picture
+                                <img id="license-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                               
                             </label>
                             <span class='label label-info' id="upload-file-info-license"></span>
                         </div>
                     </div>
+                     Click here to upload Driver license  photo
                 </div>
             </div>
         </div>
@@ -300,36 +303,38 @@
             <div class="col-md-5">
 
 
-                <h2>Vehicle picture </h2>
+                <h3>Vehicle photo </h3>
                 <hr />
                 <div class="form-horizontal">
 
                     <div class="form-group">
                         <label class="btn btn-primary" for="my-file-selector-Vehicle">
                             <input id="my-file-selector-Vehicle" name="Vehiclefiles" type="file" style="display:none;" onchange="$('#upload-file-info-Vehicle').html($(this).val());">
-                            <img id="Vehicle-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
-                            Click here to upload package picture
+                            <img id="Vehicle-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                            
                         </label>
                         <span class='label label-info' id="upload-file-info-Vehicle"></span>
                     </div>
+                    Click here to upload Vehicle photo 
                 </div>
             </div>
        
       
 
         <div class="col-md-5">
-            <h2>Proof of insurance picture </h2>
+            <h3>Proof of insurance  </h3>
             <hr />
             <div class="form-horizontal">
 
                 <div class="form-group">
                     <label class="btn btn-primary" for="my-file-selector-insurance">
                         <input id="my-file-selector-insurance" name="insurancefiles" type="file" style="display:none;" onchange="$('#upload-file-info-insurance').html($(this).val());">
-                        <img id="insurance-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
-                        Click here to upload package picture
+                        <img id="insurance-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                        
                     </label>
                     <span class='label label-info' id="upload-file-info-insurance"></span>
                 </div>
+                Click here to upload Proof of insurance 
             </div>
         </div>
         </div>
@@ -340,9 +345,9 @@
             <div class="col-md-5">
                 <div class="form-horizontal">
 
-                    <h2>
-                        Authentication Info
-                    </h2>
+                    <h3>
+                        Login information
+                    </h3>
                     <hr />
                     <div class="form-group">
                         <div class="col-md-12">

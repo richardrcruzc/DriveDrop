@@ -305,7 +305,7 @@ namespace DriveDrop.Web.ViewModels
         public int CustomerStatusId { get; set; }
         public CustomerStatus CustomerStatus { get; set; }
         [Required(ErrorMessage = "Your must provide a MaxPackage")]
-        [Display(Name = "Max Package")]
+        [Display(Name = "Maximum package to pickup")]
         public int MaxPackage { get; set; }
         [Display(Name = "Pick up Radius")]
         [Required(ErrorMessage = "Your must provide a Pickup Radius")]

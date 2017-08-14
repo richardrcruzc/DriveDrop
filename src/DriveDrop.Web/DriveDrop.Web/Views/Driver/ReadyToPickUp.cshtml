@@ -1,13 +1,8 @@
-
 @model DriveDrop.Web.ViewModels.PaginatedShippings
-
 
 <div class="side-2">
 
-
-
     @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.CustomerId)
-
 
 </div>
 <div class="center-2">
@@ -19,6 +14,7 @@
         </div>
         <div class="page-body">
             <h3>Shipping List, ready to pick up, need to assign to yourself</h3>
+
             <div class="row">
                 <table class="table">
 
@@ -98,7 +94,115 @@
 
 
             </div>
+
+
+            <div id="floating-panel">
+
+                @*<select id="start" v>
+                <option value="Seattle WA">Seattle WA</option>
+            </select>
+            <select id="end">
+                <option value="Seattle WA">Seattle WA</option>
+            </select>*@
+                <input id="start" value="Seattle WA" />
+                <input id="end" value="Seattle WA" />
+
+
+                <input id="submit" type="button" value="Geocode">
+            </div>
+            <div id="right-panel-map"></div>
+            <div id="mapgoogle"></div>
+
         </div>
     </div>
 </div>
+ 
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+
+        //$('.clickMe').click(function () {
+        //    var clickedID = this.id;
+        //    alert(clickedID);
+        //});
+
+        function fireEvent(element, event) {
+            if (document.createEventObject) {
+                // dispatch for IE
+                var evt = document.createEventObject();
+                return element.fireEvent('on' + event, evt)
+            }
+            else {
+                // dispatch for firefox + others
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent(event, true, true); // event type,bubbling,cancelable
+                return !element.dispatchEvent(evt);
+            }
+        }
+        function SetAddressFunction(obj) {
+
+            var pu = $(obj).attr('pickup-id');            
+            var dl = $(obj).attr('delivery-id');             
+
+             $("#start").val(pu);
+            $("#end").val(dl);
+
+            var x = document.getElementById("start");
+            fireEvent(x, 'change');
+
+             document.getElementById("mapgoogle").scrollIntoView()
+        }
+
+
+
+        function initMap() {
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            var map = new google.maps.Map(document.getElementById('mapgoogle'), {
+                zoom: 7,
+                center: { lat: 41.85, lng: -87.65 }
+            });
+
+            directionsDisplay.setMap(map);
+            directionsDisplay.setPanel(document.getElementById('right-panel-map'));
+
+            var control = document.getElementById('floating-panel');
+            control.style.display = 'block';
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+            var onChangeHandler = function () {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            };
+            document.getElementById('start').addEventListener('change', onChangeHandler);
+            document.getElementById('end').addEventListener('change', onChangeHandler);
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+            directionsService.route({
+                origin: document.getElementById('start').value,
+                destination: document.getElementById('end').value,
+                travelMode: 'DRIVING'
+            }, function (response, status) {
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        }
+
+         
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&callback=initMap">
+    </script>
+
+
+     
+
+}
