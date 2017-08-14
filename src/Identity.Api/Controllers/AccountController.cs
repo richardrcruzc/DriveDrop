@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Identity.Api;
+using Identity.Api.Models.ManageViewModels;
 
 namespace IdentityServer4.Quickstart.UI.Controllers
 {
@@ -43,6 +44,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
         private readonly IOptionsSnapshot<AppSettings> _settings;
 
+        private readonly IEmailSender _emailSender;
+
         public AccountController(
 
             IOptionsSnapshot<AppSettings> settings,
@@ -51,7 +54,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             ILoggerFactory loggerFactory, 
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+              IEmailSender emailSender)
         {
             _settings = settings;
             _loginService = loginService;
@@ -59,6 +63,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             _clientStore = clientStore;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _userManager = userManager;
+            _emailSender = emailSender;
         } 
          
         //
@@ -391,6 +396,73 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         {
             return View();
         }
+
+ 
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost] 
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return Ok("SomethignWrong");
+                }
+
+                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+                // Send an email with this link
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                return Ok("ForgotPasswordConfirmation");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return Ok("SomethignWrong");
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
+                return Ok("SomethignWrong");
+            }
+             
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+
+                    return Ok("User changed their password successfully");
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //_logger.LogInformation(3, "User changed their password successfully.");
+                    //return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+                }
+                AddErrors(result);
+                return Ok(result);
+
+                //return View(model);
+            }
+            // return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return Ok("SomethignWrong");
+        }
+
 
         private void AddErrors(IdentityResult result)
         {

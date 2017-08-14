@@ -142,7 +142,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetShippingByDriverId(_remoteServiceShippingsUrl, id);
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 1);
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 

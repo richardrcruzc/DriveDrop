@@ -7,7 +7,7 @@ namespace DriveDrop.Web.ViewModels
     public class Shipment 
     {
         public int Id { get; set; }
-        public string IdentityCode { get;  set; }
+        public string IdentityCode { get;  set; } 
 
         public DateTime ShippingCreateDate { get;  set; }
         public DateTime ShippingUpdateDate { get;  set; }
@@ -52,7 +52,6 @@ namespace DriveDrop.Web.ViewModels
 
 
         public string Note { get;  set; }
-
          
 
     }

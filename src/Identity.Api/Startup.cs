@@ -120,6 +120,13 @@ namespace Identity.Api
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+  name: "passwordrecovery",
+  template: "passwordrecovery",
+  defaults: new { controller = "account", action = "ForgotPassword" });
+
+
             });
 
             // Store idsrv grant config into db

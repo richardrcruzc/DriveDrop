@@ -14,6 +14,13 @@ namespace DriveDrop.Web.Infrastructure
             { 
                 return $"{baseUri}RegisterUser?userName={userName}&password={password}";
             }
+
+            public static string ChangePassword(string baseUri, string Email, string OldPassword, string NewPassword, string ConfirmPassword)
+            {
+                return $"{baseUri}ChangePassword?Email={Email}&OldPassword={OldPassword}&NewPassword={NewPassword}&ConfirmPassword={ConfirmPassword}";
+            }
+
+            
         }
             public static class Rate
         {
@@ -177,13 +184,13 @@ namespace DriveDrop.Web.Infrastructure
             {
                 var statusidQs = statusId.ToString();
                 var idQs = id.ToString();
-                var filterQs = $"/{idQs}";
+                var filterQs = $"/{idQs}/{statusidQs}";
                 return $"{baseUri}/GetByDriverIdAndStatusId{filterQs}";
             }
 
             public static string UpdatePackageStatus(string baseUri, int shippingId, int shippingStatusId)
             {
-                var shippingStatusIdQs = shippingId.ToString();
+                var shippingStatusIdQs = shippingStatusId.ToString();
                 var idQs = shippingId.ToString();
                 var filterQs = $"/shippingId/{idQs}/shippingStatusId/{shippingStatusIdQs}";
                 return $"{baseUri}/UpdatePackageStatus{filterQs}";

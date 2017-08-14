@@ -43,10 +43,22 @@
                                 <td>
                                     <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
                                     <div>
+                                        @Html.DisplayFor(modelItem => item.IdentityCode)
+                                    </div>
+                                    <div>
                                         @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
                                     </div>
                                     <div>
-                                        @Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id, customerId = item.DriverId }, new { @class = "btn-danger" })
+                                        <form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST">
+                                            <input value="@item.DriverId" hidden name="DriverId" />
+                                            <input value="@item.Id" hidden name="shippingId" />
+
+                                            @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList,  htmlAttributes: new { @class = "form-control" })
+
+                                            @*@Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})*@
+
+                                            <input type="submit" class="btn btn-danger" value="Change" />
+                                        </form>
                                     </div>
                                 </td>
 

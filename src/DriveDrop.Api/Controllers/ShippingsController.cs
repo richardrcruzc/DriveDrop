@@ -63,7 +63,7 @@ namespace DriveDrop.Api.Controllers
 
 
         [HttpGet]
-        [Route("[action]/{shippingId:int}/{shippingStatusId:int}")]
+        [Route("[action]/shippingId/{shippingId:int}/shippingStatusId/{shippingStatusId:int}")]
         public async Task<IActionResult> UpdatePackageStatus(int shippingId, int shippingStatusId)
         {
             try

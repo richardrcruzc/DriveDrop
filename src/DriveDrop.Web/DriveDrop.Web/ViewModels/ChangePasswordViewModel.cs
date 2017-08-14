@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Identity.Api.Models.ManageViewModels
+namespace DriveDrop.Web.ViewModels
 {
     public class ChangePasswordViewModel
     {
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
@@ -28,5 +20,8 @@ namespace Identity.Api.Models.ManageViewModels
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public int Id { get; set; }
+        
     }
 }

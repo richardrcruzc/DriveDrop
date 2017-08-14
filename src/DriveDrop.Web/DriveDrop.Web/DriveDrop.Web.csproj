@@ -633,6 +633,7 @@
     <Folder Include="Pics\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Views\Manage\" />
     <Folder Include="Views\Shared\Components\PerMiles\" />
   </ItemGroup>
  

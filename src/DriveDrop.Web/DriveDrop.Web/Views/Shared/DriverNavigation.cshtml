@@ -34,11 +34,12 @@
                  
             </li>
             <li class="customer-info"> 
-                @Html.ActionLink("My Address", "Address", "driver", new { id = Model }, null)
+                @Html.ActionLink("My Address", "Address", "ResetPassword", new { id = Model }, null)
             </li>
             
             <li class="change-password">
-                <a href="/customer/changepassword" class="inactive">Change password</a>
+                @Html.ActionLink("Change my password", "ChangePassword", "manage", new { id = Model }, null)
+               
             </li>
 
 

@@ -42,9 +42,13 @@
                                 @Html.ActionLink("Asign to me!", "AssignDriver", new { id = ViewBag.DriverId, shipingId = item.Id })
 
                                 <img src="@url" class="img-rounded" alt="Cinque Terre" width="90" height="60">
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.IdentityCode)
+                                </div>
                             </td>
                             <td>
                                 <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+
                                 <div>
                                     @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
                                 </div>

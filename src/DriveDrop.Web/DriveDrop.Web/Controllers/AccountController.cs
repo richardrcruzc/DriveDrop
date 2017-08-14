@@ -42,6 +42,25 @@ namespace DriveDrop.Web.Controllers
              
 
         }
+        [Authorize]
+        public async Task<IActionResult> Register(string returnUrl)
+        {
+            var user = User as ClaimsPrincipal;
+            var token = await HttpContext.Authentication.GetTokenAsync("access_token");
+
+            if (token != null)
+            {
+                ViewData["access_token"] = token;
+            }
+
+            // "Catalog" because UrlHelper doesn't support nameof() for controllers
+            // https://github.com/aspnet/Mvc/issues/5853
+            return RedirectToAction(nameof(AdminController.Index), "Home");
+
+
+        }
+
+       
 
         public IActionResult Signout()
         {
@@ -54,50 +73,7 @@ namespace DriveDrop.Web.Controllers
             return new SignOutResult("oidc", new AuthenticationProperties { RedirectUri = homeUrl });
         }
 
-        //
-        // GET: /Account/ResetPassword
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
-        {
-            return code == null ? View("Error") : View();
-        }
-
-        //
-        // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            //var user = await _userManager.FindByEmailAsync(model.Email);
-            //if (user == null)
-            //{
-            //    // Don't reveal that the user does not exist
-            //    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            //}
-            //var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            //if (result.Succeeded)
-            //{
-            //    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            //}
-            //AddErrors(result);
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPasswordConfirmation
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
-        }
-
+        
 
         //
         // GET /Account/AccessDenied

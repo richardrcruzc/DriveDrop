@@ -63,9 +63,7 @@ namespace DriveDrop.Api.ViewModels
         public string DeliveredPictureUri { get; set; }
 
 
-        public string Note { get; set; }
-
-
+        public string Note { get; set; } 
 
     }
 }
