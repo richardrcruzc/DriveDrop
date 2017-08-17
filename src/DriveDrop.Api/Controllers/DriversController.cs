@@ -101,6 +101,8 @@ namespace DriveDrop.Api.Controllers
                 .Include(s => s.TransportType)
                 .Include(t => t.CustomerStatus)
                 .Include(s => s.CustomerType) 
+                .Include(A=>A.Addresses)
+                .Include(d=>d.DefaultAddress)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
 
@@ -210,6 +212,24 @@ namespace DriveDrop.Api.Controllers
             return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
 
         }
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> AddVehicleInfo([FromBody]VehicleInfoModel c)
+        {
+            var updateCustomer = _context.Customers.Where(x => x.Id == c.DriverId).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+                updateCustomer.UpdateVehicleInfo(c.lincensePictureUri, c.vehiclePhotoUri, c.insurancePhotoUri, c.vehicleTypeId, c.VehicleMake, c.VehicleModel, c.VehicleColor, c.VehicleYear);                
+                 
+                _context.Update(updateCustomer);
+                await _context.SaveChangesAsync();
+            }
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
+
+
+        
         // POST api/values
         [AllowAnonymous]
         [HttpPost("[action]")]
@@ -227,19 +247,21 @@ namespace DriveDrop.Api.Controllers
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.DriverIDInUse.ToString());
                 }
 
-                var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
+                var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode,"","", 0, 0);
 
                 var tmpUser = Guid.NewGuid().ToString();
 
                 var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName,transportTypeId: c.TransportTypeId,statusId: CustomerStatus.WaitingApproval.Id, email: c.Email, phone: c.Phone,
-                        customerTypeId: CustomerType.Driver.Id, maxPackage: c.MaxPackage ?? 0, pickupRadius: c.PickupRadius ?? 0,
-                       deliverRadius: c.DeliverRadius ?? 0, commission: 0, userName: c.UserEmail, vehicleInfo: c.VehicleInfo,
+                        customerTypeId: CustomerType.Driver.Id, maxPackage: c.MaxPackage  , pickupRadius: c.PickupRadius  ,
+                       deliverRadius: c.DeliverRadius  , commission: 0, userName: c.UserEmail, 
                        primaryPhone: c.PrimaryPhone, driverLincensePictureUri: c.DriverLincensePictureUri, personalPhotoUri: c.PersonalPhotoUri,
-                       vehiclePhotoUri: c.VehiclePhotoUri, insurancePhotoUri: c.InsurancePhotoUri);
+                       vehiclePhotoUri: c.VehiclePhotoUri, insurancePhotoUri: c.InsurancePhotoUri, 
+                       vehicleMake: c.VehicleMake, vehicleModel: c.VehicleModel, vehicleColor: c.VehicleColor, vehicleYear: c.VehicleYear);
 
                 _context.Add(newCustomer);
                 _context.SaveChanges();
 
+                newCustomer.AddAddress(defaultAddres);
                 newCustomer.AddDefaultAddress(defaultAddres);
                 newCustomer.AddPicture(c.InsurancePhotoUri, "insurance");
 

@@ -22,6 +22,7 @@ namespace DriveDrop.Web.ViewModels
         public string ConfirmPassword { get; set; }
 
         public int Id { get; set; }
-        
+        public bool IsDriver { get; set; }
+
     }
 }

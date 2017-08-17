@@ -1,4 +1,4 @@
-﻿@model DriveDrop.Web.ViewModels.SenderRegisterModel
+﻿@model DriveDrop.Web.ViewModels.CustomerModelComplete
 
 @{
     ViewData["Title"] = "sender-NewSender";
@@ -202,16 +202,42 @@
 
                                 <div class="col-md-12">
                                     <input id="autocomplete" class="form-control" placeholder="Enter your address" />
-                                    <a class="btn btn-primary btn-lg" role="button" id="asPickup">pickup</a>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                   
+                    <div class="col-md-2">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+
+                                    <a class="btn btn-primary btn-lg" role="button" id="asPickup">pickup</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+
+                                    <a class="btn btn-primary btn-lg" role="button" id="asDrop">drop</a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">
-                        <h3>Default address</h3>
+                        <h3>Pickup Address</h3>
                         <hr />
                         <div class="form-horizontal">
 
@@ -264,14 +290,212 @@
 
                         </div>
 
-                    </div> 
+                    </div>
+
+
+
+                    <div class="col-md-5">
+                        <h3>Drop Address</h3>
+                        <hr />
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryStreet" class="form-control" placeholder="Street"  />
+                                    <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryCity" class="form-control" placeholder="City"   />
+                                    <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code"  />
+                                    <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryState" class="form-control" placeholder="state"  />
+                                    <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryCountry" class="form-control" placeholder="Country"  />
+                                    <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryPhone" class="form-control phone-number" placeholder="Contact phone"    />
+                                    <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryContact" class="form-control" placeholder="Contact person"   />
+                                    <span asp-validation-for="DeliveryContact" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-10">
+                        <h3>Package picture </h3>
+                        <hr />
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="btn btn-primary" for="my-file-selector">
+                                    <input id="my-file-selector" name="packageImage" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+                                    <img id="blah1" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="220" height="220" />
+                                    Click here to upload package picture
+                                </label>
+                                <span class='label label-info' id="upload-file-info"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+
+
+
+                    <div class="col-md-5">
+
+                        <h3>
+                            Delivery Information
+
+                        </h3>
+                        <hr />
+                        <div class="form-horizontal">
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
+                                    <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
+                                    <span asp-validation-for="PackageSizeId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="Amount" class="form-control" placeholder="Shipping value" />
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="ShippingWeight" class="form-control" placeholder="Weight lbs" />
+                                    <span asp-validation-for="ShippingWeight" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <textarea name="Note" class="span6" rows="3" cols="50" placeholder="Note for driver"></textarea>
+                                    <span asp-validation-for="Note" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PromoCode" class="form-control" placeholder="Promo Code" />
+                                    <span asp-validation-for="PromoCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+
+                        <h3>
+                            <strong> Shipping Total </strong>
+
+                        </h3>
+                        <hr />
+                        <div class="total">
+                            <div class="total-info">
+                                <div class="total-info">
+                                    <table class="cart-total">
+                                        <tbody>
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
+                                                    <label>Sub-Total:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Sub">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="shipping-cost">
+                                                <td class="cart-total-left">
+                                                    <label>Discount:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Discount">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="tax-value">
+                                                <td class="cart-total-left">
+                                                    <label>Tax:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Tax">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <td class="cart-total-left">
+                                                    <label>Total:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-total">$0.00</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <input id="calcTotal" type="button" value="Total" name="save-info-button" class="btn btn-primary" />
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
 
 
                     <div class="col-md-5">
                         <div class="form-horizontal">
 
                             <h3>
-                                Login infomation
+                                Authentication Info
                             </h3>
                             <hr />
                             <div class="form-group">
@@ -298,17 +522,28 @@
 
                     </div>
 
-                   
-                </div>
+                    <div class="col-md-5">
 
-                <div class="row">
-                    <div class="buttons">
-                        <input   type="submit" value="Submit" name="save-info-button" class="btn btn-primary" />
+                        <h3>
+                            <strong> Payment method </strong>
+                        </h3>
+                        <hr />
+                        <div class="buttons">
+                            <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="btn btn-primary" />
+
+                        </div>
 
                     </div>
                 </div>
-                <div class="row"></div>
-</form>
+
+                <div class="row">
+
+                </div>
+
+
+
+
+            </form>
 
     <div>
         <hr />

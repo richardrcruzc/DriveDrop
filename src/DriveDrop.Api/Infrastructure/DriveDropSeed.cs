@@ -222,18 +222,18 @@ namespace DriveDrop.Api.Infrastructure
                 if (!context.Customers.Any())
                 {
 
-                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id,"123213123","W@S.com",1,0,0,0,0, "W@S.com","","","","","",""));
+                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id,"123213123","W@S.com",1,0,0,0,0, "W@S.com","","","","","","", "", "", "" ));
 
-                    context.Customers.Add(new Customer("Sender1", "First", "Sender", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender2", "Second", "Sender", TransportType.LightTruck.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender3", "Third", "Sender", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender4", "Forth", "Sender", TransportType.Sedan.Id, CustomerStatus.Suspended.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender5", "Fith", "Sender", TransportType.Motocycle.Id, CustomerStatus.Canceled.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", ""));
+                    context.Customers.Add(new Customer("Sender1", "First", "Sender", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",   "", "", "", "", "", "", "", "", ""));
+                    context.Customers.Add(new Customer("Sender2", "Second", "Sender", TransportType.LightTruck.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
+                    context.Customers.Add(new Customer("Sender3", "Third", "Sender", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
+                    context.Customers.Add(new Customer("Sender4", "Forth", "Sender", TransportType.Sedan.Id, CustomerStatus.Suspended.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", "", "", "", "" ));
+                    context.Customers.Add(new Customer("Sender5", "Fith", "Sender", TransportType.Motocycle.Id, CustomerStatus.Canceled.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", "", "", "", "" ));
 
 
-                    context.Customers.Add(new Customer("Driver 5", "Fisrt 5", "Driver", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 3,2,5,5,0,"", "", "", "", "", "",""));
-                    context.Customers.Add(new Customer("Driver 10", "Last 10", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3,2,10,10,15, "", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Driver 15", "Last 15", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3, 2, 15, 15, 15, "", "", "", "", "", "", ""));
+                    context.Customers.Add(new Customer("Driver 5", "Fisrt 5", "Driver", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 3,2,5,5,0,"", "", "", "", "", "","", "", "", ""));
+                    context.Customers.Add(new Customer("Driver 10", "Last 10", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3,2,10,10,15, "", "", "", "", "", "", "", "", "", ""));
+                    context.Customers.Add(new Customer("Driver 15", "Last 15", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3, 2, 15, 15, 15, "", "", "", "", "", "", "", "", "", ""));
                                      
 
                     await context.SaveChangesAsync();

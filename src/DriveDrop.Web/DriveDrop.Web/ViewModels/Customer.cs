@@ -43,8 +43,17 @@ namespace DriveDrop.Web.ViewModels
         public List<AddressModel> Addresses { get;  set; }
 
 
-    public string DriverLincensePictureUri { get;  set; }
-         
+        public string DriverLincensePictureUri { get; set; } 
+        public string VehiclePhotoUri { get; set; }
+        public string InsurancePhotoUri { get; set; }
+
+
+        public string VehicleMake { get;  set; }
+        public string VehicleModel { get;  set; }
+        public string VehicleColor { get;  set; }
+        public string VehicleYear { get;  set; }
+
+
         public string FullName
         {
             get

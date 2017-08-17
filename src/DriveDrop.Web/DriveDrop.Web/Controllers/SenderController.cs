@@ -487,12 +487,95 @@ namespace DriveDrop.Web.Controllers
             return await context.Authentication.GetTokenAsync("access_token");
         }
         [AllowAnonymous]
-        public async Task<IActionResult> NewSender()
+        public IActionResult NewSender()
         {
             //await HttpContext.Authentication.SignOutAsync("Cookies");
             //await  HttpContext.Authentication.SignOutAsync("oidc");
 
-            CustomerModel c = new CustomerModel();
+            SenderRegisterModel c = new SenderRegisterModel();
+            c.CustomerTypeId = 2;
+            
+            return View(c);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewSender(SenderRegisterModel c,  List<IFormFile> imgeFoto)
+        {
+            try
+            {
+                foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
+                {
+                    var tt = state.Errors.ToString();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    
+                    //try register new user
+
+                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, c.UserEmail, c.Password);
+
+                    var dataString = await _apiClient.GetStringAsync(addNewUserUri); 
+
+                    if (dataString == null)
+                    {
+                        ModelState.AddModelError("", "Unable to register sender user"); 
+                        return View(c);
+                    }
+
+                    if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
+                    {
+
+                        ModelState.AddModelError("", "Unable to register sender user"); 
+                        return View(c);
+                    }
+                     
+                    var ppersonalUri = await SaveFile(imgeFoto, "Sender");
+                     
+                    c.PersonalPhotoUri = ppersonalUri;
+
+
+                    var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
+
+                    c.CustomerTypeId = 2;
+
+                    var response = await _apiClient.PostAsync(addNewSenderUri, c);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception("Error creating sender, try later.");
+                    }
+
+                    // return RedirectToAction("result", new { id = c.CustomerId });
+                    //return RedirectToAction("SignIn", "Account");
+                    // var results = new NewSenderResult { Amount = "", Message="", UserName =c.UserEmail };
+
+                    return RedirectToAction("NewSenderResults", new { user = c.UserEmail });
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+
+                var error = string.Format("Unable to save changes. " +
+                   "Try again, and if the problem persists " +
+                   "see your system administrator. {0}", ex.Message);
+
+                ModelState.AddModelError("", error);
+            }
+
+
+           // await PrepareCustomerModel(c);
+            return View(c);
+
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> NewSenderComplete()
+        {
+            //await HttpContext.Authentication.SignOutAsync("Cookies");
+            //await  HttpContext.Authentication.SignOutAsync("oidc");
+
+            CustomerModelComplete c = new CustomerModelComplete();
             await PrepareCustomerModel(c);
             c.CustomerTypeId = 2;
             c.Distance = 0;
@@ -501,7 +584,7 @@ namespace DriveDrop.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewSender(CustomerModel c, List<IFormFile> packageImage, List<IFormFile> imgeFoto)
+        public async Task<IActionResult> NewSenderComplete(CustomerModelComplete c, List<IFormFile> packageImage, List<IFormFile> imgeFoto)
         {
             try
             {
@@ -837,7 +920,7 @@ namespace DriveDrop.Web.Controllers
 
         [AllowAnonymous]
         [NonAction]
-        public async Task<CustomerModel> PrepareCustomerModel(CustomerModel model)
+        public async Task<CustomerModelComplete> PrepareCustomerModel(CustomerModelComplete model)
         {
             var getUri = API.Common.GetAllCustomerTypes(_remoteServiceCommonUrl);
             var dataString = await _apiClient.GetStringAsync(getUri);

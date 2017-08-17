@@ -162,47 +162,48 @@ namespace DriveDrop.Api.Controllers
         [Route("[action]")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> NewSender([FromBody]CustomerModel c) //, [FromBody]List<IFormFile> files)
+        public async Task<IActionResult> NewSender([FromBody]SenderRegisterModel c) //, [FromBody]List<IFormFile> files)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
+                 //   var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
                     var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
 
                     var tmpUser = Guid.NewGuid().ToString();
 
                     var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, email:c.Email,phone: c.Phone,
-                        customerTypeId:CustomerType.Sender.Id, maxPackage: c.MaxPackage??0,pickupRadius: c.PickupRadius??0, 
-                       deliverRadius: c.DeliverRadius??0,commission: 0,userName: c.UserEmail, vehicleInfo: c.VehicleInfo, 
-                       primaryPhone: c.PrimaryPhone, driverLincensePictureUri:  c.DriverLincensePictureUri,personalPhotoUri: c.PersonalPhotoUri,
-                       vehiclePhotoUri: c.VehiclePhotoUri, insurancePhotoUri: c.InsurancePhotoUri);
+                        customerTypeId:CustomerType.Sender.Id, maxPackage:  0,pickupRadius:  0, 
+                       deliverRadius:  0,commission: 0,userName: c.UserEmail,  
+                       primaryPhone: c.PrimaryPhone, driverLincensePictureUri:  "",personalPhotoUri: c.PersonalPhotoUri,
+                       vehiclePhotoUri: "", insurancePhotoUri: "",
+                        vehicleMake: "", vehicleModel: "", vehicleColor: "", vehicleYear: "");
                     
                     _context.Add(newCustomer);
                     _context.SaveChanges();
 
 
-                    newCustomer.AddAddress(deliveryAddres);
+                    //newCustomer.AddAddress(deliveryAddres);
                     newCustomer.AddAddress(pickUpAddres);
                     newCustomer.AddDefaultAddress(pickUpAddres);
 
                     _context.Update(newCustomer);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
 
                     //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId??0, c.PromoCode);
-                    var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,  c.PackageSizeId );
+                    // var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,  c.PackageSizeId );
 
 
-                    var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: newCustomer, amount: c.Amount, discount: rate.Discount,
-                       shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, 
-                       deliveredPictureUri: "", distance: c.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, packageSizeId: c.PackageSizeId);
-                    
+                    //var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: newCustomer, amount: c.Amount, discount: rate.Discount,
+                    //   shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId??0, note: c.Note, pickupPictureUri: c.FilePath, 
+                    //   deliveredPictureUri: "", distance: c.Distance, chargeAmount: rate.AmountToCharge, promoCode: c.PromoCode, tax: rate.TaxAmount, packageSizeId: c.PackageSizeId);
 
-                    _context.Add(shipment);
 
-                    _context.SaveChanges();
+                    //_context.Add(shipment);
+
+                    //_context.SaveChanges();
 
                     await _context.SaveChangesAsync();
 

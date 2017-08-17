@@ -24,11 +24,13 @@
 
         <div class="page account-page address-edit-page">
             <div class="page-title">
-                <h1> MyAccount - Addresses AddNew</h1>
+                <h1> My addresses</h1>
 
 
             </div>
             <div class="page-body">
+                <h3>Add new</h3>
+
                 <div class="edit-address">
                     <div class="inputs">
                         <input id="autocomplete" class="form-control" placeholder="Enter your address" />
@@ -69,7 +71,7 @@
                         <span asp-validation-for="Country" class="text-danger"></span>
                     </div>
                     <div class="inputs">
-                        <input asp-for="Phone" class="form-control" placeholder="Phone" disabled />
+                        <input asp-for="Phone" class="form-control phone-number" placeholder="Phone" disabled />
                         <span class="required">*</span>
                         <span asp-validation-for="Street" class="text-danger"></span>
                     </div>

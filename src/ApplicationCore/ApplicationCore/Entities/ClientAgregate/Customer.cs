@@ -30,7 +30,10 @@ namespace ApplicationCore.Entities.ClientAgregate
 
         public decimal Commission { get; private set; }
 
-        public string VehicleInfo { get; private set; }
+        public string VehicleMake { get; private set; }
+        public string VehicleModel { get; private set; }
+        public string VehicleColor { get; private set; }
+        public string VehicleYear { get; private set; } 
 
         public Address DefaultAddress { get; private set; }
 
@@ -58,12 +61,19 @@ namespace ApplicationCore.Entities.ClientAgregate
 
             return this;
         }
-        public Customer UpdateVehicleInfo(string lincensePictureUri, string vehiclePhotoUri, string insurancePhotoUri, int vehicleTypeId)
+        public Customer UpdateVehicleInfo(string lincensePictureUri, string vehiclePhotoUri, string insurancePhotoUri, int vehicleTypeId, 
+            string vehicleMake, string vehicleModel, string vehicleColor, string vehicleYear)
         {
             DriverLincensePictureUri = lincensePictureUri;
             VehiclePhotoUri = vehiclePhotoUri;
             InsurancePhotoUri = insurancePhotoUri;
             TransportTypeId = vehicleTypeId;
+
+            VehicleMake = vehicleMake;
+            VehicleModel = vehicleModel;
+            VehicleColor = vehicleColor;
+            VehicleYear = vehicleYear;
+
             return this;
         }
         public Customer UpdateInfo(int statusId, string firstName, string lastName, string email, string primaryPhone, string phone , string photoUrl)
@@ -130,12 +140,17 @@ namespace ApplicationCore.Entities.ClientAgregate
       int deliverRadius , 
       decimal commission , 
       string userName , 
-      string vehicleInfo , 
       string primaryPhone,
       string driverLincensePictureUri, 
       string personalPhotoUri, 
       string vehiclePhotoUri, 
-      string insurancePhotoUri) : this()
+      string insurancePhotoUri,
+
+      string vehicleMake,
+      string vehicleModel,
+      string vehicleColor,
+      string vehicleYear
+      ) : this()
         {
             LastName = lastName;
             FirstName = firstName;            
@@ -151,8 +166,7 @@ namespace ApplicationCore.Entities.ClientAgregate
             Phone = phone;
 
             Commission = commission;
-            UserName = userName;
-            VehicleInfo = vehicleInfo;
+            UserName = userName; 
 
             CustomerStatusId = CustomerStatus.WaitingApproval.Id;
 
@@ -161,6 +175,11 @@ namespace ApplicationCore.Entities.ClientAgregate
             DriverLincensePictureUri = driverLincensePictureUri;
             VehiclePhotoUri = vehiclePhotoUri;
             InsurancePhotoUri = InsurancePhotoUri;
+
+            VehicleMake= vehicleMake;
+            VehicleModel = vehicleModel;
+            VehicleColor = vehicleColor;
+            VehicleYear = vehicleYear;
         } 
 
         public Customer Update( 
@@ -175,7 +194,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         string email,
       string phone,
        int customerTypeId = 2,      
-        decimal commission = 10, string userName = "", string vehicleInfo = "", string primaryPhone = "")
+        decimal commission = 10, string userName = "",   string primaryPhone = "")
         {
             
             LastName = lastName;
@@ -192,8 +211,7 @@ namespace ApplicationCore.Entities.ClientAgregate
             Phone = phone;
 
             Commission = commission;
-            UserName = userName;
-            VehicleInfo = vehicleInfo;
+            UserName = userName; 
             PrimaryPhone = primaryPhone;
             return this;
         }

@@ -50,10 +50,25 @@ namespace DriveDrop.Web.Controllers
             //
             // GET: /Manage/ChangePassword
             [HttpGet]
-        public IActionResult ChangePassword (int id)
+        public async Task<IActionResult> ChangePassword (int id)
         {
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<Customer>(userString);
+            if (customer == null)
+                return RedirectToAction("index", "home");
+
             var model = new ChangePasswordViewModel();
             model.Id = id;
+            if (customer.CustomerTypeId == 3)
+                model.IsDriver = true;
+            else
+                model.IsDriver = false;
+
             return View(model);
         }
 

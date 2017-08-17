@@ -3,70 +3,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-
-<style>
-    /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-    #map {
-        height: 100%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-</style>
-<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-<style>
-    #locationField, #controls {
-        position: relative;
-        width: 480px;
-    }
-
-    #autocomplete {
-        position: relative;
-        top: 0px;
-        left: 0px;
-        width: 99%;
-    }
-
-    .label {
-        text-align: right;
-        font-weight: bold;
-        width: 100px;
-        color: #303030;
-    }
-
-    #address {
-        border: 1px solid #000090;
-        background-color: #f0f0ff;
-        width: 480px;
-        padding-right: 2px;
-    }
-
-        #address td {
-            font-size: 10pt;
-        }
-
-    .field {
-        width: 99%;
-    }
-
-    .slimField {
-        width: 80px;
-    }
-
-    .wideField {
-        width: 200px;
-    }
-
-    #locationField {
-        height: 20px;
-        margin-bottom: 2px;
-    }
-</style>
+ 
 
 <section class="esh-catalog-filters">
     <div class="row">
@@ -115,7 +52,14 @@
                     <div class="form-group">
 
                         <div class="col-md-12">
-                            <input asp-for="Phone" class="form-control" placeholder="Contact Phone" />
+                            <input asp-for="PrimaryPhone" class="form-control phone-number" placeholder="Contact primary phone" />
+                            <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+                            <input asp-for="Phone" class="form-control phone-number" placeholder="cell phone" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
                     </div>
@@ -183,7 +127,7 @@
                             <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <div class="col-md-12">
                             <input asp-for="DeliveryPhone" class="form-control" placeholder="Contact Phone" />
                             <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
@@ -194,7 +138,7 @@
                             <input asp-for="DeliveryContact" class="form-control" placeholder="Contact Person" />
                             <span asp-validation-for="DeliveryContact" class="text-danger"></span>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
 
@@ -246,8 +190,26 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input asp-for="VehicleInfo" class="form-control" placeholder="VehicleInfo" />
-                            <span asp-validation-for="VehicleInfo" class="text-danger"></span>
+                            <input asp-for="VehicleMake" class="form-control" placeholder="Vehicle Make" />
+                            <span asp-validation-for="VehicleMake" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="VehicleModel" class="form-control" placeholder="Vehicle Model" />
+                            <span asp-validation-for="VehicleModel" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="VehicleColor" class="form-control" placeholder="Vehicle Color" />
+                            <span asp-validation-for="VehicleColor" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input asp-for="VehicleYear" class="form-control" placeholder="Vehicle Year" />
+                            <span asp-validation-for="VehicleYear" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -256,87 +218,83 @@
 
 
         <div class="row">
-
             <div class="col-md-5">
-
 
                 <h3>Profile photo </h3>
                 <hr />
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="btn btn-primary" for="my-file-selector-Personal">
-                            <input id="my-file-selector-Personal" name="personalfiles" type="file" style="display:none;" onchange="$('#upload-file-info-Personal').html($(this).val());">
-                            <img id="Personal-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
-                        
-                        </label>
-                        <span class='label label-info' id="upload-file-info-Personal"></span>
+                <div class="image-placeholder">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type='file' id="my-file-selector-Personal" name="personalfiles" />
+                                <img id="Personal-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                            </div>
+                        </div>
                     </div>
-                    Click here to upload Profile photo
+
                 </div>
             </div>
      
 
-            <div class="col-md-5">
+           
 
+
+            <div class="col-md-5">
 
                 <h3>Driver license  photo</h3>
                 <hr />
-                <div class="form-horizontal">
-
+                <div class="image-placeholder">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="btn btn-primary" for="my-file-selector-license">
-                                <input id="my-file-selector-license" name="licensefiles" type="file" style="display:none;" onchange="$('#upload-file-info-license').html($(this).val());">
+                            <div class="col-md-12">
+                                <input type='file' id="my-file-selector-license" name="licensefiles" />
                                 <img id="license-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
-                               
-                            </label>
-                            <span class='label label-info' id="upload-file-info-license"></span>
+                            </div>
                         </div>
                     </div>
-                     Click here to upload Driver license  photo
+
                 </div>
             </div>
-        </div>
 
+        </div>
         <div class="row">
 
             <div class="col-md-5">
 
-
-                <h3>Vehicle photo </h3>
+                <h3>Vehicle photo</h3>
                 <hr />
-                <div class="form-horizontal">
-
-                    <div class="form-group">
-                        <label class="btn btn-primary" for="my-file-selector-Vehicle">
-                            <input id="my-file-selector-Vehicle" name="Vehiclefiles" type="file" style="display:none;" onchange="$('#upload-file-info-Vehicle').html($(this).val());">
-                            <img id="Vehicle-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
-                            
-                        </label>
-                        <span class='label label-info' id="upload-file-info-Vehicle"></span>
+                <div class="image-placeholder">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type='file' id="my-file-selector-Vehicle" name="Vehiclefiles" />
+                                <img id="Vehicle-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                            </div>
+                        </div>
                     </div>
-                    Click here to upload Vehicle photo 
+
                 </div>
             </div>
-       
-      
 
-        <div class="col-md-5">
-            <h3>Proof of insurance  </h3>
-            <hr />
-            <div class="form-horizontal">
 
-                <div class="form-group">
-                    <label class="btn btn-primary" for="my-file-selector-insurance">
-                        <input id="my-file-selector-insurance" name="insurancefiles" type="file" style="display:none;" onchange="$('#upload-file-info-insurance').html($(this).val());">
-                        <img id="insurance-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
-                        
-                    </label>
-                    <span class='label label-info' id="upload-file-info-insurance"></span>
+
+            <div class="col-md-5">
+
+                <h3>Proof of insurance</h3>
+                <hr />
+                <div class="image-placeholder">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type='file' id="my-file-selector-insurance" name="insurancefiles" />
+                                <img id="insurance-image" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                Click here to upload Proof of insurance 
             </div>
-        </div>
+
         </div>
 
 

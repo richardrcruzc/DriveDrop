@@ -119,6 +119,13 @@
     <div class="row">
         <p></p>
     </div>
+    @if (ViewBag.UserValid == "false")
+    {
+    <div class="row">
+        <p><h1> user no valid !</h1></p>
+    </div>
+    }
+
     @if (User.FindFirst(x => x.Type == "preferred_username") != null)
     {
         <div class="row">

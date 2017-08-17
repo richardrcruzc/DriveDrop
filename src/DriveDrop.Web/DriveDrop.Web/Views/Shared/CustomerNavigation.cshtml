@@ -1,7 +1,7 @@
 @model int
 <div class="block block-account-navigation">
     <div class="title">
-        <strong>My account</strong>
+        <strong>Sender dashboard</strong>
     </div>
     <div class="listbox">
         <ul class="list">
@@ -21,8 +21,10 @@
                 @Html.ActionLink("Add new Packages", "NewShipping", "sender", new { id = Model }, null) 
             </li>
             <li class="change-password">
-                <a href="/customer/changepassword" class="inactive">Change password</a>
+                @Html.ActionLink("Change my password", "ChangePassword", "manage", new { id = Model }, null)
+
             </li>
+
 
 
         </ul>

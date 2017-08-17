@@ -18,41 +18,111 @@
 
         <div class="page account-page address-list-page">
             <div class="page-title">
-                <h1>My account - Addresses</h1>
+                <h1>My addresses</h1>
             </div>
             <div class="page-body">
                 @using (Html.BeginForm())
                 {
                 @Html.AntiForgeryToken()
-                        <div class="address-list">
-                           
-                    @foreach(var address in addresses)
-                    {
-                        
-                        <div class="section address-item">
-                            <div class="title">
-                                <strong>@address.Contact @address.Phone</strong>
-                            </div>
-                            <ul class="info">
-                                
-                                <li class="address1">
-                                    Street
-                                    @address.Street
-                                </li>
-                                <li class="city-state-zip">
-                                    @address.City, @address.State, @address.ZipCode
-                                </li>
-                                <li class="country">
-                                    @address.Country
-                                </li>
-                            </ul>
-                            <div class="buttons">
-                                @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
-                                <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
-                            </div>
+                    <div class="address-list">
+                        <div class="page-title">
+                            <h4>Default Address</h4>
                         </div>
-                         } 
+                        @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default"))
+                        {
+
+                            <div class="section address-item">
+                                <div class="title"> 
+                                    <strong>@address.Contact @address.Phone</strong>
+                                </div>
+                                <ul class="info">
+
+                                    <li class="address1">
+                                        Street
+                                        @address.Street
+                                    </li>
+                                    <li class="city-state-zip">
+                                        @address.City, @address.State, @address.ZipCode
+                                    </li>
+                                    <li class="country">
+                                        @address.Country
+                                    </li>
+                                </ul>
+                                <div class="buttons">
+                                    @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                    <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
+                                </div>
+                            </div>
+                        }
                     </div>
+                            <div class="address-list">
+                                <div class="page-title">
+                                    <h4>Pickup Address</h4>
+                                </div>
+
+
+                                @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "pickup" ))
+                                {
+
+                                    <div class="section address-item">
+                                        <div class="title"> 
+                                        <strong>@address.Contact @address.Phone</strong>
+                                    </div>
+                                    <ul class="info">
+
+                                        <li class="address1">
+                                            Street
+                                            @address.Street
+                                        </li>
+                                        <li class="city-state-zip">
+                                            @address.City, @address.State, @address.ZipCode
+                                        </li>
+                                        <li class="country">
+                                            @address.Country
+                                        </li>
+                                    </ul>
+                                    <div class="buttons">
+                                        @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                        <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
+                                    </div>
+                                </div>
+                                }
+                            </div>
+
+                            <div class="address-list">
+                                <div class="page-title">
+                                    <h4>Dropoff Address</h4>
+                                </div>
+
+
+                                @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "drop"))
+                                {
+
+                                    <div class="section address-item">
+                                        <div class="title"> 
+                                            <strong>@address.Contact @address.Phone</strong>
+                                        </div>
+                                        <ul class="info">
+
+                                            <li class="address1">
+                                                Street
+                                                @address.Street
+                                            </li>
+                                            <li class="city-state-zip">
+                                                @address.City, @address.State, @address.ZipCode
+                                            </li>
+                                            <li class="country">
+                                                @address.Country
+                                            </li>
+                                        </ul>
+                                        <div class="buttons">
+                                            @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                            <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
                     <script type="text/javascript">
                         function deletecustomeraddress(addressId) {
                             if (confirm('Are you sure?')) {

@@ -185,7 +185,7 @@ namespace DriveDrop.Web.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> NewDriver(DriverModel c, List<IFormFile> personalfiles, List<IFormFile> licensefiles, List<IFormFile> Vehiclefiles, List<IFormFile> insurancefiles)
+        public async Task<IActionResult> NewDriver(DriverModel c) //, List<IFormFile> personalfiles, List<IFormFile> licensefiles, List<IFormFile> Vehiclefiles, List<IFormFile> insurancefiles
         {
             try
             { 
@@ -221,10 +221,10 @@ namespace DriveDrop.Web.Controllers
                         return View(c);
                     }
 
-                   c.PersonalPhotoUri =await SaveFile(personalfiles, "driver");
-                    c.DriverLincensePictureUri = await SaveFile(licensefiles, "driver");
-                   c.VehiclePhotoUri = await SaveFile(Vehiclefiles, "driver");
-                   c.InsurancePhotoUri = await SaveFile(insurancefiles, "driver");
+                   c.PersonalPhotoUri =await SaveFile(c.Personalfiles, "driver");
+                    c.DriverLincensePictureUri = await SaveFile(c.Licensefiles, "driver");
+                   c.VehiclePhotoUri = await SaveFile(c.Vehiclefiles, "driver");
+                   c.InsurancePhotoUri = await SaveFile(c.Insurancefiles, "driver");
                     
                     var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
@@ -314,6 +314,114 @@ namespace DriveDrop.Web.Controllers
             //return View(model);
         }
 
+
+        public async Task<IActionResult> Vehicle(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
+
+            var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
+
+            var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
+
+            if (!idIsUserresponse)
+            {
+                return NotFound();
+            }
+
+
+            var getById = API.Driver.GetbyId(_remoteServiceDriversUrl, id ?? 0);
+
+            var dataString = await _apiClient.GetStringAsync(getById, token);
+
+            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+
+            //response.DriverLincensePictureUri = string.Format("{0}{1}", _settings.Value.CallBackUrl, response.DriverLincensePictureUri);
+            ViewBag.DriverId = id;
+
+            ViewBag.Uri = _settings.Value.CallBackUrl;
+            var model = new VehicleInfoModel
+            {
+                Id = response.Id,
+                VehicleMake = response.VehicleMake,
+                VehicleModel=response.VehicleModel,
+                VehicleColor=response.VehicleColor,
+                VehicleYear = response.VehicleYear,
+
+                DriverLincensePictureUri = _settings.Value.CallBackUrl + "/" + response.DriverLincensePictureUri,          
+                vehiclePhotoUri = _settings.Value.CallBackUrl + "/" + response.VehiclePhotoUri,
+                insurancePhotoUri = _settings.Value.CallBackUrl + "/" + response.InsurancePhotoUri,
+                
+                TransportTypeId = response.TransportTypeId,
+                TransportType = response.TransportType,
+
+            };
+
+            var tmp = new DriverModel();
+            tmp = await PrepareCustomerModel(tmp);
+
+            model.TransportTypeList = tmp.TransportTypeList;
+
+            return View(model);
+
+
+            //var model = new Customer();
+            //model.FirstName = getById;
+            //model.Id = 9;
+            //return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> UpdateVehicleInfo(VehicleInfoModel model )
+        {
+            var result = "Info updated";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    //var fileName = await SaveFile(photoUrl, "driver");
+
+                    //if (!string.IsNullOrWhiteSpace(fileName))
+                    //    model.PhotoUrl = fileName;
+
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
+
+                    var updateInfo = API.Driver.UpdateInfo(_remoteServiceBaseUrl);
+
+                    var response = await _apiClient.PostAsync(updateInfo, model, token);
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    {
+                        //throw new Exception("Error creating Shipping, try later.");
+
+                        ModelState.AddModelError("", "Error creating Shipping, try later.");
+
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    var error = string.Format("Unable to save changes. " +
+                        "Try again, and if the problem persists " +
+                        "see your system administrator. {0}", ex.Message);
+
+                    ModelState.AddModelError("", error);
+                    result = error;
+                }
+            }
+
+            return result;
+        }
         public async Task<IActionResult> Result(int? id)
         {
             if (id == null)
@@ -343,11 +451,10 @@ namespace DriveDrop.Web.Controllers
 
             var response = JsonConvert.DeserializeObject<Customer>((dataString));
 
-            response.DriverLincensePictureUri = string.Format("{0}{1}", _settings.Value.CallBackUrl, response.DriverLincensePictureUri);
+            //response.DriverLincensePictureUri = string.Format("{0}{1}", _settings.Value.CallBackUrl, response.DriverLincensePictureUri);
             ViewBag.DriverId = id;
 
             ViewBag.Uri = _settings.Value.CallBackUrl;
-
             var model = new CustomerInfoModel
             {
                 CustomerStatus = response.CustomerStatus.Name,
@@ -359,14 +466,20 @@ namespace DriveDrop.Web.Controllers
                 PhotoUrl = response.PersonalPhotoUri,
                 PrimaryPhone = response.PrimaryPhone,
                 StatusId = response.CustomerStatusId,
+
+                DriverLincensePictureUri = _settings.Value.CallBackUrl + "/" + response.DriverLincensePictureUri,
+                PersonalPhotoUri = _settings.Value.CallBackUrl + "/" + response.PersonalPhotoUri,
+                VehiclePhotoUri = _settings.Value.CallBackUrl + "/" + response.VehiclePhotoUri,
+                InsurancePhotoUri = _settings.Value.CallBackUrl + "/" + response.InsurancePhotoUri,
+
+
             };
             if (string.IsNullOrWhiteSpace(model.PhotoUrl))
                 model.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
             else
                 model.PhotoUrl = model.PhotoUrl;
 
-            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/" + model.PhotoUrl; 
-
+           
 
             return View(model);
 
@@ -376,8 +489,7 @@ namespace DriveDrop.Web.Controllers
             //model.Id = 9;
             //return View(model);
         }
-
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<string> UpdateInfo(CustomerInfoModel model, List<IFormFile> photoUrl)
@@ -452,7 +564,7 @@ namespace DriveDrop.Web.Controllers
 
             return result;
         }
-        public async Task<IActionResult> Address(int id)
+        public async Task<IActionResult> Addresses(int id)
         {
             ViewBag.Id = id;
             //call shipping api service

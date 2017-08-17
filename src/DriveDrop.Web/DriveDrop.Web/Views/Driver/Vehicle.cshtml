@@ -1,4 +1,4 @@
-﻿@model  DriveDrop.Web.ViewModels.CustomerInfoModel
+﻿@model  DriveDrop.Web.ViewModels.VehicleInfoModel
 
     @{
         ViewData["Title"] = "Details";
@@ -13,25 +13,22 @@
 <div class="center-2">
     <div class="page account-page customer-info-page">
         <div class="page-title">
-            <h1>My Personal info</h1>
+            <h1>My Vehicle info</h1>
         </div>
 
         <div class="page-body">
-            <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data"
+            <form data-ajax-method="POST" asp-action="UpdateVehicleInfo" enctype="multipart/form-data"
                   data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
 
                 @Html.AntiForgeryToken()
 
 
-                <input asp-for="Id" hidden />
-                <input asp-for="StatusId" hidden />
-                <input asp-for="CustomerStatus" hidden />
-                <input asp-for="PhotoUrl" hidden />
+                <input asp-for="Id" hidden /> 
 
                 <div class="fieldset">
 
                     <div class="title">
-                        <strong>Your Personal Details</strong>
+                        <strong>Vehicle Details</strong>
                     </div>
 
 
@@ -43,68 +40,93 @@
 
 
                     <div class="form-fields">
-                        <div class="inputs">
-                            <label for="CustomerStatus">Status</label>
-                            <div class="gender">
-                                <span>
 
-                                    <label class="male">@Model.CustomerStatus</label>
-                                </span>
-                            </div>
-                        </div>
                         <div class="inputs">
-                            <label for="FirstName">First name</label>
+                            <label for="TransportTypeId">Vehicle Type</label>
 
-                            <input asp-for="FirstName" placeholder="First name" />
+
+                            @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList )
+                             
                             <span class="required">*</span>
 
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                            <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+                             
+                        </div>
+
+                        <div class="inputs">
+                            <label for="VehicleMake">Vehicle Make</label>
+
+                            <input asp-for="VehicleMake" placeholder="Vehicle Make" />
+                            <span class="required">*</span>
+
+                            <span asp-validation-for="VehicleMake" class="text-danger"></span>
 
 
                         </div>
                         <div class="inputs">
-                            <label for="LastName">Last name</label>
-                            <input asp-for="LastName" placeholder="Last name" />
+                            <label for="VehicleModel">Vehicle Model</label>
+                            <input asp-for="VehicleModel" placeholder="VehicleModel" />
                             <span class="required">*</span>
-                            <span asp-validation-for="LastName" class="text-danger"></span>
+                            <span asp-validation-for="VehicleModel" class="text-danger"></span>
                         </div>
 
                         <div class="inputs">
-                            <label for="Email">Email</label>
-                            <input asp-for="Email" placeholder="Email" />
+                            <label for="VehicleColor">Vehicle Color</label>
+                            <input asp-for="VehicleColor" placeholder="VehicleColor" />
                             <span class="required">*</span>
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <span asp-validation-for="VehicleColor" class="text-danger"></span>
                         </div>
                         <div class="inputs">
 
-                            <label for="PrimaryPhone">Primary Phone</label>
-                            <input asp-for="PrimaryPhone" placeholder="Phone" />
+                            <label for="VehicleYear">Vehicle Year</label>
+                            <input asp-for="VehicleYear" placeholder="VehicleYear" />
                             <span class="required">*</span>
-                            <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                            <span asp-validation-for="VehicleYear" class="text-danger"></span>
                         </div>
-                        <div class="inputs">
-
-                            <label for="Phone">Phone</label>
-                            <input asp-for="Phone" placeholder="Phone" />
-                            <span class="required">*</span>
-                            <span asp-validation-for="Phone" class="text-danger"></span>
-                        </div>
+                       
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="inputs">
                                     <div class="title">
-                                        <strong>Profile photo </strong>
+                                        <strong>Driver license  photo</strong>
                                     </div>
                                     <div class="avatar-page">
 
-                                        <input type='file' id="my-file-selector-Personal" name="PersonalPhotoUri" />
-                                        <img id="Personal-image" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
-
+                                        <input type='file' id="my-file-selector-license" name="DriverLincensePictureUri" />
+                                        <img id="license-image" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive" width="150" height="150" />
 
                                     </div>
 
                                 </div>
-                            
+                            </div>
 
-                        
+                            <div class="col-md-4">
+                                <div class="inputs">
+                                    <div class="title">
+                                        <strong>Vehicle photo</strong>
+                                    </div>
+                                    <div class="avatar-page">
+                                        <input type='file' id="my-file-selector-insurance" name="VehiclePhotoUri" />
+                                        <img id="insurance-image" src="@Model.vehiclePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inputs">
+                                    <div class="title">
+                                        <strong>Proof of insurance</strong>
+                                    </div>
+                                    <div class="avatar-page">
+
+                                        <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri" />
+                                        <img id="insurance-image" src="@Model.insurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="buttons">
                             <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
 

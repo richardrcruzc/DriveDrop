@@ -34,7 +34,11 @@
                  
             </li>
             <li class="customer-info"> 
-                @Html.ActionLink("My Address", "Address", "ResetPassword", new { id = Model }, null)
+                @Html.ActionLink("My Addresses", "Addresses", "driver", new { id = Model }, null)
+            </li>
+
+            <li class="customer-info">
+                @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model }, null)
             </li>
             
             <li class="change-password">

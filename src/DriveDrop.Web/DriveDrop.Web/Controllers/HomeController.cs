@@ -48,6 +48,8 @@ namespace DriveDrop.Web.Controllers
 
         public async Task<IActionResult> myAccount()
         {
+            
+
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
@@ -62,14 +64,21 @@ namespace DriveDrop.Web.Controllers
                 var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
                 var userString = await _apiClient.GetStringAsync(getUserUri, token);
                 var customer = JsonConvert.DeserializeObject<Customer>(userString);
-                if(customer!=null)
-                    if(customer.CustomerTypeId==2)
-                    return RedirectToAction("result", "sender", new { id = customer.Id});
-                else
+                if (customer == null)
+                {
+                    ViewBag.UserValid = "false";
+                    return RedirectToAction("Index");
+                }
+                if (customer.CustomerTypeId == 1)
+                        return RedirectToAction("index", "admin", new { id = customer.Id });
+                    else if (customer.CustomerTypeId==2)
+                        return RedirectToAction("result", "sender", new { id = customer.Id});
+                    else if (customer.CustomerTypeId == 3)
                         return RedirectToAction("result", "driver", new { id = customer.Id });
 
             }
 
+            ViewBag.UserValid = "false";
             return RedirectToAction("Index");
         }
 
