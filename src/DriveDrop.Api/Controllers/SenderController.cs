@@ -169,7 +169,7 @@ namespace DriveDrop.Api.Controllers
                 if (ModelState.IsValid)
                 {
                  //   var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode,"","", 0, 0);
 
                     var tmpUser = Guid.NewGuid().ToString();
 

@@ -37,8 +37,8 @@ namespace DriveDrop.Api.Infrastructure
         public DbSet<Rate> Rates { get; set; }
         public DbSet<RateDetail> RateDetails { get; set; }
         public DbSet<RatePriority> RatePriorities { get; set; }
-        public DbSet<RateTranportType> RateTranportTypes { get; set; }
-        public DbSet<RatePackageSize> RatePackageSizes { get; set; }
+        //public DbSet<RateTranportType> RateTranportTypes { get; set; }
+        //public DbSet<RatePackageSize> RatePackageSizes { get; set; }
 
         
         //public DbSet<ShipmentAddress> ShipmentAddresses { get; set; }

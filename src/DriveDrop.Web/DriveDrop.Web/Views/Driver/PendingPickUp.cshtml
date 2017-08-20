@@ -18,8 +18,11 @@
             <h1>Pending pickup</h1>
         </div>
         <div class="page-body">
+@if(Model.Count>0)
+            {
             <h3>List of shipping asigned to you that need to be PickUp</h3>
             <div class="row">
+            
                 <table class="table">
 
                     <tr>
@@ -100,9 +103,17 @@
                 </table>
 
 
-
+              
             </div>
+              }
+            else{
 
+<div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Error:</span>
+    THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+</div>
+            }
         </div>
 
     </div>

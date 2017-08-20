@@ -179,10 +179,22 @@ namespace DriveDrop.Api.Controllers
   
 
             try
-            {
-                var customer = await _context.Customers.FindAsync(id);
+            { 
+                var model = await _context.Customers
+                 .Include(s => s.TransportType)
+                 .Include(t => t.CustomerStatus)
+                 .Include(s => s.CustomerType)
+                 .Include(a => a.Addresses)
+                 .Include("ShipmentDrivers.ShippingStatus")
+                 .Include("ShipmentDrivers.PickupAddress")
+                 .Include("ShipmentDrivers.DeliveryAddress")
+                 .Include("ShipmentSenders.ShippingStatus")
+                     .Include("ShipmentSenders.PickupAddress")
+                 .Include("ShipmentSenders.DeliveryAddress")
+                 .Where(x => x.Id == id)
+             .FirstOrDefaultAsync(); 
 
-                return Ok(customer);
+                return Ok(model);
 
                 // var root = await _context.Customers
                 //  .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PriorityType)

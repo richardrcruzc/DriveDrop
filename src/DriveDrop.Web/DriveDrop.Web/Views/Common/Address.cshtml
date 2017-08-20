@@ -14,21 +14,35 @@
 
     </div>
     <div class="center-2">
-
+        <span class="AntiForge"> @Html.AntiForgeryToken() </span>
 
         <div class="page account-page address-list-page">
             <div class="page-title">
                 <h1>My addresses</h1>
             </div>
+
             <div class="page-body">
                 @using (Html.BeginForm())
                 {
                 @Html.AntiForgeryToken()
                     <div class="address-list">
-                        <div class="page-title">
-                            <h4>Default Address</h4>
-                        </div>
-                        @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default"))
+                        <ol class="opc">
+                            <li class="tab-section allow active">
+                                <div class="step-title">
+                                    <h4 class="title">Default Address</h4>
+                                </div>
+                            </li>
+                        </ol>
+                        
+@if (addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default").FirstOrDefault() == null)
+{
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        THERE ARE NO DEFAULT ADDRESS
+    </div>
+}
+                        @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default"  ))
                         {
 
                             <div class="section address-item">
@@ -50,16 +64,20 @@
                                 </ul>
                                 <div class="buttons">
                                     @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
-                                    <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
+                                    @*<input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />*@
                                 </div>
                             </div>
                         }
                     </div>
                             <div class="address-list">
-                                <div class="page-title">
-                                    <h4>Pickup Address</h4>
-                                </div>
-
+                    
+                                <ol class="opc">
+                                    <li class="tab-section allow active">
+                                        <div class="step-title">
+                                            <h4 class="title">Pickup Address</h4>
+                                        </div>
+                                    </li>
+                                </ol>
 
                                 @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "pickup" ))
                                 {
@@ -82,6 +100,8 @@
                                         </li>
                                     </ul>
                                     <div class="buttons">
+                                        
+                                        <input type="button" class="button-2 edit-address-button" onclick="defaultaddress(@(address.Id))" value="Set as default" />
                                         @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
                                         <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
                                     </div>
@@ -90,16 +110,20 @@
                             </div>
 
                             <div class="address-list">
-                                <div class="page-title">
-                                    <h4>Dropoff Address</h4>
-                                </div>
+                                <ol class="opc">
+                                    <li class="tab-section allow active">
+                                        <div class="step-title">
+                                            <h4 class="title">Dropoff Address</h4>
+                                        </div>
+                                    </li>
+                                </ol>
 
 
                                 @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "drop"))
                                 {
 
                                     <div class="section address-item">
-                                        <div class="title"> 
+                                        <div class="title">
                                             <strong>@address.Contact @address.Phone</strong>
                                         </div>
                                         <ul class="info">
@@ -116,6 +140,7 @@
                                             </li>
                                         </ul>
                                         <div class="buttons">
+
                                             @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
                                             <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
                                         </div>
@@ -124,22 +149,43 @@
                             </div>
 
                     <script type="text/javascript">
-                        function deletecustomeraddress(addressId) {
+                        function defaultaddress(addressId) {
                             if (confirm('Are you sure?')) {
                                 var postData = {
-                                    addressId: addressId
+                                    id: addressId
                                 };
-                                alert(addressId);
-                                addAntiForgeryToken(postData);
-                                alert(addressId);
                                 $.ajax({
                                     cache: false,
                                     type: 'POST',
-                                    url: '/Sender/AddressDelete',
+                                    url: '/Common/DefaultAddress',
                                     data: postData,
                                     dataType: 'json',
                                     success: function (data) {
-                                        location.href = data.redirect;
+                                        location.href = '/common/Address/@ViewBag.Id';
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        alert('Failed to update');
+                                    }
+                                });
+                            }
+                        }
+
+                        function deletecustomeraddress(addressId) {
+                            if (confirm('Are you sure?')) {
+                                var postData = {
+                                    id: addressId
+                                };
+
+                                //addAntiForgeryToken(postData);
+
+                                $.ajax({
+                                    cache: false,
+                                    type: 'POST',
+                                    url: '/common/AddressDelete',
+                                    data: postData,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                         location.href = '/common/Address/@ViewBag.Id';
                                     },
                                     error: function (xhr, ajaxOptions, thrownError) {
                                         alert('Failed to delete');
@@ -150,7 +196,7 @@
                     </script>
                }
                 <div class="add-button">
-                    <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/addressadd/@(ViewBag.Id)'" value="Add new" />
+                    <input type="button" class="button-1 add-address-button" onclick="location.href='/common/addressadd/@(ViewBag.Id)'" value="Add new" />
                 </div>
             </div>
         </div>

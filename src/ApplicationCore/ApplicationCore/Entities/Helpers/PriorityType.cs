@@ -10,11 +10,11 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class PriorityType
          : Enumeration
     {
-        public static PriorityType Asap = new PriorityType(1, nameof(Asap).ToLowerInvariant());
-        public static PriorityType FourHours = new PriorityType(2, nameof(FourHours).ToLowerInvariant());
-        public static PriorityType SixHours = new PriorityType(3, nameof(SixHours).ToLowerInvariant());
-        public static PriorityType EODSameDay = new PriorityType(4, nameof(EODSameDay).ToLowerInvariant());
-        public static PriorityType EODNextDay = new PriorityType(5, nameof(EODNextDay).ToLowerInvariant());
+        public static PriorityType Asap = new PriorityType(1, "ASAP");
+        public static PriorityType FourHours = new PriorityType(2, "Four Hours");
+        public static PriorityType SixHours = new PriorityType(3,"Six Hours");
+        public static PriorityType EODSameDay = new PriorityType(4,"EOD Same Day");
+        public static PriorityType EODNextDay = new PriorityType(5, "EOD Next Day");
 
         protected PriorityType()
         {

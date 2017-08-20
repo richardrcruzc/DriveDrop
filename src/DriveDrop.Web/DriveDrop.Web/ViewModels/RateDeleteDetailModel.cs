@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace DriveDrop.Web.ViewModels
 {
-    public class RateDeleteDetailModel
-    {
-        public   RateDeleteDetailModel()
-        {
-            RateDetails =new List<RateDetailModel>();
-            RatePackageSizes = new List<RatePackageSizeModel>();
-            RatePriorities = new List<RatePriorityModel>();
-        }
-            public int RateId { get; set; }
-        public List<RateDetailModel> RateDetails { get; set; }
-        public List<RatePackageSizeModel> RatePackageSizes { get; set; }
-        public List<RatePriorityModel> RatePriorities { get; set; }
+    //public class RateDeleteDetailModel
+    //{
+    //    public   RateDeleteDetailModel()
+    //    {
+    //        RateDetails =new List<RateDetailModel>();
+    //        RatePackageSizes = new List<RatePackageSizeModel>();
+    //        RatePriorities = new List<RatePriorityModel>();
+    //    }
+    //        public int RateId { get; set; }
+    //    public List<RateDetailModel> RateDetails { get; set; }
+    //    public List<RatePackageSizeModel> RatePackageSizes { get; set; }
+    //    public List<RatePriorityModel> RatePriorities { get; set; }
 
-    }
+    //}
 }

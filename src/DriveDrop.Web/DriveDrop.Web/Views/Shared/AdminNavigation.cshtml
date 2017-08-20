@@ -7,23 +7,45 @@
         <ul class="list">
 
             <li class="customer-info">
-                @Html.ActionLink("My Personal info", "result", "sender", new { id = Model }, null)
+                @Html.ActionLink("My Personal info", "Details", "admin", new { id = Model }, null)
                  
             </li>
-            <li class="customer-info"> 
-                @Html.ActionLink("My Address", "Address", "sender", new { id = Model }, null)
-            </li>
-            <li class="customer-info"> 
-                @Html.ActionLink("My Shippings", "Shippings", "sender", new { id = Model }, null)
+           <li class="customer-info"> 
+                @Html.ActionLink("Size Rates", "index", "rates", new { id = Model }, null)
             </li>
             <li class="customer-info">
-                @Html.ActionLink("Add new Shipping", "NewShipping", "sender", new { id = Model }, null) 
+                @Html.ActionLink("Distance and Weight Rates", "DistanceAndWeight", "rates", new { id = Model }, null)
+            </li>
+
+
+            <li class="customer-info">
+                @Html.ActionLink("Create new sender", "newsender", "sender" )
+            </li>
+
+            <li class="customer-info">
+                @Html.ActionLink("Create new driver", "NewDriver", "driver" )
             </li>
             <li class="customer-info">
-                @Html.ActionLink("Rates", "index", "rates", new { id = Model }, null)
+                @Html.ActionLink("List packages", "ReadyToPickUp", "admin", new { id = Model }, null)
             </li>
+
+            <li class="customer-info">
+                @Html.ActionLink("List users", "Index", "admin")
+
+            </li>
+
+            @*<li class="customer-info">
+        @Html.ActionLink("My Shippings", "Shippings", "sender", new { id = Model }, null)
+    </li>
+    <li class="customer-info">
+        @Html.ActionLink("Add new Shipping", "NewShipping", "sender", new { id = Model }, null)
+    </li>
+    <li class="customer-info">
+        @Html.ActionLink("Rates", "index", "rates", new { id = Model }, null)
+    </li>*@
             <li class="change-password">
-                <a href="/customer/changepassword" class="inactive">Change password</a>
+                @Html.ActionLink("Change my password", "ChangePassword", "manage", new { id = Model }, null)
+
             </li>
 
 

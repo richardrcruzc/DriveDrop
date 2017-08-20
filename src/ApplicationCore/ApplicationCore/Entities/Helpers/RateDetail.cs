@@ -11,26 +11,22 @@ namespace ApplicationCore.Entities.Helpers
         public string MileOrLbs { get; private set; }
         public decimal From { get; private set; }
         public decimal To { get; private set; }
-        public decimal Charge { get; private set; }
-
-        public int RateId { get; private set; }
-        public Rate Rate { get; private set; }
+        public decimal Charge { get; private set; } 
 
         public RateDetail() { }
 
-        public RateDetail(int rateId, string weightOrDistance, string mileOrLbs, decimal from, decimal to, decimal charge)
+        public RateDetail( string weightOrDistance, string mileOrLbs, decimal from, decimal to, decimal charge)
         {
-            RateId = rateId;
+            
             WeightOrDistance = weightOrDistance;
             MileOrLbs = mileOrLbs;
             From = from;
             To = to;
             Charge = charge;
         }
-        public RateDetail Update(int id, int rateId, string weightOrDistance, string mileOrLbs, decimal from, decimal to, decimal charge)
+        public RateDetail Update(  string weightOrDistance, string mileOrLbs, decimal from, decimal to, decimal charge)
         {
-            Id = id;
-            RateId = rateId;
+           
             WeightOrDistance = weightOrDistance;
             MileOrLbs = mileOrLbs;
             From = from;

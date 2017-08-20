@@ -23,6 +23,7 @@ namespace DriveDrop.Web.ViewModels
 
         public int Id { get; set; }
         public bool IsDriver { get; set; }
+        public bool IsAdmin { get; set; }
 
     }
 }

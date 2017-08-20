@@ -9,7 +9,7 @@ namespace DriveDrop.Web.ViewModels
 {
     public class Address 
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
         [JsonProperty("street")]
         public String Street { get;  set; }
 

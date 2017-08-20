@@ -6,19 +6,22 @@
 
  
 
-<div class="side-2">
+ <div class="side-2">
 
 
     @await Html.PartialAsync("AdminNavigation", 1)
 
 
-</div>
+</div> 
 <div class="center-2">
     <div class="page account-page customer-info-page">
         <div class="page-title">
             <h1>Edit Rate</h1>
         </div>
         <div class="page-body">
+            <div class="page-title">
+                <h1>Size:<strong> @Model.PackageSize.Name</strong></h1>
+            </div>
             <form asp-action="Edit">
 
                  
@@ -30,67 +33,40 @@
 
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="Id" />
-                         
-                            <div class="inputs">
-                                <label asp-for="Active" class="col-md-2 control-label">Active</label>
-                                 
-                                    <input asp-for="Active" /> 
-                                <span asp-validation-for="Active" class="text-danger"></span>
-                            </div>
+                        <input type="hidden" asp-for="PackageSize" />
+                          
 
                             <div class="inputs">
-                                <label asp-for="StartDate"></label>
+                 
 
-                                <input asp-for="StartDate" placeholder="Start Date" />
-                                <span class="required">*</span>
-
-                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                              
 
 
-                            </div>
 
-                            <div class="inputs">
-                                <label asp-for="EndDate" class="col-md-2 control-label"></label>
+                                    <label asp-for="OverHead" class="control-label">Over head per shipping</label>
+                                    <input asp-for="OverHead" class="form-control" placeholder="OverHead" />
+                                    <span asp-validation-for="OverHead" class="text-danger"></span>
                                
-                                    <input asp-for="EndDate" class="form-control" />
-                                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                                 
-                            </div>
-                            <div class="inputs">
-                                <label asp-for="FixChargePerShipping" class="col-md-2 control-label"></label>
-                                 
-                                    <input asp-for="FixChargePerShipping" class="form-control" />
-                                    <span asp-validation-for="FixChargePerShipping" class="text-danger"></span>
-                                 
+
                             </div>
 
-                            <div class="inputs">
-                                <label asp-for="FixChargePercentage" class="col-md-2 control-label"></label>
+                        <div id="priority"  >
+                            <h3> Charge per priority</h3>
+                            <br />
 
-                                
-                                    <input asp-for="FixChargePercentage" />
-                                
-                                <span asp-validation-for="FixChargePercentage" class="text-danger"></span>
-                            </div>
-
-
-
-                            <div class="inputs">
-                                <label asp-for="ChargePerItem" class="col-md-2 control-label"></label>
-                                 
-                                    <input asp-for="ChargePerItem" class="form-control" />
-                                    <span asp-validation-for="ChargePerItem" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-3"><label class="control-label">Drescription</label></div>
+                                <div class="col-md-2"><label class="control-label">Charge</label></div>
                                  
                             </div>
-
-                            <div class="inputs">
-                                <label asp-for="Tax" class="col-md-2 control-label"></label>
-                                
-                                    <input asp-for="Tax" class="form-control" />
-                                    <span asp-validation-for="Tax" class="text-danger"></span>
-                                 
+                           
+                            <div class="row">
+                            
+                               @Html.EditorFor(m => m.RatePriorities) 
                             </div>
                             
+                        </div>
+                             
                                 <div class="buttons">
                                     <input type="submit" value="Save" class="button-1 save-customer-info-button" />
 
@@ -101,107 +77,14 @@
                     
                 </div>
 
-
-                <div class="fieldset">
-                    <div class="form-fields">
-
-                             <ul class="nav nav-tabs" id="myTab">
-                                <li class="active"><a data-toggle="tab" href="#distance">Distance</a></li>
-                                <li><a data-toggle="tab" href="#Weight">Weight</a></li>
-                                <li><a data-toggle="tab" href="#priority">Priority</a></li>
-                                <li><a data-toggle="tab" href="#size">Size</a></li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div id="distance" class="tab-pane fade in active">
-                                    <h3>Charge per distance</h3>
-                                    <p>Edit rate  charge per miles</p>
-                                     
-                                        <div class="row">
-                                            <div class="col-md-2">From</div>
-                                            <div class="col-md-2">To</div>
-                                            <div class="col-md-2">Charge</div>
-                                            <div class="col-md-2"></div>
-                                        </div>
-                                        <div class="row">
-                                            @Html.EditorFor(m => m.MileRateDetails)
-                                        </div>
-                                    </div> 
-                                <div id="Weight" class="tab-pane fade">
-                                    <h3>Charge per Weight</h3>
-                                     
-                                         <div class="row">
-                                            <div class="col-md-2">From</div>
-                                            <div class="col-md-2">To</div>
-                                            <div class="col-md-2">Charge</div>
-                                            <div class="col-md-2"></div>
-                                        </div>
-                                        <div class="row">
-                                            @Html.EditorFor(m => m.WeightRateDetails)
-                                        </div>
-                                </div>
-                                <div id="priority" class="tab-pane fade">
-                                    <h3> Charge per priority</h3>
-                                   
-                                     
-                                        <div class="row">
-                                            <div class="col-md-3">Size</div>
-                                            <div class="col-md-2">Charge</div>
-                                            <div class="col-md-2">isPercentage?</div>
-                                            <div class="col-md-2"></div>
-                                        </div>
-                                        <div class="row">
-                                            @Html.EditorFor(m => m.RatePriorities)
-                                        </div>
-                                     
-                                </div>
-                                <div id="size" class="tab-pane fade">
-                                    <h3> Charge per size</h3>
-                                     
-                                     
-                                        <div class="row">
-                                            <div class="col-md-3">Size</div>
-                                            <div class="col-md-2">Charge</div>
-                                            <div class="col-md-2">isPercentage?</div>
-                                            <div class="col-md-2"></div>
-                                        </div>
-                                        <div class="row">
-                                            @Html.EditorFor(m => m.PackageSizes)
-                                        
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                    <div class="buttons">
-                        <input type="submit" value="Save" class="button-1 save-customer-info-button" />
-
-
-                    </div>
-                </div>
+                 
             </form>
             </div>
     </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $('#myTab a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-
-        // store the currently selected tab in the hash value
-        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
-            var id = $(e.target).attr("href").substr(1);
-            window.location.hash = id;
-        });
-
-        // on load of the page: switch to the currently selected tab
-        var hash = window.location.hash;
-        $('#myTab a[href="' + hash + '"]').tab('show');
-    </script>
+    
 }
+
 

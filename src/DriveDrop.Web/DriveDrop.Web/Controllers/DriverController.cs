@@ -426,7 +426,7 @@ namespace DriveDrop.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound("Invalid entry");
             }
 
 
@@ -441,7 +441,7 @@ namespace DriveDrop.Web.Controllers
 
             if (!idIsUserresponse)
             {
-                return NotFound();
+                return NotFound("Invalid entry");
             }
 
 
@@ -534,56 +534,7 @@ namespace DriveDrop.Web.Controllers
             return result;
         }
 
-        public IActionResult AddressAdd(int id)
-        {
-            ViewBag.Id = id;
-            var model = new AddressModel { CustomerId = id };
-
-            return View(model);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<string> AddressAdd(AddressModel model)
-        {
-            var result = "Address added";
-            ViewBag.Id = model.CustomerId;
-            //call shipping api service
-            var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
-
-            var updateInfo = API.Driver.AddAddress(_remoteServiceBaseUrl);
-
-            var response = await _apiClient.PostAsync(updateInfo, model, token);
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                //throw new Exception("Error creating Shipping, try later.");
-
-                ModelState.AddModelError("", "Error creating Shipping, try later.");
-                result = "Error creating Shipping, try later.";
-            }
-
-            return result;
-        }
-        public async Task<IActionResult> Addresses(int id)
-        {
-            ViewBag.Id = id;
-            //call shipping api service
-            var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
-
-            var getById = API.Driver.GetbyId(_remoteServiceBaseUrl, id);
-
-
-            var dataString = await _apiClient.GetStringAsync(getById, token);
-
-
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
-
-
-
-            return View(response.Addresses);
-
-        }
+        
 
         public async Task<IActionResult> AssignDriver(int shipingId)
         {

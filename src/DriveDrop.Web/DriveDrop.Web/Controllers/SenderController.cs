@@ -66,57 +66,7 @@ namespace DriveDrop.Web.Controllers
         }
 
        
-        public IActionResult AddressAdd(int id)
-        {
-            ViewBag.Id = id;
-            var model = new AddressModel { CustomerId = id };
-
-            return View(model);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]       
-        public async Task<string> AddressAdd(AddressModel model)
-        {
-            var result = "Address added";
-            ViewBag.Id = model.CustomerId;
-            //call shipping api service
-            var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
-
-            var updateInfo = API.Sender.AddAddress(_remoteServiceBaseUrl);
-
-            var response = await _apiClient.PostAsync(updateInfo, model, token);
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                //throw new Exception("Error creating Shipping, try later.");
-
-                ModelState.AddModelError("", "Error creating Shipping, try later.");
-                result = "Error creating Shipping, try later.";
-            }
-
-            return result;
-        }
-            public async Task<IActionResult> Address(int id)
-        {
-            ViewBag.Id = id;
-            //call shipping api service
-            var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
-
-            var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id  );
-
-
-            var dataString = await _apiClient.GetStringAsync(getById, token);
-
-
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
-
-             
-
-            return View(response.Addresses);
-
-                    }
-
+    
         public async Task<IActionResult> Shippings(int id)
         {
             //call shipping api service
@@ -134,6 +84,8 @@ namespace DriveDrop.Web.Controllers
             return View(shippings);
             
         }
+
+     
 
         public async Task<IActionResult> Result(int? id)
         {
@@ -153,21 +105,18 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
+       
+                var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
 
-            var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
+                var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
 
-            var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
+                var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
 
-            var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
-
-            if (!idIsUserresponse)
-            {
-                return NotFound();
+                if (!idIsUserresponse)
+                {
+                return NotFound("Invalid entry");
             }
-
-
-
-
+           
 
             var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id ?? 0);
 
@@ -198,30 +147,7 @@ namespace DriveDrop.Web.Controllers
             return View(model);
         }
  
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<string> DeleteAddress(AddressModel model)
-        {
-            var result = "Address deleted";
-            ViewBag.Id = model.CustomerId;
-            //call shipping api service
-            var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
-
-            var updateInfo = API.Sender.DeleteAddress(_remoteServiceBaseUrl);
-
-            var response = await _apiClient.PostAsync(updateInfo, model, token);
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-            {
-                //throw new Exception("Error creating Shipping, try later.");
-
-                ModelState.AddModelError("", "Error creating deleting, try later.");
-                result = "Error deleting address, try later.";
-            }
-
-            return result;
-        }
-
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]

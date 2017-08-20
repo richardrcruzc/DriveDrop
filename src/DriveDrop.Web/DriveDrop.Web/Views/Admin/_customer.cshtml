@@ -21,20 +21,9 @@
 
 <td>
     
-    @if (Model.CustomerType.Name == "administrator")
-    {
+   
         <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
-    }else if (Model.CustomerType.Name == "sender")
-    {
-        <a asp-controller="sender"   asp-action="result"  asp-route-id="@Model.Id" class="btn btn-info">Details</a>
-    }
-    else if (Model.CustomerType.Name == "driver")
-    {
-        <a asp-controller="driver" asp-action="result" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
-    }
-    @*<a asp-action="Edit" asp-route-id="@Model.Id" class="esh-catalog-button">Edit</a>*@ 
     
-    @*<a asp-action="Delete" asp-route-id="@Model.Id" class="esh-catalog-button">Deletes</a>*@
 </td>
 
 

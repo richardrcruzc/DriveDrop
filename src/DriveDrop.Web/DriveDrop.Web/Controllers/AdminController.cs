@@ -21,7 +21,7 @@ namespace DriveDrop.Web.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-
+        private readonly string _remoteServiceShippingsUrl;
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
@@ -39,7 +39,8 @@ namespace DriveDrop.Web.Controllers
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _appUserParser = appUserParser;
-             
+            _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
+
         }
 
         public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
@@ -53,10 +54,10 @@ namespace DriveDrop.Web.Controllers
             var isAdminString =await  _apiClient.GetStringAsync(isAdminUri, token);
             var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
 
-            //if (!isAdminResponse)
-            //    return RedirectToAction("myAccount", "home");
+             if (!isAdminResponse)
+                    return NotFound("Invalid entry");
 
-            var itemsPage = 3;
+                var itemsPage = 3;
             if (page < 0)
                 page = 0;
 
@@ -93,6 +94,13 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return NotFound("Invalid entry"); 
+
             var getById = API.Admin.GetbyId(_remoteServiceBaseUrl, id ?? 0);
 
 
@@ -102,22 +110,46 @@ namespace DriveDrop.Web.Controllers
             var response = JsonConvert.DeserializeObject<Customer>((dataString));
 
 
+
+            if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
+                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+            else
+                response.PersonalPhotoUri = "/"+response.PersonalPhotoUri;
+
+            if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
+                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+          
+            if (string.IsNullOrWhiteSpace(response.VehiclePhotoUri))
+                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
             
-          //       //call shipping api service
-               
-          //  var allnotassignedshipings = API.Shipping.GetNotAssignedShipping(_remoteServiceCommonUrl);
+          
+            if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
+                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
 
-          //dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
-
-          //  var shippings = JsonConvert.DeserializeObject<List<Shipment>>((dataString));
-
-
-          //  response.ShipmentSenders = shippings;
-
+            
             return View(response);
 
+
         }
-            public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> ReadyToPickUp(int id)
+        {
+            @ViewBag.CustomerId = id;
+            //call shipping api service
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var allnotassignedshipings = API.Shipping.GetNotAssignedShipping(_remoteServiceShippingsUrl);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            if (shippings == null)
+                return View(new PaginatedShippings());
+            shippings.ShippingStatusList = await PrepareShippingStatus();
+            return View(shippings);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -222,6 +254,26 @@ namespace DriveDrop.Web.Controllers
 
 
 
+        public async Task<List<SelectListItem>> PrepareShippingStatus()
+        {
+            var getUri = API.Common.GetAllShippingStatus(_remoteServiceCommonUrl);
+            var dataString = await _apiClient.GetStringAsync(getUri);
+            var shippingStatus = new List<SelectListItem>();
+            shippingStatus.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+
+            var gets = JArray.Parse(dataString);
+
+            foreach (var brand in gets.Children<JObject>())
+            {
+                shippingStatus.Add(new SelectListItem()
+                {
+                    Value = brand.Value<string>("id"),
+                    Text = brand.Value<string>("name")
+                });
+            }
+
+            return shippingStatus;
+        }
 
 
         async Task<string> GetUserTokenAsync()

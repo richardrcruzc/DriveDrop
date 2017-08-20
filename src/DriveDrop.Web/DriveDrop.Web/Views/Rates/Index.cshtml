@@ -15,83 +15,93 @@
 <div class="center-2">
     <div class="page account-page customer-info-page">
         <div class="page-title">
-            <h1>List Rates</h1>
+            <h1>Rates</h1>
         </div>
-        <div class="page-body">
-            <div class="page-title">
-                <h3><a asp-action="Create">Create New Rate</a></h3>
-            </div>
+        <div class="page-body checkout-data">
              
-            <div class="fieldset">
-                <div class="form-fields">
-                   
+            <div class="address-list">
+                @foreach (var item in Model)
+                {
 
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.StartDate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.EndDate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.FixChargePerShipping)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.FixChargePercentage)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ChargePerItem)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Tax)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Active)
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.StartDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.EndDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.FixChargePerShipping)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.FixChargePercentage)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ChargePerItem)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Tax)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Active)
-                                    </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="DeleteRate" asp-route-id="@item.Id">Delete</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                    <ol class="opc" id="checkout-steps">
+                        <li id="opc-billing" class="tab-section allow">
+                            <div class="step-title"><a asp-action="Edit" asp-route-id="@item.Id"><h2>@item.PackageSize.Name</h2></a> |</div>
+                        </li>                         
+                    </ol>                     
+                        }
+</div>
+
+               
             </div>
-        </div>
     </div>
 </div>
 
-
  
+
+ @*<div class="fieldset">
+            <div class="form-fields">
+
+
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.StartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EndDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FixChargePerShipping)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FixChargePercentage)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ChargePerItem)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Tax)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Active)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FixChargePerShipping)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FixChargePercentage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ChargePerItem)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tax)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Active)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="DeleteRate" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@

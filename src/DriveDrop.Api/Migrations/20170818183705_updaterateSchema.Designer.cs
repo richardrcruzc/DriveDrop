@@ -8,9 +8,10 @@ using DriveDrop.Api.Infrastructure;
 namespace DriveDrop.Api.Migrations
 {
     [DbContext(typeof(DriveDropContext))]
-    partial class DriveDropContextModelSnapshot : ModelSnapshot
+    [Migration("20170818183705_updaterateSchema")]
+    partial class updaterateSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

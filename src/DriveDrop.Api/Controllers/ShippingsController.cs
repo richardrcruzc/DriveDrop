@@ -392,13 +392,13 @@ namespace DriveDrop.Api.Controllers
                 return NotFound(error);
                 //ModelState.AddModelError("", error);
             }
-            var customer = await _context.Customers.FirstOrDefaultAsync();
+           // var customer = await _context.Customers.FirstOrDefaultAsync();
 
             //await PrepareCustomerModel(c);
 
             //    return ViewComponent("NewShipment", c);
 
-            return Ok(c);
+           // return Ok(c);
         }
         private List<Shipment> ChangeUriPlaceholder(List<Shipment> items)
         {

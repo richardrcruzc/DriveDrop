@@ -3,115 +3,119 @@
     ViewData["Title"] = "Admin";
 
 }
-<div class="header-menu">
-    <a class="btn btn-default" href="/sender/NewSender">Create New Sender &raquo;</a>
-    <a class="btn btn-default" href="/driver/NewDriver">Create New Driver &raquo;</a>
-    <a class="btn btn-default" href="/rates/index">Rates &raquo;</a>
+ 
+<div class="side-2">
+
+
+    @await Html.PartialAsync("AdminNavigation", 1)
+
+
 </div>
+<div class="center-2">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h2>Senders / Drivers List</h2>
+        </div>
+        <div class="page-body">
+            <div class="fieldset">
 
-<div class="page account-page customer-info-page">
-    <div class="page-title">
-        <h2>Senders / Drivers List</h2>
-    </div>
-    <div class="page-body">
-        <div class="fieldset">
-
-            <div class="order-list">
-
-
-
-                <div class="title">
-                    <div class="form-fields">
-                        <form asp-action="Index" asp-controller="Admin" method="post">
-                            <label class="esh-catalog-label" data-title="Type">
-                                <select asp-for="@Model.TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
-                            </label>
-                            <label class="esh-catalog-label" data-title="Status">
-                                <select asp-for="@Model.StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
-                            </label>
-                            <label class="esh-catalog-label" data-title="Transport Type">
-                                <select asp-for="@Model.TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
-                            </label>
-
-                            <label class="esh-catalog-label" data-title="Last Name">
-                                <input asp-for="LastName" placeholder="Last Name" class="form-control esh-catalog-filter" />
-                            </label>
+                <div class="order-list">
 
 
-                            <input type="submit" value="Search" name="save-info-button" class="button-1 save-customer-info-button" />
-                        </form>
+
+                    <div class="title">
+                        <div class="form-fields">
+                            <form asp-action="Index" asp-controller="Admin" method="post">
+                                <label class="esh-catalog-label" data-title="Type">
+                                    <select asp-for="@Model.TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
+                                </label>
+                                <label class="esh-catalog-label" data-title="Status">
+                                    <select asp-for="@Model.StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
+                                </label>
+                                <label class="esh-catalog-label" data-title="Transport Type">
+                                    <select asp-for="@Model.TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
+                                </label>
+
+                                <label class="esh-catalog-label" data-title="Last Name">
+                                    <input asp-for="LastName" placeholder="Last Name" class="form-control esh-catalog-filter" />
+                                </label>
+
+
+                                <input type="submit" value="Search" name="save-info-button" class="button-1 save-customer-info-button" />
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
 
-            <div class="fieldset">
-                <div class="form-fields">
+                <div class="fieldset">
+                    <div class="form-fields">
 
 
 
-                    @if (Model.CustomerList.Any())
+                        @if (Model.CustomerList.Any())
             {
 
 
 
-                    @Html.Partial("_pagination", Model.PaginationInfo)
+                            @Html.Partial("_pagination", Model.PaginationInfo)
 
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Type
-                                </th>
-                                <th>
-                                    Full Name
-                                </th>
-                                <th>
-                                    Status
-                                </th>
-                                <th>
-                                    Vehicle
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Full Name
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Vehicle
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
 
-                            @foreach (var customer in Model.CustomerList)
+                                    @foreach (var customer in Model.CustomerList)
                 {
-                                <tr>
+                                        <tr>
 
-                                    @Html.Partial("_customer", customer)
+                                            @Html.Partial("_customer", customer)
 
-                                </tr>
-                                }
+                                        </tr>
+                                    }
 
-                            <tr>
-                                <td colspan="5">
-                                    @Html.Partial("_pagination", Model.PaginationInfo)
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    }
-                    else
-                    {
+                                    <tr>
+                                        <td colspan="5">
+                                            @Html.Partial("_pagination", Model.PaginationInfo)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
 
-                    <div class="alert alert-danger" role="alert">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        <span class="sr-only">Error:</span>
-                        THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                            <div class="alert alert-danger" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                            </div>
+
+
+                        }
+
                     </div>
-
-
-                    }
-                    
                 </div>
             </div>
+
         </div>
-      
     </div>
 </div>

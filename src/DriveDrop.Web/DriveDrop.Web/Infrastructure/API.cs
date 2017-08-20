@@ -37,7 +37,7 @@ namespace DriveDrop.Web.Infrastructure
                 return $"{baseUri}CalculateAmount?{filterQs}";
             }
             public static string Get(string baseUri) { 
-                return $"{baseUri}";
+                return $"{baseUri}Get";
             }
             public static string GetbyId(string baseUri, int id)
             {
@@ -63,6 +63,15 @@ namespace DriveDrop.Web.Infrastructure
                 var idQs = id.ToString();
                 var filterQs = $"{idQs}";
                 return $"{baseUri}DeleteRate/{filterQs}";
+            } 
+
+            public static string Details(string baseUri)
+            {
+                return $"{baseUri}Details";
+            }
+            public static string DetailSave(string baseUri)
+            {
+                return $"{baseUri}DetailSave";
             }
 
 
@@ -111,14 +120,7 @@ namespace DriveDrop.Web.Infrastructure
                 return $"{baseUri}/NewSender";
             }
 
-            public static string AddAddress(string baseUri)
-            {
-                return $"{baseUri}/AddAddress";
-            }
-            public static string DeleteAddress(string baseUri)
-            {
-                return $"{baseUri}/DeleteAddress";
-            }
+           
             public static string UpdateInfo(string baseUri)
             {
                 return $"{baseUri}/UpdateInfo";
@@ -254,6 +256,30 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}GetUser/user/{userName}";
             }
+
+            
+            public static string DeleteAddress(string baseUri, int id, int addressid)
+            {
+                var idQs = id.ToString();
+                var addressidQs = addressid.ToString();
+
+                return $"{baseUri}DeleteAddress/customerId/{idQs}/addressid/{addressidQs}";
+            }
+
+            public static string DefaultAddress(string baseUri, int id, int addressid)
+            {
+                var idQs = id.ToString();
+                var addressidQs = addressid.ToString();
+
+                return $"{baseUri}DefaultAddress/customerId/{idQs}/addressid/{addressidQs}";
+            }
+
+
+            public static string AddAddress(string baseUri)
+            {
+                return $"{baseUri}AddAddress";
+            } 
+
 
         }
     }

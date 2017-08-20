@@ -69,6 +69,8 @@ namespace DriveDrop.Web.Controllers
             else
                 model.IsDriver = false;
 
+            if (customer.CustomerTypeId == 1)
+                model.IsAdmin =true;
             return View(model);
         }
 

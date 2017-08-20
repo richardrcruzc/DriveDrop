@@ -86,14 +86,7 @@ namespace DriveDrop.Api.ViewModels
         public int CustomerTypeId { get; set; }
 
 
-
-        [Required(ErrorMessage = "Your must provide a PhoneNumber")]
-        [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
-        [Display(Name = "Phone")]
-        public String PickupPhone { get; set; }
-        [Display(Name = "Contact person")]
-        public String PickupContact { get; set; }
+ 
         [Display(Name = "Street")]
         [Required(ErrorMessage = "Your must provide a pickup street")]
         public String PickupStreet { get; set; }

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DriveDrop.Api.Controllers
-{ 
+{
     //[Authorize]
     [Route("api/v1/[controller]")]
     public class RatesController : Controller
@@ -31,144 +31,145 @@ namespace DriveDrop.Api.Controllers
         }
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode="")
-        {             
-            return Ok(await _rate.CalculateAmount( distance,  weight,  priority,  promoCode, packageSizeId));
-        }
-        [HttpGet]        
-        public async Task<List<Rate>> Get()
+        public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode = "")
         {
-
-            var rates = await _rate.Get();
-
-            return rates;
-          
+            return Ok(await _rate.CalculateAmount(distance, weight, priority, promoCode, packageSizeId));
         }
-        
+
         [HttpGet]
-        [Route("[action]/{id:int}")]
-        public async Task<Rate> Get(int id)
+        [Route("[action]")]
+        public async Task<IActionResult> Get()
         {
             /*    JSON.NET Error Self referencing loop detected for type
             https://stackoverflow.com/questions/7397207/json-net-error-self-referencing-loop-detected-for-type
             */
-             
+
             var rate = await _context.Rates
-                .Include(x => x.RatePriorities)
-                .Include(c => c.PackageSizes)
-                .Include(x => x.RateDetails)
-                .Where(x => x.Id == id).FirstOrDefaultAsync();
-            return rate;
+                .Include(x => x.PackageSize)
+                .OrderBy(x => x.Id).ToListAsync();
+
+
+            return Ok(rate);
+
+        }
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            /*    JSON.NET Error Self referencing loop detected for type
+            https://stackoverflow.com/questions/7397207/json-net-error-self-referencing-loop-detected-for-type
+            */
+
+            var rate = await _context.Rates
+                .Include(x => x.PackageSize)
+                .Include("RatePriorities.PriorityType")
+                .OrderBy(x => x.RatePriorities.OrderBy(o => o.PriorityTypeId))
+                .Where(x => x.Id == id)
+                 .FirstOrDefaultAsync();
+
+
+            return Ok(rate);
 
         }
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> New([FromBody]RateModel m)
+        public async Task<IActionResult> Save([FromBody]RateModel m)
         {
             if (m == null)
                 return null;
-             
 
-            var rate = new Rate(m.StartDate, m.EndDate, m.FixChargePerShipping, m.ChargePerItem, m.Tax); 
-             
-            //foreach (var i in m.RateDetails)
-            //    rate.AddDetails(new RateDetail(i.RateId, i.WeightOrDistance, i.MileOrLbs, i.From, i.To, i.Charge));
-             
-            //foreach (var d in m.PackageSizes)
-            //    rate.AddSize(new RatePackageSize(d.RateId, d.PackageSizeId, d.Charge, d.ChargePercentage ));
+            var rateToUpdate = await _context.Rates
+                .Include(x => x.PackageSize)
+                .Include("RatePriorities.PriorityType")
+                .OrderBy(x => x.RatePriorities.OrderBy(o => o.PriorityTypeId))
+                .Where(x => x.Id == m.Id)
+                 .FirstOrDefaultAsync();
 
-            //foreach (var d in m.RatePriorities)
-            //    rate.AddPriority(new RatePriority(d.RateId, d.PriorityId, d.Charge, d.ChargePercentage));
+            if (rateToUpdate == null)
+                return null;
 
-            var save = await _rate.Add(rate);
+            //var ps = _context.PackageSizes.Where(p => p.Id == m.PackageSize.Id).FirstOrDefault();
+            //if(ps==null)
+            //    return null;
 
+            rateToUpdate.Update(m.OverHead);
+
+            foreach (var p in m.RatePriorities)
+            {
+                rateToUpdate.AddPriority(p.Charge, p.PriorityTypeId);
+
+            }
+
+            _context.Update(rateToUpdate);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(Get), new { id = rate.Id } );
+            return CreatedAtAction(nameof(Get), new { id = rateToUpdate.Id });
         }
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<bool> Save([FromBody]RateModel m)
-        {
-            if (m == null)
-                return false;
-            if (m.Id == 0)
-                return false;
 
-            var oldRate =await _context.Rates
-                .Include(x=>x.RatePriorities)
-                .Include(c=>c.PackageSizes)
-                .Include(x=>x.RateDetails)
-                .Where(x => x.Id == m.Id).FirstOrDefaultAsync();
-            if (oldRate == null)
-                return false;
-
-
-            oldRate.Update(m.StartDate, m.EndDate, m.FixChargePerShipping, m.ChargePerItem, m.Tax, m.Active);
-
-
-            foreach (var i in m.RateDetails)    
-                oldRate.AddDetails(new RateDetail(i.RateId, i.WeightOrDistance, i.MileOrLbs, i.From, i.To, i.Charge));
-
-            foreach (var d in m.PackageSizes)
-                oldRate.AddSize(new RatePackageSize(d.RateId, d.PackageSizeId, d.Charge, d.ChargePercentage));
-
-            foreach (var d in m.RatePriorities)
-                oldRate.AddPriority(new RatePriority(d.RateId, d.PriorityId, d.Charge, d.ChargePercentage));
-            
-            var update = await _rate.Update(oldRate);
-
-            await _context.SaveChangesAsync();
-
-            return update;
-        }
 
         [HttpGet]
-        [Route("[action]/{id:int}")]
-        public async Task<bool> DeleteRate(int id)
+        [Route("[action]")]
+        public async Task<IActionResult> Details()
         {
-            var rate = await _context.Rates
-             .Where(x => x.Id == id).FirstOrDefaultAsync();
+            /*    JSON.NET Error Self referencing loop detected for type
+            https://stackoverflow.com/questions/7397207/json-net-error-self-referencing-loop-detected-for-type
+            */
 
-            if (rate != null)
-            { _context.Remove(rate);
+            var rateDetails = await _context.RateDetails
+                .OrderBy(x => x.Id).ToListAsync();
+
+
+            return Ok(rateDetails);
+
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> DetailSave([FromBody]List<RateDetailModel> m)
+        {
+
+            foreach (var d in m)
+            {
+                if (d.Charge <= 0)
+                {
+                    if (d.Id > 0)
+                    {
+                        //Delete record rate details
+                        var delete = _context.RateDetails.Where(x => x.Id == d.Id).FirstOrDefault();
+                        if (delete != null)
+                            _context.Remove(delete);
+                    }
+                }
+                else
+                {
+                    if (d.Id > 0)
+                    {
+                        //Update record rate details
+                        var update = _context.RateDetails.Where(x => x.Id == d.Id).FirstOrDefault();
+                        if (update != null)
+                            update.Update(d.WeightOrDistance, d.MileOrLbs, d.From, d.To, d.Charge);
+                    }
+                    else
+                    {
+                        //Insert record rate details
+                        var insert = new RateDetail(d.WeightOrDistance, d.MileOrLbs, d.From, d.To, d.Charge);
+                        _context.Add(insert);
+                    }
+
+                }
                 await _context.SaveChangesAsync();
             }
 
-            return true;
+            //var rateDetails = await _context.RateDetails
+            //   .OrderBy(x => x.WeightOrDistance).ThenBy(x => x.From).ThenBy(x => x.To).ToListAsync();
+
+            //return Ok(rateDetails);
+
+            return CreatedAtAction(nameof(Details), null);
+
         }
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<bool> DeleteDetail([FromBody]RateDeleteDetailModel m)
-        {
-            if (m == null)
-                return false; 
 
-            var rate = await _context.Rates
-              .Include(x => x.RatePriorities)
-              .Include(c => c.PackageSizes)
-              .Include(x => x.RateDetails)
-              .Where(x => x.Id == m.RateId).FirstOrDefaultAsync();
 
-            if (rate == null)
-                return false;
-
-            foreach (var d in m.RateDetails)
-            {                 
-                rate.RemoveDetails(d.Id);             
-            }
-            foreach (var d in m.RatePackageSizes)
-            {
-                rate.RemoveSize(d.Id);
-            }
-            foreach (var d in m.RatePriorities)
-            {
-                rate.RemovePriority(d.Id);
-            }
-            await _rate.Update(rate);
-
-            return true;
-        }
     }
 }

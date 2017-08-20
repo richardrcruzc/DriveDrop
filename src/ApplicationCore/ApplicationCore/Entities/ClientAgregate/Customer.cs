@@ -38,8 +38,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         public Address DefaultAddress { get; private set; }
 
         public string PaymentMethodId { get; private set; }
-
-
+         
         //  public List<Shipment> Driver { get; private set; }
         public virtual ICollection<Shipment> ShipmentDrivers { get; private  set; }
         public virtual ICollection<Shipment> ShipmentSenders { get; private set; }
@@ -57,8 +56,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
         public Customer AddDefaultAddress(Address address)
         {
-            DefaultAddress = address;
-
+            DefaultAddress = address; 
             return this;
         }
         public Customer UpdateVehicleInfo(string lincensePictureUri, string vehiclePhotoUri, string insurancePhotoUri, int vehicleTypeId, 

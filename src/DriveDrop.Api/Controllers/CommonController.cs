@@ -50,7 +50,8 @@ namespace DriveDrop.Api.Controllers
 
 
             }
-            catch (Exception exe)
+            //catch (Exception exe)
+            catch
             {
                 //return BadRequest("CustomerNotFound" + exe.Message);
             }
@@ -74,7 +75,8 @@ namespace DriveDrop.Api.Controllers
                     
 
             }
-            catch (Exception exe)
+            //catch (Exception exe)
+            catch
             {
                 //return BadRequest("CustomerNotFound" + exe.Message);
             }
@@ -100,7 +102,8 @@ namespace DriveDrop.Api.Controllers
 
 
             }
-            catch (Exception exe)
+            //catch (Exception exe)
+            catch
             {
                 //return BadRequest("CustomerNotFound" + exe.Message);
             }
@@ -124,7 +127,8 @@ namespace DriveDrop.Api.Controllers
                     return Ok("valid"); 
 
             }
-            catch (Exception exe)
+            //catch (Exception exe)
+            catch
             {
                 //return BadRequest("CustomerNotFound" + exe.Message);
             }
@@ -143,9 +147,13 @@ namespace DriveDrop.Api.Controllers
                 // var customer = await _context.Customers.FindAsync(id);
 
                 var customer = await _context.Customers
-                    .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
+                    .Include(s => s.TransportType)
+                    .Include(t => t.CustomerStatus)
+                    .Include(s => s.CustomerType)
+                    .Include(a => a.Addresses)
+                    .Include(a => a.DefaultAddress)
                 .FirstOrDefaultAsync(x => x.Id == id);
-
+                
                 if (customer == null)
                     return StatusCode(StatusCodes.Status409Conflict, "CustomerNotFound");
 
@@ -159,29 +167,54 @@ namespace DriveDrop.Api.Controllers
             }
 
         }
+        [Route("[action]/customerId/{customerId:int}/addressid/{addressId:int}")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteAddress(int customerId, int addressId)
+        {
+            var updateCustomer = _context.Customers
+                .Include(a => a.Addresses)
+                .Where(x => x.Id == customerId).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+                foreach (var a in updateCustomer.Addresses)
+                    if (a.Id == addressId)
+                    {
+                        updateCustomer.DeleteAddress(a);
+                        _context.Update(updateCustomer);
+                        await _context.SaveChangesAsync();
+
+                        break;
+                    }
+
+            }
+
+
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
+
+
         [Route("[action]")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> DeleteAddress([FromBody]AddressModel a)
+        public async Task<IActionResult> AddAddress([FromBody]AddressModel a) 
         {
             try
-            {
-                var updateCustomer = await _context.Customers
-               .Include(s => s.TransportType)
-               .Include(t => t.CustomerStatus)
-               .Include(s => s.CustomerType)
-           .FirstOrDefaultAsync(x => x.Id == a.CustomerId);
+            { 
 
-                var newD = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);
-                updateCustomer.DeleteAddress(newD);
-                     
-                _context.Customers.Update(updateCustomer);
+                var updateCustomer = _context.Customers.Where(x => x.Id == a.CustomerId).FirstOrDefault();
+                if (updateCustomer != null)
+                {
+                    var addres = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);  
 
-                await _context.SaveChangesAsync();
+                    updateCustomer.AddAddress(addres);
+
+                    _context.Update(updateCustomer);
+                    await _context.SaveChangesAsync();
+                }
 
                 return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
-
-
+                
             }
             catch (DbUpdateException ex)
             {
@@ -194,24 +227,23 @@ namespace DriveDrop.Api.Controllers
             }
 
         }
-        [Route("[action]")]
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> AddAddress([FromBody]AddressModel a) 
+
+        [Route("[action]/customerId/{id:int}/addressid/{addressId:int}")]
+        [HttpGet]
+        public async Task<IActionResult> DefaultAddress(int id , int addressId)
         {
             try
             {
-                var updateCustomer = await _context.Customers
-               .Include(s => s.TransportType)
-               .Include(t => t.CustomerStatus)
-               .Include(s => s.CustomerType)
-           .FirstOrDefaultAsync(x => x.Id == a.CustomerId);
+                var updateCustomer = await _context.Customers 
+               .Include(s => s.Addresses)
+           .FirstOrDefaultAsync(x => x.Id == id);
 
-                foreach (var na in updateCustomer.Addresses)
-                {
-                    var newA = new Address(a.Street, a.City, a.State, a.Country, a.ZipCode, a.Phone, a.Contact, a.Latitude, a.Longitude, a.TypeAddress);
-                    updateCustomer.AddAddress(newA);
-                }
+                var defaultAddress = updateCustomer.Addresses.Where(x => x.Id == addressId).FirstOrDefault();
+                if(defaultAddress==null)
+                return NotFound("UnableToSaveChanges");
+
+                updateCustomer.AddDefaultAddress(defaultAddress); 
+
                 _context.Customers.Update(updateCustomer);
 
                 await _context.SaveChangesAsync();

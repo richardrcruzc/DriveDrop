@@ -2,22 +2,6 @@
 @model  RateDetailModel
 <div class="row">
     
-
-    @if (Model.WeightOrDistance == "")
-    {
-
-        <div class="col-md-2">
-
-            <select asp-for="WeightOrDistance" class="form-control text-box single-line">
-                <option value="">Please select Type</option>
-                <option value="distance">Distance</option>
-                <option value="weight">Weight</option>
-            </select>
-
-            @Html.ValidationMessageFor(modelItem => modelItem.To, "", new { @class = "text-danger" })
-
-        </div>
-    }
     <div class="col-md-2">
 
         @Html.HiddenFor(model => model.Id)
@@ -38,5 +22,5 @@
         @Html.ValidationMessageFor(modelItem => modelItem.Charge, "", new { @class = "text-danger" })
 
     </div>
-    
+  
 </div>

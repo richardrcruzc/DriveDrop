@@ -34,14 +34,14 @@ namespace DriveDrop.Web.ViewModels
 
         public decimal Commission { get;  set; }
 
-       // public Address DefaultAddress { get;  set; }
+        public Address DefaultAddress { get;  set; }
 
         //  public List<Shipment> Driver { get;  set; }
        public virtual ICollection<Shipment> ShipmentDrivers { get;  set; }
         public virtual ICollection<Shipment> ShipmentSenders { get;  set; }
 
         public List<AddressModel> Addresses { get;  set; }
-
+        public int DefaultAddressId { get;   set; }
 
         public string DriverLincensePictureUri { get; set; } 
         public string VehiclePhotoUri { get; set; }
