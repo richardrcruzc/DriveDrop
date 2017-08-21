@@ -17,6 +17,7 @@ namespace DriveDrop.Web.ViewModels
         public string CustomerStatus { get; set; }
         public int Id { get; set; }
 
+        public string VerificationId { get; set; }
 
         public string DriverLincensePictureUri { get; set; }
         public string PersonalPhotoUri { get; set; }

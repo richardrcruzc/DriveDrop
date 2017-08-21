@@ -13,6 +13,8 @@ namespace ApplicationCore.Entities.ClientAgregate
         public string IdentityGuid { get; private set; }
         public string UserName { get; private set; }
 
+        public string VerificationId { get; private set; }
+
         public string Email { get; private set; }
         public string PrimaryPhone { get; private set; }
         public string Phone { get; private set; }
@@ -74,7 +76,7 @@ namespace ApplicationCore.Entities.ClientAgregate
 
             return this;
         }
-        public Customer UpdateInfo(int statusId, string firstName, string lastName, string email, string primaryPhone, string phone , string photoUrl)
+        public Customer UpdateInfo(int statusId, string firstName, string lastName, string email, string primaryPhone, string phone , string photoUrl, string verificationId)
         {
             CustomerStatusId = statusId;
             FirstName = firstName;
@@ -83,6 +85,8 @@ namespace ApplicationCore.Entities.ClientAgregate
             PrimaryPhone = primaryPhone;
             Phone = phone;
             PersonalPhotoUri = photoUrl;
+            VerificationId = VerificationId;
+
             return this;
         }
         

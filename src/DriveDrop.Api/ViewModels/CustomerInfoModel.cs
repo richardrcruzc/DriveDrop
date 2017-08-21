@@ -16,5 +16,6 @@ namespace DriveDrop.Api.ViewModels
         public string CustomerStatus { get; set; }
         public int StatusId { get; set; }
         public int Id { get; set; }
+        public string VerificationId { get;  set; }
     }
 }

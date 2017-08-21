@@ -30,6 +30,36 @@ namespace DriveDrop.Api.Controllers
             _env = env;
             _identityService = identityService;
         }
+
+      [HttpGet]
+        [Route("[action]/CustomerId/{CustomerId:int}/statusId/{statusId:int}")]
+        public async Task<IActionResult> ChangeCustomerStatus(int CustomerId, int statusId)
+        {
+            try
+            {
+                var customer = await _context.Customers.FindAsync(CustomerId);
+            if(customer==null)
+                return Ok("CustomerNoFound");
+
+            var status = await _context.CustomerStatuses.FindAsync(statusId);
+
+            if (status == null)
+                return Ok("CustomerstatusNoFound");
+
+
+            customer.ChangeStatus(status);
+            _context.Update(customer);
+            await _context.SaveChangesAsync();
+
+            return Ok("CustomerstatusChanged");
+        }
+            catch (Exception exe)
+            {
+                return BadRequest("DriverNotFound"+exe.Message);
+    }
+}
+
+
         // GET api/values
         [HttpGet]
         [Route("[action]/type/{customertype}/status/{statusId}/transporType/{transporTypeId}/LastName/{LastName}")]
@@ -195,59 +225,7 @@ namespace DriveDrop.Api.Controllers
              .FirstOrDefaultAsync(); 
 
                 return Ok(model);
-
-                // var root = await _context.Customers
-                //  .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PriorityType)
-                //  .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
-                //  //.Include(d => d.ShipmentDrivers)
-                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.ShippingStatus)
-                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PickupAddress)
-                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.DeliveryAddress)
-                // //.Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.Sender)
-                //// .Include(d => d.ShipmentSenders)
-                // //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.ShippingStatus)
-                ////.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.PickupAddress)
-                // //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.DeliveryAddress)
-                // //.Include(d => d.ShipmentSenders).ThenInclude(ShipmentSenders => ShipmentSenders.Sender)
-
-                //  .FirstOrDefaultAsync(x=>x.Id == id);
-
-                // if (root == null)
-                //     return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
-
-                // var name = root.FullName;
-
-                // //var shipmentDrivers = root.ShipmentDrivers.ToList();
-                // //var shipmentSenders = root.ShipmentSenders.ToList();
-
-
-                // var customer = new CustomerViewModel
-                // {
-                //     Id = root.Id,
-                //     Commission = root.Commission,
-                //     CustomerStatus = root.CustomerStatus.Name,
-                //     CustomerStatusId = root.CustomerStatusId,
-                //     CustomerType = root.CustomerType.Name,
-                //     CustomerTypeId = root.CustomerTypeId,
-                //     DeliverRadius = root.DeliverRadius,
-                //     DriverLincensePictureUri = root.DriverLincensePictureUri,
-                //     Email = root.Email,
-                //     FirstName = root.FirstName,
-                //     IdentityGuid = root.IdentityGuid,
-                //     LastName = root.LastName,
-                //     MaxPackage = root.MaxPackage,
-                //     Phone = root.Phone,
-                //     PickupRadius = root.PickupRadius,
-                //     TransportType = root.TransportType.Name,
-                //     TransportTypeId = root.TransportTypeId,
-                //     UserGuid = root.UserGuid,
-                //     ShipmentDrivers = root.ShipmentDrivers,
-                //     ShipmentSenders =root.ShipmentSenders
-                //     //ShipmentDrivers = shipmentDrivers,
-                //     //ShipmentSenders = shipmentSenders
-
-                // };
-                // return Ok(customer);
+                 
             }
             catch (Exception exe)
             {

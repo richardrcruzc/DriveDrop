@@ -9,7 +9,8 @@
   @Model.FullName
 </td>
 <td>
-   @Model.CustomerStatus.Name
+   @*@Model.CustomerStatus.Name*@
+    <select asp-for="@Model.CustomerStatusId" asp-items="@ViewBag.CustomerStatus" class="esh-catalog-filter"  onchange="changstatus(this,@(Model.Id))" ></select>
 </td>
 <td>
     @if (Model.TransportType != null)
@@ -26,7 +27,34 @@
     
 </td>
 
-
+<script type="text/javascript">
+    function changstatus(newId, Customerid) {
+         
+        var selectedValue = $(newId).val(); 
+        var selectedText = $(newId).find("option:selected").text();
+        
+        if (confirm('Are you sure to change status to: ' + selectedText+" ?")) {
+                                var postData = {
+                                    customerId: Customerid,
+                                    statusId: selectedValue,
+                                };
+                                $.ajax({
+                                    cache: false,
+                                    type: 'POST',
+                                    url: '/admin/ChangeCustomerStatus',
+                                    data: postData,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                         alert(data);
+                                        @*location.href = '/common/Address/@ViewBag.Id';*@
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        alert('Failed to update');
+                                    }
+                                });
+                            }
+    }
+</script>
 @*<form asp-controller="Customer" asp-action="Index">*@
 
     @*<img class="esh-catalog-thumbnail" src="@Model.PictureUri" />

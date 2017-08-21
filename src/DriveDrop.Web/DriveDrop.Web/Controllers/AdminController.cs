@@ -42,8 +42,31 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
 
         }
+        
+        public async Task<IActionResult> ChangeCustomerStatus(int customerId, int statusId)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
 
-        public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return Json("Invalid entry");
+
+            var changeCustomerStatusUri = API.Admin.ChangeCustomerStatus(_remoteServiceBaseUrl, customerId, statusId);
+
+            var dataString = await _apiClient.GetStringAsync(changeCustomerStatusUri, token);
+
+
+            //var response = JsonConvert.DeserializeObject<string>(dataString);
+
+
+            return Json(dataString);
+
+        }
+            public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
         {
             try
             {
@@ -68,7 +91,7 @@ namespace DriveDrop.Web.Controllers
 
             var response = JsonConvert.DeserializeObject<CustomerIndex>(dataString);
 
-             
+                ViewBag.CustomerStatus = response.CustomerStatus;
 
             return View(response);
 
@@ -166,31 +189,7 @@ namespace DriveDrop.Web.Controllers
 
 
             var response = JsonConvert.DeserializeObject<Customer>(dataString);
-
-
-            //var customer = await _context.Customers
-            //    .Where(x => x.CustomerTypeId == CustomerType.Driver.Id)
-            //    .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PriorityType)
-            //   .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.ShippingStatus)
-            //   .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.PickupAddress)
-            //   .Include(d => d.ShipmentDrivers).ThenInclude(ShipmentDrivers => ShipmentDrivers.DeliveryAddress)
-            //   .Include(s => s.TransportType).Include(t => t.CustomerStatus).Include(s => s.CustomerType)
-            //   .SingleOrDefaultAsync(m => m.Id == id);
-
-
-            //var tttp = customer.ShipmentSenders;
-
-
-            //if (customer == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //ViewBag.DriverId = id;
-
-            //ViewBag.ShippingStatuses = _context.ShippingStatuses.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-
-
+             
 
 
             return View(response);

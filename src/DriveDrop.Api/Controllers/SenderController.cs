@@ -104,7 +104,7 @@ namespace DriveDrop.Api.Controllers
             if (updateCustomer != null)
             {
 
-                updateCustomer.UpdateInfo(c.StatusId, c.FirstName, c.LastName, c.Email, c.PrimaryPhone, c.Phone, c.PhotoUrl);
+                updateCustomer.UpdateInfo(c.StatusId, c.FirstName, c.LastName, c.Email, c.PrimaryPhone, c.Phone, c.PhotoUrl, c.VerificationId);
 
                 _context.Update(updateCustomer);
                 await _context.SaveChangesAsync();

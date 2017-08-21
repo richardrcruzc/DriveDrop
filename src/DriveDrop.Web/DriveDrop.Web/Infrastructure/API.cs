@@ -78,6 +78,16 @@ namespace DriveDrop.Web.Infrastructure
         }
         public static class Admin
         {
+            public static string ChangeCustomerStatus(string baseUri, int customerId, int statusId)
+            {
+                var customerIdQs = customerId.ToString();
+                var statusIdQs = statusId.ToString();
+
+                var filterQs = $"/customerId/{customerIdQs}/statusId/{statusIdQs}";
+
+                return $"{baseUri}/ChangeCustomerStatus{filterQs}";
+            }
+
             public static string GetAllCustomers(string baseUri, int pageIndex, int pageSize, int? status, int? type, int? transporType, string LastName = null)
             {
                 var filterQs = "";

@@ -33,7 +33,7 @@
                     <strong>Returning Customer </strong>
                 </div>
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-
+                    <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-fields">
                         <div class="inputs">
                             <label asp-for="Email"></label>
@@ -53,10 +53,12 @@
                             </span>
                         </div>
 
-                        <div class="buttons">
-                            <button type="submit" class="button-1 login-button">LOG IN</button>
-                        </div>
+                      
 
+                    </div>
+
+                    <div class="buttons">
+                        <button type="submit" class="button-1 login-button">LOG IN</button>
                     </div>
                 </form>
 </div>
