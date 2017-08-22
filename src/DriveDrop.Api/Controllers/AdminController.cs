@@ -2,6 +2,7 @@
 using ApplicationCore.Entities.ClientAgregate.ShipmentAgregate;
 using DriveDrop.Api.Infrastructure;
 using DriveDrop.Api.Infrastructure.Services;
+using DriveDrop.Api.Services;
 using DriveDrop.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -18,20 +19,33 @@ namespace DriveDrop.Api.Controllers
 {
 
     [Route("api/v1/[controller]")]
-    [Authorize]
+   // [Authorize]
     public class AdminController : Controller
     {
+        private readonly ICustomerService _cService;
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
-        public AdminController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService)
+        public AdminController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context, IIdentityService identityService)
         {
+            _cService = cService;
             _context = context;
             _env = env;
             _identityService = identityService;
         }
 
-      [HttpGet]
+
+        [HttpGet]
+        [Route("[action]/adminUser/{adminUser}/userName/{userName}")]
+        public async Task<IActionResult> SetImpersonate(string adminUser, string userName)
+        {
+            var isImpersonated  =  await _cService.SetImpersonate(adminUser, userName);
+            return Ok(isImpersonated);
+        }
+
+
+
+        [HttpGet]
         [Route("[action]/CustomerId/{CustomerId:int}/statusId/{statusId:int}")]
         public async Task<IActionResult> ChangeCustomerStatus(int CustomerId, int statusId)
         {
@@ -209,20 +223,22 @@ namespace DriveDrop.Api.Controllers
   
 
             try
-            { 
-                var model = await _context.Customers
-                 .Include(s => s.TransportType)
-                 .Include(t => t.CustomerStatus)
-                 .Include(s => s.CustomerType)
-                 .Include(a => a.Addresses)
-                 .Include("ShipmentDrivers.ShippingStatus")
-                 .Include("ShipmentDrivers.PickupAddress")
-                 .Include("ShipmentDrivers.DeliveryAddress")
-                 .Include("ShipmentSenders.ShippingStatus")
-                     .Include("ShipmentSenders.PickupAddress")
-                 .Include("ShipmentSenders.DeliveryAddress")
-                 .Where(x => x.Id == id)
-             .FirstOrDefaultAsync(); 
+            {
+                var model = await _cService.Get(id);
+
+             //   var model = await _context.Customers
+             //    .Include(s => s.TransportType)
+             //    .Include(t => t.CustomerStatus)
+             //    .Include(s => s.CustomerType)
+             //    .Include(a => a.Addresses)
+             //    .Include("ShipmentDrivers.ShippingStatus")
+             //    .Include("ShipmentDrivers.PickupAddress")
+             //    .Include("ShipmentDrivers.DeliveryAddress")
+             //    .Include("ShipmentSenders.ShippingStatus")
+             //        .Include("ShipmentSenders.PickupAddress")
+             //    .Include("ShipmentSenders.DeliveryAddress")
+             //    .Where(x => x.Id == id)
+             //.FirstOrDefaultAsync(); 
 
                 return Ok(model);
                  
@@ -234,5 +250,17 @@ namespace DriveDrop.Api.Controllers
 
         }
 
+
+        [HttpGet]
+        [Route("[action]/{userName}")]
+        public async Task<IActionResult> GetbyUserName(string userName)
+        {
+            var c = await _cService.Get(userName);
+            if (c == null)
+                return Ok("CustomerNoFound");
+
+
+            return Ok(c);
+        }
     }
 }

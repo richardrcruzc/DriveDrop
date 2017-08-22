@@ -13,20 +13,22 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using DriveDrop.Api.Services;
 
 namespace DriveDrop.Api.Controllers
 {
-     [Authorize]
+    // [Authorize]
     [Route("api/v1/[controller]")]
     public class CommonController : Controller
     {
-
+        private readonly ICustomerService _cService;
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
-        public CommonController(IHostingEnvironment env, DriveDropContext context)
+        public CommonController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context)
         {
             _context = context;
             _env = env;
+            _cService = cService;
         }
 
         [HttpGet]
@@ -35,13 +37,14 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
+                var customer =await  _cService.Get(userName);
                 
-                var customer = await _context.Customers
-                   .Include(s => s.TransportType)
-                   .Include(t => t.CustomerStatus)
-                   .Include(s => s.CustomerType)
-                   .Include(a => a.Addresses)
-               .Where(u => u.UserName == userName).FirstOrDefaultAsync();
+               // var customer = await _context.Customers
+               //    .Include(s => s.TransportType)
+               //    .Include(t => t.CustomerStatus)
+               //    .Include(s => s.CustomerType)
+               //    .Include(a => a.Addresses)
+               //.Where(u => u.UserName == userName).FirstOrDefaultAsync();
 
                 if (customer != null)
                 {
@@ -65,7 +68,9 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var customer = await _context.Customers.Where(u => u.UserName == userName && u.Id==id).FirstOrDefaultAsync();
+                // var customer = await _context.Customers.Where(u => u.UserName == userName && u.Id==id).FirstOrDefaultAsync();
+
+                var customer = await _cService.Get(userName,id);
 
 
                 if (customer != null)
@@ -90,15 +95,17 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var customer = await _context.Customers.Where(u => u.UserName == userName).FirstOrDefaultAsync();
-
-
+                // var customer = await _context.Customers.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+                var customer = await _cService.Get(userName);
                 if (customer != null)
-                {
-                    if (customer.CustomerTypeId==1)
-                        return Ok(true);
+                    return Ok(customer.IsAdmin);
 
-                }
+                //if (customer != null)
+                //{
+                //    if (customer.CustomerTypeId==1)
+                //        return Ok(true);
+
+                //}
 
 
             }
@@ -144,18 +151,20 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
+                var customer = await _cService.Get(id);
+
                 // var customer = await _context.Customers.FindAsync(id);
 
-                var customer = await _context.Customers
-                    .Include(s => s.TransportType)
-                    .Include(t => t.CustomerStatus)
-                    .Include(s => s.CustomerType)
-                    .Include(a => a.Addresses)
-                    .Include(a => a.DefaultAddress)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                //var customer = await _context.Customers
+                //    .Include(s => s.TransportType)
+                //    .Include(t => t.CustomerStatus)
+                //    .Include(s => s.CustomerType)
+                //    .Include(a => a.Addresses)
+                //    .Include(a => a.DefaultAddress)
+                //.FirstOrDefaultAsync(x => x.Id == id);
                 
-                if (customer == null)
-                    return StatusCode(StatusCodes.Status409Conflict, "CustomerNotFound");
+                 if (customer == null)
+                 return StatusCode(StatusCodes.Status409Conflict, "CustomerNotFound");
 
                 return Ok(customer);
 

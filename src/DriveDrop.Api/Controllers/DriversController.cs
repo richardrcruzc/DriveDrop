@@ -12,22 +12,74 @@ using DriveDrop.Api.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using DriveDrop.Api.Services;
 
 namespace DriveDrop.Api.Controllers
 {
     [Route("api/v1/[controller]")]
-    [Authorize]
+   // [Authorize]
     public class DriversController : Controller
     {
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
-        public DriversController(IHostingEnvironment env, DriveDropContext context)
+
+        private readonly ICustomerService _cService;
+
+        public DriversController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context)
         {
             _context = context;
             _env = env;
+            _cService = cService;
         }
 
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateInfo([FromBody]CustomerInfoModel c)
+        {
+            var updateCustomer = _context.Customers
+                .Include(x=>x.CustomerStatus)
+                .Where(x => x.Id == c.Id).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+
+                updateCustomer.UpdateInfo(c.StatusId, c.FirstName, c.LastName, c.Email, c.PrimaryPhone, c.Phone, c.PhotoUrl, c.VerificationId);
+
+                _context.Update(updateCustomer);
+                await _context.SaveChangesAsync();
+            }
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
+
+
+        // GET api/values/5
+        [HttpGet]
+        [Route("[action]/userName/{userName}/customerId/{customerId:int}")]
+        public async Task<IActionResult> GetDriver(string userName, int customerId)
+        {
+            try
+            {
+                var customer = await _cService.Get(userName, customerId);
+
+
+                if (customer == null || !customer.IsValid)
+                    return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
+
+
+                if (customer.CustomerTypeId != 3)
+                    return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
+
+                return Ok(customer);
+
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest("DriverNotFound" + exe.Message);
+            }
+
+        }
         [HttpGet]
         [Route("[action]/Customer/{id:int}/shipping/{shippingId:int}")]
         public async Task<IActionResult> AssignDriver(int id, int shippingId)
@@ -217,51 +269,7 @@ namespace DriveDrop.Api.Controllers
                
                 await _context.SaveChangesAsync();
                 return Ok(newCustomer.Id);
-
-
-                //Guid extName = Guid.NewGuid();
-                ////saving files
-                //long size = files.Sum(f => f.Length);
-
-                //// full path to file in temp location
-                //var filePath = Path.GetTempFileName();
-                //var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\driver");
-                //var fileName = "";
-
-                //foreach (var formFile in files)
-                //{
-
-                //    if (formFile.Length > 0)
-                //    {
-                //        var extension = ".jpg";
-                //        if (formFile.FileName.ToLower().EndsWith(".jpg"))
-                //            extension = ".jpg";
-                //        if (formFile.FileName.ToLower().EndsWith(".tif"))
-                //            extension = ".tif";
-                //        if (formFile.FileName.ToLower().EndsWith(".png"))
-                //            extension = ".png";
-                //        if (formFile.FileName.ToLower().EndsWith(".gif"))
-                //            extension = ".gif";
-
-
-
-
-                //        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                //        fileName = string.Format("uploads\\img\\driver\\{0}{1}", extName, extension);
-
-                //        using (var stream = new FileStream(filePath, FileMode.Create))
-                //        {
-                //            await formFile.CopyToAsync(stream);
-                //        }
-                //    }
-                //}
-                //if (!string.IsNullOrWhiteSpace(fileName))
-                //{
-                //    newCustomer.AddPicture(fileName);
-                //    _context.Update(newCustomer);
-                //    await _context.SaveChangesAsync();
-                //}
-
+                 
 
 
             }

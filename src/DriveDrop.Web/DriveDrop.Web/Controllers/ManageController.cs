@@ -58,7 +58,7 @@ namespace DriveDrop.Web.Controllers
 
             var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
             var userString = await _apiClient.GetStringAsync(getUserUri, token);
-            var customer = JsonConvert.DeserializeObject<Customer>(userString);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
             if (customer == null)
                 return RedirectToAction("index", "home");
 
@@ -90,7 +90,7 @@ namespace DriveDrop.Web.Controllers
 
             var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
             var userString = await _apiClient.GetStringAsync(getUserUri, token);
-            var customer = JsonConvert.DeserializeObject<Customer>(userString);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
             if (customer == null)
                 return RedirectToAction("index", "home");
             else if (customer.CustomerTypeId == 2)

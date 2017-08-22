@@ -90,61 +90,26 @@ namespace DriveDrop.Web.Controllers
         public async Task<IActionResult> Result(int? id)
         {
 
-            ViewBag.Url = _remoteServiceRatesUrl;
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-       
-                var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
+            var currenUserUri = API.Sender.GetSender(_remoteServiceCommonUrl, user.Email, id ?? 0);
+            var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString)); 
 
-                var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
-
-                var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
-
-                if (!idIsUserresponse)
-                {
-                return NotFound("Invalid entry");
+            if (currentUser == null)
+            {
+                return NotFound();
             }
+
+              
+            if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
+                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
            
-
-            var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id ?? 0);
-
-            var dataString = await _apiClient.GetStringAsync(getById, token); 
-
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
-            var model = new CustomerInfoModel {
-                    CustomerStatus = response.CustomerStatus.Name,
-                    Email = response.Email,
-                    FirstName = response.FirstName,
-                    LastName = response.LastName,
-                    Id = id??0,
-                    Phone = response.Phone, 
-                    PhotoUrl = response.PersonalPhotoUri,
-                    PrimaryPhone = response.PrimaryPhone,
-                    StatusId = response.CustomerStatusId, 
-            };
-            if (string.IsNullOrWhiteSpace(model.PhotoUrl))
-                model.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
-             else
-                model.PhotoUrl =  model.PhotoUrl ;
-
-            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/" + model.PhotoUrl;
-            
+             
 
 
-
-            return View(model);
+            return View(currentUser);
         }
  
         
@@ -980,7 +945,7 @@ namespace DriveDrop.Web.Controllers
 
 
                     filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                    fileName = string.Format("uploads/img/{0}/{1}{2}", belong, extName, extension);
+                    fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {

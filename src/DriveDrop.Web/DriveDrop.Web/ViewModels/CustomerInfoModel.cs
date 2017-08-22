@@ -24,5 +24,7 @@ namespace DriveDrop.Web.ViewModels
         public string VehiclePhotoUri { get; set; }
         public string InsurancePhotoUri { get; set; }
 
+
+        
     }
 }

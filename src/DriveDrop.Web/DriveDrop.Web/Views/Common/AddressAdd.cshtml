@@ -1,13 +1,30 @@
 @model DriveDrop.Web.ViewModels.AddressModel
 
-
-
+@{
+    ViewData["Title"] = "Add Address";
+     
+    var customerTypeId = (int)ViewBag.CustomerType;
+}
+ 
 
     <div class="side-2">
 
+        @if (customerTypeId == 1)
+        {
+            @await Html.PartialAsync("AdminNavigation", (int)@ViewBag.Id)
+        }
+        else if (customerTypeId == 2)
+        {
+            @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
+        }
+        else if (customerTypeId == 3)
+        {
+            @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.Id)
+        }
 
 
-        @await Html.PartialAsync("CustomerNavigation",Model.CustomerId)
+
+
 
 
     </div>

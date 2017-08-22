@@ -12,7 +12,7 @@ namespace ApplicationCore.Entities.ClientAgregate
     {
         public string IdentityGuid { get; private set; }
         public string UserName { get; private set; }
-
+        public string UserNameToImpersonate { get; private set; }
         public string VerificationId { get; private set; }
 
         public string Email { get; private set; }
@@ -21,10 +21,10 @@ namespace ApplicationCore.Entities.ClientAgregate
         public string LastName { get; private set; }
         public string FirstName { get; private set; }
         public CustomerType CustomerType { get; private set; }
-        public int CustomerTypeId { get; private set; }
+        public int? CustomerTypeId { get; private set; }
         public int? TransportTypeId { get; private set; }
         public TransportType TransportType { get; private set; }
-        public int CustomerStatusId { get; private set; }
+        public int? CustomerStatusId { get; private set; }
         public CustomerStatus CustomerStatus { get; private set; }
         public int? MaxPackage { get; private set; }
         public int? PickupRadius { get; private set; }
@@ -49,7 +49,14 @@ namespace ApplicationCore.Entities.ClientAgregate
         public string PersonalPhotoUri { get; private set; }
         public string VehiclePhotoUri { get; private set; }
         public string InsurancePhotoUri { get; private set; }
-        
+
+        public Customer Impersonate(string userName)
+        {
+            UserNameToImpersonate = userName;
+
+            return this;
+        }
+
         public Customer AddUserName(string userName)
         {
             UserName  = userName;
@@ -78,14 +85,14 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
         public Customer UpdateInfo(int statusId, string firstName, string lastName, string email, string primaryPhone, string phone , string photoUrl, string verificationId)
         {
-            CustomerStatusId = statusId;
+           // CustomerStatusId = statusId;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             PrimaryPhone = primaryPhone;
             Phone = phone;
             PersonalPhotoUri = photoUrl;
-            VerificationId = VerificationId;
+            VerificationId = verificationId;
 
             return this;
         }

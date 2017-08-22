@@ -129,15 +129,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             else
                 return Ok("IsNotAuthenticated");
         }
-
-           
-        
-
-
-
-
-
-
+         
 
         /// <summary>
         /// Show login page

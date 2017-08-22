@@ -43,10 +43,22 @@ namespace DriveDrop.Web.Controllers
         }
 
 
-        public IActionResult AddressAdd(int id)
+        public async Task<IActionResult> AddressAdd(int id)
         {
-            ViewBag.Id = id;
-            var model = new AddressModel { CustomerId = id };
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUser = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+
+            var dataString = await _apiClient.GetStringAsync(getUser, token);
+
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString)); 
+
+            ViewBag.Id = response.Id;
+            var model = new AddressModel { CustomerId = response.Id };
+
+
+            ViewBag.CustomerType = response.CustomerTypeId;
 
             return View(model);
         }
@@ -71,10 +83,11 @@ namespace DriveDrop.Web.Controllers
                 result = "Error creating Shipping, try later.";
             }
 
+
             return result;
         }
 
-        public async Task<IActionResult> Address(int id)
+        public async Task<IActionResult> Addresses(int id)
         {
             ViewBag.Id = id;
             //call shipping api service
@@ -85,7 +98,9 @@ namespace DriveDrop.Web.Controllers
 
             var dataString = await _apiClient.GetStringAsync(getUser, token);
 
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
+
+             
 
             var listAddresses = new List<AddressModel>();
             foreach (var a in response.Addresses)
@@ -94,6 +109,9 @@ namespace DriveDrop.Web.Controllers
                     a.TypeAddress = "default";
                 listAddresses.Add(a);
             }
+
+            ViewBag.CustomerType = response.CustomerTypeId;
+
 
             return View(listAddresses);
 

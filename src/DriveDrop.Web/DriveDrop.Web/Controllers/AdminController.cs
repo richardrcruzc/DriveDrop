@@ -117,21 +117,22 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
-            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
-            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+            var getcurrent = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+            var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
+             
 
-            if (!isAdminResponse)
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            if (!currentUser.IsAdmin)
                 return NotFound("Invalid entry"); 
 
             var getById = API.Admin.GetbyId(_remoteServiceBaseUrl, id ?? 0);
-
-
             var dataString = await _apiClient.GetStringAsync(getById, token);
-
-
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
-
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
 
 
             if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))

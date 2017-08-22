@@ -107,6 +107,7 @@ namespace DriveDrop.Api
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IRateService, RateService>();
             services.AddTransient<IDistanceService, DistanceService>();
+            services.AddTransient<ICustomerService, CustomerService>();
             
 
             _services = services;

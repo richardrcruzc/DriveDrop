@@ -1,4 +1,4 @@
-﻿@model  DriveDrop.Web.ViewModels.CustomerInfoModel
+﻿@model  DriveDrop.Web.ViewModels.CurrentCustomerModel
 
     @{
         ViewData["Title"] = "Details";
@@ -24,9 +24,9 @@
 
 
                 <input asp-for="Id" hidden />
-                <input asp-for="StatusId" hidden />
+                <input asp-for="CustomerStatusId" hidden />
                 <input asp-for="CustomerStatus" hidden />
-                <input asp-for="PhotoUrl" hidden />
+                <input asp-for="PersonalPhotoUri" hidden />
 
                 <div class="fieldset">
 
@@ -88,6 +88,13 @@
                             <input asp-for="Phone" placeholder="Phone" />
                             <span class="required">*</span>
                             <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="inputs">
+
+                            <label for="VerificationId">Verification Id</label>
+                            <input asp-for="VerificationId" placeholder="Verification Id" />
+                            <span class="required">*</span>
+                            <span asp-validation-for="VerificationId" class="text-danger"></span>
                         </div>
                                 <div class="inputs">
                                     <div class="title">

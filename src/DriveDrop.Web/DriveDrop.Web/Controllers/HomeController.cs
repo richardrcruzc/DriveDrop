@@ -30,6 +30,7 @@ namespace DriveDrop.Web.Controllers
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
+        private readonly string _remoteServiceAdminUrl;
 
         public HomeController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
@@ -39,6 +40,7 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _remoteServiceDriversUrl = $"{settings.Value.DriveDropUrl}/api/v1/drivers";
             _remoteServiceIdentityUrl = $"{settings.Value.IdentityUrl}/account/";
+            _remoteServiceAdminUrl = $"{settings.Value.DriveDropUrl}/api/v1/admin";
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -47,34 +49,27 @@ namespace DriveDrop.Web.Controllers
         }
 
         public async Task<IActionResult> myAccount()
-        {
-            
+        { 
 
             var user = _appUserParser.Parse(HttpContext.User);
-            var token = await GetUserTokenAsync();
+            var token = await GetUserTokenAsync(); 
 
-            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
-            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
-            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+            var getcurrent = API.Admin.GetbyUserName(_remoteServiceAdminUrl, user.Email);
+            var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
+             
 
-            if (isAdminResponse)
+            if (currentUser.IsAdmin)
                 return RedirectToAction("index", "admin");
             else
             {
-                var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
-                var userString = await _apiClient.GetStringAsync(getUserUri, token);
-                var customer = JsonConvert.DeserializeObject<Customer>(userString);
-                if (customer == null)
-                {
-                    ViewBag.UserValid = "false";
-                    return RedirectToAction("Index");
-                }
-                if (customer.CustomerTypeId == 1)
-                        return RedirectToAction("index", "admin", new { id = customer.Id });
-                    else if (customer.CustomerTypeId==2)
-                        return RedirectToAction("result", "sender", new { id = customer.Id});
-                    else if (customer.CustomerTypeId == 3)
-                        return RedirectToAction("result", "driver", new { id = customer.Id });
+                
+                if (currentUser.CustomerTypeId == 1)
+                        return RedirectToAction("index", "admin", new { id = currentUser.Id });
+                    else if (currentUser.CustomerTypeId==2)
+                        return RedirectToAction("result", "sender", new { id = currentUser.Id});
+                    else if (currentUser.CustomerTypeId == 3)
+                        return RedirectToAction("result", "driver", new { id = currentUser.Id });
 
             }
 

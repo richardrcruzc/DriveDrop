@@ -1,23 +1,22 @@
-﻿using ApplicationCore.Entities.ClientAgregate.ShipmentAgregate;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DriveDrop.Api.ViewModels
+namespace DriveDrop.Web.ViewModels
 {
-
-    public class CustomerViewModel
+    public class CurrentCustomerModel
     {
 
         public int Id { get; set; }
         public string IdentityGuid { get; set; }
         public string UserGuid { get; set; }
-
-        public string VerificationId { get;  set; }
+        public string UserName { get; set; }
+        public string VerificationId { get; set; }
 
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string PrimaryPhone { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string CustomerType { get; set; }
@@ -35,31 +34,29 @@ namespace DriveDrop.Api.ViewModels
 
         public decimal Commission { get; set; }
 
-        //public Address DefaultAddress { get; set; }
-
-        //public List<Shipment> Driver { get; set; }
-         public virtual ICollection<Shipment> ShipmentDrivers { get; set; }
-         public virtual ICollection<Shipment> ShipmentSenders { get; set; }
+        public ICollection<AddressModel> Addresses { get; set; }
+        public virtual ICollection<Shipment> ShipmentDrivers { get; set; }
+        public virtual ICollection<Shipment> ShipmentSenders { get; set; }
 
         public string DriverLincensePictureUri { get; set; }
 
         public bool IsAdmin { get; set; }
         public bool IsValid { get; set; }
 
-        public AddressModel DefaultAddress { get;  set; }
+        public AddressModel DefaultAddress { get; set; }
 
-        public string PaymentMethodId { get;  set; }
-        
-        public string PersonalPhotoUri { get;  set; }
-        public string VehiclePhotoUri { get;  set; }
-        public string InsurancePhotoUri { get;  set; }
+        public string PaymentMethodId { get; set; }
 
-         
+        public string PersonalPhotoUri { get; set; }
+        public string VehiclePhotoUri { get; set; }
+        public string InsurancePhotoUri { get; set; }
 
-        public string VehicleMake { get;  set; }
-        public string VehicleModel { get;  set; }
-        public string VehicleColor { get;  set; }
-        public string VehicleYear { get;  set; }
+
+
+        public string VehicleMake { get; set; }
+        public string VehicleModel { get; set; }
+        public string VehicleColor { get; set; }
+        public string VehicleYear { get; set; }
 
 
         public string FullName

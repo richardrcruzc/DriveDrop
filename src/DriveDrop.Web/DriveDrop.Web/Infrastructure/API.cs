@@ -110,10 +110,25 @@ namespace DriveDrop.Web.Infrastructure
                 var filterQs = $"/{idQs}";
                 return $"{baseUri}/GetbyId{filterQs}";
             }
+            public static string GetbyUserName(string baseUri, string userName)
+            { 
+                return $"{baseUri}/GetbyUserName/{userName}";
+            }
 
         }
         public static class Sender
         {
+            
+            public static string GetSender(string baseUri, string userName, int customerId)
+            {
+                var userNameIdQs = userName.ToString();
+                var customerIdQs = customerId.ToString();
+
+                var filterQs = $"/userName/{userNameIdQs}/customerId/{customerIdQs}";
+
+                return $"{baseUri}/GetSender{filterQs}";
+            }
+
             public static string GetbyId(string baseUri, int id)
             {
                 var idQs = id.ToString();
@@ -139,6 +154,15 @@ namespace DriveDrop.Web.Infrastructure
         }
         public static class Driver
         {
+            public static string GetDriver(string baseUri, string userName, int customerId)
+            {
+                var userNameIdQs = userName.ToString();
+                var customerIdQs = customerId.ToString();
+
+                var filterQs = $"/userName/{userNameIdQs}/customerId/{customerIdQs}";
+
+                return $"{baseUri}/GetDriver{filterQs}";
+            }
             public static string GetbyId(string baseUri, int id)
             {
                 var idQs = id.ToString();

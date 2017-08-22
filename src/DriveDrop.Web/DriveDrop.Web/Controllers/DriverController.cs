@@ -429,70 +429,28 @@ namespace DriveDrop.Web.Controllers
                 return NotFound("Invalid entry");
             }
 
-
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var idIsUserUri = API.Common.IdIsUser(_remoteServiceCommonUrl, user.Email, id ?? 0);
+            var currenUserUri = API.Driver.GetDriver(_remoteServiceDriversUrl, user.Email, id ?? 0);
+            var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
 
-            var idIsUserdataString = await _apiClient.GetStringAsync(idIsUserUri, token);
-
-            var idIsUserresponse = JsonConvert.DeserializeObject<bool>((idIsUserdataString));
-
-            if (!idIsUserresponse)
+            if (currentUser == null)
             {
-                return NotFound("Invalid entry");
+                return NotFound();
             }
 
 
-            var getById = API.Driver.GetbyId(_remoteServiceDriversUrl, id ?? 0);
-
-            var dataString = await _apiClient.GetStringAsync(getById, token);
-
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
-
-            //response.DriverLincensePictureUri = string.Format("{0}{1}", _settings.Value.CallBackUrl, response.DriverLincensePictureUri);
-            ViewBag.DriverId = id;
-
-            ViewBag.Uri = _settings.Value.CallBackUrl;
-            var model = new CustomerInfoModel
-            {
-                CustomerStatus = response.CustomerStatus.Name,
-                Email = response.Email,
-                FirstName = response.FirstName,
-                LastName = response.LastName,
-                Id = id ?? 0,
-                Phone = response.Phone,
-                PhotoUrl = response.PersonalPhotoUri,
-                PrimaryPhone = response.PrimaryPhone,
-                StatusId = response.CustomerStatusId,
-
-                DriverLincensePictureUri = _settings.Value.CallBackUrl + "/" + response.DriverLincensePictureUri,
-                PersonalPhotoUri = _settings.Value.CallBackUrl + "/" + response.PersonalPhotoUri,
-                VehiclePhotoUri = _settings.Value.CallBackUrl + "/" + response.VehiclePhotoUri,
-                InsurancePhotoUri = _settings.Value.CallBackUrl + "/" + response.InsurancePhotoUri,
-
-
-            };
-            if (string.IsNullOrWhiteSpace(model.PhotoUrl))
-                model.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
-            else
-                model.PhotoUrl = model.PhotoUrl;
-
-           
-
-            return View(model);
-
-
-            //var model = new Customer();
-            //model.FirstName = getById;
-            //model.Id = 9;
-            //return View(model);
+            if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
+                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+            
+            return View(currentUser);
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> UpdateInfo(CustomerInfoModel model, List<IFormFile> photoUrl)
+        public async Task<string> UpdateInfo(CustomerInfoModel model, List<IFormFile> PersonalPhotoUri)
         {
             var result = "Info updated";
             if (ModelState.IsValid)
@@ -500,15 +458,17 @@ namespace DriveDrop.Web.Controllers
                 try
                 {
 
-                    var fileName = await SaveFile(photoUrl, "driver");
+                    var fileName = await SaveFile(PersonalPhotoUri, "driver");
 
                     if (!string.IsNullOrWhiteSpace(fileName))
                         model.PhotoUrl = fileName;
+                    else
+                        model.PhotoUrl = model.PersonalPhotoUri;
 
                     var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
 
-                    var updateInfo = API.Driver.UpdateInfo(_remoteServiceBaseUrl);
+                    var updateInfo = API.Driver.UpdateInfo(_remoteServiceDriversUrl);
 
                     var response = await _apiClient.PostAsync(updateInfo, model, token);
                     if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
@@ -613,7 +573,7 @@ namespace DriveDrop.Web.Controllers
 
 
                     filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                    fileName = string.Format("uploads/img/{0}/{1}{2}", belong, extName, extension);
+                    fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {

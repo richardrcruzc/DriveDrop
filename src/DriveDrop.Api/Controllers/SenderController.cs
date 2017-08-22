@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace DriveDrop.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/v1/[controller]")]
     public class SenderController : Controller
     {
@@ -27,31 +27,54 @@ namespace DriveDrop.Api.Controllers
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
         private readonly IRateService _rateService;
+        private readonly ICustomerService _cService;
 
-        public SenderController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, IRateService rateService)
+        public SenderController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, IRateService rateService)
         {
             _context = context;
             _env = env;
             _identityService = identityService;
             _rateService = rateService;
+            _cService = cService;
         }
 
         // GET api/values/5
         [HttpGet]
-        [Route("[action]/{id:int}")]
+        [Route("[action]/userName/{userName}/customerId/{customerId:int}")]
+        public async Task<IActionResult> GetSender(string userName, int customerId)
+        {
+            try
+            {
+                var customer = await _cService.Get(userName, customerId);
+                
+                
+                if (customer == null || !customer.IsValid)
+                    return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
+
+
+                if(customer.CustomerTypeId !=2)
+                    return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
+
+                return Ok(customer);
+
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest("DriverNotFound" + exe.Message);
+            }
+
+        }
+
+        // GET api/values/5
+        [HttpGet]
+        [Route("[action]/{userName}")]
         public async Task<IActionResult> GetByUserName(string userName)
         {
             try
             {
-                // var customer = await _context.Customers.FindAsync(id);
-
-                var customer = await _context.Customers.Where(X=>X.UserName == userName)
-                    .Include(s => s.TransportType)
-                    .Include(t => t.CustomerStatus)
-                    .Include(s => s.CustomerType)
-                    .Include(a => a.Addresses)
-                    .Include(a=>a.ShipmentSenders)
-                .FirstOrDefaultAsync();
+                var customer = await _cService.Get(userName);
+ 
 
                 if (customer == null)
                     return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
@@ -73,14 +96,9 @@ namespace DriveDrop.Api.Controllers
         { 
             try
             {
-                // var customer = await _context.Customers.FindAsync(id);
 
-                var customer = await _context.Customers
-                    .Include(s => s.TransportType)
-                    .Include(t => t.CustomerStatus)
-                    .Include(s => s.CustomerType)
-                    .Include(a=>a.Addresses)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                var customer = await _cService.Get(id);
+
 
                 if (customer == null)
                     return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
@@ -264,50 +282,7 @@ namespace DriveDrop.Api.Controllers
 
                     await _context.SaveChangesAsync();
 
-
-
-                    //Guid extName = Guid.NewGuid();
-                    ////saving files
-                    //long size = files.Sum(f => f.Length);
-
-                    //// full path to file in temp location
-                    //var filePath = Path.GetTempFileName();
-                    //var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\shipment");
-                    //var fileName = "";
-
-                    //foreach (var formFile in files)
-                    //{
-
-                    //    if (formFile.Length > 0)
-                    //    {
-                    //        var extension = ".jpg";
-                    //        if (formFile.FileName.ToLower().EndsWith(".jpg"))
-                    //            extension = ".jpg";
-                    //        if (formFile.FileName.ToLower().EndsWith(".tif"))
-                    //            extension = ".tif";
-                    //        if (formFile.FileName.ToLower().EndsWith(".png"))
-                    //            extension = ".png";
-                    //        if (formFile.FileName.ToLower().EndsWith(".gif"))
-                    //            extension = ".gif";
-
-
-
-
-                    //        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                    //        fileName = string.Format("uploads\\img\\shipment\\{0}{1}", extName, extension);
-
-                    //        using (var stream = new FileStream(filePath, FileMode.Create))
-                    //        {
-                    //            await formFile.CopyToAsync(stream);
-                    //        }
-                    //    }
-                    //}
-                    //if (!string.IsNullOrWhiteSpace(fileName))
-                    //{
-                    //    shipment.SetPickupPictureUri(fileName);
-                    //    _context.SaveChanges();
-                    //    await _context.SaveChangesAsync();
-                    //}
+                     
 
                     return Ok(sender.Id);
 

@@ -1,4 +1,4 @@
-﻿@model  DriveDrop.Web.ViewModels.Customer
+﻿@model  DriveDrop.Web.ViewModels.CurrentCustomerModel
 
 @{
     ViewData["Title"] = "Details";
@@ -20,19 +20,43 @@
         </div>
         <div class="page-body">
             <div class="fieldset">
-                <h3>@Model.CustomerType.Name: user details</h3>
+                <h3>@Model.CustomerType: user details</h3>
 
                 <div class="form-fields">
 
                     <div class="inputs">
                         <label>Customer status</label>
-                        @Html.EditorFor(model => model.CustomerStatus.Name)
+                        @Html.TextBoxFor(model => model.CustomerStatus, new { @disabled = "disabled" })
 
                     </div>
                     <div class="inputs">
+                        <label>Login user</label>
+                        @Html.TextBoxFor(model => model.UserName, new {@disabled = "disabled" })
+                       
+                   </div>
+
+                    @if (!Model.IsAdmin)
+                    {
+                        
+                            <div id="impersonateDiv" class="invisible">
+                                <div class="inputs">
+                                    <label>Imput the impersonate code</label>
+                                    @*<input name="ImpersonateCode" id="ImpersonateCode" />*@
+                                    @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode" })
+                                </div>
+                            </div>
+                            
+                            <div class="buttons">
+                                <input type="button" class="btn btn-danger" id="impersonateBtn" value="Impersonate" />
+
+                            </div>
+                    }
+
+
+                    <div class="inputs">
                         <label>Customer type</label>
 
-                        @Html.EditorFor(model => model.CustomerType.Name)
+                        @Html.EditorFor(model => model.CustomerType)
 
                     </div>
 
@@ -81,7 +105,7 @@
                 </div>
             </div>
 
-            @if (Model.CustomerType.Name == "driver")
+            @if (Model.CustomerType == "driver")
             {
                 <div class="fieldset">
                     <div class="title">
@@ -148,7 +172,7 @@
                         </div>
                     </li>
                 </ol>
-                
+
                 @if (Model.Addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default").FirstOrDefault() == null)
                 {
                     <div class="alert alert-danger" role="alert">
@@ -165,7 +189,7 @@
 
                         <div class="section address-item">
                             <div class="title">
-                                
+
                                 <strong>@address.Contact @address.Phone</strong>
                             </div>
                             <ul class="info">
@@ -181,7 +205,7 @@
                                     @address.Country
                                 </li>
                             </ul>
-                            
+
                         </div>
 
                     </div>
@@ -222,7 +246,7 @@
                                 @address.Country
                             </li>
                         </ul>
-                        
+
                     </div>
                 }
             </div>
@@ -257,63 +281,18 @@
                                 @address.Country
                             </li>
                         </ul>
-                        
+
                     </div>
                 }
             </div>
 
-@if (Model.CustomerType.Name == "sender" && Model.ShipmentSenders.Count()>0)
+            @if (Model.CustomerType == "sender" && Model.ShipmentSenders.Count()>0)
 {
-    <div class="order-list">
-        <div class="page-title">
-            <h1>Packages</h1>
-        </div>
-        @foreach (var item in Model.ShipmentSenders)
-        {
-            var urlPickup = ViewBag.Uri + item.PickupPictureUri;
-            var urlDelivery = "";
-            if (string.IsNullOrEmpty(item.DeliveredPictureUri))
-            {
-                urlDelivery = ViewBag.Uri + "/images/DefaultProfileImage.png";
-            }
-            else
-            { urlDelivery = ViewBag.Uri + item.DeliveredPictureUri; }
-
-            <div class="section order-item">
-                <div class="title">
-                    <strong>Shipping #: @item.IdentityCode</strong>
-                </div>
-                <ul class="info">
-                    <li>Status: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
-                    <li>Date: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                    <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                    <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
-                    <li>Pickup Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
-                    <li>Delivery Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
-                    <li>
-                        <div class="pull-left">
-                            <div>PickUp Image</div>
-                            <img src="@urlPickup" class="img-rounded" alt="no package image" width="100" height="75">
-                        </div>
-                        <div class="col-5">
-                            <div>Delivery Image</div>
-                            <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
-                        </div>
-                    </li>
-                </ul>
-                 
-            </div>
-        }
-        
-    </div>
-}
-@if (Model.CustomerType.Name == "driver" && Model.ShipmentDrivers.Count() > 0)
-{
-    <div class="order-list">
-        <div class="page-title">
-            <h1>Packages</h1>
-        </div>
-        @foreach (var item in Model.ShipmentDrivers)
+                <div class="order-list">
+                    <div class="page-title">
+                        <h1>Packages</h1>
+                    </div>
+                    @foreach (var item in Model.ShipmentSenders)
         {
             var urlPickup = ViewBag.Uri + item.PickupPictureUri;
             var urlDelivery = "";
@@ -350,13 +329,59 @@
             </div>
         }
 
-    </div>
+                </div>
+}
+            @if (Model.CustomerType == "driver" && Model.ShipmentDrivers.Count() > 0)
+{
+                <div class="order-list">
+                    <div class="page-title">
+                        <h1>Packages</h1>
+                    </div>
+                    @foreach (var item in Model.ShipmentDrivers)
+        {
+            var urlPickup = ViewBag.Uri + item.PickupPictureUri;
+            var urlDelivery = "";
+            if (string.IsNullOrEmpty(item.DeliveredPictureUri))
+            {
+                urlDelivery = ViewBag.Uri + "/images/DefaultProfileImage.png";
+            }
+            else
+            { urlDelivery = ViewBag.Uri + item.DeliveredPictureUri; }
+
+            <div class="section order-item">
+                <div class="title">
+                    <strong>Shipping #: @item.IdentityCode</strong>
+                </div>
+                <ul class="info">
+                    <li>Status: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
+                    <li>Date: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                    <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                    <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
+                    <li>Pickup Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
+                    <li>Delivery Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
+                    <li>
+                        <div class="pull-left">
+                            <div>PickUp Image</div>
+                            <img src="@urlPickup" class="img-rounded" alt="no package image" width="100" height="75">
+                        </div>
+                        <div class="col-5">
+                            <div>Delivery Image</div>
+                            <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        }
+
+                </div>
 }
 
 
-            </div>
         </div>
-   <script>
+    </div>
+</div>
+ <script>
        //$(document).ready(function () {
        //$(".btnAssingShipping").click(function () { alert(1); });
 
@@ -379,4 +404,34 @@
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#impersonateBtn").click(function () { 
+            $("#impersonateDiv").removeClass('invisible');
+            if ($("#ImpersonateCode").val() == '')
+            { alert("enter impersonate code");}
+
+
+            //alert($("#UserName").val());
+        });
+        //$(this).addClass('er-red');
+     });
+    @*       var theDiv = document.getElementById("newShipmentTr");
+    var button = document.getElementById("button");
+
+    function removeRed() {
+
+        var classContent = theDiv.className;
+
+        theDiv.className = classContent.replace("sr-only", "").trim();
+    }
+
+    button.addEventListener("click", removeRed, false);*@
+
+
+</script>
+
     }
