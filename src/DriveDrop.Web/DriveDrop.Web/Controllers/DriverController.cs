@@ -432,7 +432,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var currenUserUri = API.Driver.GetDriver(_remoteServiceDriversUrl, user.Email, id ?? 0);
+            var currenUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
             var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
             var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
 
@@ -468,15 +468,23 @@ namespace DriveDrop.Web.Controllers
                     var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
 
-                    var updateInfo = API.Driver.UpdateInfo(_remoteServiceDriversUrl);
-
-                    var response = await _apiClient.PostAsync(updateInfo, model, token);
-                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+                    var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                    var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+                    if (customer != null)
                     {
-                        //throw new Exception("Error creating Shipping, try later.");
 
-                        ModelState.AddModelError("", "Error creating Shipping, try later.");
 
+                        var updateInfo = API.Driver.UpdateInfo(_remoteServiceDriversUrl);
+
+                        var response = await _apiClient.PostAsync(updateInfo, model, token);
+                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            //throw new Exception("Error creating Shipping, try later.");
+
+                            ModelState.AddModelError("", "Error creating Shipping, try later.");
+
+                        }
                     }
                 }
                 catch (DbUpdateException ex)
@@ -502,9 +510,9 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
             var userString = await _apiClient.GetStringAsync(getUserUri, token);
-            var customer = JsonConvert.DeserializeObject<Customer>(userString);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
 
             var assign = API.Driver.AssignDriver(_remoteServiceDriversUrl, customer.Id, shipingId);
 
@@ -528,11 +536,11 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var getUserUri = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
             var userString = await _apiClient.GetStringAsync(getUserUri, token);
-            var customer = JsonConvert.DeserializeObject<Customer>(userString);
-            
-                var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, shippingId, shippingStatusId);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+
+            var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, shippingId, shippingStatusId);
 
 
                 var dataString = await _apiClient.GetStringAsync(assign, token);

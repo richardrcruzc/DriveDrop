@@ -50,6 +50,13 @@ namespace ApplicationCore.Entities.ClientAgregate
         public string VehiclePhotoUri { get; private set; }
         public string InsurancePhotoUri { get; private set; }
 
+        public Customer EndImpersonate()
+        {
+            UserNameToImpersonate = null;
+
+            return this;
+        }
+
         public Customer Impersonate(string userName)
         {
             UserNameToImpersonate = userName;

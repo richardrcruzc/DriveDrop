@@ -21,8 +21,20 @@ namespace DriveDrop.Api.Services
             _env = env;
 
         }
+        
+        public async Task<bool> EndImpersonated(string adminUser)
+        {
+            var admin = await _context.Customers.Where(x => x.UserName == adminUser).FirstOrDefaultAsync();
+            if (admin.CustomerTypeId != 1)
+                return false;
+             
+            admin.EndImpersonate();
+            _context.Update(admin);
+            await _context.SaveChangesAsync();
 
-        public async Task<bool> IsImpersonate(string adminUser)
+            return true;
+        }
+            public async Task<bool> IsImpersonate(string adminUser)
         {
             var isImpersonated = await _context.Customers.Where(c => c.UserName == adminUser && c.CustomerTypeId == 1).FirstOrDefaultAsync();
             if (isImpersonated == null)
@@ -77,6 +89,8 @@ namespace DriveDrop.Api.Services
         public async Task<CurrentCustomerModel> Get(string user, int customerId)
         {
             var cc = await GetCustomerById(customerId);
+
+            
             if (cc.UserName == user)
                 cc.IsValid = true;
             else
@@ -84,6 +98,7 @@ namespace DriveDrop.Api.Services
 
             if (cc.IsImpersonated)
             {
+                cc.IsValid = true;
                 cc = await Get(cc.UserNameToImpersonate);
             }
 
@@ -93,6 +108,28 @@ namespace DriveDrop.Api.Services
         }
             public async Task<CurrentCustomerModel> GetCustomerById(int customerId)
             {
+            var canBeUnImpersonate = false;
+            //check for impersonated
+            var isImpersonated = await _context.Customers
+                .Where(x => x.Id == customerId)
+                .FirstOrDefaultAsync();
+
+            if (!string.IsNullOrWhiteSpace(isImpersonated.UserNameToImpersonate))
+            {
+                var iUser= await _context.Customers
+                .Where(x => x.UserName == isImpersonated.UserNameToImpersonate)
+                .FirstOrDefaultAsync();
+
+                //user impersonated?
+                if (iUser != null)
+                {
+                    customerId = iUser.Id;
+                    canBeUnImpersonate = true;
+                }
+            }
+
+            //alway bring the impersonated user
+
             var c = await _context.Customers
                   .Include(s => s.TransportType)
                  .Include(t => t.CustomerStatus)
@@ -151,10 +188,10 @@ namespace DriveDrop.Api.Services
                 VehicleYear=c.VehicleYear
             };
             if(c.DefaultAddress!=null)
-            currentCustomer.DefaultAddress = new AddressModel(c.DefaultAddress.Street, c.DefaultAddress.City, c.DefaultAddress.State, c.DefaultAddress.Country, c.DefaultAddress.ZipCode, c.DefaultAddress.Phone, c.DefaultAddress.Contact, c.DefaultAddress.Longitude, c.DefaultAddress.Longitude, c.DefaultAddress.TypeAddress) ;
+            currentCustomer.DefaultAddress = new AddressModel(c.DefaultAddress.Id, currentCustomer.Id, c.DefaultAddress.Street, c.DefaultAddress.City, c.DefaultAddress.State, c.DefaultAddress.Country, c.DefaultAddress.ZipCode, c.DefaultAddress.Phone, c.DefaultAddress.Contact, c.DefaultAddress.Longitude, c.DefaultAddress.Longitude, c.DefaultAddress.TypeAddress) ;
             currentCustomer.ShipmentDrivers = c.ShipmentDrivers;
             currentCustomer.ShipmentSenders = c.ShipmentSenders;
-            currentCustomer.Addresses =  c.Addresses.Select(x=> new AddressModel(x.Street, x.City, x.State, x.Country, x.ZipCode, x.Phone, x.Contact, x.Longitude, x.Longitude, x.TypeAddress  )).ToList();
+            currentCustomer.Addresses =  c.Addresses.Select(x=> new AddressModel(x.Id, currentCustomer.Id, x.Street, x.City, x.State, x.Country, x.ZipCode, x.Phone, x.Contact, x.Longitude, x.Longitude, x.TypeAddress  )).ToList();
             if (c.TransportType != null) {
                 currentCustomer.TransportType = c.TransportType.Name;
                 currentCustomer.TransportTypeId = c.TransportTypeId;
@@ -166,6 +203,10 @@ namespace DriveDrop.Api.Services
 
             currentCustomer.IsValid = true;
 
+            if (canBeUnImpersonate)
+            { 
+                currentCustomer.CanBeUnImpersonate = true;
+            }
 
             return currentCustomer;
         }

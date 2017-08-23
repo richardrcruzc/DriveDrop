@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace DriveDrop.Api.Controllers
 {
 
-   [Authorize]
+   //[Authorize]
     [Route("api/v1/[controller]")]
     public class ShippingsController : Controller
     {
@@ -312,8 +312,8 @@ namespace DriveDrop.Api.Controllers
                     var sender = _context.Customers.Find(c.CustomerId);
 
 
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity,c.PickupState,c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0, "drop");
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity,c.PickupState,c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0, "pickup");
 
                     var tmpUser = Guid.NewGuid().ToString();
 
@@ -333,51 +333,57 @@ namespace DriveDrop.Api.Controllers
                     await _context.SaveChangesAsync();
 
 
+                sender.AddAddress(deliveryAddres);
+                sender.AddAddress(pickUpAddres);
 
-                    //Guid extName = Guid.NewGuid();
-                    ////saving files
-                    //long size = files.Sum(f => f.Length);
+                _context.Update(sender);
 
-                    //// full path to file in temp location
-                    //var filePath = Path.GetTempFileName();
-                    //var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\shipment");
-                    //var fileName = "";
+                await _context.SaveChangesAsync();
 
-                    //foreach (var formFile in files)
-                    //{
+                //Guid extName = Guid.NewGuid();
+                ////saving files
+                //long size = files.Sum(f => f.Length);
 
-                    //    if (formFile.Length > 0)
-                    //    {
-                    //        var extension = ".jpg";
-                    //        if (formFile.FileName.ToLower().EndsWith(".jpg"))
-                    //            extension = ".jpg";
-                    //        if (formFile.FileName.ToLower().EndsWith(".tif"))
-                    //            extension = ".tif";
-                    //        if (formFile.FileName.ToLower().EndsWith(".png"))
-                    //            extension = ".png";
-                    //        if (formFile.FileName.ToLower().EndsWith(".gif"))
-                    //            extension = ".gif";
+                //// full path to file in temp location
+                //var filePath = Path.GetTempFileName();
+                //var uploads = Path.Combine(_env.WebRootPath, "uploads\\img\\shipment");
+                //var fileName = "";
+
+                //foreach (var formFile in files)
+                //{
+
+                //    if (formFile.Length > 0)
+                //    {
+                //        var extension = ".jpg";
+                //        if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                //            extension = ".jpg";
+                //        if (formFile.FileName.ToLower().EndsWith(".tif"))
+                //            extension = ".tif";
+                //        if (formFile.FileName.ToLower().EndsWith(".png"))
+                //            extension = ".png";
+                //        if (formFile.FileName.ToLower().EndsWith(".gif"))
+                //            extension = ".gif";
 
 
 
 
-                    //        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                    //        fileName = string.Format("uploads\\img\\shipment\\{0}{1}", extName, extension);
+                //        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                //        fileName = string.Format("uploads\\img\\shipment\\{0}{1}", extName, extension);
 
-                    //        using (var stream = new FileStream(filePath, FileMode.Create))
-                    //        {
-                    //            await formFile.CopyToAsync(stream);
-                    //        }
-                    //    }
-                    //}
-                    //if (!string.IsNullOrWhiteSpace(fileName))
-                    //{
-                    //    shipment.SetPickupPictureUri(fileName);
-                    //    _context.SaveChanges();
-                    //    await _context.SaveChangesAsync();
-                    //}
+                //        using (var stream = new FileStream(filePath, FileMode.Create))
+                //        {
+                //            await formFile.CopyToAsync(stream);
+                //        }
+                //    }
+                //}
+                //if (!string.IsNullOrWhiteSpace(fileName))
+                //{
+                //    shipment.SetPickupPictureUri(fileName);
+                //    _context.SaveChanges();
+                //    await _context.SaveChangesAsync();
+                //}
 
-                    return Ok(sender.Id);
+                return Ok(sender.Id);
 
                     //return RedirectToAction("result", new { id = sender.Id });
                     //return CreatedAtAction(nameof(Result), new { id = sender.Id }, null);

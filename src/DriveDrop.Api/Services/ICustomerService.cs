@@ -13,6 +13,7 @@ namespace DriveDrop.Api.Services
         Task<CurrentCustomerModel> Get(string user);
         Task<bool> SetImpersonate(string adminUser, string userName);
         Task<bool> IsImpersonate(string adminUser);
+        Task<bool> EndImpersonated(string adminUser);
     }
     }
  

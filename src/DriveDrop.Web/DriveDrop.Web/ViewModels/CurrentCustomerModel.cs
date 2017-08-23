@@ -7,7 +7,8 @@ namespace DriveDrop.Web.ViewModels
 {
     public class CurrentCustomerModel
     {
-
+        public bool CanBeUnImpersonate { get; set; }
+        public string UserNameToImpersonate { get; set; }
         public int Id { get; set; }
         public string IdentityGuid { get; set; }
         public string UserGuid { get; set; }
@@ -67,6 +68,13 @@ namespace DriveDrop.Web.ViewModels
             }
         }
 
+        public bool IsImpersonated 
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.UserNameToImpersonate);
+            }
+        }
 
     }
 }

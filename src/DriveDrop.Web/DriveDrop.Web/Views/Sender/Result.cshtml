@@ -24,9 +24,9 @@
 
 
                     <input asp-for="Id" hidden />
-                    <input asp-for="StatusId" hidden />
+                    <input asp-for="CustomerStatusId" hidden />
                     <input asp-for="CustomerStatus" hidden />
-                <input asp-for="PhotoUrl" hidden />
+                <input asp-for="PersonalPhotoUri" hidden />
                 
                     <div class="fieldset">
 
@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="avatar-page">
                                     <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
-                                    <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="200" height="200" />
+                                    <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="200" height="200" />
                                 </div>
 
                             </div>

@@ -42,7 +42,76 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
 
         }
-        
+
+        public async Task<IActionResult> EndImpersonated()
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+
+            var getcurrent = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+            var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
+            var currentAdmin = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
+
+
+            if (currentAdmin == null)
+            {
+                return NotFound();
+            }
+
+            var impersonate =API.Admin.EndImpersonated(_remoteServiceBaseUrl, user.Email);
+            var impersonateString = await _apiClient.GetStringAsync(impersonate, token);
+            var impersonateResponse = JsonConvert.DeserializeObject<bool>((impersonateString));
+
+
+            return RedirectToAction("Index", "home");
+        }
+            public async Task<IActionResult> SetImpersonate(string userToImpersonate, string code)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+
+            var getcurrent = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+            var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
+            var currentAdmin = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
+
+
+            if (currentAdmin == null)
+            {
+                return NotFound();
+            }
+
+            if (!currentAdmin.IsAdmin)
+                return NotFound("Invalid entry");
+
+
+            var getUser = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+            var userDataString = await _apiClient.GetStringAsync(getUser, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((userDataString));
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            if (currentUser.VerificationId.ToLower() != code.ToLower())
+            {
+                return Json("Invalid Impersonate code"); ;
+            }
+
+            var impersonateUri = API.Admin.SetImpersonate(_remoteServiceBaseUrl, user.Email, userToImpersonate);
+            var impersonateString = await _apiClient.GetStringAsync(impersonateUri, token);
+            var isImpersonatedResponse = JsonConvert.DeserializeObject<bool>(impersonateString);
+
+            if (!isImpersonatedResponse)
+                return Json("Invalid entry");          
+
+
+            return Json("User Impersonated");
+
+        }
+
+
         public async Task<IActionResult> ChangeCustomerStatus(int customerId, int statusId)
         {
             var user = _appUserParser.Parse(HttpContext.User);
@@ -66,7 +135,7 @@ namespace DriveDrop.Web.Controllers
             return Json(dataString);
 
         }
-            public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
+       public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
         {
             try
             {
@@ -80,7 +149,7 @@ namespace DriveDrop.Web.Controllers
              if (!isAdminResponse)
                     return NotFound("Invalid entry");
 
-                var itemsPage = 3;
+                var itemsPage = 10;
             if (page < 0)
                 page = 0;
 
@@ -92,7 +161,8 @@ namespace DriveDrop.Web.Controllers
             var response = JsonConvert.DeserializeObject<CustomerIndex>(dataString);
 
                 ViewBag.CustomerStatus = response.CustomerStatus;
-
+                if (response.LastName == null || response.LastName == "null")
+                    response.LastName = string.Empty;
             return View(response);
 
         }
@@ -201,7 +271,7 @@ namespace DriveDrop.Web.Controllers
            var getUri = API.Common.GetAllCustomerTypes(_remoteServiceCommonUrl);
             var dataString = await _apiClient.GetStringAsync(getUri);
             var CustomerTypes = new List<SelectListItem>();
-            CustomerTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            CustomerTypes.Add(new SelectListItem() { Value = null, Text = "All Types", Selected = true });
 
             var gets = JArray.Parse(dataString);
 
@@ -218,7 +288,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllCustomerStatus(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var customerStatus = new List<SelectListItem>();
-            customerStatus.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            customerStatus.Add(new SelectListItem() { Value = null, Text = "All Status", Selected = true });
 
               gets = JArray.Parse(dataString);
 
@@ -235,7 +305,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllTransportTypes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var transportTypes = new List<SelectListItem>();
-            transportTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            transportTypes.Add(new SelectListItem() { Value = null, Text = "All Transport", Selected = true });
 
             gets = JArray.Parse(dataString);
 

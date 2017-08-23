@@ -634,6 +634,7 @@
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Manage\" />
+    <Folder Include="Views\Shared\Components\UserStatus\" />
     <Folder Include="Views\Shared\Components\PerMiles\" />
   </ItemGroup>
  

@@ -8,7 +8,7 @@ namespace DriveDrop.Web.ViewModels
     
     public class Customer
     {
-
+        public string UserName { get; set; }
         public int Id { get;  set; }
         public string IdentityGuid { get;  set; }
         public string UserGuid { get;  set; }

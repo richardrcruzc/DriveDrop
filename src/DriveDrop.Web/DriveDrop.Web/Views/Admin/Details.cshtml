@@ -412,7 +412,10 @@
         $("#impersonateBtn").click(function () { 
             $("#impersonateDiv").removeClass('invisible');
             if ($("#ImpersonateCode").val() == '')
-            { alert("enter impersonate code");}
+            {
+                alert("enter impersonate code");
+                return false;
+            }
 
 
             //alert($("#UserName").val());

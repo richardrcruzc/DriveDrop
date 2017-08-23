@@ -93,7 +93,7 @@ namespace DriveDrop.Web.Controllers
             //call shipping api service
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
-
+            
             var getUser = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
 
             var dataString = await _apiClient.GetStringAsync(getUser, token);
@@ -105,7 +105,7 @@ namespace DriveDrop.Web.Controllers
             var listAddresses = new List<AddressModel>();
             foreach (var a in response.Addresses)
             {
-                if (response.DefaultAddress.Id == a.Id)
+                if (response.DefaultAddress!=null && response.DefaultAddress.Id == a.Id)
                     a.TypeAddress = "default";
                 listAddresses.Add(a);
             }
@@ -133,7 +133,7 @@ namespace DriveDrop.Web.Controllers
 
             var dataString = await _apiClient.GetStringAsync(getUser, token);
 
-            var customer = JsonConvert.DeserializeObject<Customer>((dataString));
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
             if (customer == null)
                 return "Address Not Found";
             ViewBag.Id = customer.Id;

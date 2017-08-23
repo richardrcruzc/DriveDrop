@@ -8,6 +8,7 @@ namespace DriveDrop.Api.ViewModels
 {
     public class AddressModel 
     {
+        public int Id { get; set; }
         public int CustomerId { get; set; }
         public String TypeAddress { get;  set; }
 
@@ -29,8 +30,10 @@ namespace DriveDrop.Api.ViewModels
         public Double Longitude { get;  set; }
         protected AddressModel() { }
 
-        public AddressModel(string street, string city, string state, string country, string zipcode,string phone, string contact, Double latitude, Double longitude, string typeAddress ="home" )
+        public AddressModel(int id, int customerId, string street, string city, string state, string country, string zipcode,string phone, string contact, Double latitude, Double longitude, string typeAddress ="home" )
         {
+            Id = id;
+            CustomerId = customerId;
             TypeAddress = typeAddress;
             Street = street;
             City = city;

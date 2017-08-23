@@ -68,7 +68,7 @@
                                     <span asp-validation-for="PickupCountry" class="text-danger"></span>
                                 </div>
                                 <div class="inputs">
-                                    <input asp-for="PickupPhone" class="form-control" placeholder="Phone"   />
+                                    <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Phone"   />
                                     <span class="required">*</span>
                                     <span asp-validation-for="PickupPhone" class="text-danger"></span>
                                 </div>
@@ -122,7 +122,7 @@
                                 <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
                             </div>
                             <div class="inputs">
-                                <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone"   />
+                                <input asp-for="DeliveryPhone" class="form-control phone-number" placeholder="Phone"   />
                                 <span class="required">*</span>
                                 <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
                             </div>
@@ -316,6 +316,28 @@
 
             var pAdrress = $('#PickupAddressId option:selected').text();
             var dAddress = $('#DropAddressId option:selected').text();
+            alert(pAdrress);
+            alert(dAddress);
+            if (pAdrress == 'Add new address') {
+                pAdrress = document.getElementById("PickupStreet").value + " " +
+                    document.getElementById("PickupCity").value + " " +
+                    document.getElementById("PickupState").value + " " +
+                    document.getElementById("PickupZipCode").value + " " +
+                    document.getElementById("PickupCountry").value + " ";
+
+
+            }
+            if (dAddress == 'Add new address')
+            { 
+                dAddress=   document.getElementById("DeliveryStreet").value +" "+
+                document.getElementById("DeliveryCity").value + " "+
+                document.getElementById("DeliveryState").value + " "+
+                document.getElementById("DeliveryZipCode").value + " "+
+                document.getElementById("DeliveryCountry").value + " " ; 
+
+
+            }
+             
 
                     var geocoder = new google.maps.Geocoder;
 
@@ -356,11 +378,13 @@
                                     // data is your result from controller
                                     
                                     if (data) { 
-                                        $("#distance").value = km;
+                                        $("#Distance").val(km);
                                         $(".value-Sub").text(data.strSubTotal);
                                         $(".value-Discount").text(data.strDiscount);
                                         $(".value-Tax").text(data.strTaxAmount);
                                         $(".value-total").text(data.strAmountToCharge);
+
+                                        alert($("#Distance").val());
 
                                     }
 

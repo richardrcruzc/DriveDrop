@@ -52,7 +52,33 @@ namespace DriveDrop.Api.Controllers
 
         }
 
+        // GET api/values/5
+        [HttpGet]
+        [Route("[action]/{userName}")]
+        public async Task<IActionResult> GetByUserName(string userName )
+        {
+            try
+            {
+                var customer = await _cService.Get(userName);
 
+
+                if (customer == null || !customer.IsValid)
+                    return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
+
+
+                if (customer.CustomerTypeId != 3)
+                    return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
+
+                return Ok(customer);
+
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest("DriverNotFound" + exe.Message);
+            }
+
+        }
         // GET api/values/5
         [HttpGet]
         [Route("[action]/userName/{userName}/customerId/{customerId:int}")]

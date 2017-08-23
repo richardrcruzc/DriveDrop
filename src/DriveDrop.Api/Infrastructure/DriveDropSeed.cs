@@ -29,6 +29,11 @@ namespace DriveDrop.Api.Infrastructure
                 var context = (DriveDropContext)applicationBuilder
                 .ApplicationServices.GetService(typeof(DriveDropContext));
 
+                if (!context.TaxRates.Any())
+                {
+                    context.TaxRates.Add(new Tax("WA", "Tacoma", 12.5M));
+                }
+
 
                 if (!context.CustomerStatuses.Any())
                 {

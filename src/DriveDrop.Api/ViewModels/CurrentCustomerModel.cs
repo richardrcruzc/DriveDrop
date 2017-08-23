@@ -10,6 +10,7 @@ namespace DriveDrop.Api.ViewModels
    
     public class CurrentCustomerModel
     {
+        public bool CanBeUnImpersonate { get; set; }
         public string UserNameToImpersonate { get;   set; }
         public int Id { get; set; }
         public string IdentityGuid { get; set; }

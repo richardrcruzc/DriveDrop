@@ -92,8 +92,8 @@ namespace DriveDrop.Web.Controllers
 
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
-
-            var currenUserUri = API.Sender.GetSender(_remoteServiceCommonUrl, user.Email, id ?? 0);
+             
+            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email );
             var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
             var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString)); 
 
@@ -105,9 +105,8 @@ namespace DriveDrop.Web.Controllers
               
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
                 currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
-           
-             
 
+             
 
             return View(currentUser);
         }
@@ -131,17 +130,22 @@ namespace DriveDrop.Web.Controllers
 
                 var user = _appUserParser.Parse(HttpContext.User);
                 var token = await GetUserTokenAsync();
+                    var getUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
+                    var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                    var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+                    if (customer != null)
+                    {
+                        var updateInfo = API.Sender.UpdateInfo(_remoteServiceBaseUrl);
 
-                var updateInfo = API.Sender.UpdateInfo(_remoteServiceBaseUrl);
+                        var response = await _apiClient.PostAsync(updateInfo, model, token);
+                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            //throw new Exception("Error creating Shipping, try later.");
 
-                var response = await _apiClient.PostAsync(updateInfo, model, token);
-                if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                {
-                    //throw new Exception("Error creating Shipping, try later.");
+                            ModelState.AddModelError("", "Error creating Shipping, try later.");
 
-                    ModelState.AddModelError("", "Error creating Shipping, try later.");
-
-                }
+                        }
+                    }
                 }
                 catch (DbUpdateException ex)
                 {
@@ -241,7 +245,7 @@ namespace DriveDrop.Web.Controllers
                     var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceShippingsUrl);
 
                     var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
-                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError || response.StatusCode==System.Net.HttpStatusCode.Unauthorized)
                     {
                         //throw new Exception("Error creating Shipping, try later.");
                         await PrepareCustomerModel(c);
@@ -251,8 +255,10 @@ namespace DriveDrop.Web.Controllers
                     }
 
                     // try to process payment with  paypal
-
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     return RedirectToAction("PostToPayPalAsync", new { item = "Charge per Shipping Service", amount = 100, customerId = c.CustomerId });
+                    else
+                        ModelState.AddModelError("", "Error creating Shipping, try later.");
                 }
                     // response.EnsureSuccessStatusCode();
                     //return RedirectToAction("result", new { id = c.CustomerId });
@@ -655,11 +661,11 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var getById = API.Sender.GetbyId(_remoteServiceBaseUrl, id);
+            var getById = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
 
             var dataString = await _apiClient.GetStringAsync(getById, token);
 
-            var response = JsonConvert.DeserializeObject<Customer>((dataString));
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
             var addressesP = new List<SelectListItem>();
             var addressesD = new List<SelectListItem>();
 

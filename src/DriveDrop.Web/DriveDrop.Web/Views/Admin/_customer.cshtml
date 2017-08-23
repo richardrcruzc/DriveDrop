@@ -9,6 +9,9 @@
   @Model.FullName
 </td>
 <td>
+    @Model.UserName
+</td>
+<td>
    @*@Model.CustomerStatus.Name*@
     <select asp-for="@Model.CustomerStatusId" asp-items="@ViewBag.CustomerStatus" class="esh-catalog-filter"  onchange="changstatus(this,@(Model.Id))" ></select>
 </td>

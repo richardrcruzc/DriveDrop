@@ -114,11 +114,26 @@ namespace DriveDrop.Web.Infrastructure
             { 
                 return $"{baseUri}/GetbyUserName/{userName}";
             }
+            public static string SetImpersonate(string baseUri, string adminUser, string userName)
+            {
+                return $"{baseUri}/SetImpersonate/adminUser/{adminUser}/userName/{userName}";
+            }
+
+            public static string EndImpersonated(string baseUri, string adminUser)
+            {
+                return $"{baseUri}/EndImpersonated/adminUser/{adminUser}";
+            }
 
         }
         public static class Sender
         {
-            
+            public static string GetByUserName(string baseUri, string userName )
+            { 
+
+                return $"{baseUri}/GetByUserName/{userName}";
+            }
+
+
             public static string GetSender(string baseUri, string userName, int customerId)
             {
                 var userNameIdQs = userName.ToString();
@@ -154,6 +169,11 @@ namespace DriveDrop.Web.Infrastructure
         }
         public static class Driver
         {
+            public static string GetByUserName(string baseUri, string userName)
+            {
+                return $"{baseUri}/GetByUserName/{userName}";
+            }
+
             public static string GetDriver(string baseUri, string userName, int customerId)
             {
                 var userNameIdQs = userName.ToString();
@@ -236,6 +256,7 @@ namespace DriveDrop.Web.Infrastructure
 
         public static class Common
         {
+
             public static string PostFiles(string baseUri )
             {
                 return $"{baseUri}PostFiles";

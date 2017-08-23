@@ -36,6 +36,14 @@ namespace DriveDrop.Api.Controllers
 
 
         [HttpGet]
+        [Route("[action]/adminUser/{adminUser}")]
+        public async Task<IActionResult> EndImpersonated(string adminUser)
+        {
+            var isImpersonated = await _cService.EndImpersonated(adminUser);
+            return Ok(isImpersonated);
+        }
+
+        [HttpGet]
         [Route("[action]/adminUser/{adminUser}/userName/{userName}")]
         public async Task<IActionResult> SetImpersonate(string adminUser, string userName)
         {
@@ -158,7 +166,7 @@ namespace DriveDrop.Api.Controllers
 
             var dataItems = await _context.CustomerTypes.Select(x => (new SelectListItem { Value = x.Id.ToString(), Text = x.Name })).ToListAsync();
             var items = new List<SelectListItem>();
-            items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            items.Add(new SelectListItem() { Value = null, Text = "All Customers", Selected = true });
             foreach (var itm in dataItems)
             {
                 items.Add(new SelectListItem()
@@ -172,7 +180,7 @@ namespace DriveDrop.Api.Controllers
 
               dataItems = await _context.CustomerStatuses.Select(x => (new SelectListItem { Value = x.Id.ToString(), Text = x.Name })).ToListAsync();
               items = new List<SelectListItem>();
-            items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            items.Add(new SelectListItem() { Value = null, Text = "All Status", Selected = true });
             foreach (var itm in dataItems)
             {
                 items.Add(new SelectListItem()
@@ -185,7 +193,7 @@ namespace DriveDrop.Api.Controllers
 
               dataItems = await _context.TransportTypes.Select(x => (new SelectListItem { Value = x.Id.ToString(), Text = x.Name })).ToListAsync();
               items = new List<SelectListItem>();
-            items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            items.Add(new SelectListItem() { Value = null, Text = "All Transport", Selected = true });
             foreach (var itm in dataItems)
             {
                 items.Add(new SelectListItem()

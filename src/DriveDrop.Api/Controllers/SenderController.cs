@@ -79,6 +79,10 @@ namespace DriveDrop.Api.Controllers
                 if (customer == null)
                     return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
 
+                if (customer.CustomerTypeId != 2)
+                    return StatusCode(StatusCodes.Status409Conflict, "SenderNotFound");
+
+
                 return Ok(customer);
 
 
@@ -246,6 +250,7 @@ namespace DriveDrop.Api.Controllers
         //PUT api/v1/[controller]/New
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SaveNewShipment([FromBody]NewShipment c) //, [FromBody]List<IFormFile> files) 
         {
 

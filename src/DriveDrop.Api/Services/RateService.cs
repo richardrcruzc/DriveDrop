@@ -67,13 +67,18 @@ namespace DriveDrop.Api.Services
                 else
                     totalDiscount =  promo.Amount;
 
-            } 
+            }
+            var taxRates = 0M;
+            var taxes =await _context.TaxRates.Where(x=>x.Id>0).FirstOrDefaultAsync();
+            if (taxes != null)
+                taxRates = taxes.Rate;
 
+            amountToCharge += taxRates;
 
             var model = new CalculatedCharge
             {
-                TaxRate = 12,
-                TaxAmount = 12 / 100 * amountToCharge,
+                TaxRate = taxRates,
+                TaxAmount = taxRates / 100 * amountToCharge,
                 AmountToCharge = amountToCharge,
                 Distance = milesDecimal,
                 DistanceAmount = rateDistance.Charge,

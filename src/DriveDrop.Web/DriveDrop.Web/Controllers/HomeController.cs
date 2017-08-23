@@ -57,21 +57,22 @@ namespace DriveDrop.Web.Controllers
             var getcurrent = API.Admin.GetbyUserName(_remoteServiceAdminUrl, user.Email);
             var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
             var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
-             
 
-            if (currentUser.IsAdmin)
-                return RedirectToAction("index", "admin");
-            else
-            {
-                
-                if (currentUser.CustomerTypeId == 1)
+            
+                if (currentUser.IsAdmin)
+                    return RedirectToAction("index", "admin");
+                else
+                {
+
+                    if (currentUser.CustomerTypeId == 1)
                         return RedirectToAction("index", "admin", new { id = currentUser.Id });
-                    else if (currentUser.CustomerTypeId==2)
-                        return RedirectToAction("result", "sender", new { id = currentUser.Id});
+                    else if (currentUser.CustomerTypeId == 2)
+                        return RedirectToAction("result", "sender", new { id = currentUser.Id });
                     else if (currentUser.CustomerTypeId == 3)
                         return RedirectToAction("result", "driver", new { id = currentUser.Id });
 
-            }
+                }
+            
 
             ViewBag.UserValid = "false";
             return RedirectToAction("Index");

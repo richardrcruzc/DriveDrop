@@ -8,9 +8,10 @@ using DriveDrop.Api.Infrastructure;
 namespace DriveDrop.Api.Migrations
 {
     [DbContext(typeof(DriveDropContext))]
-    partial class DriveDropContextModelSnapshot : ModelSnapshot
+    [Migration("20170823002528_usertoimpersonate")]
+    partial class usertoimpersonate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -401,22 +402,6 @@ namespace DriveDrop.Api.Migrations
                     b.HasIndex("RateId");
 
                     b.ToTable("RatePriorities");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Entities.Helpers.Tax", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("City");
-
-                    b.Property<decimal>("Rate");
-
-                    b.Property<string>("State");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TaxRates");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.ZipCodeState", b =>

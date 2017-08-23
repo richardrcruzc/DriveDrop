@@ -315,7 +315,7 @@ namespace DriveDrop.Api.ViewModels
         
         public int PackageSizeId { get; set; }
 
-        public Decimal ShippingWeight { get; private set; }
+        public Decimal ShippingWeight { get;   set; }
 
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
