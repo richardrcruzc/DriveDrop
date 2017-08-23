@@ -58,11 +58,12 @@ namespace DriveDrop.Web.Controllers
             {
                 return NotFound();
             }
-
-            var impersonate =API.Admin.EndImpersonated(_remoteServiceBaseUrl, user.Email);
-            var impersonateString = await _apiClient.GetStringAsync(impersonate, token);
-            var impersonateResponse = JsonConvert.DeserializeObject<bool>((impersonateString));
-
+            if (currentAdmin.CanBeUnImpersonate)
+            {
+                var impersonate = API.Admin.EndImpersonated(_remoteServiceBaseUrl, user.Email);
+                var impersonateString = await _apiClient.GetStringAsync(impersonate, token);
+                var impersonateResponse = JsonConvert.DeserializeObject<bool>((impersonateString));
+            }
 
             return RedirectToAction("Index", "home");
         }

@@ -3,10 +3,17 @@
     @if (!string.IsNullOrWhiteSpace(Model.Status))
                             {
         <p class="alert alert-info">
-            User Status: <strong>@Model.Status</strong> 
-            Impersonated user: <strong>@Model.Impersonated</strong> 
-            @Html.ActionLink("end impersonated", "endimpersonated", "admin")
-        </p>
+            <label>   User Status: <strong>@Model.Status</strong> </label>
+
+       @if (!string.IsNullOrWhiteSpace(Model.Impersonated))
+                            {
+            <label>
+                Impersonated user: <strong>@Model.Impersonated</strong>
+            </label>
+                @Html.ActionLink("end impersonated", "endimpersonated", "admin")
+            }
+
+</p>
                         
 }
 
