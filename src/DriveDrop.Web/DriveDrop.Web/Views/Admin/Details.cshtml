@@ -31,7 +31,7 @@
                     </div>
                     <div class="inputs">
                         <label>Login user</label>
-                        @Html.TextBoxFor(model => model.UserName, new {@disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.UserName, new {@disabled = "disabled", @id= "UserName" })
                        
                    </div>
 
@@ -409,14 +409,37 @@
 
 <script>
     $(document).ready(function () {
-        $("#impersonateBtn").click(function () { 
+        $("#impersonateBtn").click(function () {
             $("#impersonateDiv").removeClass('invisible');
             if ($("#ImpersonateCode").val() == '')
             {
                 alert("enter impersonate code");
                 return false;
             }
+            var userName = $("#UserName").val();
+            var impersonateCode = $("#ImpersonateCode").val();
 
+                            $.ajax({
+                                url: '@Url.Action("SetImpersonate", "admin")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "GET", //to do a post request
+
+                                contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { userToImpersonate: userName, code: impersonateCode }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    alert(data);
+                                    if (data =='User Impersonated')
+                                    window.location.href ="/home/index";
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    //alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    alert(thrownError);
+
+                                }
+                            });
+            
 
             //alert($("#UserName").val());
         });

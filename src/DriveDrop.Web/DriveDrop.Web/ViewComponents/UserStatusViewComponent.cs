@@ -43,6 +43,7 @@ namespace DriveDrop.Web.ViewComponents
 
         }
         public async Task<IViewComponentResult> InvokeAsync(int id)
+
         {
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
@@ -53,11 +54,17 @@ namespace DriveDrop.Web.ViewComponents
             var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
 
             var model = new UserStatusModel();
-            if (currentUser == null)
-            {                
+            if (currentUser == null )
+            {
+                model.Status = "There is a error with this user, please try again later...";
                 return View(model);
             }
-            if(currentUser.CustomerStatusId!=2)
+            if (currentUser.UserName == null)
+            {
+                model.Status = "There is a error with this user, please try again later...";
+                return View(model);
+            }
+            if (currentUser.CustomerStatusId!=2)
                 model.Status = currentUser.CustomerStatus;
 
             if (currentUser.CanBeUnImpersonate)

@@ -80,22 +80,22 @@ namespace DriveDrop.Web.Controllers
 
             if (currentAdmin == null)
             {
-                return NotFound();
+                return Json("Invalid entry");
             }
 
             if (!currentAdmin.IsAdmin)
-                return NotFound("Invalid entry");
+                return Json("Invalid entry");
 
 
-            var getUser = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+            var getUser = API.Admin.GetbyUserName(_remoteServiceBaseUrl, userToImpersonate);
             var userDataString = await _apiClient.GetStringAsync(getUser, token);
             var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((userDataString));
 
-            if (currentUser == null)
+            if (currentUser == null || currentUser.UserName == null)
             {
-                return NotFound();
+                return Json("Invalid entry: User Name invalid!");
             }
-            if (currentUser.VerificationId.ToLower() != code.ToLower())
+            if (currentUser.VerificationId==null || currentUser.VerificationId.ToLower() != code.ToLower())
             {
                 return Json("Invalid Impersonate code"); ;
             }
