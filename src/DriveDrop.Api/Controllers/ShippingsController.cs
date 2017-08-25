@@ -7,6 +7,7 @@ using DriveDrop.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -301,6 +302,90 @@ namespace DriveDrop.Api.Controllers
                 return BadRequest("CustomerTypesNotFound");
             }
         }
+
+        [HttpGet]
+        [Route("[action]/shippingStatusId/{shippingStatusId:int}/priorityTypeId/{priorityTypeId:int}")]
+        public async Task<IActionResult> GetShipping(int shippingStatusId, int priorityTypeId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        {
+            try
+            {
+
+                var root = _context.Shipments
+              .Where(x => x.Id > 0);
+                 
+                if(shippingStatusId > 0)
+                    root = root.Where(x => x.ShippingStatusId == shippingStatusId);
+
+                if (priorityTypeId > 0)
+                    root = root.Where(x => x.PriorityTypeId == priorityTypeId);
+
+
+                var totalItems = await root
+                 .LongCountAsync();
+
+                var itemsOnPage = await root
+                    .Include(d => d.DeliveryAddress)
+               .Include(d => d.PickupAddress)
+               .Include(d => d.ShippingStatus)
+               .Include(d => d.PriorityType)
+               .Include(s=>s.Sender)
+               .Include(s => s.Driver)
+               .OrderBy(x=>x.ShippingCreateDate).ThenBy(x=>x.PriorityTypeId)
+               .Skip(pageSize * pageIndex)
+               .Take(pageSize)               
+               .ToListAsync();
+
+                // itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+
+                var tt1 = new SelectListItem {Text ="All Priorities",Value="0" };
+                var tt2 = new SelectListItem { Text = "All Status", Value = "0" };
+
+                var shippingStatu = new List<SelectListItem>();
+                var priorityType = new List<SelectListItem>();
+
+                shippingStatu.Add(tt2);
+                priorityType.Add(tt1);
+
+                shippingStatu.AddRange( await _context.ShippingStatuses.OrderBy(x => x.Name).Select(x=>new  SelectListItem { Text = x.Name, Value=x.Id.ToString() }).ToListAsync());
+                 priorityType.AddRange(await _context.PriorityTypes.OrderBy(x => x.Name).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToListAsync()) ;
+
+                var model = new PaginatedItemsViewModel<Shipment>(
+                    pageIndex, pageSize, totalItems, itemsOnPage, shippingStatu, priorityType, null);
+ 
+
+                var si = new ShippingIndex()
+                {
+                     ShippingList =  model.Data,
+                     PriorityTypeFilterApplied= priorityTypeId,
+                     ShippingStatusFilterApplied =priorityTypeId,
+                      PriorityType= priorityType,
+                       ShippingStatus = shippingStatu,
+
+                    PaginationInfo = new PaginationInfo()
+                    {
+                        ActualPage = pageIndex,
+                        ItemsPerPage = model.Data.Count(),
+                        TotalItems = (int)model.Count,
+                        TotalPages = int.Parse(Math.Ceiling(((decimal)model.Count / pageSize)).ToString())
+                    }
+
+                };
+
+
+                return Ok(si);
+                 
+
+
+
+
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+
 
         // GET api/v1/Shippings/GetNotAssignedShipping
         [HttpGet]

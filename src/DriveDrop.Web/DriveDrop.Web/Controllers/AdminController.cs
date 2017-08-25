@@ -136,7 +136,8 @@ namespace DriveDrop.Web.Controllers
             return Json(dataString);
 
         }
-       public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
+
+        public async Task<IActionResult> Index(int? TypeFilterApplied, int? StatusFilterApplied, int? TransportFilterApplied, int? page, string LastName = null)
         {
             try
             {
@@ -226,6 +227,35 @@ namespace DriveDrop.Web.Controllers
 
 
         }
+        public async Task<IActionResult> Shippings(int? PriorityTypeFilterApplied, int? ShippingStatusFilterAApplied,   int? page)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return NotFound("Invalid entry");
+
+            var itemsPage = 10;
+            if (page < 0)
+                page = 0;
+
+            @ViewBag.CustomerId = 1;
+            //call shipping api service     
+
+            var allnotassignedshipings = API.Shipping.GetShipping(_remoteServiceShippingsUrl, ShippingStatusFilterAApplied??0, PriorityTypeFilterApplied??0, page ?? 0, itemsPage);
+
+            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            var shippings = JsonConvert.DeserializeObject<ShipingIndex>((dataString));
+            if (shippings == null)
+                return View(new ShipingIndex());
+            
+            return View(shippings);
+        }
+
         public async Task<IActionResult> ReadyToPickUp(int id)
         {
             @ViewBag.CustomerId = id;

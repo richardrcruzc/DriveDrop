@@ -27,13 +27,13 @@
                         <div class="form-fields">
                             <form asp-action="Index" asp-controller="Admin" method="post">
                                 <label class="esh-catalog-label" data-title="Type">
-                                    <select asp-for="@Model.TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
+                                    <select asp-for="TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
                                 </label>
                                 <label class="esh-catalog-label" data-title="Status">
-                                    <select asp-for="@Model.StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
+                                    <select asp-for="StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
                                 </label>
                                 <label class="esh-catalog-label" data-title="Transport Type">
-                                    <select asp-for="@Model.TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
+                                    <select asp-for="TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
                                 </label>
 
                                 <label class="esh-catalog-label" data-title="Last Name">

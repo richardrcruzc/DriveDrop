@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Identity.Api.Models;
 using Identity.Api.Configuration;
+using IdentityServer4; 
 
 namespace Identity.Api
 {
@@ -112,8 +113,22 @@ namespace Identity.Api
 
             app.UseIdentity();
 
+           
             // Adds IdentityServer
             app.UseIdentityServer();
+
+
+            //app.UseGoogleAuthentication(new GoogleOptions
+            //{
+            //    AutomaticAuthenticate = true,
+            //    AutomaticChallenge = true,
+            //    AuthenticationScheme = "Google",
+            //    DisplayName = "Google",
+            //    SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
+               
+            //    ClientId = "richardcruz@api-project-382181066575.iam.gserviceaccount.com",
+            //    ClientSecret = "89d9dcc18184fce2a18ad482aee492159281f9fb"
+            //});
 
             app.UseMvc(routes =>
             {

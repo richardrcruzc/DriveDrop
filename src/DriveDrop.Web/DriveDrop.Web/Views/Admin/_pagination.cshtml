@@ -4,9 +4,7 @@
     
          
                 <a class="previous-page @Model.Previous"
-                   id="Previous"
-                   asp-controller="Admin"
-                   asp-action="Index"
+                   id="Previous" 
                    asp-route-page="@(Model.ActualPage -1)"
                    aria-label="Previous">
                     <img title="" alt="DriveDrop" src="~/images/first.png">
@@ -17,9 +15,7 @@
                 </span>
 
                 <a class="next-page @Model.Next"
-                   id="Next"
-                   asp-controller="Admin"
-                   asp-action="Index"
+                   id="Next" 
                    asp-route-page="@(Model.ActualPage + 1)"
                    aria-label="Next">
                     <img title="" alt="DriveDrop" src="~/images/last.png">

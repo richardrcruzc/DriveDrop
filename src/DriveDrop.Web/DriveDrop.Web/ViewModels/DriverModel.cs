@@ -117,13 +117,13 @@ namespace DriveDrop.Web.ViewModels
         public CustomerStatus CustomerStatus { get; set; }
         [Required(ErrorMessage = "Your must provide a MaxPackage")]
         [Display(Name = "Maximum package to pickup")]
-        public int MaxPackage { get; set; }
+        public int? MaxPackage { get; set; }
         [Display(Name = "Pick up Radius")]
         [Required(ErrorMessage = "Your must provide a Pickup Radius")]
-        public int PickupRadius { get; set; }
+        public int? PickupRadius { get; set; }
         [Display(Name = "Deliver Radius")]
         [Required(ErrorMessage = "Your must provide a Deliver Radius")]
-        public int DeliverRadius { get; set; } 
+        public int? DeliverRadius { get; set; } 
 
         [Display(Name = "Street")]
         [Required(ErrorMessage = "Your must provide a delivery street")]

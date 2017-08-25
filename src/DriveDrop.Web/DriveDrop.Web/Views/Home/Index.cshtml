@@ -21,7 +21,9 @@
             <div class="carousel-caption" role="option">
                 <img src="~/images/DriveDroplogo.png" />
 
-                <p>
+                @if (User.FindFirst(x => x.Type == "preferred_username") == null)
+                {
+                    <p>
                     Learn how to 
                     
                     <a class="btn btn-default" href="/sender/NewSender">
@@ -40,6 +42,25 @@
 
                     </a>
                 </p>
+                }
+                else
+                {
+
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-10">
+                            <a class="btn btn-default" href="/home/myAccount">
+                                <h2>Go to myAccount&raquo;</h2>
+
+                            </a>
+                        </div>
+
+                        <div class="col-md-1">
+                        </div>
+                    </div>
+
+                }
             </div>
         </div>
         @*<div class="item">

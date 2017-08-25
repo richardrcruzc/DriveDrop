@@ -23,6 +23,7 @@ namespace Identity.Api.Configuration
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile()
+                
             };
         }
 

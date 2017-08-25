@@ -124,28 +124,7 @@ namespace DriveDrop.Api.Controllers
             var model = new PaginatedItemsViewModel<Customer>(
                pageIndex, pageSize, totalItems, itemsOnPage);
 
-
-
-            //itemsOnPage = ComposePicUri(itemsOnPage);
-
-            //var drivers = new CustomersList() { Data = model, PageIndex = pageIndex, Count = (int)totalItems, PageSize = pageSize };
-
-            //var customerList = drivers.Data.Select(x => new  CustomerViewModel
-            //{
-            //    Email = x.Email,
-            //    Commission = x.Commission,
-            //    CustomerStatus = x.CustomerStatus.Name,
-            //    CustomerType = x.CustomerType.Name,
-            //    Id = x.Id,
-            //    DeliverRadius = x.DeliverRadius,
-            //    FirstName = x.FirstName,
-            //    LastName = x.LastName,
-            //    Phone = x.Phone,
-            //    DriverLincensePictureUri = x.DriverLincensePictureUri,
-            //    TransportType = x.TransportType.Name,
-            //    MaxPackage = x.MaxPackage,
-            //    PickupRadius = x.PickupRadius,
-            //}).ToList();
+            
 
             var vm = new CustomerIndex()
             {
