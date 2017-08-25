@@ -8,9 +8,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DriveDrop.Api.Controllers
@@ -24,14 +29,89 @@ namespace DriveDrop.Api.Controllers
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
         private readonly IRateService _rateService;
+        private readonly IPayPalStandardPaymentProcessor _pp;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
 
-        
-        public ShippingsController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, IRateService rateService)
+        public ShippingsController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, 
+            IRateService rateService, IPayPalStandardPaymentProcessor pp, IOptionsSnapshot<AppSettings> settings)
         {
+            _settings = settings;
             _context = context;
             _env = env;
             _identityService = identityService;
             _rateService = rateService;
+            _pp = pp;
+        }
+
+
+        
+        [HttpGet]
+        [Route("[action]/userEmail{userEmail}/packageId{packageId}")]
+        public async Task<IActionResult> ProcessPayment(string userEmail, int packageId, decimal amount)
+        {
+            try
+            {
+                var customer = await _context.Customers
+                    .Include(s=>s.ShipmentSenders)
+                    .Where(x => x.UserName == userEmail).FirstOrDefaultAsync();
+                if (customer != null)
+                    return BadRequest("customerNotFound");
+
+                var shipping =  customer.ShipmentSenders.Where(x => x.Id == packageId).FirstOrDefault();
+                if (shipping != null)
+                    return BadRequest("ShipmentNotFound");
+
+                shipping.ApplyPayment(amount);
+                _context.Update(shipping);
+                await _context.SaveChangesAsync();
+
+                return Ok("updated");
+
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+
+
+            //try
+            //{
+            //     await _pp.PostProcessPayment(shipmentId: packageId);
+            //    return Ok("updated");
+
+
+            //}
+            //catch (Exception)
+            //{
+            //    return BadRequest("CustomerTypesNotFound");
+            //}
+        }
+        /// <summary>
+        /// Gets Paypal URL
+        /// </summary>
+        /// <returns></returns>
+        private string GetPaypalUrl()
+        {
+            return _settings.Value.UseSandbox ? "https://www.sandbox.paypal.com/us/cgi-bin/webscr" :
+                "https://www.paypal.com/us/cgi-bin/webscr";
+        }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult Return(string info, int customerId)
+        {
+            ViewBag.CustomerId = customerId;
+            ViewData["Message"] = "Your contact page.";
+             
+            return Ok("updated");
+        }
+        [HttpGet]
+        [Route("[action]")]
+        public  IActionResult  NotifyFromPaypalAsync()
+        {
+            string firstName = HttpContext.Request.Form["firstname"];
+
+            return Ok("updated");
         }
 
         [HttpGet]

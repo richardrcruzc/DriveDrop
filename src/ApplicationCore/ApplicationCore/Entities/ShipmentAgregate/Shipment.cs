@@ -58,7 +58,13 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public string Note { get; private set; }
 
         public int? PackageSizeId { get; private set; }
-        public PackageSize PackageSize { get; private set; }        
+        public PackageSize PackageSize { get; private set; }
+
+
+        public string PaymentReceipt { get; private set; }
+        public string PaymentReceived { get; private set; }
+        public string PaymentReceivedDate { get; private set; }
+        public string PaymentNotes { get; private set; }
 
 
         protected Shipment()

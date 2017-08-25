@@ -345,6 +345,7 @@ namespace DriveDrop.Web.ViewModels
 
         public IEnumerable<SelectListItem> PackageSizeList { get; set; }
 
+        public decimal TotalCharge { get; set; }
 
         public decimal Distance { get; set; }
         public int CustomerId { get; set; }
@@ -376,9 +377,7 @@ namespace DriveDrop.Web.ViewModels
         [Display(Name = "Postal code")]
         [Required(ErrorMessage = "Your must provide a pickup Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String PickupZipCode { get; set; }
-        //public Double PickupLatitude { get;  set; }
-        //public Double PickupLongitude { get;  set; }
+        public String PickupZipCode { get; set; } 
 
         public decimal? Weight { get; set; }
 
@@ -401,9 +400,7 @@ namespace DriveDrop.Web.ViewModels
         [Display(Name = "Postal Code")]
         [Required(ErrorMessage = "Your must provide a delivery Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String DeliveryZipCode { get; set; }
-        //public Double DeliveryLatitude { get;  set; }
-        //public Double DeliveryLongitude { get;  set; }
+        public String DeliveryZipCode { get; set; } 
 
 
 
@@ -414,17 +411,11 @@ namespace DriveDrop.Web.ViewModels
         public string IdentityCode { get; set; }
         public PriorityType PriorityType { get; set; }
         public int PriorityTypeLevel { get; set; }
-
-        //public int TransportTypeId { get; set; }
-        //public TransportType TransportType { get; set; }
-
-        //[Required(ErrorMessage = "Your must provide a Quantity")]
-        //public int? Quantity { get; set; }
+         
 
         [Required(ErrorMessage = "Your must provide a Shipping value")]
         public Decimal? Amount { get; set; }
-        public Decimal ShippingWeight { get; set; }
-        //public Decimal Discount { get; set; }
+        public Decimal? ShippingWeight { get; set; } 
         public string PromoCode { get; set; }
 
         public int PriorityTypeId { get; set; }
@@ -432,23 +423,7 @@ namespace DriveDrop.Web.ViewModels
         [DataType(DataType.MultilineText)]
         public string Note { get; set; }
 
-
-        ////[CreditCard]
-        //[DataType(DataType.CreditCard)]
-        //[Display(Name = "Credit Card Number")]
-        //[Required(ErrorMessage = "required")]
-        ////[Range(100000000000, 9999999999999999999, ErrorMessage = "must be between 12 and 19 digits")]
-        //public String CardNumber { get; set; }
-        //[Required]
-        //[Display(Name = "Security Number")]
-        //public int? SecurityNumber { get; set; }
-        //[Required]
-        //[Display(Name = "Card Holder Name")]
-        //public String CardHolderName { get; set; }
-        //[Required]
-        //[Display(Name = "Expiration")]
-        //public String Expiration { get; set; }
-
+         
 
 
 

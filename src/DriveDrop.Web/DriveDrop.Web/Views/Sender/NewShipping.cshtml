@@ -17,9 +17,11 @@
             <h1>My packages</h1>
         </div>
         <div class="page-body">
-            <form asp-controller="Sender" asp-action="NewShipping" data-ajax="true" role="form" data-ajax-method="POST" enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+            <form asp-controller="Sender" asp-action="NewShipping" data-ajax="true" role="form" data-ajax-method="POST" 
+                  enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">
                 <input asp-for="CustomerId" hidden />
-                <input asp-for="Distance" hidden /> 
+                <input asp-for="Distance" hidden />  
+                <input asp-for="TotalCharge" hidden /> 
 
                 <div asp-validation-summary="ModelOnly" class="result"></div>
                 <div class="fieldset">
@@ -252,7 +254,7 @@
 
                         </div>
 
-
+                    <div id ="payPalBtn" class="invisible">
                         <div class="title">
                             <strong> Payment Info </strong>
                         </div>
@@ -262,14 +264,15 @@
 
                             </div>
                         </div>
+                     </div>
 
-
-                        <div class="center-block bg-primary text-center" id="bar-notification">
-
-                        </div>
+                       
 
                     </div>
             </form>
+            <div class="center-block bg-primary text-center" id="bar-notification">
+
+            </div>
         </div>
    </div>
 
@@ -316,8 +319,7 @@
 
             var pAdrress = $('#PickupAddressId option:selected').text();
             var dAddress = $('#DropAddressId option:selected').text();
-            alert(pAdrress);
-            alert(dAddress);
+            
             if (pAdrress == 'Add new address') {
                 pAdrress = document.getElementById("PickupStreet").value + " " +
                     document.getElementById("PickupCity").value + " " +
@@ -384,7 +386,11 @@
                                         $(".value-Tax").text(data.strTaxAmount);
                                         $(".value-total").text(data.strAmountToCharge);
 
-                                        alert($("#Distance").val());
+                                        $("#TotalCharge").text(data.strAmountToCharge);
+                                        
+                                       // alert($("#Distance").val());
+
+                                        $("#payPalBtn").removeClass('invisible');
 
                                     }
 
@@ -395,86 +401,13 @@
                                     //alert(thrownError);
 
                                 }
-                            });
-
-
-
-
-
-                                //for (var i = 0; i < originList.length; i++) {
-                                //    var results = response.rows[i].elements;
-                                //    //alert(results);
-                                //    for (var j = 0; j < results.length; j++) {
-                                //        alert(originList[i] + ' to ' + destinationList[j] +
-                                //          ': ' + results[j].distance.text + ' in ' +
-                                //            results[j].duration.text);
-                                //    }
-                                //}
-
-                                //var outputDiv = document.getElementById('output');
-                                //outputDiv.innerHTML = '';
-                                //deleteMarkers(markersArray);
-
-                                //var showGeocodedAddressOnMap = function (asDestination) {
-                                //    var icon = asDestination ? destinationIcon : originIcon;
-                                //    return function (results, status) {
-                                //        if (status === 'OK') {
-                                //            map.fitBounds(bounds.extend(results[0].geometry.location));
-                                //            markersArray.push(new google.maps.Marker({
-                                //                map: map,
-                                //                position: results[0].geometry.location,
-                                //                icon: icon
-                                //            }));
-                                //        } else {
-                                //            alert('Geocode was not successful due to: ' + status);
-                                //        }
-                                //    };
-                                //};
-
-                                //for (var i = 0; i < originList.length; i++) {
-                                //    var results = response.rows[i].elements;
-                                //    geocoder.geocode({ 'address': originList[i] },
-                                //        showGeocodedAddressOnMap(false));
-                                //    for (var j = 0; j < results.length; j++) {
-                                //        geocoder.geocode({ 'address': destinationList[j] },
-                                //            showGeocodedAddressOnMap(true));
-                                //        outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                                //            ': ' + results[j].distance.text + ' in ' +
-                                //            results[j].duration.text + '<br>';
-                                //    }
-                                //}
+                            }); 
+             
                             }
                         });
 
 
-                    //function deleteMarkers(markersArray) {
-                    //    for (var i = 0; i < markersArray.length; i++) {
-                    //        markersArray[i].setMap(null);
-                    //    }
-                    //    markersArray = [];
-                    //}
-                    //var url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + "Vancouver BC" + "&destinations=" + "Tacoma, WA" + "&key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o";
-                    //$.getJSON(url, function (data, textStatus) {
-                    //    alert(results.rows[0].elements[0].distance);
-                    //    //var streetaddress = data.results[0].formatted_address;
-                    //    return ""; //streetaddress;
-                    //});
-
-
-                    //var googleUri = "https://maps.googleapis.com/maps/api/distancematrix/json";
-                    //    //? units = miles & origins=Vancouver + BC | Seattle & destinations=San+Francisco | Victoria + BC & mode=drive&key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o";
-                    //$.ajax({
-                    //    dataType: 'jsonp',
-                    //    url: googleUri,
-                    //    data: { origins: "Vancouver BC", destinations: "Tacoma, WA", mode: "drive", key:"AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o"},
-                    //    success: function (result) {
-                    //        alert(result);
-                    //       // $('#bar-notification').html(result);
-                    //    },
-                    //    error: function (response) {
-                    //        alert("Error:" + response);
-                    //    }
-                    //});
+                     
 
 
                 });
@@ -545,24 +478,28 @@
                 });
 
 
-             /*   $('form').submit(function () {
+                //$('form').submit(function () {
 
-                    if ($(this).valid()) {
-                        $.ajax({
-                            url: this.action,
-                            type: this.method,
-                            data: $(this).serialize(),
-                            success: function (result) {
-                                $('#bar-notification').html(result);
-                            },
-                            error: function (response) {
-                                alert("Error:" + response);
-                            }
-                        });
-                    }
-                    return false;
-                });
-            */
+                //    $('#calcTotal').click();
+
+                //    if ($(this).valid()) {
+
+
+                //        $.ajax({
+                //            url: this.action,
+                //            type: this.method,
+                //            data: $(this).serialize(),
+                //            success: function (result) { 
+                //                $('#bar-notification').html(result);
+                //            },
+                //            error: function (response) {
+                //                alert("Error:" + response);
+                //            }
+                //        });
+                //    }
+                //    return false;
+                //});
+            
             });
 
 
@@ -638,10 +575,7 @@
                              $("#DeliveryZipCode").val(place.address_components[i]['short_name']);
 
 
-                         /*   document.getElementById(addressType).value = '';
-                            document.getElementById(addressType).disabled = false;
-                            document.getElementById(addressType).value = val;
-                */
+                        
                      }
 
                  }
@@ -651,12 +585,7 @@
                 // Get the place details from the autocomplete object.
                 var place = autocomplete.getPlace();
 
-             /*   for (var component in componentForm) {
-
-                    document.getElementById(component).value = '';
-                    document.getElementById(component).disabled = false;
-                }
-            */
+            
                 // Get each component of the address from the place details
                 // and fill the corresponding field on the form.
                 for (var i = 0; i < place.address_components.length; i++) {
@@ -684,10 +613,7 @@
                     $("#PickupZipCode").val(place.address_components[i]['short_name']);
 
 
-                     /*   document.getElementById(addressType).value = '';
-                        document.getElementById(addressType).disabled = false;
-                        document.getElementById(addressType).value = val;
-            */
+                     
                     }
 
                 }

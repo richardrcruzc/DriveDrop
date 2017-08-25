@@ -66,6 +66,8 @@ namespace DriveDrop.Api
             });//Circular References  https://github.com/aspnet/EntityFramework/issues/4646
 
 
+            services.Configure<AppSettings>(Configuration);
+
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<DriveDropContext>(options =>
                     {
@@ -108,6 +110,7 @@ namespace DriveDrop.Api
             services.AddTransient<IRateService, RateService>();
             services.AddTransient<IDistanceService, DistanceService>();
             services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IPayPalStandardPaymentProcessor, PayPalStandardPaymentProcessor>();
             
 
             _services = services;

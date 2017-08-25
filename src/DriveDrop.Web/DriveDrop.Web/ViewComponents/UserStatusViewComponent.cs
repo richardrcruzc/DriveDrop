@@ -48,6 +48,8 @@ namespace DriveDrop.Web.ViewComponents
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
              
+            if(user.Email == "")
+                return View(new UserStatusModel());
 
             var getcurrent = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
             var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);

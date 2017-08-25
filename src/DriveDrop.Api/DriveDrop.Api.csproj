@@ -38,6 +38,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="3.2.3" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
@@ -60,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\PayPal.Api\PayPal.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />

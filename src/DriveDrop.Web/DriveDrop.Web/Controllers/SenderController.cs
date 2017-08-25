@@ -255,8 +255,8 @@ namespace DriveDrop.Web.Controllers
                     }
 
                     // try to process payment with  paypal
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    return RedirectToAction("PostToPayPalAsync", new { item = "Charge per Shipping Service", amount = 100, customerId = c.CustomerId });
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK) 
+                     return RedirectToAction("PostToPayPalAsync", new { item = "Charge per Shipping Service", amount =c.TotalCharge, customerId = c.CustomerId });
                     else
                         ModelState.AddModelError("", "Error creating Shipping, try later.");
                 }
@@ -290,7 +290,6 @@ namespace DriveDrop.Web.Controllers
         {
             try
             {
-
 
                 foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
                 {
@@ -585,11 +584,23 @@ namespace DriveDrop.Web.Controllers
         {
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
+             
+            var getUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+            if (customer != null)
+            {
+            }
+
+            var lastShipment = customer.ShipmentSenders.OrderBy(x=>x.Id).LastOrDefault();
+            if (lastShipment == null)
+            { }
 
             ViewBag.CustomerId = customerId;
 
             var paypal = new Paypal();
             paypal.cmd = "_xclick";
+            //paypal.cmd = "_cart";
             paypal.business = _settings.Value.BusinessAccountKey;
             bool useSandBox = _settings.Value.UseSandbox;
             if (useSandBox)
@@ -602,8 +613,18 @@ namespace DriveDrop.Web.Controllers
             paypal.notify_url = _settings.Value.NotifyURL;
             paypal.currency_code = _settings.Value.CurrencyCode;
             paypal.item_name = item;
-            paypal.item_number = string.Format("Shipping-{0}", customerId);
-            paypal.amount = amount;
+            paypal.item_number = lastShipment.IdentityCode;
+            paypal.invoice = lastShipment.IdentityCode;
+            paypal.amount = lastShipment.ChargeAmount.ToString();
+            paypal.price_per_item = lastShipment.ChargeAmount.ToString();
+            paypal.discount = lastShipment.Discount.ToString();
+            paypal.custom = lastShipment.DriverId.ToString();
+            paypal.invoice = lastShipment.IdentityCode;
+            paypal.tax = lastShipment.Tax.ToString();
+            paypal.no_shipping = "2";
+            paypal.rm = "2";
+            paypal.no_note = "1";
+            paypal.charset = "utf-8";
 
             return View(paypal);
 
@@ -639,10 +660,45 @@ namespace DriveDrop.Web.Controllers
 
 
         }
-
-        public IActionResult NotifyFromPaypal()
+        [HttpPost]
+        public IActionResult NotifyFromPaypal(string txn_id, string payment_date,
+                                string payer_email, string payment_status,
+                                string first_name, string last_name,
+                                string item_number, string item_name,
+                                string payer_id, string verify_sign)
         {
-            ViewData["Message"] = "Your contact page.";
+            var paypaltypes = item_name.Split('-');
+
+
+            var result = item_number.Split('-');
+            var userid = int.Parse(result[1]);
+            var TransPaymentString = result[1].ToString() + result[0].ToString();
+            var TransPayment = int.Parse(TransPaymentString);
+            //var user = _context.Person.Include(p => p.Payments).Where(p => p.UserID == userid).Single();
+            //var payment = user.Payments.Where(p => p.TransPaymentID == TransPayment).Single();
+
+            //if (paypaltypes[0] == "Event")
+            //{
+            //    var eventid = int.Parse(result[0]);
+
+            //    payment.PaymentReceipt = txn_id;
+            //    payment.PaymentReceived = true;
+            //    payment.PaymentReceivedDate = DateTime.Now;
+            //    payment.PaymentNotes = payer_email + " " + first_name + " " + last_name + " " + item_number + " " + payer_id + " " + verify_sign + " " + item_name;
+
+            //    _context.Payments.Update(payment);
+            //    _context.SaveChanges();
+
+            //    var userevent = _context.Person.Include(p => p.EventRegistry).Where(p => p.UserID == userid).Single();
+            //    var eventreg = userevent.EventRegistry.Where(er => er.EventID == eventid).Single();
+            //    eventreg.EventPaid = true;
+
+            //    _context.EventRegistry.Update(eventreg);
+            //    _context.SaveChanges();
+            //    Response.StatusCode = (int)HttpStatusCode.OK;
+            //    return Json("Json Result");
+
+            //}
 
             return View();
         }

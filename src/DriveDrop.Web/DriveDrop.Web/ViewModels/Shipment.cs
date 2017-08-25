@@ -41,7 +41,8 @@ namespace DriveDrop.Web.ViewModels
         public int TransportTypeId { get;  set; }
         public TransportType TransportType { get;  set; }
 
-
+        public Decimal ChargeAmount { get; set; }
+        public Decimal AmountPay { get; set; }
         public Decimal Amount { get;  set; }
         public Decimal Tax { get;  set; }
         public Decimal Discount { get;  set; }
