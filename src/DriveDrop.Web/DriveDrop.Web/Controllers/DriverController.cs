@@ -832,7 +832,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllTransportTypes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var transportTypes = new List<SelectListItem>();
-            transportTypes.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
+            transportTypes.Add(new SelectListItem() { Value = null, Text = "All Vehicle Types", Selected = true });
 
             gets = JArray.Parse(dataString);
 

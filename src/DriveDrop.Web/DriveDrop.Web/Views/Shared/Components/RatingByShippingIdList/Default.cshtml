@@ -1,0 +1,93 @@
+@model DriveDrop.Web.ViewModels.ReviewIndex
+
+
+                    
+
+                              @foreach (var item in Model.ReviewList)
+                              {
+                                <div class="info">
+                                    <div class="row">
+                                        @foreach (var i in item.Details)
+                                    {
+                                        <div class="col-md-4">
+                                            <label>@i.ReviewQuestion.Description</label>
+                                        </div>
+                                    }
+                                    </div>
+
+                                    <div class="row">
+                                        @foreach (var i in item.Details)
+                                    { 
+                                            var r1 = "default";
+                                            var r2 = "default";
+                                            var r3 = "default";
+                                            var r4 = "default";
+                                            var r5 = "default";
+                                            switch (i.Values)
+                                            {
+                                                case 1:
+                                                    r1 = "warning last";
+                                                    break;
+                                                case 2:
+                                                    r1 = "warning";
+                                                    r2 = "warning last";
+                                                    break;
+                                                case 3:
+                                                    r1 = "warning";
+                                                    r2 = "warning";
+                                                    r3 = "warning last";
+                                                    break;
+                                                case 4:
+                                                    r1 = "warning";
+                                                    r2 = "warning";
+                                                    r3 = "warning";
+                                                    r4 = "warning last";
+                                                    break;
+                                                case 5:
+                                                    r1 = "warning";
+                                                    r2 = "warning";
+                                                    r3 = "warning";
+                                                    r4 = "warning";
+                                                    r5 = "warning last";
+                                                    break;
+                                            }                                            
+
+                                        <div class="col-md-4"> ReviewQuestionId: @i.ReviewQuestion.Id Rating: @i.Values Shipping.Id @item.Id  Reviewed @item.Reviewed item.Reviewed: @item.Reviewed Model.HidenType: @Model.HiddenType
+                                            <div class="rating-select" data-id="@i.Id"  data-question="@item.Id">
+                                                <div class="btn btn-@(r1) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="1"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r2) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="2"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r3) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="3"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r4) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="4"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r5) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="4"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    </div>
+
+                                    <div class="row">
+                                        <br />
+                                    </div>
+                                    @if(Model.HiddenType != item.Reviewed) { 
+                                    <div class="row">
+                                        <div class="col-md-10">
+
+                                            <textarea asp-for="@item.Comment" class="rating-select-cnt" cols="80" data-val="true" data-val-minlength-min="5" data-val-maxlength-max="1024"></textarea>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <br />
+                                    </div>
+                                    <div class="add-button">
+                                        <input type="button" class="button-1 add-address-button rating-select-btn"  value="Save this review"  data-id="@item.Id"/>                                        
+
+                                    </div>
+                                    }
+                                </div>
+                              }
+
+                           
+
+
+ 

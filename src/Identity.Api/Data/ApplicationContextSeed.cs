@@ -60,19 +60,19 @@
                 //CardType = 1,
                 //City = "Redmond",
                 //Country = "U.S.",
-                Email = "demouser@pununo.com",
+                Email = "admin@driveDrop.com",
                 //Expiration = "12/20",
                 Id = Guid.NewGuid().ToString(),
                 //LastName = "DemoLastName",
                 //Name = "DemoUser",
                 PhoneNumber = "1234567890",
-                UserName = "demouser@pununo.com",
+                UserName = "admin@driveDrop.com",
                 //ZipCode = "98052",
                 //State = "WA",
                 //Street = "15703 NE 61st Ct",
                 //SecurityNumber = "535",
-                NormalizedEmail = "DEMOUSER@pununo.COM",
-                NormalizedUserName = "DEMOUSER@pununo.COM",
+                NormalizedEmail = "ADMIN@DRIVEDROP.COM",
+                NormalizedUserName = "ADMIN@DRIVEDROP.COM",
                 SecurityStamp = Guid.NewGuid().ToString("D")
             };
 

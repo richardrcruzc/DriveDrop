@@ -411,6 +411,70 @@ namespace DriveDrop.Api.Migrations
                     b.ToTable("RatePriorities");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<int?>("DriverId");
+
+                    b.Property<bool>("Published");
+
+                    b.Property<string>("Reviewed");
+
+                    b.Property<int?>("SenderId");
+
+                    b.Property<int?>("ShippingId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("ShippingId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.ReviewDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ReviewId");
+
+                    b.Property<int?>("ReviewQuestionId");
+
+                    b.Property<int>("Values");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("ReviewQuestionId");
+
+                    b.ToTable("ReviewDetails");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.ReviewQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Group");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReviewQuestions");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.Tax", b =>
                 {
                     b.Property<int>("Id")
@@ -539,6 +603,32 @@ namespace DriveDrop.Api.Migrations
                         .WithMany("RatePriorities")
                         .HasForeignKey("RateId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.Review", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.Customer", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId");
+
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.Customer", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId");
+
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.ShipmentAgregate.Shipment", "Shipping")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ShippingId");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.ReviewDetail", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.Helpers.Review", "Review")
+                        .WithMany("Details")
+                        .HasForeignKey("ReviewId");
+
+                    b.HasOne("ApplicationCore.Entities.Helpers.ReviewQuestion", "ReviewQuestion")
+                        .WithMany()
+                        .HasForeignKey("ReviewQuestionId");
                 });
         }
     }

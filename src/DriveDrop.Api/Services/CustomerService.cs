@@ -72,7 +72,28 @@ namespace DriveDrop.Api.Services
         }
         public async Task<CurrentCustomerModel> Get(string user)
     {
-            var c = await _context.Customers.Where(x => x.UserName == user).FirstOrDefaultAsync();
+            var c = await _context.Customers
+
+                .Include(x=>x.ShipmentDrivers)
+                .ThenInclude(p => p.PriorityType)
+
+                 .Include(x => x.ShipmentDrivers)
+                .ThenInclude(p => p.PackageSize)
+                
+                 .Include(x => x.ShipmentDrivers)
+                .ThenInclude(p => p.Reviews)                
+                
+                .Include(x => x.ShipmentSenders)
+                .ThenInclude(p => p.PriorityType)
+                
+                .Include(x => x.ShipmentSenders)
+                .ThenInclude(ps => ps.PackageSize)
+
+                .Include(x => x.ShipmentSenders)
+                .ThenInclude(ps => ps.Reviews)
+
+                .Where(x => x.UserName == user)
+                .FirstOrDefaultAsync();
             if (c == null)
                 return new CurrentCustomerModel();
 

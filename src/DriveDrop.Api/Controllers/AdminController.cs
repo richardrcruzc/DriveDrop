@@ -111,13 +111,13 @@ namespace DriveDrop.Api.Controllers
             var totalItems = await root
                 .LongCountAsync();
 
-            var itemsOnPage = await root
-                   .Include(x => x.CustomerType).Include(x => x.CustomerStatus).Include(x => x.DefaultAddress)
+            var itemsOnPage = await root 
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .Include(x => x.CustomerStatus)
                 .Include(y => y.CustomerType)
                 .Include(z => z.TransportType)
+                .Include(x => x.DefaultAddress)
                 .ToListAsync();
 
 

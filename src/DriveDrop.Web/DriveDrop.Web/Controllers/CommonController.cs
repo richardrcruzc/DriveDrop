@@ -20,11 +20,12 @@ namespace DriveDrop.Web.Controllers
     public class CommonController : Controller
     {
         private IHttpClient _apiClient;
-        private readonly string _remoteServiceCommonUrl;
+        private readonly string _remoteServiceCommonUrl; 
 
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
+        private readonly string _remoteServiceRatingUrl;
 
         private readonly IHostingEnvironment _env;
 
@@ -32,8 +33,9 @@ namespace DriveDrop.Web.Controllers
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser,
             IHostingEnvironment env)
         {
-            _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
-           
+            _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/"; 
+            _remoteServiceRatingUrl = $"{settings.Value.DriveDropUrl}/api/v1/review/";
+
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
@@ -41,7 +43,30 @@ namespace DriveDrop.Web.Controllers
 
             _env = env;
         }
+        public async Task<string> GetReview()
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
 
+            var getUser = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var dataString = await _apiClient.GetStringAsync(getUser, token);
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
+            if(response==null)
+                return "Something wrong happened";
+
+
+            var model = new ReviewModel
+            {
+                 Comment="",
+                  
+
+            };
+
+
+
+            return "Created";
+            //var allRatesUri = API.Rating.GetAllReviews
+        }
 
         public async Task<IActionResult> AddressAdd(int id)
         {

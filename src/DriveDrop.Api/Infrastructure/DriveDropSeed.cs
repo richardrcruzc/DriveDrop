@@ -88,13 +88,12 @@ namespace DriveDrop.Api.Infrastructure
                 }
                 if (!context.TransportTypes.Any())
                 {
-                    context.TransportTypes.Add(TransportType.Sedan);
+                    context.TransportTypes.Add(TransportType.Sedan2);
+                    context.TransportTypes.Add(TransportType.Sedan4);
+                    context.TransportTypes.Add(TransportType.HatchBack);
                     context.TransportTypes.Add(TransportType.Van);
-                    context.TransportTypes.Add(TransportType.Pickup);
-                    context.TransportTypes.Add(TransportType.LightTruck);
-                    context.TransportTypes.Add(TransportType.Motocycle);
-                    context.TransportTypes.Add(TransportType.Motocycle);
-                    context.TransportTypes.Add(TransportType.Bicycle);
+                    context.TransportTypes.Add(TransportType.PickUp);
+                    context.TransportTypes.Add(TransportType.Bike);
                     await context.SaveChangesAsync();
                 }
 
@@ -107,7 +106,61 @@ namespace DriveDrop.Api.Infrastructure
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.Rates.Any())
+
+                if (!context.ReviewQuestions.Any())
+                {
+                    context.ReviewQuestions.Add(new ReviewQuestion("driver ", "Was the driver on-time?"));
+                    context.ReviewQuestions.Add(new ReviewQuestion("driver ", "Was the driver professional in appearance?"));
+                    context.ReviewQuestions.Add(new ReviewQuestion("driver ", "How was driver customer service?"));
+
+                    context.ReviewQuestions.Add(new ReviewQuestion("sender ", "Was the sender professional?"));
+                    context.ReviewQuestions.Add(new ReviewQuestion("sender ", "Was the sender package ready to go when I got there?"));
+                    context.ReviewQuestions.Add(new ReviewQuestion("sender ", "How was sender customer service?"));
+
+                    await context.SaveChangesAsync();
+                }
+
+
+                if (!context.Reviews.Any())
+                {
+                    var shiping = context.Shipments
+                        .Include(x=>x.Driver)
+                        .Include(x => x.Sender)
+                        .FirstOrDefault();
+
+                    if (shiping != null)
+                    {
+                        var questionForDriver = context.ReviewQuestions.Where(r => r.Group == "sender").ToList();
+
+                        var driverReview = new Review(shiping, shiping.Sender, shiping.Driver, "sender", "Very well!", true);
+                        var x = 1;
+                        foreach (var q in questionForDriver)
+                        {
+                            var detail = new ReviewDetail(driverReview, q, x++);
+                            driverReview.AddDetails(detail);
+                        }
+                        context.Reviews.Add(driverReview);
+
+
+                        var questionForSender = context.ReviewQuestions.Where(r => r.Group == "driver").ToList();
+
+                        var senderReview = new Review(shiping, shiping.Sender, shiping.Driver, "driver", "Very well!", true);
+                          x = 1;
+                        foreach (var q in questionForDriver)
+                        {
+                            var detail = new ReviewDetail(driverReview, q, x++);
+                            senderReview.AddDetails(detail);
+                        }
+                        context.Reviews.Add(driverReview);
+
+                        context.Reviews.Add(senderReview);
+
+
+                        await context.SaveChangesAsync();
+                    }
+                }
+
+                    if (!context.Rates.Any())
                 {
                     var e =context.PackageSizes.Find(1);
                     var s = context.PackageSizes.Find(2);
@@ -205,38 +258,38 @@ namespace DriveDrop.Api.Infrastructure
                 if (!context.Customers.Any())
                 {
 
-                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id,"123213123","W@S.com",1,0,0,0,0, "W@S.com","","","","","","", "", "", "" ));
+                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan2.Id, CustomerStatus.WaitingApproval.Id,"123213123","admin@driveDrop.com",1,0,0,0,0, "admin@driveDrop.com", "","","","","","", "", "", "" ));
 
-                    context.Customers.Add(new Customer("Sender1", "First", "Sender", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",   "", "", "", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender2", "Second", "Sender", TransportType.LightTruck.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender3", "Third", "Sender", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Sender4", "Forth", "Sender", TransportType.Sedan.Id, CustomerStatus.Suspended.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", "", "", "", "" ));
-                    context.Customers.Add(new Customer("Sender5", "Fith", "Sender", TransportType.Motocycle.Id, CustomerStatus.Canceled.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", "", "", "", "" ));
+                    //context.Customers.Add(new Customer("Sender1", "First", "Sender", TransportType.Sedan4.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",   "", "", "", "", "", "", "", "", ""));
+                    //context.Customers.Add(new Customer("Sender2", "Second", "Sender", TransportType.PickUp.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
+                    //context.Customers.Add(new Customer("Sender3", "Third", "Sender", TransportType.Sedan2.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
+                    //context.Customers.Add(new Customer("Sender4", "Forth", "Sender", TransportType.Sedan2.Id, CustomerStatus.Suspended.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", "", "", "", "" ));
+                    //context.Customers.Add(new Customer("Sender5", "Fith", "Sender", TransportType.Bike.Id, CustomerStatus.Canceled.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com", "", "", "", "", "", "", "", "", "" ));
 
 
-                    context.Customers.Add(new Customer("Driver 5", "Fisrt 5", "Driver", TransportType.Sedan.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 3,2,5,5,0,"", "", "", "", "", "","", "", "", ""));
-                    context.Customers.Add(new Customer("Driver 10", "Last 10", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3,2,10,10,15, "", "", "", "", "", "", "", "", "", ""));
-                    context.Customers.Add(new Customer("Driver 15", "Last 15", "Driver", TransportType.Sedan.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3, 2, 15, 15, 15, "", "", "", "", "", "", "", "", "", ""));
+                    //context.Customers.Add(new Customer("Driver 5", "Fisrt 5", "Driver", TransportType.Sedan2.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 3,2,5,5,0,"", "", "", "", "", "","", "", "", ""));
+                    //context.Customers.Add(new Customer("Driver 10", "Last 10", "Driver", TransportType.Sedan4.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3,2,10,10,15, "", "", "", "", "", "", "", "", "", ""));
+                    //context.Customers.Add(new Customer("Driver 15", "Last 15", "Driver", TransportType.Sedan2.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3, 2, 15, 15, 15, "", "", "", "", "", "", "", "", "", ""));
                                      
 
                     await context.SaveChangesAsync();
 
                     //set default driver's address
 
-                    var driver = context.Customers.Where(x => x.FirstName == "Fisrt 5").FirstOrDefault();
-                    driver.AddDefaultAddress(new Address("3703 9th St SW", "WA", "Tacoma", "USA", "98373", "1234567890", "Contact one", 0, 0));
-                    driver.AddPicture("/Uploads/Img/Driver/DLsample-New-Adult-EDL.jpg");
+                    //var driver = context.Customers.Where(x => x.FirstName == "Fisrt 5").FirstOrDefault();
+                    //driver.AddDefaultAddress(new Address("3703 9th St SW", "WA", "Tacoma", "USA", "98373", "1234567890", "Contact one", 0, 0));
+                    //driver.AddPicture("/Uploads/Img/Driver/DLsample-New-Adult-EDL.jpg");
 
 
-                    var driver1 = context.Customers.Where(x => x.FirstName == "Last 10").FirstOrDefault();
-                    driver1.AddDefaultAddress(new Address("15706 Meridian E", "WA", "Tacoma", "USA", "98375", "1234567890", "Contact one", 0, 0));
-                    driver1.AddPicture("/Uploads/Img/Driver/DLsample-New-Minor-Standard.jpg");
+                    //var driver1 = context.Customers.Where(x => x.FirstName == "Last 10").FirstOrDefault();
+                    //driver1.AddDefaultAddress(new Address("15706 Meridian E", "WA", "Tacoma", "USA", "98375", "1234567890", "Contact one", 0, 0));
+                    //driver1.AddPicture("/Uploads/Img/Driver/DLsample-New-Minor-Standard.jpg");
 
-                    var driver2 = context.Customers.Where(x => x.FirstName == "Last 15").FirstOrDefault();
-                    driver2.AddDefaultAddress(new Address("16003 Pacific Ave S", "WA", "Spanaway", "USA", "98387", "1234567890", "Contact one", 0, 0));
-                    driver2.AddPicture("/Uploads/Img/Driver/DLsample-Old-Adult-Standard.jpg");
+                    //var driver2 = context.Customers.Where(x => x.FirstName == "Last 15").FirstOrDefault();
+                    //driver2.AddDefaultAddress(new Address("16003 Pacific Ave S", "WA", "Spanaway", "USA", "98387", "1234567890", "Contact one", 0, 0));
+                    //driver2.AddPicture("/Uploads/Img/Driver/DLsample-Old-Adult-Standard.jpg");
 
-                    await context.SaveChangesAsync();
+                    //await context.SaveChangesAsync();
                 }
 
                 //var serderA = context.Customers.Include(a=>a.Addresses).Where(x => x.CustomerTypeId == 2).FirstOrDefault();
@@ -251,56 +304,56 @@ namespace DriveDrop.Api.Infrastructure
                 //    await context.SaveChangesAsync();
                 //}
 
-                if (!context.Shipments.Any())
-                {
+                //if (!context.Shipments.Any())
+                //{
 
-                    var serder = context.Customers.Where(x =>  x.CustomerTypeId == 2).FirstOrDefault();
+                //    var serder = context.Customers.Where(x =>  x.CustomerTypeId == 2).FirstOrDefault();
 
-                    var serder1 = context.Customers.Where(x => x.CustomerTypeId == 2).LastOrDefault();
+                //    var serder1 = context.Customers.Where(x => x.CustomerTypeId == 2).LastOrDefault();
 
-                    var serder2 = context.Customers.Where(x => x.CustomerTypeId == 2 && x.FirstName == "Forth").LastOrDefault();
+                //    var serder2 = context.Customers.Where(x => x.CustomerTypeId == 2 && x.FirstName == "Forth").LastOrDefault();
 
-                    var serder3 = context.Customers.Where(x => x.CustomerTypeId == 2 && x.FirstName == "Third").LastOrDefault();
+                //    var serder3 = context.Customers.Where(x => x.CustomerTypeId == 2 && x.FirstName == "Third").LastOrDefault();
 
-                    var serder4 = context.Customers.Where(x => x.CustomerTypeId == 2 && x.FirstName == "Second").LastOrDefault();
-
-
-                    var addressPickup = new Address("5211 20th St E", "WA", "Fife", "USA", "98424", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery = new Address("5215 25th ave se", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two", 0, 0);
-
-                    var addressPickup1 = new Address("5826 54th Way SE", "WA", "Tacoma", "USA", "98513", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery1 = new Address("5700 Ruddell Rd SE", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two and two", 0, 0);
+                //    var serder4 = context.Customers.Where(x => x.CustomerTypeId == 2 && x.FirstName == "Second").LastOrDefault();
 
 
-                    var addressPickup2 = new Address("5612 176th St E", "WA", "Puyallup", "USA", "98375", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery2 = new Address("3500 S Meridian #494,", "WA", "Puyallup", "USA", "98373", "1234567890", "Contact two and three", 0, 0);
+                //    var addressPickup = new Address("5211 20th St E", "WA", "Fife", "USA", "98424", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery = new Address("5215 25th ave se", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two", 0, 0);
+
+                //    var addressPickup1 = new Address("5826 54th Way SE", "WA", "Tacoma", "USA", "98513", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery1 = new Address("5700 Ruddell Rd SE", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two and two", 0, 0);
 
 
-                    var addressPickup3 = new Address("110 9th Ave SW", "WA", "Puyallup", "USA", "98371", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery3 = new Address("7905 S Hosmer St", "WA", "Tacoma", "USA", "98408", "1234567890", "Contact three", 0, 0);
-
-                    var addressPickup4 = new Address("12831 Pacific Hwy SW", "WA", "Lakewood", "USA", "98499", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery4 = new Address("7905 S Hosmer St", "WA", "Tacoma", "USA", "98408", "1234567890", "Contact three", 0, 0);
+                //    var addressPickup2 = new Address("5612 176th St E", "WA", "Puyallup", "USA", "98375", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery2 = new Address("3500 S Meridian #494,", "WA", "Puyallup", "USA", "98373", "1234567890", "Contact two and three", 0, 0);
 
 
-                    var addressPickup5 = new Address("5402 S Washington St", "WA", "Tacoma", "USA", "98409", "1234567890", "Contact one", 0, 0);
-                    var addressDelivery5 = new Address("7304 Lakewood Dr W #1", "WA", "Lakewood", "USA", "98499", "1234567890", "Contact three", 0, 0);
+                //    var addressPickup3 = new Address("110 9th Ave SW", "WA", "Puyallup", "USA", "98371", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery3 = new Address("7905 S Hosmer St", "WA", "Tacoma", "USA", "98408", "1234567890", "Contact three", 0, 0);
+
+                //    var addressPickup4 = new Address("12831 Pacific Hwy SW", "WA", "Lakewood", "USA", "98499", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery4 = new Address("7905 S Hosmer St", "WA", "Tacoma", "USA", "98408", "1234567890", "Contact three", 0, 0);
 
 
-                    context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2,5, PriorityType.Asap.Id, TransportType.Van.Id, "This is closed gate community", "/Uploads/Img/Shipment/download1.jpg", "/Uploads/Img/Shipment/download1.jpg",4,234,"",12,1));
-                    context.Shipments.Add(new Shipment(addressPickup1, addressDelivery1, serder, 20, 2, 5, PriorityType.FourHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
+                //    var addressPickup5 = new Address("5402 S Washington St", "WA", "Tacoma", "USA", "98409", "1234567890", "Contact one", 0, 0);
+                //    var addressDelivery5 = new Address("7304 Lakewood Dr W #1", "WA", "Lakewood", "USA", "98499", "1234567890", "Contact three", 0, 0);
 
-                    context.Shipments.Add(new Shipment(addressPickup2, addressDelivery2, serder1, 20, 2, 10, PriorityType.Asap.Id,   TransportType.Van.Id, "ring the bell", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
+
+                //    context.Shipments.Add(new Shipment(addressPickup, addressDelivery, serder, 20, 2,5, PriorityType.Asap.Id, TransportType.Van.Id, "This is closed gate community", "/Uploads/Img/Shipment/download1.jpg", "/Uploads/Img/Shipment/download1.jpg",4,234,"",12,1));
+                //    context.Shipments.Add(new Shipment(addressPickup1, addressDelivery1, serder, 20, 2, 5, PriorityType.FourHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
+
+                //    context.Shipments.Add(new Shipment(addressPickup2, addressDelivery2, serder1, 20, 2, 10, PriorityType.Asap.Id,   TransportType.Van.Id, "ring the bell", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
                     
-                    context.Shipments.Add(new Shipment(addressPickup3, addressDelivery3, serder2, 20, 2, 2, PriorityType.SixHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
+                //    context.Shipments.Add(new Shipment(addressPickup3, addressDelivery3, serder2, 20, 2, 2, PriorityType.SixHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
 
-                    context.Shipments.Add(new Shipment(addressPickup4, addressDelivery4, serder3, 20, 2, 7, PriorityType.EODNextDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
+                //    context.Shipments.Add(new Shipment(addressPickup4, addressDelivery4, serder3, 20, 2, 7, PriorityType.EODNextDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
 
-                    context.Shipments.Add(new Shipment(addressPickup5, addressDelivery5, serder3, 20, 2, 15, PriorityType.EODSameDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", 4, 234, "", 12, 1));
+                //    context.Shipments.Add(new Shipment(addressPickup5, addressDelivery5, serder3, 20, 2, 15, PriorityType.EODSameDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", "/Uploads/Img/Shipment/62ed16c2-e0d6-483e-ab61-3efd6efc7089.jpg", 4, 234, "", 12, 1));
 
 
-                    await context.SaveChangesAsync();
-                }
+                //    await context.SaveChangesAsync();
+                //}
 
 
                

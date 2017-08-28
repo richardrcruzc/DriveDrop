@@ -11,10 +11,10 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
          : Enumeration
     {
         public static PriorityType Asap = new PriorityType(1, "ASAP");
-        public static PriorityType FourHours = new PriorityType(2, "Four Hours");
-        public static PriorityType SixHours = new PriorityType(3,"Six Hours");
-        public static PriorityType EODSameDay = new PriorityType(4,"EOD Same Day");
-        public static PriorityType EODNextDay = new PriorityType(5, "EOD Next Day");
+        public static PriorityType FourHours = new PriorityType(2, "4 Hours");
+        public static PriorityType SixHours = new PriorityType(3,"6 Hours");
+        public static PriorityType EODSameDay = new PriorityType(4, "End of Day Same Day");
+        public static PriorityType EODNextDay = new PriorityType(5, "End of Day Next Day");
 
         protected PriorityType()
         {

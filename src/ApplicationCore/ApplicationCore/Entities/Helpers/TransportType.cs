@@ -10,12 +10,12 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class TransportType
          : Enumeration
     {
-        public static TransportType Sedan = new TransportType(1, nameof(Sedan).ToLowerInvariant());
-        public static TransportType Van = new TransportType(2, nameof(Van).ToLowerInvariant());
-        public static TransportType Pickup = new TransportType(3, nameof(Pickup).ToLowerInvariant());
-        public static TransportType LightTruck = new TransportType(4, nameof(LightTruck).ToLowerInvariant());
-        public static TransportType Motocycle = new TransportType(5, nameof(Motocycle).ToLowerInvariant());
-        public static TransportType Bicycle = new TransportType(6, nameof(Bicycle).ToLowerInvariant());
+        public static TransportType Sedan2 = new TransportType(1, "2-door sedan");
+        public static TransportType Sedan4 = new TransportType(2, "4-door sedan");
+        public static TransportType HatchBack = new TransportType(3, "HatchBack");
+        public static TransportType Van = new TransportType(4, "Van");
+        public static TransportType PickUp = new TransportType(5, "PickUp");
+        public static TransportType Bike = new TransportType(6, "Bike");
 
         protected TransportType()
         {
@@ -28,7 +28,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public static IEnumerable<TransportType> List()
         {
-            return new[] { Sedan, Van, Pickup, LightTruck, Motocycle, Bicycle };
+            return new[] { Sedan2 , Sedan4 , HatchBack , Van , PickUp , Bike };
         }
 
         public static TransportType FromName(string name)

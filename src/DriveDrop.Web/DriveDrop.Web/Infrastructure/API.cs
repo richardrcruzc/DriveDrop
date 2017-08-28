@@ -216,6 +216,14 @@ namespace DriveDrop.Web.Infrastructure
 
         public static class Shipping
         {
+            public static string GetById(string baseUri, int id)
+            {
+
+                var idQs = id.ToString();
+                var filterQs = $"GetById/shippingid/{idQs}";
+                return $"{baseUri}/{filterQs}";
+            }
+
             public static string GetShipping(string baseUri,   int shippingStatusId, int priorityTypeId, int pageIndex, int pageSize)
             {
                 var shippingStatusIdQs = shippingStatusId.ToString();
@@ -342,9 +350,64 @@ namespace DriveDrop.Web.Infrastructure
             public static string AddAddress(string baseUri)
             {
                 return $"{baseUri}AddAddress";
-            } 
+            }
 
+           
 
+            
         }
-    }
+        public static class Rating
+        {
+            public static string InitializeReview(string baseUri, int  shippingId)
+            { 
+                return $"{baseUri}InitializeReview/shippingId/{shippingId}";
+            }
+
+            public static string GetReviewByShippingId(string baseUri, int? shippingId)
+            {
+                var shippingIdQs = (shippingId.HasValue) ? shippingId.Value.ToString() : "null"; 
+
+                return $"{baseUri}GetReviewByShippingId/shippingId/{shippingIdQs}";
+            }
+
+            public static string GetAllReviews(string baseUri, int pageIndex, int pageSize, int? senderId, int? driverId, int? published, int? reviewAppliedTo, int? shippingId)
+            {
+                if (pageSize <= 0)
+                    pageSize = 10;
+
+                if (pageIndex <= 0)
+                    pageIndex = 0;
+
+
+                var filterQs = "";
+
+                //if (status.HasValue || type.HasValue || transporType.HasValue)
+                //{
+                var senderIdQs = (senderId.HasValue) ? senderId.Value.ToString() : "null";
+                var driverIdQs = (driverId.HasValue) ? driverId.Value.ToString() : "null";
+                var publishedQs = (published.HasValue) ? published.Value.ToString() : "null";
+                var reviewAppliedToQs = reviewAppliedTo != null ? reviewAppliedTo.Value.ToString() : "null";
+                var shippingIdQs = shippingId != null ? shippingId.Value.ToString() : "null";
+                filterQs = $"/senderId/{senderIdQs}/driverId/{driverIdQs}/published/{publishedQs}/reviewAppliedTo/{reviewAppliedToQs}/shippingId/{shippingIdQs}";
+                //  }
+
+                return $"{baseUri}Items{filterQs}?pageIndex={pageIndex}&pageSize={pageSize}";
+
+                
+            }
+
+            public static string AddReviews(string baseUri)
+            {
+                return $"{baseUri}Add";
+            }
+
+            public static string Publish(string baseUri, int? reviewId, int? published)
+            {
+                var reviewIdQs = (reviewId.HasValue) ? reviewId.Value.ToString() : "null";
+                var publishedQs = (published.HasValue) ? published.Value.ToString() : "null";
+
+                return $"{baseUri}Add/reviewId/{reviewIdQs}/published/{publishedQs}";
+            }
+        }
+        }
 }

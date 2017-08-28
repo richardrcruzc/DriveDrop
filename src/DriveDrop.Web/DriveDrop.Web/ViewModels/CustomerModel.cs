@@ -268,7 +268,7 @@ namespace DriveDrop.Web.ViewModels
         public TransportType TransportTypeS { get; set; }
 
 
-        [Display(Name = "Shipping Value")]
+        [Display(Name = "Estimate shipping value")]
         [Required(ErrorMessage = "required")]
         public Decimal? Amount { get; set; }
         public Decimal Tax { get; set; }
@@ -413,7 +413,7 @@ namespace DriveDrop.Web.ViewModels
         public int PriorityTypeLevel { get; set; }
          
 
-        [Required(ErrorMessage = "Your must provide a Shipping value")]
+        [Required(ErrorMessage = "Your must provide a Estimate shipping value")]
         public Decimal? Amount { get; set; }
         public Decimal? ShippingWeight { get; set; } 
         public string PromoCode { get; set; }

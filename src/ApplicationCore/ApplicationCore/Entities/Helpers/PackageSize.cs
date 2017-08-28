@@ -9,10 +9,12 @@ namespace ApplicationCore.Entities.Helpers
     public class PackageSize
        : Enumeration
     { 
-        public static PackageSize Envelopes = new PackageSize(1, "Envelopes"); 
+        public static PackageSize Envelopes = new PackageSize(1, "Envelope"); 
         public static PackageSize SmallPackages = new PackageSize(2, "Small Package");
         public static PackageSize MidiunPackages = new PackageSize(3, "Mediun Package");
         public static PackageSize LargePackages = new PackageSize(4, "Large Package");
+        public static PackageSize XLargePackages = new PackageSize(4, "Xtra Large Package");
+        public static PackageSize OddPackages = new PackageSize(4, "Odd Size Package");
 
         protected PackageSize() { }
 
@@ -24,7 +26,7 @@ namespace ApplicationCore.Entities.Helpers
 
         public static IEnumerable<PackageSize> List()
         {
-            return new[] { Envelopes, SmallPackages, MidiunPackages, LargePackages };
+            return new[] { Envelopes, SmallPackages, MidiunPackages, LargePackages, XLargePackages, OddPackages };
         }
 
         public static PackageSize FromName(string name)

@@ -114,6 +114,35 @@ namespace DriveDrop.Api.Controllers
 
             return Ok("updated");
         }
+         [HttpGet]
+        [Route("[action]/shippingid/{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                
+                var root =await  _context.Shipments
+              .Where(x => x.Id == id)
+              .Include(d => d.DeliveryAddress)
+              .Include(d => d.PickupAddress)
+              .Include(d => d.ShippingStatus)
+              .Include(d => d.PriorityType)
+                .Include(d => d.Reviews)
+                .Include(d => d.Sender)
+                .Include(d => d.Driver)
+                .Include(d => d.PackageSize)
+                
+                .FirstOrDefaultAsync();
+
+                return Ok(root);
+                
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+     
 
         [HttpGet]
         [Route("[action]/{id:int}")]
@@ -250,7 +279,9 @@ namespace DriveDrop.Api.Controllers
               .Include(d => d.DeliveryAddress)
               .Include(d => d.PickupAddress)
               .Include(d => d.ShippingStatus)
-              .Include(d => d.PriorityType);
+              .Include(d => d.PriorityType)
+              .Include(s => s.Reviews);
+
 
                 var totalItems = await root
                  .LongCountAsync();
@@ -290,6 +321,7 @@ namespace DriveDrop.Api.Controllers
                .Include(d => d.PickupAddress)
                .Include(d => d.ShippingStatus)
                .Include(d => d.PriorityType)
+               .Include(s => s.Reviews)
                .OrderByDescending(x=>x.Id)
                .ToListAsync();
 
@@ -330,6 +362,7 @@ namespace DriveDrop.Api.Controllers
                .Include(d => d.PriorityType)
                .Include(s=>s.Sender)
                .Include(s => s.Driver)
+                 .Include(s => s.Reviews)
                .OrderBy(x=>x.ShippingCreateDate).ThenBy(x=>x.PriorityTypeId)
                .Skip(pageSize * pageIndex)
                .Take(pageSize)               
@@ -353,7 +386,7 @@ namespace DriveDrop.Api.Controllers
                     pageIndex, pageSize, totalItems, itemsOnPage, shippingStatu, priorityType, null);
  
 
-                var si = new ShippingIndex()
+                var vm = new ShippingIndex()
                 {
                      ShippingList =  model.Data,
                      PriorityTypeFilterApplied= priorityTypeId,
@@ -370,9 +403,11 @@ namespace DriveDrop.Api.Controllers
                     }
 
                 };
+                vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
+                vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
 
 
-                return Ok(si);
+                return Ok(vm);
                  
 
 

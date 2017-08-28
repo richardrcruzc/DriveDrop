@@ -8,10 +8,11 @@
                    asp-route-page="@(Model.ActualPage -1)"
                    aria-label="Previous">
                     <img title="" alt="DriveDrop" src="~/images/first.png">
+                    
                 </a>
 
                 <span class="span">
-                    Showing @Model.ItemsPerPage of @Model.TotalItems products - Page @(Model.ActualPage + 1) - @Model.TotalPages
+                    Showing @Model.ItemsPerPage of @Model.TotalItems items - Page @(Model.ActualPage + 1) - @Model.TotalPages
                 </span>
 
                 <a class="next-page @Model.Next"

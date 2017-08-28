@@ -1,0 +1,111 @@
+@model DriveDrop.Web.ViewModels.Shipment
+    @{
+        ViewData["Title"] = "ShippingDetails";
+    }
+
+    <div class="side-2">
+
+
+        @await Html.PartialAsync("CustomerNavigation",(int)@Model.Id)
+
+
+    </div>
+    <div class="center-2">
+        <div class="page account-page order-list-page">
+            <div class="page-title">
+                <h1>My packages Details</h1>
+            </div>
+
+            <div class="page-body">
+
+                <div class="order-list">
+                    <div class="section order-item">
+                        <div class="title">
+                            <strong><label>Shipping #:</label> @Model.IdentityCode</strong>
+                        </div>
+                        <ul class="info">
+                            <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingStatus.Name)</span></li>
+                            <li><label>Priority:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PriorityType.Name)</span></li>
+                            <li><label>Package size:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PackageSize.Name)</span></li>
+
+                            <li><label>Charge amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ChargeAmount)</span></li>
+                            <li><label>Discount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Discount)</span></li>
+                            <li><label>Promo Code:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PromoCode)</span></li>
+                            <li><label>Tax amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Tax)</span></li>
+                            <li><label>Amount paid:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.AmountPay)</span></li>
+                            <li><label>Note:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Note)</span></li> 
+
+
+                            <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
+                            <li><label>Priority: </label><span class="order-date"> @Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
+                             <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                            <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
+                            <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
+
+                            <li>
+                                <label>Driver:</label>
+                                @if (Model.Driver != null)
+                                {
+                                <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Driver.FullName)</span>
+                                }
+                                else
+                                {
+                                    <span class="order-status pending">Driver not asigned yet</span>
+                                }
+                            </li>
+<li>
+                                <div class="pull-left">
+                                    <div><label>PickUp Image </label></div>
+                                    <img src="@Model.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
+                                </div>
+                                <div class="col-5">
+                                    <div><label>Delivery Image</label></div>
+                                    <img src="@Model.DeliveredPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
+                                </div>
+                            </li>
+                        </ul>
+
+                        @*<div class="buttons">
+                            <input type="button" value="Details" class="button-2 order-details-button" onclick="setLocation('/sender/ShippingDetails/@(Model.Id)')" />
+                        </div>*@
+                    </div>
+
+                  @if (Model.ShippingStatus.Id == 4)
+                  {  <div class="section order-item">
+                        <div class="title">
+                            <strong><label>Reviews</label></strong>
+                        </div>
+                       
+                        <div class="section order-item">
+
+                            <div class="title">
+                                <strong>Review from driver</strong>
+                            </div>
+
+
+                            @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 2, shippingId = Model.Id, hidden = "sender" })
+
+                        </div>
+                        <div class="section order-item">
+
+                            <div class="title">
+                                <strong>Review to driver</strong>
+                            </div>
+                            @if (Model.Reviews == null || Model.Reviews.Count() == 0)
+                            {
+
+                                <div class="add-button">
+                                    <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/InitializeReview/@(Model.Id)'" value="Review Driver" />
+                                </div>
+
+                            }
+                            @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 1, shippingId = Model.Id })
+
+                        </div>
+                       
+                    </div> }
+                   
+                    </div>
+            </div>
+        </div>
+    </div>

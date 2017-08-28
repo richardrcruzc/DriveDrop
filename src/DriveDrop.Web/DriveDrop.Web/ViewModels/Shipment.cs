@@ -1,7 +1,9 @@
 ﻿
 using Newtonsoft.Json;
 using System;
- 
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace DriveDrop.Web.ViewModels
 {
     public class Shipment 
@@ -36,24 +38,31 @@ namespace DriveDrop.Web.ViewModels
         public PriorityType PriorityType { get;  set; }
         public int PriorityTypeId { get;  set; }
         public int PriorityTypeLevel { get;  set; }
-
+        public Decimal Distance { get;   set; }
 
         public int TransportTypeId { get;  set; }
         public TransportType TransportType { get;  set; }
 
+        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
         public Decimal ChargeAmount { get; set; }
+        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
         public Decimal AmountPay { get; set; }
+        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
         public Decimal Amount { get;  set; }
+        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
         public Decimal Tax { get;  set; }
+        [DisplayFormat(DataFormatString = "{0:c}", ApplyFormatInEditMode = true)]
         public Decimal Discount { get;  set; }
         public string PromoCode { get;  set; }
          
         public string PickupPictureUri { get;  set; }
         public string DeliveredPictureUri { get;  set; }
+        public PackageSize PackageSize { get; set; }
 
 
         public string Note { get;  set; }
-         
 
+        public List<RatingModel> Reviews { get; set; }
+          
     }
 }

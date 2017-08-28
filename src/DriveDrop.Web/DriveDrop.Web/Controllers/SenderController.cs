@@ -65,22 +65,80 @@ namespace DriveDrop.Web.Controllers
             return View();
         }
 
-       
-    
+        
+            public async Task<IActionResult> InitializeReview(int id)
+        {
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
+            var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            var package = currentUser.ShipmentSenders.Where(x => x.Id == id).FirstOrDefault();
+            if (package == null)
+            {
+                return NotFound();
+            }
+            
+
+
+                 var iUri = API.Rating.InitializeReview(_remoteServiceBaseUrl,id);
+            var iString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var review = JsonConvert.DeserializeObject<ReviewModel>((iString));
+
+
+            return RedirectToAction("ShippingDetails", new { id = package.Id }) ;
+        }
+
+
+        public async Task<IActionResult> ShippingDetails(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
+            var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            var shipping = currentUser.ShipmentSenders.Where(x=>x.Id==id).FirstOrDefault();
+
+            //var allnotassignedshipings = API.Shipping.GetById(_remoteServiceShippingsUrl, id);
+
+            //var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            //var shippings = JsonConvert.DeserializeObject<Shipment>((dataString));
+            //if (shippings == null)
+            //    return View(new Shipment());
+            return View(shipping);
+
+        }
+
         public async Task<IActionResult> Shippings(int id)
         {
             //call shipping api service
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetShippingByCustomerId(_remoteServiceShippingsUrl, id);
+            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
+            var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
 
-            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
-
-            ViewBag.Id = id;
-            var shippings = JsonConvert.DeserializeObject<List<Shipment>>((dataString));
-            if (shippings == null)
-                return View(new List<Shipment>());
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Id = currentUser.Id;
+            var shippings = currentUser.ShipmentSenders;
+            
             return View(shippings);
             
         }

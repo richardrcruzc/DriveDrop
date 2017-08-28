@@ -67,6 +67,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public string PaymentNotes { get; private set; }
 
 
+        public List<Review> Reviews { get; private set; }
+
+
         protected Shipment()
         {
             _paymentMethods = new List<PaymentMethod>();
