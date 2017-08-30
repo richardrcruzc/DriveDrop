@@ -1,7 +1,5 @@
 @model DriveDrop.Web.ViewModels.ReviewIndex
-
-
-                    
+ 
 
                               @foreach (var item in Model.ReviewList)
                               {
@@ -26,39 +24,39 @@
                                             switch (i.Values)
                                             {
                                                 case 1:
-                                                    r1 = "warning last";
+                                                    r1 = "warning ";
                                                     break;
                                                 case 2:
                                                     r1 = "warning";
-                                                    r2 = "warning last";
+                                                    r2 = "warning ";
                                                     break;
                                                 case 3:
                                                     r1 = "warning";
                                                     r2 = "warning";
-                                                    r3 = "warning last";
+                                                    r3 = "warning ";
                                                     break;
                                                 case 4:
                                                     r1 = "warning";
                                                     r2 = "warning";
                                                     r3 = "warning";
-                                                    r4 = "warning last";
+                                                    r4 = "warning ";
                                                     break;
                                                 case 5:
                                                     r1 = "warning";
                                                     r2 = "warning";
                                                     r3 = "warning";
                                                     r4 = "warning";
-                                                    r5 = "warning last";
+                                                    r5 = "warning ";
                                                     break;
                                             }                                            
 
-                                        <div class="col-md-4"> ReviewQuestionId: @i.ReviewQuestion.Id Rating: @i.Values Shipping.Id @item.Id  Reviewed @item.Reviewed item.Reviewed: @item.Reviewed Model.HidenType: @Model.HiddenType
+                                        <div class="col-md-4">qererwr
                                             <div class="rating-select" data-id="@i.Id"  data-question="@item.Id">
-                                                <div class="btn btn-@(r1) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="1"><span class="glyphicon glyphicon-star-empty"></span></div>
-                                                <div class="btn btn-@(r2) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="2"><span class="glyphicon glyphicon-star-empty"></span></div>
-                                                <div class="btn btn-@(r3) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="3"><span class="glyphicon glyphicon-star-empty"></span></div>
-                                                <div class="btn btn-@(r4) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="4"><span class="glyphicon glyphicon-star-empty"></span></div>
-                                                <div class="btn btn-@(r5) btn-sm" data-id="@i.Id" data-question="@i.ReviewQuestion.Id" data-rating="4"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r1) btn-sm" data-id="@item.Id" data-question="@i.ReviewQuestion.Id" data-rating="1"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r2) btn-sm" data-id="@item.Id" data-question="@i.ReviewQuestion.Id" data-rating="2"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r3) btn-sm" data-id="@item.Id" data-question="@i.ReviewQuestion.Id" data-rating="3"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r4) btn-sm" data-id="@item.Id" data-question="@i.ReviewQuestion.Id" data-rating="4"><span class="glyphicon glyphicon-star-empty"></span></div>
+                                                <div class="btn btn-@(r5) btn-sm" data-id="@item.Id" data-question="@i.ReviewQuestion.Id" data-rating="5"><span class="glyphicon glyphicon-star-empty"></span></div>
                                             </div>
                                         </div>
 
@@ -80,7 +78,7 @@
                                         <br />
                                     </div>
                                     <div class="add-button">
-                                        <input type="button" class="button-1 add-address-button rating-select-btn"  value="Save this review"  data-id="@item.Id"/>                                        
+                                        <input type="button" class="button-1 add-address-button" id="rating-save-button"  value="Save this review" />                                        
 
                                     </div>
                                     }

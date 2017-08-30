@@ -15,7 +15,9 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.eShopOnContainers.BuildingBlocks; 
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.HealthChecks;
-using Microsoft.AspNetCore;
+using Microsoft.AspNetCore; 
+using StackExchange.Redis;
+using Microsoft.Extensions.Options;
 
 namespace DriveDrop.Web
 {
@@ -45,7 +47,7 @@ namespace DriveDrop.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddMemoryCache();
             services.AddMvc();
            // services.AddSession();
 
@@ -61,6 +63,21 @@ namespace DriveDrop.Web
 
             services.Configure<AppSettings>(Configuration);
 
+            //By connecting here we are making sure that our service
+            //cannot start until redis is ready. This might slow down startup,
+            //but given that there is a delay on resolving the ip address
+            //and then creating the connection it seems reasonable to move
+            //that cost to startup instead of having the first request pay the
+            //penalty.
+            services.AddSingleton<ConnectionMultiplexer>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<AppSettings>>().Value;
+                ConfigurationOptions configuration = ConfigurationOptions.Parse(settings.RediConnectionString, true);
+                configuration.ResolveDns = true;
+
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
             services.AddHealthChecks(checks =>
             {
                 var minutes = 1;
@@ -73,7 +90,10 @@ namespace DriveDrop.Web
             });
 
             // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IRatingRepository, RedisRatingRepository>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
 

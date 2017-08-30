@@ -13,12 +13,16 @@ using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using DriveDrop.Web.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace DriveDrop.Web.Controllers
 {
     [Authorize]
     public class CommonController : Controller
     {
+
+        private readonly IRatingRepository _redisRepository;
+
         private IHttpClient _apiClient;
         private readonly string _remoteServiceCommonUrl; 
 
@@ -28,11 +32,14 @@ namespace DriveDrop.Web.Controllers
         private readonly string _remoteServiceRatingUrl;
 
         private readonly IHostingEnvironment _env;
+        private IMemoryCache _cache;
 
-        public CommonController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
+        public CommonController(IRatingRepository redisRepository, IMemoryCache memoryCache, IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser,
             IHostingEnvironment env)
         {
+            _redisRepository = redisRepository;
+            _cache = memoryCache;
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/"; 
             _remoteServiceRatingUrl = $"{settings.Value.DriveDropUrl}/api/v1/review/";
 
@@ -43,7 +50,179 @@ namespace DriveDrop.Web.Controllers
 
             _env = env;
         }
-        public async Task<string> GetReview()
+        public async Task<IActionResult> SaveReview(int shippingId, string questionIdValues, string reviewed)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUser = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var dataString = await _apiClient.GetStringAsync(getUser, token);
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
+            if (response == null)
+                return Json("Something wrong happened");
+
+
+
+           var  model = new ReviewModel
+            {
+                Comment = "",
+                // DriverId = shipping.Driver.Id,
+                // SenderId = shipping.Sender.Id,
+                Reviewed = reviewed,
+                ShippingId = shippingId,
+            };
+            model.Details = new List<ReviewDetail>();
+
+           var questionTmp = 0;
+            var question = 0;
+            var value = 0;
+
+            var tmp = questionIdValues.Split(',');
+
+            var tmp1 = tmp[0].Split('|');
+
+            int.TryParse(tmp1[0].ToString(), out question);
+            int.TryParse(tmp1[1].ToString(), out value);
+
+            foreach (var questions in questionIdValues.Split(','))
+            {
+                var q = questions.Split('|');
+
+                int.TryParse(q[0].ToString(), out questionTmp);
+
+                if (question != questionTmp)
+                    model.Details.Add(new ReviewDetail { ReviewQuestion = new ReviewQuestion { Id = question }, Values = value }); 
+
+                int.TryParse(q[0].ToString(), out question);
+                int.TryParse(q[1].ToString(), out value); 
+                
+            }
+
+            if (question >0) 
+                model.Details.Add(new ReviewDetail { ReviewQuestion = new ReviewQuestion { Id = question }, Values = value });
+
+
+            var ratingUri = API.Rating.AddReviews(_remoteServiceRatingUrl);
+
+            var ratinResponse = await _apiClient.PostAsync(ratingUri, model, token);
+            if (ratinResponse.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return Json("SomethingBadHappend");
+            }
+
+
+                return Json("RatingSaved");
+
+        }
+            public async Task<IActionResult> SaveReviewCache(int shippingId,int reviewed, int questionId, int value)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUser = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var dataString = await _apiClient.GetStringAsync(getUser, token);
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
+            if (response == null)
+                return Json("Something wrong happened");
+
+            //var shipping = response.ShipmentSenders.Where(x => x.Id == shippingId).FirstOrDefault();
+            //if (shipping == null)
+            //    shipping = response.ShipmentDrivers.Where(x => x.Id == shippingId).FirstOrDefault();
+            //if (shipping == null)
+            //    return "Something wrong happened";
+
+            var model = new ReviewModel();
+
+            string cache = string.Empty;
+            string key = string.Format("rating_{0}_{1}", shippingId, reviewed );
+
+
+              model = _cache.Get<ReviewModel>(key);
+            if (model != null)
+            {
+                var index = model.Details.FindIndex(x => x.ReviewQuestion.Id == questionId);
+                if (index < 0)
+                    model.Details.Add(new ReviewDetail { ReviewQuestion = new ReviewQuestion { Id = questionId }, Values = value });
+                else
+                {
+                    model.Details[index].Values = value;
+                  
+                }
+                _cache.Remove(key);
+            }
+
+
+
+            model = await
+        _cache.GetOrCreateAsync(key, entry =>
+        {
+
+            entry.SlidingExpiration = TimeSpan.FromMinutes(30);
+            //return Task.FromResult(DateTime.Now);
+
+            model = new ReviewModel
+            {
+                Comment = "",
+                // DriverId = shipping.Driver.Id,
+                // SenderId = shipping.Sender.Id,
+                Reviewed = reviewed == 1 ? "driver" : "sender",
+                ShippingId = shippingId,
+            };
+            model.Details.Add(new ReviewDetail { ReviewQuestion = new ReviewQuestion { Id = questionId }, Values = value });
+            return Task.FromResult(model);
+
+        });
+
+
+
+            //// Look for cache key.
+            //if (!_cache.TryGetValue(key, out cache))
+            //{
+            //    cache = string.Format("rating_{0}_{1}_{2}_{3}", shippingId, reviewed, questionId, value);
+
+            //    // Key not in cache, so get data.
+            //    //model = new ReviewModel
+            //    //{
+            //    //    Comment = "",
+            //    //    // DriverId = shipping.Driver.Id,
+            //    //    // SenderId = shipping.Sender.Id,
+            //    //    Reviewed = reviewed == 1 ? "driver" : "sender",
+            //    //    ShippingId = shippingId,
+            //    //};
+            //    //model.Details.Add(new ReviewDetail { ReviewQuestion = new ReviewQuestion { Id = questionId }, Values = value });
+
+            //    // Set cache options.
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        // Keep in cache for this time, reset time if accessed.
+            //        .SetSlidingExpiration(TimeSpan.FromMinutes(15));
+
+            //    // Save data in cache.
+            //    _cache.Set(key, key, cacheEntryOptions);
+            //}
+
+
+            //var pp = cache;
+
+            //try
+            //{
+            //    var exist = await _redisRepository.GetAsync(model.Id);
+            //    if (exist != null)
+            //    {
+            //        await _redisRepository.DeleteAsync(model.Id);
+            //    }
+
+            //    model = await _redisRepository.UpdateAsync(model);
+            //}
+            //catch (Exception ex)
+            //{
+            //    var mm = ex;
+            //    var m = mm.Message;
+
+            //}
+            return Json("Created");
+            //var allRatesUri = API.Rating.GetAllReviews
+        }
+        public async Task<string> GetReviewCache()
         {
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();

@@ -68,6 +68,9 @@ namespace DriveDrop.Api
 
             services.Configure<AppSettings>(Configuration);
 
+            
+
+
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<DriveDropContext>(options =>
                     {
@@ -105,6 +108,8 @@ namespace DriveDrop.Api
 
 
             // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IRateService, RateService>();

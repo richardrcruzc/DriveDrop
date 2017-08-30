@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using DriveDrop.Api.Services;
+using Microsoft.Extensions.Options;
 
 namespace DriveDrop.Api.Controllers
 {
@@ -24,12 +25,17 @@ namespace DriveDrop.Api.Controllers
         private readonly IHostingEnvironment _env;
 
         private readonly ICustomerService _cService;
+        private readonly IEmailSender _emailSender;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
 
-        public DriversController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context)
+        public DriversController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context,
+            IEmailSender emailSender, IOptionsSnapshot<AppSettings> settings)
         {
             _context = context;
             _env = env;
             _cService = cService;
+            _emailSender = emailSender;
+            _settings = settings;
         }
 
 
@@ -294,6 +300,15 @@ namespace DriveDrop.Api.Controllers
                 _context.Update(newCustomer);
                
                 await _context.SaveChangesAsync();
+
+
+
+                await _emailSender.SendEmailAsync(newCustomer.UserName, "DriveDrop account created",
+                    $"{newCustomer.FullName}: your account have been create and your status is {newCustomer.CustomerStatus.Name}, " +
+                    $"we'll review you application ASAP, you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+
+
+
                 return Ok(newCustomer.Id);
                  
 

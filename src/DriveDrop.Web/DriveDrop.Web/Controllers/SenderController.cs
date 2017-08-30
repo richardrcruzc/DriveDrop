@@ -173,7 +173,7 @@ namespace DriveDrop.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> UpdateInfo(CustomerInfoModel model, List<IFormFile> photoUrl)
+        public async Task<string> UpdateInfo(CustomerInfoModel model, IFormFile photoUrl)
         {
             var result = "Info updated";
             if (ModelState.IsValid)
@@ -236,7 +236,7 @@ namespace DriveDrop.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewShipping(NewShipment c, List<IFormFile> photoUrl)
+        public async Task<IActionResult> NewShipping(NewShipment c, IFormFile photoUrl)
         {
 
             try
@@ -271,10 +271,10 @@ namespace DriveDrop.Web.Controllers
                      
                 }
 
-                if (photoUrl.Count() == 0)
-                {
-                    ModelState.AddModelError("", "Select package picture");
-                }
+                //if (photoUrl.Count() == 0)
+                //{
+                //    ModelState.AddModelError("", "Select package picture");
+                //}
                 if (c.PackageSizeId == 0)
                 {
                     ModelState.AddModelError("", "Select package size");
@@ -454,7 +454,7 @@ namespace DriveDrop.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewSender(SenderRegisterModel c,  List<IFormFile> imgeFoto)
+        public async Task<IActionResult> NewSender(SenderRegisterModel c) //,  List<IFormFile> imgeFoto)
         {
             try
             {
@@ -462,6 +462,17 @@ namespace DriveDrop.Web.Controllers
                 {
                     var tt = state.Errors.ToString();
                 }
+                if (c.ImgeFoto.Length <= 0)
+                {
+                    ModelState.AddModelError("", "Upload profile photo");
+                    return View(c);
+                }
+                if (c.ImgeFoto.Length > 1048576)
+                {
+                    ModelState.AddModelError("", "profile photo file exceeds the file maximum size: 1MB");
+                    return View(c);
+                }
+              
 
                 if (ModelState.IsValid)
                 {
@@ -470,22 +481,26 @@ namespace DriveDrop.Web.Controllers
 
                     var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, c.UserEmail, c.Password);
 
-                    var dataString = await _apiClient.GetStringAsync(addNewUserUri); 
+                    var dataString = await _apiClient.GetStringAsync(addNewUserUri);
+
+                    //var userStatus = JsonConvert.DeserializeObject<object>((dataString));
 
                     if (dataString == null)
                     {
-                        ModelState.AddModelError("", "Unable to register sender user"); 
+                        ModelState.AddModelError("", "Unable to register sender user " ); 
                         return View(c);
                     }
+
+
 
                     if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
                     {
 
-                        ModelState.AddModelError("", "Unable to register sender user"); 
+                        ModelState.AddModelError("", "Unable to register Login infomation "); 
                         return View(c);
                     }
                      
-                    var ppersonalUri = await SaveFile(imgeFoto, "Sender");
+                    var ppersonalUri = await SaveFile(c.ImgeFoto, "Sender");
                      
                     c.PersonalPhotoUri = ppersonalUri;
 
@@ -538,7 +553,7 @@ namespace DriveDrop.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewSenderComplete(CustomerModelComplete c, List<IFormFile> packageImage, List<IFormFile> imgeFoto)
+        public async Task<IActionResult> NewSenderComplete(CustomerModelComplete c, IFormFile packageImage, IFormFile imgeFoto)
         {
             try
             {
@@ -1034,20 +1049,20 @@ namespace DriveDrop.Web.Controllers
 
 
         [NonAction]
-        public async Task<string> SaveFile(List<IFormFile> files, string belong)
+        public async Task<string> SaveFile(IFormFile files, string belong)
         {
 
             Guid extName = Guid.NewGuid();
             //saving files
-            long size = files.Sum(f => f.Length);
+           // long size = files.Sum(f => f.Length);
 
             // full path to file in temp location
             var filePath = Path.GetTempFileName();
             var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
             var fileName = "";
 
-            foreach (var formFile in files)
-            {
+            var formFile = files;
+           
 
                 if (formFile.Length > 0)
                 {
@@ -1071,7 +1086,7 @@ namespace DriveDrop.Web.Controllers
                     {
                         await formFile.CopyToAsync(stream);
                     }
-                }
+               
             }
             return fileName;
 

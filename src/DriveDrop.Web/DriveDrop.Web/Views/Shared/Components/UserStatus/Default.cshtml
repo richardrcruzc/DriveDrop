@@ -1,19 +1,24 @@
 @using DriveDrop.Web.ViewModels;
 @model  DriveDrop.Web.ViewModels.UserStatusModel 
     @if (!string.IsNullOrWhiteSpace(Model.Status))
-                            {
+    {
         <p class="alert alert-info">
-            <label>   User Status: <strong>@Model.Status</strong> </label>
-
+            <label>   User Status: <strong>@Model.Status</strong> </label><br />
+            <label>   <strong>Your Access to DriveDrop is limited</strong> </label><br />
+            <label>   <strong>Please contact customer service </strong> </label>
+        </p>
+    }
        @if (!string.IsNullOrWhiteSpace(Model.Impersonated))
-                            {
+       {
+        <p class="alert alert-info">
             <label>
                 Impersonated user: <strong>@Model.Impersonated</strong>
             </label>
-                @Html.ActionLink("end impersonated", "endimpersonated", "admin")
+        </p>
+            @Html.ActionLink("end impersonated", "endimpersonated", "admin")
             }
 
-</p>
-                        
-}
+
+
+
 

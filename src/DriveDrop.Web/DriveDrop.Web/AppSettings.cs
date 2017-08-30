@@ -21,9 +21,9 @@ namespace DriveDrop.Web
         public string CurrencyCode { get; set; }
 
 
+        public string RediConnectionString { get; set; }
 
-
-    }
+}
 
     public class Connectionstrings
     {

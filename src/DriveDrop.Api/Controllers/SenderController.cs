@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,13 +30,20 @@ namespace DriveDrop.Api.Controllers
         private readonly IRateService _rateService;
         private readonly ICustomerService _cService;
 
-        public SenderController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, IRateService rateService)
+        private readonly IEmailSender _emailSender;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+
+
+        public SenderController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, 
+            IRateService rateService, IEmailSender emailSender, IOptionsSnapshot<AppSettings> settings)
         {
             _context = context;
             _env = env;
             _identityService = identityService;
             _rateService = rateService;
             _cService = cService;
+            _emailSender = emailSender;
+            _settings = settings;
         }
 
         // GET api/values/5
@@ -43,6 +51,7 @@ namespace DriveDrop.Api.Controllers
         [Route("[action]/userName/{userName}/customerId/{customerId:int}")]
         public async Task<IActionResult> GetSender(string userName, int customerId)
         {
+             
             try
             {
                 var customer = await _cService.Get(userName, customerId);
@@ -195,7 +204,7 @@ namespace DriveDrop.Api.Controllers
 
                     var tmpUser = Guid.NewGuid().ToString();
 
-                    var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.WaitingApproval.Id, email:c.Email,phone: c.Phone,
+                    var newCustomer = new Customer(tmpUser, c.FirstName, c.LastName, null, CustomerStatus.Active.Id, email:c.Email,phone: c.Phone,
                         customerTypeId:CustomerType.Sender.Id, maxPackage:  0,pickupRadius:  0, 
                        deliverRadius:  0,commission: 0,userName: c.UserEmail,  
                        primaryPhone: c.PrimaryPhone, driverLincensePictureUri:  "",personalPhotoUri: c.PersonalPhotoUri,
@@ -228,6 +237,16 @@ namespace DriveDrop.Api.Controllers
                     //_context.SaveChanges();
 
                     await _context.SaveChangesAsync();
+
+
+
+                    await _emailSender.SendEmailAsync(newCustomer.UserName, "DriveDrop account created",
+                        $"{newCustomer.FullName}: your account have been create and your status is {CustomerStatus.Active.Name},<br /> <br />  " +
+                        $"Your login infomation:<br /> Email: {newCustomer.UserName}<br /> Password:{c.Password} <br /><br />  " +
+                        $" you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+
+
+
 
                     return CreatedAtAction(nameof(GetbyId), new { id = newCustomer.Id }, null);
                      

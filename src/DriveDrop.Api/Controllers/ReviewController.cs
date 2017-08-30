@@ -178,9 +178,9 @@ namespace DriveDrop.Api.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> Add(ReviewModel model)
+        public async Task<IActionResult> Add([FromBody]ReviewModel model)
         {
             if(model ==  null)
                 return BadRequest("ReviewNotFound" );
@@ -189,24 +189,51 @@ namespace DriveDrop.Api.Controllers
             if(shipping==null)
                 return BadRequest("ReviewNotFound");
 
-            var sender = await _context.Customers.Where(x =>x.CustomerType.Id ==2 &&  x.Id == model.SenderId).FirstOrDefaultAsync();
+            var sender = await _context.Customers.Where(x =>x.CustomerType.Id ==2 &&  x.Id == shipping.SenderId).FirstOrDefaultAsync();
             if (sender == null)
                 return BadRequest("ReviewNotFound");
 
-            var driver = await _context.Customers.Where(x => x.CustomerType.Id == 3 && x.Id == model.DriverId).FirstOrDefaultAsync();
+            var driver = await _context.Customers.Where(x => x.CustomerType.Id == 3 && x.Id == shipping.DriverId).FirstOrDefaultAsync();
             if (driver == null)
                 return BadRequest("ReviewNotFound");
 
+            var updateReview = await _context.Reviews.Where(x => x.Shipping.Id == model.ShippingId && x.Reviewed == model.Reviewed).FirstOrDefaultAsync();
 
-            var newReview = new Review(shipping, sender, driver, model.Reviewed,  model.Comment, model.Published);
+            if (updateReview == null)
+            {
+                var newReview = new Review(shipping, sender, driver, model.Reviewed, model.Comment, model.Published);
 
-            foreach (var d in model.Details)
-                newReview.AddDetails(d);
+                foreach (var d in model.Details)
+                {
+                    var rq = _context.ReviewQuestions.Where(x => x.Id == d.ReviewQuestion.Id).FirstOrDefault();
+                    
+                    var nD = new ReviewDetail(newReview, rq, d.Values);
+                    newReview.AddDetails(nD);
+                }
 
-            _context.Add(newReview);
-            await _context.SaveChangesAsync();
+                _context.Add(newReview);
+                await _context.SaveChangesAsync();
 
-            return Ok(newReview);
+                return Ok(newReview);
+            }
+            else
+            {
+                 foreach (var d in model.Details)
+                {
+                      var rq = _context.ReviewQuestions.Where(x => x.Id == d.ReviewQuestion.Id).FirstOrDefault();
+
+                    var nD = new ReviewDetail(updateReview, rq, d.Values);
+                    updateReview.AddDetails(nD);
+
+                }
+
+                _context.Add(updateReview);
+                await _context.SaveChangesAsync();
+
+                return Ok(updateReview);
+            }
+
+
 
         }
         [HttpGet]

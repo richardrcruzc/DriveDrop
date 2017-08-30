@@ -13,7 +13,29 @@ namespace DriveDrop.Api.ViewModels
         public string Reviewed { get;  set; }
         public string Comment { get; set; }
         public bool Published { get; set; }
-        public List<ReviewDetail> Details { get; set; }
+        public List<ReviewDetailModel> Details { get; set; }
+    }
+
+
+
+
+    public class ReviewDetailModel
+    {
+        public Review Review { get;   set; }
+        public ReviewQuestionModel ReviewQuestion { get;   set; }
+        public int Values { get;   set; }
+
+        
+    }
+
+    public class ReviewQuestionModel 
+    {
+
+        public int Id { get; set; }
+        public string Group { get;   set; }
+        public string Description { get;   set; }
+
+        
     }
 
 }

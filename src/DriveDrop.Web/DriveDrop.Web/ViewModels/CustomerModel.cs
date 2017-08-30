@@ -21,7 +21,10 @@ namespace DriveDrop.Web.ViewModels
 
             PackageSizeList = new List<SelectListItem>(); 
         }
-
+        //[FileExtensions(Extensions = ".jpg,.jpeg")]
+        [Display(Name = "profile photo")]
+        [Required(ErrorMessage = "Your must provide a profile photo")]       
+        public IFormFile ImgeFoto { get; set; }
 
         public decimal Distance { get; set; }
         public IEnumerable<SelectListItem> CustomerTypeList { get; set; }
@@ -130,7 +133,10 @@ namespace DriveDrop.Web.ViewModels
         public int PackageSizeId { get; set; }
 
         public IFormFile file { get; set; }
-
+        [Required(ErrorMessage = "Your must provide a primary phone number")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid primary phone number")]
+        [Display(Name = "Cell Number")]
         public string PrimaryPhone { get; set; }
         public string FilePath { get; set; }
         [Required]

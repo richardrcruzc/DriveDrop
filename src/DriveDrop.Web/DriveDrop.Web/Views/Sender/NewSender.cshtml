@@ -176,7 +176,7 @@
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <input type='file' id="imgFoto" name="imgeFoto" />
+                                        <input name="ImgeFoto" type='file' id="imgFoto" />
                                         <img id="blah" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
                                     </div>
                                 </div>
@@ -219,32 +219,32 @@
 
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input asp-for="PickupStreet" class="form-control" placeholder="Street"   />
+                                    <input asp-for="PickupStreet" class="form-control" placeholder="Street"   readonly/>
                                     <span asp-validation-for="PickupStreet" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input asp-for="PickupCity" class="form-control" placeholder="City"   />
+                                    <input asp-for="PickupCity" class="form-control" placeholder="City"   readonly/>
                                     <span asp-validation-for="PickupCity" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code"   />
+                                    <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code"  readonly />
                                     <span asp-validation-for="PickupZipCode" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input asp-for="PickupState" class="form-control" placeholder="state"   />
+                                    <input asp-for="PickupState" class="form-control" placeholder="state"  readonly />
                                     <span asp-validation-for="PickupState" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input asp-for="PickupCountry" class="form-control" placeholder="Country"   />
+                                    <input asp-for="PickupCountry" class="form-control" placeholder="Country"  readonly />
                                     <span asp-validation-for="PickupCountry" class="text-danger"></span>
                                 </div>
                             </div>

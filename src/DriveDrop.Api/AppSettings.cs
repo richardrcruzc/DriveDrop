@@ -17,7 +17,8 @@ namespace DriveDrop.Api
         public string CurrencyCode { get; set; }
         public string ClientId { get; set; }
         public string Secret { get; set; }
-
+        public string MvcClient { get; set; }
+        
 
 
 

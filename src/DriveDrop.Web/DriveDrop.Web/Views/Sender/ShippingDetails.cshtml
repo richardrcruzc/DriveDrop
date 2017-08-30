@@ -33,12 +33,12 @@
                             <li><label>Promo Code:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PromoCode)</span></li>
                             <li><label>Tax amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Tax)</span></li>
                             <li><label>Amount paid:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.AmountPay)</span></li>
-                            <li><label>Note:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Note)</span></li> 
+                            <li><label>Note:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Note)</span></li>
 
 
                             <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
                             <li><label>Priority: </label><span class="order-date"> @Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
-                             <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                            <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
                             <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
                             <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
 
@@ -46,66 +46,165 @@
                                 <label>Driver:</label>
                                 @if (Model.Driver != null)
                                 {
-                                <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Driver.FullName)</span>
+                                    <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Driver.FullName)</span>
                                 }
                                 else
                                 {
                                     <span class="order-status pending">Driver not asigned yet</span>
                                 }
                             </li>
-<li>
-                                <div class="pull-left">
+
+                            <li>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="section order-item">
+                        <div class="title">
+                            <strong><label>Images</label></strong>
+                        </div>
+                        <div class="info">
+                            <div class="row">
+                                <div class="col-md-5">
                                     <div><label>PickUp Image </label></div>
                                     <img src="@Model.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
                                 </div>
-                                <div class="col-5">
+                                <div class="col-md-5">
                                     <div><label>Delivery Image</label></div>
                                     <img src="@Model.DeliveredPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
                                 </div>
-                            </li>
-                        </ul>
-
-                        @*<div class="buttons">
-                            <input type="button" value="Details" class="button-2 order-details-button" onclick="setLocation('/sender/ShippingDetails/@(Model.Id)')" />
-                        </div>*@
+                            </div>
+                        </div>
                     </div>
 
-                  @if (Model.ShippingStatus.Id == 4)
-                  {  <div class="section order-item">
-                        <div class="title">
-                            <strong><label>Reviews</label></strong>
-                        </div>
-                       
-                        <div class="section order-item">
+                        @if (Model.ShippingStatus.Id == 4)
+                    {
 
+                        <div class="section order-item">
                             <div class="title">
-                                <strong>Review from driver</strong>
+                                <strong><label>Reviews</label></strong>
                             </div>
 
+                            <div class="info">
 
-                            @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 2, shippingId = Model.Id, hidden = "sender" })
-
-                        </div>
-                        <div class="section order-item">
-
-                            <div class="title">
-                                <strong>Review to driver</strong>
-                            </div>
-                            @if (Model.Reviews == null || Model.Reviews.Count() == 0)
-                            {
-
-                                <div class="add-button">
-                                    <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/InitializeReview/@(Model.Id)'" value="Review Driver" />
+                                <div class="title">
+                                    <strong>Review from driver</strong>
                                 </div>
 
+
+                                @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 2, shippingId = Model.Id, hidden = "sender" })
+
+                            </div>
+                            <div class="info">
+
+                                <div class="title">
+                                    <strong>Review to driver</strong>
+                                </div>
+                                @if (Model.Reviews == null || Model.Reviews.Count() == 0)
+                            {
+
+                                    <div class="add-button">
+                                        <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/InitializeReview/@(Model.Id)'" value="Review Driver" />
+                                    </div>
+
                             }
-                            @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 1, shippingId = Model.Id })
+                                @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 1, shippingId = Model.Id })
+                                
+
+                            </div>
 
                         </div>
-                       
-                    </div> }
+
+                         } 
+
+
                    
-                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+
+ 
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+         // <!-- begin snippet: js hide: false console: false babel: false -->
+        //<div class="btn btn-{% if rate.value > 0 %}warning{% else %}default{% endif %}{% if rate.value == 1 %} selected{% endif %} btn-sm"><span class="glyphicon glyphicon-star-empty"></span></div>
+
+//<!-- language: lang-js -->
+
+        $(function () {
+
+            $('#rating-save-button').click(function () {
+               // alert(1);
+                var rArray = new Array();
+                var question = "";
+                var rating = "";
+                $(".btn-warning").each(function (index, element) {
+
+                        question = $(this).data('question')
+                        rating = $(this).data('rating');
+                        rArray.push(question + "|" + rating);
+                });
+
+                //$('.rating-select-cnt').val()
+                //alert(rArray + $('.rating-select-cnt').val());
+
+                var postData = {
+                    shippingId: @Model.Id,
+                    questionIdValues: rArray.toString(),
+                    reviewed :"driver"
+
+                };
+
+                  $.ajax({
+                        cache: false,
+                        type: 'POST',
+                        url: '/Common/SaveReview',
+                        data: postData,
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(data);
+                            // location.href = '/common/Addresses/@ViewBag.Id';
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to update');
+                        }
+        });
+
+
+            });
+
+
+        $('.rating-select .btn').on('mouseover', function () {
+            $(this).removeClass('btn-default').addClass('btn-warning');
+            $(this).prevAll().removeClass('btn-default').addClass('btn-warning');
+            $(this).nextAll().removeClass('btn-warning').addClass('btn-default');
+        });
+
+        $('.rating-select').on('mouseleave', function () {
+            active = $(this).parent().find('.selected');
+            if (active.length) {
+                active.removeClass('btn-default').addClass('btn-warning');
+                active.prevAll().removeClass('btn-default').addClass('btn-warning');
+                active.nextAll().removeClass('btn-warning').addClass('btn-default');
+            } else {
+                $(this).find('.btn').removeClass('btn-warning').addClass('btn-default');
+            }
+        });
+
+        $('.rating-select .btn').click(function () {
+            if ($(this).hasClass('selected')) {
+                $('.rating-select .selected').removeClass('selected');
+            } else {
+                $('.rating-select .selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+});
+    </script>
+}

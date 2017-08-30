@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,21 @@ namespace DriveDrop.Api.Controllers
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
-        public AdminController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context, IIdentityService identityService)
+
+        private readonly IEmailSender _emailSender;
+
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+
+
+        public AdminController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context, 
+            IIdentityService identityService, IEmailSender emailSender, IOptionsSnapshot<AppSettings> settings)
         {
+            _emailSender = emailSender;
             _cService = cService;
             _context = context;
             _env = env;
             _identityService = identityService;
+            _settings = settings;
         }
 
 
@@ -71,9 +81,14 @@ namespace DriveDrop.Api.Controllers
 
             customer.ChangeStatus(status);
             _context.Update(customer);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
 
-            return Ok("CustomerstatusChanged");
+                await _emailSender.SendEmailAsync(customer.UserName, "Status updated",
+                    $"{customer.FullName}: your status have been updated, access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+
+
+
+                return Ok("CustomerstatusChanged");
         }
             catch (Exception exe)
             {

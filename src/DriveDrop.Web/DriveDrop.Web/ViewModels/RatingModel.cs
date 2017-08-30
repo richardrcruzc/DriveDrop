@@ -8,6 +8,7 @@ namespace DriveDrop.Web.ViewModels
 {
     public class RatingModel
     {
+        public string UserName { get; set; }
         public int Id { get; set; }
         public Shipment Shipping { get;  set; }
         public Customer Sender { get;  set; }

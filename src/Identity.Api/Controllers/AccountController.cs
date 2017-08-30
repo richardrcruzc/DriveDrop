@@ -388,8 +388,60 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         {
             return View();
         }
+        //
+        // GET: /Account/ResetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
 
- 
+                await _emailSender.SendEmailAsync(model.Email, "Password been reset", "Your DriveDrop passwordhave been reset");
+
+
+                //return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return Redirect(_settings.Value.MvcClient);
+            }
+            AddErrors(result);
+            return View();
+        }
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+        // GET: /Account/ForgotPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+               
+            return View();
+        }
         //
         // POST: /Account/ForgotPassword
         [HttpPost] 
@@ -400,8 +452,10 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
+                    ModelState.AddModelError("", "Somethign Wrong !" );
                     // Don't reveal that the user does not exist or is not confirmed
-                    return Ok("SomethignWrong");
+                    //return Ok("SomethignWrong");
+                   // return View("ForgotPasswordConfirmation");
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
@@ -410,11 +464,12 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                return Ok("ForgotPasswordConfirmation");
+                return View("ForgotPasswordConfirmation");
+                //return Ok("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
-            return Ok("SomethignWrong");
+            return View(model);
         }
 
         //

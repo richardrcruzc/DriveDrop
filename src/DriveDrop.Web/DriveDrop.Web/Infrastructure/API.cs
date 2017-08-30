@@ -398,7 +398,7 @@ namespace DriveDrop.Web.Infrastructure
 
             public static string AddReviews(string baseUri)
             {
-                return $"{baseUri}Add";
+                return $"{baseUri}add";
             }
 
             public static string Publish(string baseUri, int? reviewId, int? published)
