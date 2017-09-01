@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Identity.Api.Services
 {
@@ -15,13 +17,20 @@ namespace Identity.Api.Services
     // For more details see this link http://go.microsoft.com/fwlink/?LinkID=532713
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+        private readonly IHostingEnvironment _env;
+        public   AuthMessageSender(IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings) {
+            _env = env;
+            _settings = settings;
+        }
+
         public async Task SendEmailAsync(string email, string subject, string message)
         {
 
            // email = "richardrcruzc@gmail.com";
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("DriveDrop", "info@DriveDrop.com"));
+            emailMessage.From.Add(new MailboxAddress(_settings.Value.EmailSenderName,_settings.Value.EmailSenderEmail));
             emailMessage.To.Add(new MailboxAddress(email, email));
             emailMessage.Subject = subject;
             // emailMessage.Body = new TextPart("plain") { Text = message };
@@ -30,7 +39,7 @@ namespace Identity.Api.Services
             emailMessage.Body = bodyBuilder.ToMessageBody();
 
 
-
+            
             try
             {
                 using (var client = new SmtpClient())
@@ -38,8 +47,8 @@ namespace Identity.Api.Services
 
                     client.LocalDomain = "smtp.sendgrid.net";
 
-                    await client.ConnectAsync("smtp.sendgrid.net", 587, SecureSocketOptions.None).ConfigureAwait(false);
-                    await client.AuthenticateAsync("azure_d5dbc42617b3c0dbb2559dc0342b495e@azure.com", "Q!w2e3r4");
+                    await client.ConnectAsync(_settings.Value.EmailLocalDomain,_settings.Value.EmailLocalPort, SecureSocketOptions.None).ConfigureAwait(false);
+                    await client.AuthenticateAsync(_settings.Value.EmailUser,_settings.Value.EmailPassword);
                     await client.SendAsync(emailMessage).ConfigureAwait(false);
                     await client.DisconnectAsync(true).ConfigureAwait(false);
                 }
