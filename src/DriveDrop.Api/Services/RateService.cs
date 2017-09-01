@@ -31,12 +31,18 @@ namespace DriveDrop.Api.Services
             var miles = distance; // await _distance.FromZipToZipInMile(zipFrom, zipTo);
             var milesDecimal = distance; // (decimal)miles;
 
-            var myRate = await _context.Rates.Include(c => c.PackageSize).Include(x=>x.RatePriorities).LastOrDefaultAsync();
+            var myRate = await _context.Rates.Include(c => c.PackageSize).Include(x=>x.RatePriorities).Where(p=>p.PackageSize.Id == packageSizeId).FirstOrDefaultAsync();
+            if (myRate == null)
+                return new CalculatedCharge();
 
             var rateDistance =_context.RateDetails.Where(x => x.MileOrLbs == "miles" && x.WeightOrDistance == "distance" && x.From <= milesDecimal && milesDecimal < x.To).FirstOrDefault();
             var rateWeight = _context.RateDetails.Where(x => x.MileOrLbs == "lbs" && x.WeightOrDistance == "weight" && x.From <= weight && weight < x.To).FirstOrDefault();
+            if(rateWeight==null)
+                rateWeight = _context.RateDetails.Where(x => x.MileOrLbs == "lbs" && x.WeightOrDistance == "weight").OrderByDescending(x=>x.From).FirstOrDefault();
 
-            var chargePerPriority = _context.RatePriorities.Where(x => x.RateId == myRate.Id && x.PriorityTypeId == priority).FirstOrDefault();
+            var chargePerPriority = myRate.RatePriorities.Where(p => p.PriorityTypeId == priority).FirstOrDefault();
+            
+            //    _context.RatePriorities.Where(x => x.RateId == myRate.Id && x.PriorityTypeId == priority).FirstOrDefault();
             // var chargePerTransport = _context.RateTranportTypes.Where(x => x.RateId == myRate.Id && x.TranportTypeId == transportTypeId).FirstOrDefault();
 
             decimal rateSize = 0;

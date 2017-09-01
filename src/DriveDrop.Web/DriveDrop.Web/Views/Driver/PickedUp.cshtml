@@ -53,7 +53,7 @@
                                         <input value="@item.DriverId" hidden name="DriverId" />
                                         <input value="@item.Id" hidden name="shippingId" />
 
-                                        @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList, htmlAttributes: new { @class = "form-control" })
+                                        @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList, htmlAttributes: new {@data_inputmask = "'mask': '(999)999-9999'" })
 
                                         @*@Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})*@
 

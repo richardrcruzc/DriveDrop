@@ -422,6 +422,88 @@ namespace DriveDrop.Api.Controllers
         }
 
 
+
+        [HttpGet]
+        [Route("[action]/driverId/{driverId:int}")]
+        public async Task<IActionResult> GetPackagesReadyForDriver(int driverId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        {
+            try
+            {
+                var driver = _context.Customers.Where(x => x.Id == driverId).FirstOrDefault();
+                if (driver == null)
+                    return Ok(null);
+
+                var root = _context.Shipments
+               .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id && x.DriverId == null)
+               .Include(d => d.DeliveryAddress)
+               .Include(d => d.PickupAddress)
+               .Include(d => d.ShippingStatus)
+               .Include(d => d.PriorityType);
+
+                //root = root.Where(d=>d.Distance<=driver.PickupRadius)
+
+
+
+                var totalItems = await root
+                 .LongCountAsync();
+
+                var itemsOnPage = await root
+               .Skip(pageSize * pageIndex)
+               .Take(pageSize)
+               .ToListAsync();
+
+                itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+
+                var model = new PaginatedItemsViewModel<Shipment>(
+                    pageIndex, pageSize, totalItems, itemsOnPage);
+
+
+
+                return Ok(model);
+
+
+                //var model = root.Select(x=> new ShipmentViewModel
+                //{
+                //    Amount = x.Amount,
+                //    DeliveredPictureUri = x.DeliveredPictureUri,
+                //    DeliveryAddress = x.DeliveryAddress,
+                //    Discount = x.Discount,
+                //    Driver = x.Driver,
+                //    DriverId = x.DriverId,
+                //    Id = x.Id,
+                //    IdentityCode = x.IdentityCode,
+                //    Note = x.Note,
+                //    PickupAddress = x.PickupAddress,
+                //    PickupPictureUri = x.PickupPictureUri,
+                //    PriorityType = x.PriorityType,
+                //    PriorityTypeId = x.PriorityTypeId,
+                //    PriorityTypeLevel = x.PriorityTypeLevel,
+                //    PromoCode = x.PromoCode,
+                //    Sender = x.Sender,
+                //    SenderId = x.SenderId,
+                //    ShippingCreateDate = x.ShippingCreateDate,
+                //    ShippingStatus = x.ShippingStatus,
+                //    ShippingStatusId = x.ShippingStatusId,
+                //    ShippingUpdateDate = x.ShippingUpdateDate,
+                //    Tax=x.Tax,
+                //    TransportType = x.TransportType,
+                //    TransportTypeId = x.TransportTypeId
+
+                //}).ToList();
+
+
+
+
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("CustomerTypesNotFound");
+            }
+        }
+
+
+
         // GET api/v1/Shippings/GetNotAssignedShipping
         [HttpGet]
         [Route("[action]")]

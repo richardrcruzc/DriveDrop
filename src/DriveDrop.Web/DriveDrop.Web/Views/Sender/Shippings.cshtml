@@ -13,7 +13,7 @@
                       <div class="center-2">
                           <div class="page account-page order-list-page">
                               <div class="page-title">
-                                  <h1>My packages</h1>
+                                  <h1>My Packages</h1>
                               </div>
 
                               <div class="page-body">
@@ -37,15 +37,17 @@
                 <strong>Shipping #: @item.IdentityCode</strong>
             </div>
             <ul class="info">
-                <li>Status: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
+                <li>Status: <span class="order-completed">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
                 <li>Date: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
+                <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.PriorityType.Name)</span></li>
+                <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.ChargeAmount)</span></li>
+                <li>Order Discount: <span class="order-total">@Html.DisplayFor(modelItem => item.Discount)</span></li>
                 <li>Pickup Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
                 <li>Delivery Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
+                <li>Distance Miles: <span class="order-total">@Html.DisplayFor(modelItem => item.Distance)</span></li>
                 <li>
                     <div class="pull-left">
-                        <div>PickUp Image</div>
+                        <div>Pickup Image</div>
                         <img src="@urlPickup" class="img-rounded" alt="no package image" width="100" height="75">
                     </div>
                     <div class="col-5">
@@ -55,9 +57,9 @@
                 </li>
             </ul>
 
-            <div class="buttons">
+            @*<div class="buttons">
                 <input type="button" value="Details" class="button-2 order-details-button" onclick="setLocation('/sender/ShippingDetails/@(item.Id)')" />
-            </div>
+            </div>*@
         </div>
        
     }

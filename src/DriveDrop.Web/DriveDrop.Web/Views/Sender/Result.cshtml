@@ -13,7 +13,7 @@
 <div class="center-2">
     <div class="page account-page customer-info-page">
         <div class="page-title">
-            <h1>Sender information</h1>
+            <h1>Sender Information</h1>
         </div>
 
         <div class="page-body">
@@ -31,7 +31,7 @@
                     <div class="fieldset">
 
                         <div class="title">
-                            <strong>My personal information details</strong>
+                            <strong>My Personal Information Details</strong>
                         </div>
 
 
@@ -53,9 +53,9 @@
                                 </div>
                             </div>
                             <div class="inputs">
-                                <label for="FirstName">First name</label>
+                                <label for="FirstName">First Name</label>
 
-                                <input asp-for="FirstName" placeholder="First name" />
+                                <input asp-for="FirstName" placeholder="First name"  />
                                 <span class="required">*</span>
 
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
@@ -63,42 +63,59 @@
 
                             </div>
                             <div class="inputs">
-                                <label for="LastName">Last name</label>
+                                <label for="LastName">Last Name</label>
                                 <input asp-for="LastName" placeholder="Last name" />
                                 <span class="required">*</span>
                                 <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
 
                             <div class="inputs">
-                                <label for="Email">Email</label>
+                                @Html.LabelFor(m => m.Email)
+                                @Html.TextBoxFor(m => m.Email, new { @class = "email"  })
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.Email)
+
+
+
+                                @*<label for="Email">Email</label>
                                 <input asp-for="Email" placeholder="Email" />
                                 <span class="required">*</span>
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <span asp-validation-for="Email" class="text-danger"></span>*@
                             </div>
                             <div class="inputs">
-
-                                <label for="PrimaryPhone">Primary Phone</label>
-                                <input asp-for="PrimaryPhone" placeholder="Phone" />
+                                @Html.LabelFor(m => m.PrimaryPhone)
+                                @Html.TextBoxFor(m => m.PrimaryPhone, new {   @data_inputmask = "'mask': '(999)999-9999'" })
                                 <span class="required">*</span>
-                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
-                            </div>
-                            <div class="inputs">
+                                @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
-                                <label for="Phone">Phone</label>
-                                <input asp-for="Phone" class="phone-number" placeholder="Phone" />
+
+                                @*<label for="PrimaryPhone">Primary Phone</label>
+                                <input asp-for="PrimaryPhone" placeholder="Phone" class="phone-number"/>
                                 <span class="required">*</span>
-                                <span asp-validation-for="Phone" class="text-danger"></span>
+                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>*@
+                            </div>
+                            <div class="inputs">
+                                @Html.LabelFor(m => m.Phone)
+                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999)999-9999'" })
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.Phone)
+
+
+                                @*<label for="Phone">Phone</label>
+                                <input asp-for="Phone" class="phone-number" placeholder="Phone"  />
+                                <span class="required">*</span>
+                                <span asp-validation-for="Phone" class="text-danger"></span>*@
                             </div>
                             <div class="inputs">
 
-                                <label for="VerificationId">Verification Id</label>
-                                <input asp-for="VerificationId"   placeholder="Verification Id" />
+                                <label for="VerificationId">Verification ID</label>
+                                <input asp-for="VerificationId"   placeholder="Verification ID" />
                                 <span class="required">*</span>
                                 <span asp-validation-for="VerificationId" class="text-danger"></span>
                             </div>
                             <div class="inputs">
                                 <div class="title">
-                                    <strong>Photo</strong>
+                                    <strong>Profile Photo</strong>
                                 </div>
                                 <div class="avatar-page">
                                     <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
@@ -149,7 +166,7 @@
                         $.ajax({
                             url: this.action,
                             type: this.method,
-                            data: $(this).serialize(),
+                            data: data, // $(this).serialize(),
                             success: function (result) {
                                 $('#bar-notification').html(result);
                                 alert(result);
@@ -182,7 +199,7 @@
             });
 
 
-    var theDiv = document.getElementById("newShipmentTr");
+    @*var theDiv = document.getElementById("newShipmentTr");
     var button = document.getElementById("button");
 
     function removeRed() {
@@ -279,7 +296,7 @@
                                  }
                              });
                          }
-                     }
+                     }*@
 
 
 

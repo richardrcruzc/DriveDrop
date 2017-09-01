@@ -52,6 +52,9 @@ namespace DriveDrop.Web.Controllers
         }
         public async Task<IActionResult> SaveReview(int shippingId, string questionIdValues, string reviewed)
         {
+
+ 
+
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
@@ -309,8 +312,8 @@ namespace DriveDrop.Web.Controllers
             var listAddresses = new List<AddressModel>();
             foreach (var a in response.Addresses)
             {
-                if (response.DefaultAddress!=null && response.DefaultAddress.Id == a.Id)
-                    a.TypeAddress = "default";
+                //if (response.DefaultAddress!=null && response.DefaultAddress.Id == a.Id)
+                //    a.TypeAddress = "default";
                 listAddresses.Add(a);
             }
 

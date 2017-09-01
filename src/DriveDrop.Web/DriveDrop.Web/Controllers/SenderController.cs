@@ -164,8 +164,8 @@ namespace DriveDrop.Web.Controllers
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
                 currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
 
-             
 
+            currentUser.CustomerStatus = currentUser.CustomerStatus.ToTitleCase();
             return View(currentUser);
         }
  
@@ -173,7 +173,7 @@ namespace DriveDrop.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> UpdateInfo(CustomerInfoModel model, IFormFile photoUrl)
+        public async Task<IActionResult> UpdateInfo(CustomerInfoModel model, IFormFile photoUrl)
         {
             var result = "Info updated";
             if (ModelState.IsValid)
@@ -182,9 +182,11 @@ namespace DriveDrop.Web.Controllers
                 {
 
                 var fileName = await SaveFile(photoUrl, "sender");
- 
+
                     if (!string.IsNullOrWhiteSpace(fileName))
-                model.PhotoUrl = fileName;
+                        model.PhotoUrl = fileName;
+                    else
+                        model.PhotoUrl = model.PersonalPhotoUri;
 
                 var user = _appUserParser.Parse(HttpContext.User);
                 var token = await GetUserTokenAsync();
@@ -203,6 +205,8 @@ namespace DriveDrop.Web.Controllers
                             ModelState.AddModelError("", "Error creating Shipping, try later.");
 
                         }
+                        else
+                            ModelState.AddModelError("", "Info Updated!");
                     }
                 }
                 catch (DbUpdateException ex)
@@ -217,7 +221,7 @@ namespace DriveDrop.Web.Controllers
                 }
             }
 
-            return result;
+            return RedirectToAction("result", new { id = model.Id });
         }
 
         public async Task<IActionResult> NewShipping(int id)
@@ -228,7 +232,10 @@ namespace DriveDrop.Web.Controllers
             await PrepareCustomerModel(model);
             model.CustomerId = id;
 
-            await PrepareCustomerAddresses(model, id);            
+            await PrepareCustomerAddresses(model, id);
+
+
+            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
 
             return View(model);
 
@@ -251,11 +258,11 @@ namespace DriveDrop.Web.Controllers
                 if (c.PickupAddressId == 0)
                 {                  
                     if(string.IsNullOrEmpty(c.PickupStreet))
-                        ModelState.AddModelError("", "Select a pickup address");
+                        ModelState.AddModelError("", "Select a Pickup Address");
                     if (string.IsNullOrEmpty(c.PickupPhone))
-                        ModelState.AddModelError("", "Select a pickup Phone");
+                        ModelState.AddModelError("", "Select a Pickup Phone");
                     if (string.IsNullOrEmpty(c.PickupContact))
-                        ModelState.AddModelError("", "Select a pickup Contact");
+                        ModelState.AddModelError("", "Select a Pickup Contact");
                      
                 }
                  
@@ -263,11 +270,11 @@ namespace DriveDrop.Web.Controllers
                 {
 
                     if (string.IsNullOrEmpty(c.DeliveryStreet))
-                        ModelState.AddModelError("", "Select a drop address");
+                        ModelState.AddModelError("", "Select a Drop Address");
                     if (string.IsNullOrEmpty(c.DeliveryPhone))
-                        ModelState.AddModelError("", "Select a drop Phone");
+                        ModelState.AddModelError("", "Select a Drop Phone");
                     if (string.IsNullOrEmpty(c.DeliveryContact))
-                        ModelState.AddModelError("", "Select a drop Contact");
+                        ModelState.AddModelError("", "Select a Drop Contact");
                      
                 }
 
@@ -277,11 +284,11 @@ namespace DriveDrop.Web.Controllers
                 //}
                 if (c.PackageSizeId == 0)
                 {
-                    ModelState.AddModelError("", "Select package size");
+                    ModelState.AddModelError("", "Select Package Size");
                 }
 
                 if (c.PriorityTypeId == 0)
-                { ModelState.AddModelError("", "Select package priority"); }
+                { ModelState.AddModelError("", "Select Package Priority"); }
                  
                 if (c.Amount == 0)
                 {
@@ -289,7 +296,7 @@ namespace DriveDrop.Web.Controllers
                 }
                 if (c.ShippingWeight == 0)
                 {
-                    ModelState.AddModelError("", "Select package Weight");
+                    ModelState.AddModelError("", "Select Package Weight");
                 }
                 var errors = ViewData.ModelState.Values.Count();
                 if (errors == 0)
@@ -800,10 +807,10 @@ namespace DriveDrop.Web.Controllers
 
             foreach (var a in response.Addresses)
             {
-                var stringAddress = string.Format("{0},{1},{2},{3},{4} ",
+                var stringAddress = string.Format("{0}, {1}, {2}, {3}, {4} ",
                      a.Street, a.City, a.State, a.ZipCode, a.Country);
 
-                if (a.TypeAddress.ToLower() == "pickup")
+                if (a.TypeAddress.ToLower() == "pickup" || a.TypeAddress.ToLower() == "home")
                     addressesP.Add(new SelectListItem()
                     {
                         Value = a.Id.ToString(),
@@ -824,8 +831,8 @@ namespace DriveDrop.Web.Controllers
             model.PickupAddresses = addressesP;
             model.DropAddresses = addressesD;
 
-            if (response.Addresses.Where(pa=>pa.TypeAddress.ToLower() == "pickup").Any()) {
-              var a= response.Addresses.Where(p => p.TypeAddress.ToLower() == "pickup").FirstOrDefault();
+            if (response.Addresses.Where(pa=>pa.TypeAddress.ToLower() == "pickup" || pa.TypeAddress.ToLower() == "home").Any()) {
+              var a= response.Addresses.Where(p => p.TypeAddress.ToLower() == "pickup" || p.TypeAddress.ToLower() == "home").FirstOrDefault();
                 model.PickupAddressId = a.Id;
                 model.PickupStreet = a.Street;
                 model.PickupCity = a.City;
@@ -910,7 +917,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllPriorityTypes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var priority = new List<SelectListItem>();
-            priority.Add(new SelectListItem() { Value = null, Text = "Select a priority", Selected = true });
+            priority.Add(new SelectListItem() { Value = null, Text = "Select Priority Shipping", Selected = true });
 
             gets = JArray.Parse(dataString);
 
@@ -927,7 +934,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllPackageSizes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var packageSize = new List<SelectListItem>();
-            packageSize.Add(new SelectListItem() { Value = null, Text = "PackageSize", Selected = true });
+            packageSize.Add(new SelectListItem() { Value = null, Text = "Select a Package Size", Selected = true });
 
             gets = JArray.Parse(dataString);
 
@@ -1060,7 +1067,8 @@ namespace DriveDrop.Web.Controllers
             var filePath = Path.GetTempFileName();
             var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
             var fileName = "";
-
+            if (files == null)
+                return "";
             var formFile = files;
            
 

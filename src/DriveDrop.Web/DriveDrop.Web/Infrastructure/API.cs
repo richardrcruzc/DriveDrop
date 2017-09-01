@@ -232,7 +232,14 @@ namespace DriveDrop.Web.Infrastructure
 
                 return $"{baseUri}/GetShipping{filterQs}";
             }
+            
+                public static string GetPackagesReadyForDriver(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                var filterQs = $"/driverId/{idQs}";
 
+                return $"{baseUri}/GetPackagesReadyForDriver{filterQs}";
+            }
             public static string GetNotAssignedShipping(string baseUri)
             {
                 return $"{baseUri}/GetNotAssignedShipping";

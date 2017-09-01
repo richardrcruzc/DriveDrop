@@ -417,7 +417,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             if (result.Succeeded)
             {
 
-                await _emailSender.SendEmailAsync(model.Email, "Password been reset", "Your DriveDrop passwordhave been reset");
+                await _emailSender.SendEmailAsync(model.Email, "Reset password",
+                    $" Hi {model.Email},<br />"+
+                    $"Your DriveDrop password has been reset.<br /> Please click on this <a href='{_settings.Value.MvcClient}'>link</a> to sign in.");
 
 
                 //return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
@@ -439,7 +441,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
-               
+            ViewBag.returnUrl = _settings.Value.MvcClient  ;
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient;
             return View();
         }
         //
@@ -447,6 +450,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         [HttpPost] 
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            ViewBag.returnUrl = _settings.Value.MvcClient;
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient;
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
@@ -462,7 +468,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 // Send an email with this link
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                await _emailSender.SendEmailAsync(model.Email, "Reset password",
+                    $"Hi {model.Email},<br />"+
                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
                 return View("ForgotPasswordConfirmation");
                 //return Ok("ForgotPasswordConfirmation");

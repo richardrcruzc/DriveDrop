@@ -14,7 +14,7 @@
 <div class="center-2">
     <div class="page account-page address-edit-page">
         <div class="page-title">
-            <h1>My packages</h1>
+            <h1>My Packages</h1>
         </div>
         <div class="page-body">
             <form asp-controller="Sender" asp-action="NewShipping" data-ajax="true" role="form" data-ajax-method="POST" 
@@ -27,10 +27,10 @@
                 <div class="fieldset">
 
                     <div class="title">
-                        <strong>Send a package</strong>
+                        <strong>Send a Package</strong>
                     </div>
                     <div class="title">
-                        <strong>Select a Pickup address from your address book or enter a new address</strong>
+                        <strong>Select a pickup address from your address book or enter a new address</strong>
 
                     </div>
                     <div class="title">
@@ -53,6 +53,7 @@
                                     <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
                                     <span class="required">*</span>
                                     <span asp-validation-for="PickupCity" class="text-danger"></span>
+
                                 </div>
                                 <div class="inputs">
                                     <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
@@ -70,7 +71,7 @@
                                     <span asp-validation-for="PickupCountry" class="text-danger"></span>
                                 </div>
                                 <div class="inputs">
-                                    <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Phone"   />
+                                    <input asp-for="PickupPhone" class="form-control" placeholder="Phone"   data-inputmask = "'mask': '(999)999-9999'" />
                                     <span class="required">*</span>
                                     <span asp-validation-for="PickupPhone" class="text-danger"></span>
                                 </div>
@@ -83,7 +84,7 @@
                     </div>
 
                     <div class="title">
-                        <strong>Select a Drop address from your address book or enter a new address   </strong>
+                        <strong>Select a dropoff address from your address book or enter a new address </strong>
 
                     </div>
                     <div class="title">
@@ -124,7 +125,7 @@
                                 <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
                             </div>
                             <div class="inputs">
-                                <input asp-for="DeliveryPhone" class="form-control phone-number" placeholder="Phone"   />
+                                <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone"  data-inputmask = "'mask': '(999)999-9999'"   />
                                 <span class="required">*</span>
                                 <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
                             </div>
@@ -136,14 +137,14 @@
                         </div>
                     </div>
                         <div class="title">
-                            <strong>Package picture </strong>
+                            <strong> Package Photo </strong>
                         </div>
                         <div class="edit-address">
                             <div class="inputs">
                                  
                                 <div class="avatar-page">
                                     <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
-                                    <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="200" height="200" />
+                                    <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
                                 </div>
 
                             </div>
@@ -166,18 +167,25 @@
 
                             </div>
                             <div class="inputs">
-                                <input asp-for="Amount" class="form-control" placeholder="Estimate shipping value" />
-                                <span asp-validation-for="Amount" class="text-danger"></span>
+                                @Html.EditorFor(m => m.Amount, new { @class = "form-control" })
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
 
-                            </div>
+                                    <input asp-for="Amount" class="form-control" placeholder="Estimate Shipping Value" data-inputmask="'alias':'decimal'" style="max-width: 365px"/>
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                </div>
+                                </div>
                             <div class="inputs">
-                                <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate approximate weight" />
-                                <span asp-validation-for="ShippingWeight" class="text-danger"></span>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Lbs</span>
+                                    <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" style="max-width: 350px" />
+                                    <span asp-validation-for="ShippingWeight" class="text-danger"></span>
+                                </div>
                             </div>
 
                             <div class="inputs">
                                 @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
-                                <textarea name="Note" class="span6" rows="3" placeholder="Note to the driver"></textarea>
+                                <textarea name="Note" class="span6" rows="3" placeholder="Note To The Driver"></textarea>
                                 <span asp-validation-for="Note" class="text-danger"></span>
                             </div>
 
@@ -367,7 +375,8 @@
                             var priorityTypeId = $("#PriorityTypeId").val();
                             var promoCode = $("#PromoCode").val();
                             var shippingWeight = $("#ShippingWeight").val();
-
+                            var packageSizeId = $("#PackageSizeId").val();
+                            
                             $.ajax({
                                 url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
@@ -375,7 +384,7 @@
 
                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
                                 cache: false, //avoid caching results
-                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode, packageSizeId: packageSizeId}, // here you can pass arguments to your request if you need
                                 success: function (data) {
                                     // data is your result from controller
                                     

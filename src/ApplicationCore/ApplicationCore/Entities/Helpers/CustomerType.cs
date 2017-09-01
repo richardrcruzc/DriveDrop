@@ -10,9 +10,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class CustomerType
          : Enumeration
     {
-        public static CustomerType Administrator = new CustomerType(1, nameof(Administrator).ToLowerInvariant());
-        public static CustomerType Sender = new CustomerType(2, nameof(Sender).ToLowerInvariant());
-        public static CustomerType Driver = new CustomerType(3, nameof(Driver).ToLowerInvariant());
+        public static CustomerType Administrator = new CustomerType(1, "Administrator");
+        public static CustomerType Sender = new CustomerType(2, "Sender");
+        public static CustomerType Driver = new CustomerType(3, "Driver");
 
 
         protected CustomerType()

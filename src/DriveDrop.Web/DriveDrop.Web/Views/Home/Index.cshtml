@@ -7,7 +7,7 @@
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        @*<li data-target="#myCarousel" data-slide-to="0" class="active"></li>*@
         @*<li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
         <li data-target="#myCarousel" data-slide-to="3"></li>
@@ -19,11 +19,10 @@
             <img src="~/images/slider_img.jpg" style="height: 380px;width: 1400px;" alt="DriveDrop" class="img-responsive" />
 
             <div class="carousel-caption" role="option">
-                <img src="~/images/DriveDroplogo.png" />
-
+               
                 @if (User.FindFirst(x => x.Type == "preferred_username") == null)
                 {
-                    <p>
+                    @*<p>
                     Learn how to 
                     
                     <a class="btn btn-default" href="/sender/NewSender">
@@ -41,12 +40,12 @@
                         <h2>Register as Driver  &raquo;</h2>
 
                     </a>
-                </p>
+                </p>*@
                 }
                 else
                 {
 
-                    <div class="row">
+                    @*<div class="row">
                         <div class="col-md-1">
                         </div>
                         <div class="col-md-10">
@@ -58,7 +57,7 @@
 
                         <div class="col-md-1">
                         </div>
-                    </div>
+                    </div>*@
 
                 }
             </div>
@@ -110,14 +109,14 @@
             </div>
         </div>*@
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    @*<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
     <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
-    </a>
+    </a>*@
      
 </div>
 
@@ -139,158 +138,131 @@
 
     </div>
  }*@
-<div class="row">
-   
+<div class="container">
     <div class="row">
-        <div class="col-lg-12">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="center text-center">
+                    <h3> Estimated</h3>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <br /><br />
+        </div>
+
+        <div class="row">
             <div class="center text-center">
-                 <h3> Estimated</h3> 
+                <div class="col-md-2">
 
+                    <input id="start" class="form-control autocomplete" placeholder="From Seattle, WA" />
+                    <span class="text-danger"></span>
+
+                </div>
+                <div class="col-md-2">
+
+                    <input id="end" class="form-control" placeholder="From Tacoma, WA" />
+                    <span class="text-danger"></span>
+
+                </div>
+                <div class="col-md-2">
+
+                    @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
+                    <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
+                    <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <input id="weight" class="form-control autocomplete" placeholder="weight" />
+                    <span class="text-danger"></span>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button type="button" id="calcTotal" class="btn btn-info">Submit</button>
+
+                </div>
             </div>
-        </div>    
-    </div>
-    <div class="row">
-        <br /><br /> 
-    </div>
-  
+        </div>
+
+
         <div class="row">
-            <div class="col-md-2">
-                <div class="form-horizontal">
-                    <div class="form-group">
-
-                        <div class="col-md-12">
-                            <input id="start" class="form-control autocomplete" placeholder="From Seattle, WA" />
-                            <span class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
+            <div class="center text-center">
+                <br /><br /><h3>
+                    <label id="AmountEstimated"></label>
+                </h3>
             </div>
-            <div class="col-md-2">
-                <div class="form-horizontal">
-
-
-                    <div class="form-group">
-
-                        <div class="col-md-12">
-                            <input id="end" class="form-control" placeholder="From Tacoma, WA" />
-                            <span class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
-                            <span asp-validation-for="TransportTypeId" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
-                            <span asp-validation-for="TransportTypeId" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             
-            <div class="col-md-2">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <input id="weight" class="form-control autocomplete" placeholder="weight" />
-                            <span class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-12">
-
-                            <button type="button" id="calcTotal" class="btn btn-info">submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <br /><br />
+            <br /><br />
         </div>
-    
 
-
-    <div class="row">
-        <div class="center text-center">
-                        <br /><br /><h3>
-                <label id="AmountEstimated"></label>
-            </h3>
-        </div>
-        <br /><br />
-        <br /><br />
-    </div>
-
-    <div class="row">
-        <p></p>
-    </div>
-    @if (ViewBag.UserValid == "false")
-    {
-    <div class="row">
-        <p><h1> user no valid !</h1></p>
-    </div>
-    }
-
-    @if (User.FindFirst(x => x.Type == "preferred_username") != null)
-    {
         <div class="row">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-10">
-                <a class="btn btn-default" href="/home/myAccount">
-                    <h2>Go to myAccount&raquo;</h2>
-
-                </a>
-            </div>
-             
-            <div class="col-md-1">
-            </div>
+            <p></p>
         </div>
-    }
-    else
-    {
+        @if (ViewBag.UserValid == "false")
+        {
+            <div class="row">
+                <p><h1> user no valid !</h1></p>
+            </div>
+        }
+
+        @if (User.FindFirst(x => x.Type == "preferred_username") != null)
+        {
+            @*<div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-10">
+                    <a class="btn btn-default" href="/home/myAccount">
+                        <h2>Go to myAccount&raquo;</h2>
+
+                    </a>
+                </div>
+
+                <div class="col-md-1">
+                </div>
+            </div>*@
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
+                    <a class="btn btn-default" href="/sender/NewSender">
+                        <h2>Register as Sender  &raquo;</h2>
+
+                    </a>
+                </div>
+                <div class="col-md-5">
+                    <a class="btn btn-default" href="/Driver/NewDriver">
+                        <h2>Register as Driver  &raquo;</h2>
+
+                    </a>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+        }
         <div class="row">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-5">
-                <a class="btn btn-default" href="/sender/NewSender">
-                    <h2>Register as Sender  &raquo;</h2>
-
-                </a>
-            </div>
-            <div class="col-md-5">
-                <a class="btn btn-default" href="/Driver/NewDriver">
-                    <h2>Register as Driver  &raquo;</h2>
-
-                </a>
-            </div>
-            <div class="col-md-1">
-            </div>
+            <p></p>
         </div>
-    }
-    <div class="row">
-        <p></p>
-    </div>
 
-    <div class="row">
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
+        <div class="row">
+            <br /><br />
+            <br /><br />
+            <br /><br />
+            <br /><br />
         </div>
         @*<div class="row">
                 <div class="col-md-4">
@@ -342,13 +314,13 @@
 
     </div>
 
+    </div>
 
 
- 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
 
 
 
@@ -391,7 +363,7 @@
         }
 
 
- 
+
         // Bias the autocomplete object to the user's geographical location,
         // as supplied by the browser's 'navigator.geolocation' object.
         function geolocate() {
@@ -414,13 +386,13 @@
 
             $(function () {
 
-               
+
                 $('#calcTotal').click(function (event) {
-                    
+
 
             var pAdrress = $('#start').val();
             var dAddress = $('#end').val();
-                     
+
 
                     var geocoder = new google.maps.Geocoder;
 
@@ -448,7 +420,7 @@
                             var priorityTypeId = $("#PriorityTypeId").val();
                             var promoCode = $("#PromoCode").val();
                             var weight = $("#weight").val();
-                            
+
                             $.ajax({
                                 url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
@@ -465,7 +437,7 @@
                                         //$(".value-Discount").text(data.strDiscount);
                                         //$(".value-Tax").text(data.strTaxAmount);
                                         $("#AmountEstimated").addClass('alert alert-success');
-                                        
+
                                         $("#AmountEstimated").text(data.strAmountToCharge);
 
                                     }
@@ -480,10 +452,10 @@
                             });
 
 
-                             
+
                             }
                         });
-                     
+
 
                 });
             });
@@ -499,7 +471,7 @@
 
 
 
-    </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
-        async defer></script>
-}
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+                async defer></script>
+    }

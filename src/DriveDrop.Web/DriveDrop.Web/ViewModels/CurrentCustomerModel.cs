@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,12 +14,34 @@ namespace DriveDrop.Web.ViewModels
         public string IdentityGuid { get; set; }
         public string UserGuid { get; set; }
         public string UserName { get; set; }
+         
+       // [EmailAddress]
+        [Display(Name = "Verification ID")]
+        [Required(ErrorMessage = "Your must provide Verification ID")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
         public string VerificationId { get; set; }
-
+        [EmailAddress]
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Your must provide Email")]
         public string Email { get; set; }
-        public string Phone { get; set; }
+        
+        [Required(ErrorMessage = "Your must provide a PhoneNumber")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
+        [Display(Name = "Cell Phone Number")]
+        public string Phone { get; set; } 
+        [Required(ErrorMessage = "Your must provide a Primary Phone")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Primary Phoner")]
+        [Display(Name = "Primary Phone Number")]
         public string PrimaryPhone { get; set; }
+        [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "Your must provide Last Name")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
         public string LastName { get; set; }
+        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "Your must provide First Name")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
         public string FirstName { get; set; }
         public string CustomerType { get; set; }
         public int? CustomerTypeId { get; set; }

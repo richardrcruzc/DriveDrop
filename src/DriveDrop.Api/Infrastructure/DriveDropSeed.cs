@@ -83,7 +83,7 @@ namespace DriveDrop.Api.Infrastructure
                     context.ShippingStatuses.Add(ShippingStatus.Pickup);
                     context.ShippingStatuses.Add(ShippingStatus.DeliveryInProcess);
                     context.ShippingStatuses.Add(ShippingStatus.Delivered);
-                    context.ShippingStatuses.Add(ShippingStatus.Canceled);
+                    context.ShippingStatuses.Add(ShippingStatus.Cancelled);
                     await context.SaveChangesAsync();
                 }
                 if (!context.TransportTypes.Any())

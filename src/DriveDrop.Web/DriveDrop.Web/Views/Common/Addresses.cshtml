@@ -1,4 +1,7 @@
 @model IEnumerable<DriveDrop.Web.ViewModels.AddressModel>
+@using DriveDrop.Web.Services
+@inject FormatService fService
+
     @{
         ViewData["Title"] = "Details";
 
@@ -24,7 +27,7 @@
 
         <div class="page account-page address-list-page">
             <div class="page-title">
-                <h1>My addresses</h1>
+                <h1>My Addresses</h1>
             </div>
 
             <div class="page-body">
@@ -40,7 +43,7 @@
                             </li>
                         </ol>
                         
-@if (addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default").FirstOrDefault() == null)
+@if (addresses.Where(x =>  x.TypeAddress == "home").FirstOrDefault() == null)
 {
     <div class="alert alert-danger" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -48,17 +51,18 @@
         THERE ARE NO DEFAULT ADDRESS
     </div>
 }
-                        @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default"  ))
+                        @foreach (var address in addresses.Where(x => x.TypeAddress == "home"  ))
                         {
+                            
 
                             <div class="section address-item">
                                 <div class="title"> 
-                                    <strong>@address.Contact @address.Phone</strong>
+                                    <strong>@address.Contact @fService.FormatPhoneNumber(address.Phone, "") </strong>
                                 </div>
                                 <ul class="info">
 
                                     <li class="address1">
-                                        Street
+                                        
                                         @address.Street
                                     </li>
                                     <li class="city-state-zip">
@@ -85,7 +89,7 @@
                                     </li>
                                 </ol>
 
-                                @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "pickup" ))
+                                @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower() == "pickup"))
                                 {
 
                                     <div class="section address-item">
@@ -95,7 +99,7 @@
                                     <ul class="info">
 
                                         <li class="address1">
-                                            Street
+                                             
                                             @address.Street
                                         </li>
                                         <li class="city-state-zip">
@@ -135,7 +139,7 @@
                                         <ul class="info">
 
                                             <li class="address1">
-                                                Street
+                                                 
                                                 @address.Street
                                             </li>
                                             <li class="city-state-zip">

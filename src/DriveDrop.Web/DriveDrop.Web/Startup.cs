@@ -96,6 +96,8 @@ namespace DriveDrop.Web
             services.AddTransient<IRatingRepository, RedisRatingRepository>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
+            services.AddTransient<FormatService>();
+
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {

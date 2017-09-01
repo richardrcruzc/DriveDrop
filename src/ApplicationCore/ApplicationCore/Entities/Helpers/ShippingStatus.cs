@@ -10,11 +10,11 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class ShippingStatus
          : Enumeration
     {
-        public static ShippingStatus PendingPickUp = new ShippingStatus(1, nameof(PendingPickUp).ToLowerInvariant());
+        public static ShippingStatus PendingPickUp = new ShippingStatus(1, "Pending PickUp");
         public static ShippingStatus Pickup = new ShippingStatus(2, nameof(Pickup).ToLowerInvariant());
-        public static ShippingStatus DeliveryInProcess = new ShippingStatus(3, nameof(DeliveryInProcess).ToLowerInvariant());
-        public static ShippingStatus Delivered = new ShippingStatus(4, nameof(Delivered).ToLowerInvariant());
-        public static ShippingStatus Canceled = new ShippingStatus(5, nameof(Canceled).ToLowerInvariant());
+        public static ShippingStatus DeliveryInProcess = new ShippingStatus(3,"Delivery in Process");
+        public static ShippingStatus Delivered = new ShippingStatus(4, "Delivered");
+        public static ShippingStatus Cancelled = new ShippingStatus(5, "Cancelled");
 
         protected ShippingStatus()
         {
@@ -27,7 +27,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public static IEnumerable<ShippingStatus> List()
         {
-            return new[] { PendingPickUp, Pickup, DeliveryInProcess, Delivered, Canceled };
+            return new[] { PendingPickUp, Pickup, DeliveryInProcess, Delivered, Cancelled };
         }
 
         public static ShippingStatus FromName(string name)

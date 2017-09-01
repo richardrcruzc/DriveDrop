@@ -12,13 +12,7 @@
     <None Remove="Properties\PublishProfiles\DriveDropApi20170717040707 - Web Deploy.pubxml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="wwwroot\favicon.ico" />
-    <Content Include="wwwroot\images\brand.png">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />
-  </ItemGroup>
+ 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="3.3.7" />
     <PackageReference Include="IdentityServer4" Version="1.5.2" />
@@ -64,9 +58,7 @@
     <ProjectReference Include="..\ApplicationCore\ApplicationCore\ApplicationCore.csproj" />
     <ProjectReference Include="..\PayPal.Api\PayPal.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\Uploads\SeedData\zip_codes_states.csv" />
-  </ItemGroup>
+ 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Properties\PublishProfiles\" />

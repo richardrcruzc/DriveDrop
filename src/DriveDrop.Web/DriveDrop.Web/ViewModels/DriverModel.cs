@@ -99,9 +99,9 @@ namespace DriveDrop.Web.ViewModels
         public string UserGuid { get; set; } 
 
 
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Your must provide a Last Name")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]

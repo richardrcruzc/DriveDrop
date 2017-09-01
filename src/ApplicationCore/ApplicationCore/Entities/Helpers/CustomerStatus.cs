@@ -10,10 +10,10 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class CustomerStatus
          : Enumeration
     {
-        public static CustomerStatus WaitingApproval = new CustomerStatus(1, nameof(WaitingApproval).ToLowerInvariant());
-        public static CustomerStatus Active = new CustomerStatus(2, nameof(Active).ToLowerInvariant());
-        public static CustomerStatus Suspended = new CustomerStatus(3, nameof(Suspended).ToLowerInvariant());
-        public static CustomerStatus Canceled = new CustomerStatus(4, nameof(Canceled).ToLowerInvariant());
+        public static CustomerStatus WaitingApproval = new CustomerStatus(1, "WaitingApproval");
+        public static CustomerStatus Active = new CustomerStatus(2, "Active)");
+        public static CustomerStatus Suspended = new CustomerStatus(3, "Suspended");
+        public static CustomerStatus Canceled = new CustomerStatus(4, "Canceled");
 
 
         protected CustomerStatus()

@@ -86,46 +86,37 @@
         margin-bottom: 2px;
     }
 </style>
+ 
+<div class="center-2">
 
-
-<section class="esh-catalog-filters">
-    <div class="row">
-        <h2>New Sender information</h2>
-    </div>
-</section>
-<div class="row">
-    
-        @*<form asp-controller="Sender" asp-action="NewSender" data-ajax="true" role="form" data-ajax-method="POST" enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">*@
-            <form asp-controller="Sender" asp-action="NewSender"   role="form" data-ajax-method="POST" enctype="multipart/form-data">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h2>New Sender Information</h2>
+        </div>
+        <div class="page-body">
+            @*<form asp-controller="Sender" asp-action="NewSender" data-ajax="true" role="form" data-ajax-method="POST" enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">*@
+            <form asp-controller="Sender" asp-action="NewSender" role="form" data-ajax-method="POST" enctype="multipart/form-data">
 
                 <input asp-for="Distance" hidden />
                 <input asp-for="CustomerTypeId" hidden />
 
-                <div class="row">
-
-                    <div class="col-md-10">
 
 
-                        <hr />
+                <div class="fieldset">
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
+                    <div class="title">
+                        <strong>Sender Information</strong>
                     </div>
 
-                </div>
-                <div class="row">
-
-                    <div class="col-md-5">
-                        <h3>Sender information</h3>
-                        <hr />
-
+                    <div class="form-fields">
                         <div class="form-horizontal">
 
 
                             <div class="form-group">
 
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <input asp-for="FirstName" class="form-control" placeholder="First Name" />
                                     <span asp-validation-for="FirstName" class="text-danger"></span>
                                 </div>
@@ -134,7 +125,7 @@
 
                             <div class="form-group">
 
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <input asp-for="LastName" class="form-control" placeholder="Last Name" />
                                     <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
@@ -142,40 +133,43 @@
 
                             <div class="form-group">
 
-                                <div class="col-md-12">
-                                    <input asp-for="PrimaryPhone" class="form-control phone-number" placeholder="Primary Phone Number" />
+                                <div class="col-md-4">
+                                    <input asp-for="PrimaryPhone" class="form-control" placeholder="Primary Phone Number" data-inputmask="'mask': '(999)999-9999'" />
                                     <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
 
-                                <div class="col-md-12">
-                                    <input asp-for="Phone" class="form-control phone-number" placeholder="Cell Number" />
+                                <div class="col-md-4">
+                                    <input asp-for="Phone" class="form-control" placeholder="Cell Number" data-inputmask="'mask': '(999)999-9999'" />
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            @*<div class="form-group">
 
-                                <div class="col-md-12">
-                                    <input asp-for="Email" class="form-control" placeholder="Email Address" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                            </div>
+                                    <div class="col-md-4">
+                                        <input asp-for="Email" class="form-control" placeholder="Email Address" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>*@
 
 
 
                         </div>
                     </div>
+               
+                <div class="title">
+                    <h3>Profile Photo</h3>
+                </div>
+                <div class="form-fields">
+                    <div class="form-horizontal">
 
-                    <div class="col-md-5">
 
-                        <h3>Profile photo </h3>
-                        <hr />
                         <div class="image-placeholder">
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <input name="ImgeFoto" type='file' id="imgFoto" />
                                         <img id="blah" src="~/images/DefaultProfileImage.png" class="img-thumbnail img-responsive" width="150" height="150" />
                                     </div>
@@ -186,140 +180,129 @@
                     </div>
 
                 </div>
-                <div class="row">
-                    <div class="col-md-10">
-                        <hr />
-                        <h3>Address for future pickup and dropoff</h3>
-                        <hr />
-                    </div>
-
+                <div class="title">
+                    <h3>Address for Future Pickup and Dropoff</h3>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-horizontal">
 
-                            <div class="form-group">
 
-                                <div class="col-md-12">
-                                    <input id="autocomplete" class="form-control" placeholder="Enter your address" />
-                                    <a class="btn btn-primary btn-lg" role="button" id="asPickup">pickup</a>
-                                </div>
+                <div class="form-fields">
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+
+                            <div class="col-md-4">
+                                <input id="autocomplete" class="form-control" placeholder="Enter your address" />
+                                <a class="btn btn-primary btn-lg" role="button" id="asPickup">pickup</a>
                             </div>
                         </div>
                     </div>
-                   
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <h3>Default address</h3>
-                        <hr />
-                        <div class="form-horizontal">
+
+                    <h3>Default Address</h3>
+                    <hr />
+                    <div class="form-horizontal">
 
 
 
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input asp-for="PickupStreet" class="form-control" placeholder="Street"   readonly/>
-                                    <span asp-validation-for="PickupStreet" class="text-danger"></span>
-                                </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <input asp-for="PickupStreet" class="form-control" placeholder="Street" readonly />
+                                <span asp-validation-for="PickupStreet" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input asp-for="PickupCity" class="form-control" placeholder="City"   readonly/>
-                                    <span asp-validation-for="PickupCity" class="text-danger"></span>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
+                                <span asp-validation-for="PickupCity" class="text-danger"></span>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code"  readonly />
-                                    <span asp-validation-for="PickupZipCode" class="text-danger"></span>
-                                </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
+                                <span asp-validation-for="PickupZipCode" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input asp-for="PickupState" class="form-control" placeholder="state"  readonly />
-                                    <span asp-validation-for="PickupState" class="text-danger"></span>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <input asp-for="PickupState" class="form-control" placeholder="state" readonly />
+                                <span asp-validation-for="PickupState" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input asp-for="PickupCountry" class="form-control" placeholder="Country"  readonly />
-                                    <span asp-validation-for="PickupCountry" class="text-danger"></span>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <input asp-for="PickupCountry" class="form-control" placeholder="Country" readonly />
+                                <span asp-validation-for="PickupCountry" class="text-danger"></span>
                             </div>
-                            @*<div class="form-group">
-                                <div class="col-md-12">
+                        </div>
+                        @*<div class="form-group">
+                                <div class="col-md-4">
                                     <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Contact phone"   />
                                     <span asp-validation-for="PickupPhone" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <input asp-for="PickupContact" class="form-control" placeholder="Contact person"   />
                                     <span asp-validation-for="PickupContact" class="text-danger"></span>
                                 </div>
                             </div>*@
 
 
-                        </div>
+                    </div>
 
-                    </div> 
+                </div>
+                <div class="title">
+                    <h3>Login Infomation</h3>
+                </div>
 
-
-                    <div class="col-md-5">
+                    <div class="form-fields">
                         <div class="form-horizontal">
 
-                            <h3>
-                                Login infomation
-                            </h3>
-                            <hr />
                             <div class="form-group">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <input asp-for="UserEmail" class="form-control" placeholder="User Email" />
                                     <span asp-validation-for="UserEmail" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <input asp-for="Password" class="form-control" placeholder="Password" />
                                     <span asp-validation-for="Password" class="Password"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
                                     <span asp-validation-for="ConfirmPassword" class="ConfirmPassword"></span>
                                 </div>
                             </div>
                         </div>
 
-                    </div>
 
-                   
-                </div>
 
-                <div class="row">
-                    <div class="buttons">
-                        <input   type="submit" value="Submit" name="save-info-button" class="btn btn-primary" />
+                      
 
-                    </div>
-                </div>
-                <div class="row"></div>
-</form>
+                    </div><div class="form-fields">
+                              <div class="buttons">
+                                  <input type="submit" value="Submit" name="save-info-button" class="btn btn-primary" />
 
-    <div>
-        <hr />
-        
+                              </div>
     </div>
 </div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+               
+            </form>
+        </div>
+       
+    </div>
+</div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-<script>
+        <script>
 
     //    $('input#submitButton').click(function () {
 
@@ -412,7 +395,7 @@
                                         $(".value-Tax").text(data.strTaxAmount);
                                         $(".value-total").text(data.strAmountToCharge);
 
-                                         
+
 
                                     }
 
@@ -500,7 +483,7 @@
                              }
                          }
 
-                       
+
 
                          document.getElementById('autocomplete').value = '';
                      });
@@ -536,7 +519,7 @@
                              }
                          }
 
-                        
+
 
                          document.getElementById('autocomplete').value = '';
                      });
@@ -614,7 +597,7 @@
           });
         }
       }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
-        async defer></script>
-}
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+                async defer></script>
+    }

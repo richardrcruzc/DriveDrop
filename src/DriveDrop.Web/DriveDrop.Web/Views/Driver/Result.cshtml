@@ -31,7 +31,7 @@
                 <div class="fieldset">
 
                     <div class="title">
-                        <strong>Your Personal Details</strong>
+                        <strong>My personal information details</strong>
                     </div>
 
 
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="inputs">
-                            <label for="FirstName">First name</label>
+                            <label for="FirstName">First Name</label>
 
                             <input asp-for="FirstName" placeholder="First name" />
                             <span class="required">*</span>
@@ -63,31 +63,34 @@
 
                         </div>
                         <div class="inputs">
-                            <label for="LastName">Last name</label>
+                            <label for="LastName">Last Name</label>
                             <input asp-for="LastName" placeholder="Last name" />
                             <span class="required">*</span>
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
 
                         <div class="inputs">
-                            <label for="Email">Email</label>
-                            <input asp-for="Email" placeholder="Email" />
+                           @Html.LabelFor(model => model.Email )
+                        @Html.TextBoxFor(model => model.Email, new { @class = "email" })
                             <span class="required">*</span>
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                        @Html.ValidationMessageFor(model => model.Email)
+
+
+
                         </div>
                         <div class="inputs">
-
-                            <label for="PrimaryPhone">Primary Phone</label>
-                            <input asp-for="PrimaryPhone" placeholder="Phone" />
+                            @Html.LabelFor(model => model.PrimaryPhone )
+                            @Html.TextBoxFor(model => model.PrimaryPhone, new { @data_inputmask = "'mask': '(999)999-9999'" })
                             <span class="required">*</span>
-                            <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                            @Html.ValidationMessageFor(model => model.PrimaryPhone)
+                             
                         </div>
                         <div class="inputs">
-
-                            <label for="Phone">Phone</label>
-                            <input asp-for="Phone" placeholder="Phone" />
+                            @Html.LabelFor(model => model.Phone)
+                            @Html.TextBoxFor(model => model.Phone, new { @data_inputmask = "'mask': '(999)999-9999'" })
                             <span class="required">*</span>
-                            <span asp-validation-for="Phone" class="text-danger"></span>
+                            @Html.ValidationMessageFor(model => model.Phone)
+                            
                         </div>
                         <div class="inputs">
 
@@ -105,22 +108,16 @@
                                         <input type='file' id="my-file-selector-Personal" name="PersonalPhotoUri" />
                                         <img id="Personal-image" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
 
-
                                     </div>
-
                                 </div>
-                            
-
-                        
-                        <div class="buttons">
-                            <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
-
-                        </div>
-                        <div class="center-block bg-primary text-center" id="bar-notification">
-
-                        </div>
                     </div>
+                    <div class="buttons">
+                        <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
 
+                    </div>
+                    <div class="center-block bg-primary text-center" id="bar-notification">
+
+                    </div>
                 </div>
 
             </form>
@@ -133,7 +130,7 @@
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
-
+     
     $(function () {
         $('form').submit(function () {
             var data = new FormData();

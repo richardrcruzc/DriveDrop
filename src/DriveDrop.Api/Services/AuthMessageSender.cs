@@ -23,8 +23,8 @@ namespace DriveDrop.Api.Services
         public async Task SendEmailAsync(string email, string subject, string message)
         {
 
-            if (_env.IsDevelopment())
-             email = "richardrcruzc@gmail.com";
+           // if (_env.IsDevelopment())
+           //  email = "richardrcruzc@gmail.com";
 
         var emailMessage = new MimeMessage();
 
@@ -37,24 +37,26 @@ namespace DriveDrop.Api.Services
             emailMessage.Body = bodyBuilder.ToMessageBody();
 
 
-
-            try
+            if (!_env.IsDevelopment())
             {
-                using (var client = new SmtpClient())
+                try
+                {
+                    using (var client = new SmtpClient())
+                    {
+
+                        client.LocalDomain = "smtp.sendgrid.net";
+
+                        await client.ConnectAsync("smtp.sendgrid.net", 587, SecureSocketOptions.None).ConfigureAwait(false);
+                        await client.AuthenticateAsync("azure_d5dbc42617b3c0dbb2559dc0342b495e@azure.com", "Q!w2e3r4");
+                        await client.SendAsync(emailMessage).ConfigureAwait(false);
+                        await client.DisconnectAsync(true).ConfigureAwait(false);
+                    }
+                }
+                catch (Exception ex)
                 {
 
-                    client.LocalDomain = "smtp.sendgrid.net";
-
-                    await client.ConnectAsync("smtp.sendgrid.net", 587, SecureSocketOptions.None).ConfigureAwait(false);
-                    await client.AuthenticateAsync("azure_d5dbc42617b3c0dbb2559dc0342b495e@azure.com", "Q!w2e3r4");
-                    await client.SendAsync(emailMessage).ConfigureAwait(false);
-                    await client.DisconnectAsync(true).ConfigureAwait(false);
+                    var m = ex.Message;
                 }
-            }
-            catch (Exception ex)
-            {
-
-                var m = ex.Message;
             }
 
             // return Task.FromResult(0);

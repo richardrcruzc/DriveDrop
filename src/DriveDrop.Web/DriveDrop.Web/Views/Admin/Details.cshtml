@@ -16,23 +16,32 @@
 <div class="center-2">
     <div class="page account-page customer-info-page">
         <div class="page-title">
-            <h1>Details</h1>
+            <h1>Administrator Information</h1>
         </div>
         <div class="page-body">
             <div class="fieldset">
-                <h3>@Model.CustomerType: user details</h3>
+                <h3>@Model.CustomerType: User Details</h3>
 
                 <div class="form-fields">
 
                     <div class="inputs">
-                        <label>Customer status</label>
-                        @Html.TextBoxFor(model => model.CustomerStatus, new { @disabled = "disabled" })
+                        <label>Customer Status</label>
+                        <div class="gender">
+                            <span>
 
+                                <label class="male">@Model.CustomerStatus</label>
+                            </span>
+                        </div>
                     </div>
                     <div class="inputs">
-                        <label>Login user</label>
-                        @Html.TextBoxFor(model => model.UserName, new {@disabled = "disabled", @id= "UserName" })
-                       
+                        <label>Login User</label>
+                      
+                        <div class="gender">
+                            <span>
+
+                                <label class="male">@Model.UserName</label>
+                            </span>
+                        </div>
                    </div>
 
                     @if (!Model.IsAdmin)
@@ -40,7 +49,7 @@
                         
                             <div id="impersonateDiv" class="invisible">
                                 <div class="inputs">
-                                    <label>Imput the impersonate code</label>
+                                    <label>Verification ID</label>
                                     @*<input name="ImpersonateCode" id="ImpersonateCode" />*@
                                     @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode" })
                                 </div>
@@ -54,57 +63,78 @@
 
 
                     <div class="inputs">
-                        <label>Customer type</label>
+                        <label>Customer Type</label>
+                         
+                        <div class="gender">
+                            <span>
 
-                        @Html.EditorFor(model => model.CustomerType)
-
+                                <label class="male">@Model.CustomerType</label>
+                            </span>
+                        </div>
                     </div>
 
 
                     <div class="inputs">
-                        @Html.LabelFor(model => model.LastName)
+                        
+                        @Html.LabelFor(m => m.LastName)
+                        @Html.TextBoxFor(m => m.LastName )
+                        <span class="required">*</span>
+                        @Html.ValidationMessageFor(m => m.LastName)
+                    </div>
+                    <div class="inputs">
+                        @Html.LabelFor(m => m.FirstName)
+                        @Html.TextBoxFor(m => m.FirstName)
+                        <span class="required">*</span>
+                        @Html.ValidationMessageFor(m => m.FirstName)
+                        
 
+                    </div>
 
-                        @Html.EditorFor(model => model.LastName)
+                    <div class="inputs">
+
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "email" })
+                        <span class="required">*</span>
+                        @Html.ValidationMessageFor(m => m.Email)
+
 
                     </div>
                     <div class="inputs">
 
-                        @Html.LabelFor(model => model.FirstName)
+                        @Html.LabelFor(m => m.PrimaryPhone)
+                        @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999)999-9999'" })
+                        <span class="required">*</span>
+                        @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
-
-                        @Html.EditorFor(model => model.FirstName)
 
                     </div>
 
                     <div class="inputs">
 
-                        @Html.LabelFor(model => model.Email)
-                        @Html.EditorFor(model => model.Email)
+                        @Html.LabelFor(m => m.Phone)
+                        @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999)999-9999'" })
+                        <span class="required">*</span>
+                        @Html.ValidationMessageFor(m => m.Phone)
+                         
 
                     </div>
-                    <div class="inputs">
 
-
-
-                        @Html.LabelFor(model => model.Phone)
-                        @Html.EditorFor(model => model.Phone)
-
-                    </div>
+            
                     <div class="inputs">
                         <div class="title">
-                            <Label><strong>Personal photo</strong></Label>
+                            <Label><strong>Profile Photo</strong></Label>
                         </div>
                         <div class="avatar-page">
-
+                            <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
                             <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
                         </div>
 
                     </div>
-
+                    
                 </div>
             </div>
-
+@if (Model.CustomerType.ToLower() != "administrator")
+{
             @if (Model.CustomerType == "driver")
             {
                 <div class="fieldset">
@@ -286,8 +316,8 @@
                 }
             </div>
 
-            @if (Model.CustomerType == "sender" && Model.ShipmentSenders.Count()>0)
-{
+            @if (Model.CustomerType == "sender" && Model.ShipmentSenders.Count() > 0)
+            {
                 <div class="order-list">
                     <div class="page-title">
                         <h1>Packages</h1>
@@ -327,12 +357,12 @@
                 </ul>
 
             </div>
-        }
+                    }
 
                 </div>
-}
+            }
             @if (Model.CustomerType == "driver" && Model.ShipmentDrivers.Count() > 0)
-{
+            {
                 <div class="order-list">
                     <div class="page-title">
                         <h1>Packages</h1>
@@ -372,12 +402,12 @@
                 </ul>
 
             </div>
-        }
+                    }
 
                 </div>
+            }
+
 }
-
-
         </div>
     </div>
 </div>
@@ -408,12 +438,29 @@
 
 
 <script>
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#photoUrl").change(function () {
+        readURL(this);
+    });
+
     $(document).ready(function () {
         $("#impersonateBtn").click(function () {
             $("#impersonateDiv").removeClass('invisible');
             if ($("#ImpersonateCode").val() == '')
             {
-                alert("enter impersonate code");
+                alert("enter Verification ID");
                 return false;
             }
             var userName = $("#UserName").val();

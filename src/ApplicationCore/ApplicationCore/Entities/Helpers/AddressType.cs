@@ -10,9 +10,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class AddressType
          : Enumeration
     {
-        public static AddressType Billing = new AddressType(1, nameof(Billing).ToLowerInvariant());
-        public static AddressType Pickup = new AddressType(2, nameof(Pickup).ToLowerInvariant());
-        public static AddressType Delivery = new AddressType(3, nameof(Delivery).ToLowerInvariant());
+        public static AddressType Billing = new AddressType(1, "Billing");
+        public static AddressType Pickup = new AddressType(2, "Pickup");
+        public static AddressType Delivery = new AddressType(3,"Delivery");
 
         protected AddressType()
         {

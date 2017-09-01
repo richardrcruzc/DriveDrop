@@ -148,7 +148,9 @@ namespace DriveDrop.Web.Controllers
 
                 var response = await _apiClient.PostAsync(allRatesUri, save, token);
 
-                return RedirectToRoute("DistanceAndWeight", new { id = 1 });
+                ModelState.AddModelError("", "Distance and Weight Rate Updated");
+
+                // return RedirectToRoute("DistanceAndWeight", new { id = 1 });
 
 
             }
@@ -226,13 +228,26 @@ namespace DriveDrop.Web.Controllers
                     //return RedirectToAction("Index");
                     ModelState.AddModelError("", "Rate Updated");
                     model = rateToUpdate;
+
+                      allRatesUri = API.Rate.GetbyId(_remoteServiceRatessUrl, model.Id);
+
+                      dataString = await _apiClient.GetStringAsync(allRatesUri, token);
+
+                    rateToUpdate = JsonConvert.DeserializeObject<RateModel>(dataString);
+
+                    var query = rateToUpdate.RatePriorities.OrderBy(x => x.PriorityTypeId).ToList();
+
+                      model = new RateModel { Id = rateToUpdate.Id, OverHead = rateToUpdate.OverHead, PackageSize = rateToUpdate.PackageSize, RatePriorities = query };
+
+
                 }
             }
             catch(Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
             }
-            
+           
+
             return View(model);
         }
        

@@ -444,7 +444,9 @@ namespace DriveDrop.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
                 currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
-            
+
+            currentUser.CustomerStatus=  currentUser.CustomerStatus.ToTitleCase();
+
             return View(currentUser);
         }
         

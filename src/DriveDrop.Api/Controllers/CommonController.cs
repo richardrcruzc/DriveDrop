@@ -250,6 +250,8 @@ namespace DriveDrop.Api.Controllers
                 var defaultAddress = updateCustomer.Addresses.Where(x => x.Id == addressId).FirstOrDefault();
                 if(defaultAddress==null)
                 return NotFound("UnableToSaveChanges");
+                
+
 
                 updateCustomer.AddDefaultAddress(defaultAddress); 
 

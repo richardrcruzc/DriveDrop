@@ -209,9 +209,7 @@ namespace DriveDrop.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
                 response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
-            else
-                response.PersonalPhotoUri = "/"+response.PersonalPhotoUri;
-
+          
             if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
                 response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
           
@@ -222,7 +220,11 @@ namespace DriveDrop.Web.Controllers
             if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
                 response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
 
+            response.CustomerType = response.CustomerType.ToTitleCase();
+            response.CustomerStatus = response.CustomerStatus.ToTitleCase();
+
             
+
             return View(response);
 
 

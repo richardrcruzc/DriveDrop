@@ -42,12 +42,14 @@
         <div class="header">
 
 
-            <div class="header-logo">
-                <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-                    <div class="navbar-brand"></div>
+            <div class="header-logo"> 
+                <a  href="@ViewBag.returnUrl">
+                    <div class="navbar-brand">
+                        <img title="" alt="DriveDrop" src="~/images/brand.png" width="100" height="75">
+                    </div>
                 </a>
             </div>
-
+            
 
         </div>
 

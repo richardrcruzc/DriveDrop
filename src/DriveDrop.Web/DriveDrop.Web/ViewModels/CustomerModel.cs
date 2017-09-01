@@ -70,9 +70,9 @@ namespace DriveDrop.Web.ViewModels
 
 
 
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Your must provide a Last Name")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
@@ -417,11 +417,13 @@ namespace DriveDrop.Web.ViewModels
         public string IdentityCode { get; set; }
         public PriorityType PriorityType { get; set; }
         public int PriorityTypeLevel { get; set; }
-         
 
-        [Required(ErrorMessage = "Your must provide a Estimate shipping value")]
-        public Decimal? Amount { get; set; }
-        public Decimal? ShippingWeight { get; set; } 
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "Please provide an Estimate Shipping Value")]
+        public decimal? Amount { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "Enter only numbers for Estimate Approximate Weight")]
+        public decimal? ShippingWeight { get; set; } 
         public string PromoCode { get; set; }
 
         public int PriorityTypeId { get; set; }

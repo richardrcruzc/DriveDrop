@@ -13,19 +13,23 @@
 
 </div>
 <div class="center-2">
-    <div class="page account-page customer-info-page">
+    <div class="page account-page address-list-page">
         <div class="page-title">
             <h1>Rates</h1>
         </div>
-        <div class="page-body checkout-data">
+        <div class="page-body">
              
             <div class="address-list">
                 @foreach (var item in Model)
                 {
 
-                    <ol class="opc" id="checkout-steps">
-                        <li id="opc-billing" class="tab-section allow">
-                            <div class="step-title"><a asp-action="Edit" asp-route-id="@item.Id"><h2>@item.PackageSize.Name</h2></a> |</div>
+                    <ol class="opc">
+                        <li   class="tab-section allow active">
+                            <div class="step-title"><h4 class="title">@item.PackageSize.Name</h4>
+                                <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Details</h4></a> 
+                                <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Edit</h4></a> 
+                                
+                            </div>
                         </li>                         
                     </ol>                     
                         }
