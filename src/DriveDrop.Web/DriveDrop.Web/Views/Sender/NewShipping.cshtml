@@ -177,15 +177,15 @@
                                 </div>
                             <div class="inputs">
                                 <div class="input-group">
-                                    <span class="input-group-addon">Lbs</span>
-                                    <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" style="max-width: 350px" />
+                                    <span class="input-group-addon">#</span>
+                                    <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
                                     <span asp-validation-for="ShippingWeight" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="inputs">
                                 @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
-                                <textarea name="Note" class="span6" rows="3" placeholder="Note To The Driver"></textarea>
+                                <textarea name="Note" class="span6" rows="3" placeholder="Note to the Driver"></textarea>
                                 <span asp-validation-for="Note" class="text-danger"></span>
                             </div>
 
@@ -215,6 +215,46 @@
                                 <div class="total-info">
                                     <table class="cart-total">
                                         <tbody>
+
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
+                                                    <label>Priority:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Priority">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
+                                                    <label>Distance:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Distance">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
+                                                    <label>Weight:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Weight">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
+                                                    <label>Size:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Size">$0.00</span>
+                                                </td>
+                                            </tr>
+
+
+
+
+
+
+
                                             <tr class="order-subtotal">
                                                 <td class="cart-total-left">
                                                     <label>Sub-Total:</label>
@@ -389,7 +429,12 @@
                                     // data is your result from controller
                                     
                                     if (data) { 
-                                        $("#Distance").val(km);
+                                        $("#Distance").val(km); 
+                                        $(".value-Priority").text(data.strPriorityAmount);
+                                        $(".value-Distance").text(data.strDistanceAmount);
+                                        $(".value-Weight").text(data.strWeightAmount);
+                                        $(".value-Size").text(data.strAmountPerSize); 
+
                                         $(".value-Sub").text(data.strSubTotal);
                                         $(".value-Discount").text(data.strDiscount);
                                         $(".value-Tax").text(data.strTaxAmount);

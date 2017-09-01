@@ -93,7 +93,7 @@
                         <span asp-validation-for="Street" class="text-danger"></span>*@
                     </div>
                     <div class="inputs">
-                        @Html.TextBoxFor(m => m.Contact, new { @class = "form-control", @disabled = "disabled", placeholder = "Contact person" })
+                        @Html.TextBoxFor(m => m.Contact, new { @class = "form-control", @disabled = "disabled", placeholder = "Contact Person" })
                         <span class="required">*</span>
                         @Html.ValidationMessageFor(m => m.Contact)
 
@@ -103,13 +103,16 @@
                         <span class="required">*</span>
                         <span asp-validation-for="Contact" class="text-danger"></span>*@
                     </div>
-                </div>
+                    <div class="form-fields">
+                        <div class="buttons">
+                            <input type="submit" class="button-1 save-address-button" id="btnSave" value="Save" />
 
-                <div class="buttons">
-                    <input type="submit" class="button-1 save-address-button" id="btnSave" value="Save"  />
 
-                    
-                </div>
+                        </div>
+                    </div>
+                    </div>
+
+               
                 <div class="center-block bg-primary text-center" id="bar-notification">
 
                 </div>

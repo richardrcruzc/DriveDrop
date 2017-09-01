@@ -25,6 +25,15 @@ namespace DriveDrop.Web.ViewModels
 
         public bool Valid { get; set; }
 
+        public string StrAmountPerSize
+        {
+            get
+            {
+                return string.Format("${0:0.00}", AmountPerSize);
+            }
+        }
+
+
         public string StrSubTotal
         {
             get
@@ -81,7 +90,7 @@ namespace DriveDrop.Web.ViewModels
         {
             get
             {
-                return string.Format("US${0:0.00}", AmountToCharge + TaxAmount - Discount);
+                return string.Format("${0:0.00}", AmountToCharge + TaxAmount - Discount);
             }
         }
 

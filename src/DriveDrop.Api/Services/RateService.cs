@@ -31,7 +31,11 @@ namespace DriveDrop.Api.Services
             var miles = distance; // await _distance.FromZipToZipInMile(zipFrom, zipTo);
             var milesDecimal = distance; // (decimal)miles;
 
-            var myRate = await _context.Rates.Include(c => c.PackageSize).Include(x=>x.RatePriorities).Where(p=>p.PackageSize.Id == packageSizeId).FirstOrDefaultAsync();
+            var myRate = await _context.Rates
+                .Include(c => c.PackageSize)
+                .Include(x=>x.RatePriorities)
+                .Where(p=>p.PackageSize.Id == packageSizeId)
+                .FirstOrDefaultAsync();
             if (myRate == null)
                 return new CalculatedCharge();
 
@@ -41,20 +45,19 @@ namespace DriveDrop.Api.Services
                 rateWeight = _context.RateDetails.Where(x => x.MileOrLbs == "lbs" && x.WeightOrDistance == "weight").OrderByDescending(x=>x.From).FirstOrDefault();
 
             var chargePerPriority = myRate.RatePriorities.Where(p => p.PriorityTypeId == priority).FirstOrDefault();
-            
+
             //    _context.RatePriorities.Where(x => x.RateId == myRate.Id && x.PriorityTypeId == priority).FirstOrDefault();
             // var chargePerTransport = _context.RateTranportTypes.Where(x => x.RateId == myRate.Id && x.TranportTypeId == transportTypeId).FirstOrDefault();
 
-            decimal rateSize = 0;
+            decimal rateSize = myRate.OverHead;
          
             //if (chargePerSize.ChargePercentage)
             //    rateSize = chargePerSize.Charge / 100;
             //else
             //    rateSize = chargePerSize.Charge;
 
-            var amountToCharge = 1 * myRate.OverHead
-                                     + weight * rateWeight.Charge
-                                     + (decimal)miles * rateDistance.Charge 
+            var amountToCharge =    rateWeight.Charge
+                                     +   rateDistance.Charge 
                                      + chargePerPriority.Charge 
                                      + rateSize;
 
@@ -79,19 +82,19 @@ namespace DriveDrop.Api.Services
             if (taxes != null)
                 taxRates = taxes.Rate;
 
-            amountToCharge += taxRates;
+           // amountToCharge += taxRates;
 
             var model = new CalculatedCharge
             {
                 TaxRate = taxRates,
                 TaxAmount = taxRates / 100 * amountToCharge,
-                AmountToCharge = amountToCharge,
+                 AmountToCharge = amountToCharge,
                 Distance = milesDecimal,
                 DistanceAmount = rateDistance.Charge,
                 PriorityAmount = chargePerPriority.Charge,
-                TransportTypeAmount = 0, //chargePerTransport.Charge,
-                WeightAmount = rateWeight.Charge,
-                Discount = totalDiscount,
+                //TransportTypeAmount = 0, //chargePerTransport.Charge,
+               WeightAmount =  rateWeight.Charge,
+                //Discount = totalDiscount,
                 AmountPerSize = rateSize
 
             };

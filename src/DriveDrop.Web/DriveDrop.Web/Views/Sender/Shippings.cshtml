@@ -37,21 +37,22 @@
                 <strong>Shipping #: @item.IdentityCode</strong>
             </div>
             <ul class="info">
-                <li>Status: <span class="order-completed">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
-                <li>Date: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.PriorityType.Name)</span></li>
-                <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.ChargeAmount)</span></li>
-                <li>Order Discount: <span class="order-total">@Html.DisplayFor(modelItem => item.Discount)</span></li>
-                <li>Pickup Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
-                <li>Delivery Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
-                <li>Distance Miles: <span class="order-total">@Html.DisplayFor(modelItem => item.Distance)</span></li>
+                <li><label>Status</label> <span class="order-completed">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
+                <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                <li><label>Priority: </label><span class="order-date"> @Html.DisplayFor(modelItem => item.PriorityType.Name)</span></li>
+                <li><label>Order Total: </label><span class="order-total">@Html.DisplayFor(modelItem => item.ChargeAmount)</span></li>
+                <li><label>Order Discount: </label><span class="order-total">@Html.DisplayFor(modelItem => item.Discount)</span></li>
+                <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
+                <li><label>Delivery Address:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
+                <li><label>Distance Miles:</label> <span class="order-total">@Html.DisplayFor(modelItem => item.Distance)</span></li>
                 <li>
                     <div class="pull-left">
-                        <div>Pickup Image</div>
+                        <div><label>Pickup Image</label></div>
                         <img src="@urlPickup" class="img-rounded" alt="no package image" width="100" height="75">
                     </div>
+                    <div class="pull-right"></div>
                     <div class="col-5">
-                        <div>Delivery Image</div>
+                        <div><label>Delivery Image</label></div>
                         <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
                     </div>
                 </li>
@@ -60,14 +61,23 @@
             @*<div class="buttons">
                 <input type="button" value="Details" class="button-2 order-details-button" onclick="setLocation('/sender/ShippingDetails/@(item.Id)')" />
             </div>*@
+
+
+
         </div>
        
     }
-            <div class="add-button">
-                <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/NewShipping/@(ViewBag.Id)'" value="Add new" />
-            </div>
-</div>
+           
 
-                                </div>
+                                       
+
+</div>
+                                  <div class="form-fields">
+                                      <div class="add-button">
+                                          <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/NewShipping/@(ViewBag.Id)'" value="Add new" />
+                                      </div>
+                                  </div>
+
+                                  </div>
                           </div>
                       </div>
