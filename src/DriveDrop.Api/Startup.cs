@@ -116,7 +116,10 @@ namespace DriveDrop.Api
             services.AddTransient<IDistanceService, DistanceService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IPayPalStandardPaymentProcessor, PayPalStandardPaymentProcessor>();
+            services.AddTransient<IGeolocationService, GeolocationService>();
             
+
+
 
             _services = services;
         }
