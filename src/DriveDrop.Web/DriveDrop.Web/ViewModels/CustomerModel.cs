@@ -102,8 +102,10 @@ namespace DriveDrop.Web.ViewModels
         [Display(Name = "Postal code")]
         [Required(ErrorMessage = "Your must provide a pickup Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String PickupZipCode { get; set; }  
+        public String PickupZipCode { get; set; }
 
+        public Double PickupLatitude { get; set; }
+        public Double PickupLongitude { get; set; }
     }
 
     public class CustomerModelComplete
@@ -383,7 +385,10 @@ namespace DriveDrop.Web.ViewModels
         [Display(Name = "Postal code")]
         [Required(ErrorMessage = "Your must provide a pickup Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String PickupZipCode { get; set; } 
+        public String PickupZipCode { get; set; }
+        public Double PickupLatitude { get; set; }
+        public Double PickupLongitude { get; set; }
+
 
         public decimal? Weight { get; set; }
 
@@ -406,8 +411,9 @@ namespace DriveDrop.Web.ViewModels
         [Display(Name = "Postal Code")]
         [Required(ErrorMessage = "Your must provide a delivery Postal Code")]
         [DataType(DataType.PostalCode)]
-        public String DeliveryZipCode { get; set; } 
-
+        public String DeliveryZipCode { get; set; }
+        public Double DeliveryLatitude { get; set; }
+        public Double DeliveryLongitude { get; set; }
 
 
 

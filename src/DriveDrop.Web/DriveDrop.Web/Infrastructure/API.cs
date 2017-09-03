@@ -216,6 +216,8 @@ namespace DriveDrop.Web.Infrastructure
 
         public static class Shipping
         {
+            
+
             public static string GetById(string baseUri, int id)
             {
 
@@ -224,11 +226,12 @@ namespace DriveDrop.Web.Infrastructure
                 return $"{baseUri}/{filterQs}";
             }
 
-            public static string GetShipping(string baseUri,   int shippingStatusId, int priorityTypeId, int pageIndex, int pageSize)
+            public static string GetShipping(string baseUri,   int shippingStatusId, int priorityTypeId, string identityCode, int pageIndex, int pageSize)
             {
                 var shippingStatusIdQs = shippingStatusId.ToString();
                 var priorityTypeIdQs = priorityTypeId.ToString();
-                var filterQs = $"/shippingStatusId/{shippingStatusIdQs}/priorityTypeId/{priorityTypeIdQs}?pageIndex={pageIndex}&pageSize={pageSize}";
+                var identityCodeQs = string.IsNullOrEmpty(identityCode) ? "null" : identityCode;
+                var filterQs = $"/shippingStatusId/{shippingStatusIdQs}/priorityTypeId/{priorityTypeIdQs}/identityCode/{identityCodeQs}?pageIndex={pageIndex}&pageSize={pageSize}";
 
                 return $"{baseUri}/GetShipping{filterQs}";
             }

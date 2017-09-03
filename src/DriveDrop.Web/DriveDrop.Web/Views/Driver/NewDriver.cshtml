@@ -15,6 +15,9 @@
         <div class="page-body">
 
             <form method="post" asp-action="NewDriver" enctype="multipart/form-data">
+                
+                <input asp-for="DeliveryLatitude" hidden />
+                <input asp-for="DeliveryLongitude" hidden />
 
 
                 <div class="fieldset">
@@ -472,6 +475,10 @@
 
                                 if (addressType == 'postal_code')
                                     $("#DeliveryZipCode").val(place.address_components[i]['short_name']);
+
+                                //assign lat and lng
+                                $("#DeliveryLatitude").val(place.geometry.location.lat());
+                                $("#DeliveryLongitude").val(place.geometry.location.lng());
 
                                 //document.getElementById(addressType).value = '';
                                 //document.getElementById(addressType).disabled = false;

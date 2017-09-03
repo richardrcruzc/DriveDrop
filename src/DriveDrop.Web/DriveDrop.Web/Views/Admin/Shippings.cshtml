@@ -34,7 +34,7 @@
                                     <select asp-for="ShippingStatusFilterAApplied" asp-items="@Model.ShippingStatus" class="esh-catalog-filter"></select>
                                 </label>
                                
-
+                                <input asp-for="IdentityCode" placeholder="Package ID" />
 
                                 <input type="submit" value="Search" name="save-info-button" class="button-1 save-customer-info-button" />
                             </form>
@@ -64,9 +64,10 @@
                                         <th>Customer</th>
                             <th><div>Date </div> Status</th>
                             <th>Priority</th>
-                            <th><div>Amount</div>discount</th>
+                            <th><div>Amount</div>Discount</th>
                             <th>Pickup Address</th>
                             <th>Delivery Address</th>
+                                        <th>Distance</th>
                                     </tr>
                                 </thead>
                                 <tbody>

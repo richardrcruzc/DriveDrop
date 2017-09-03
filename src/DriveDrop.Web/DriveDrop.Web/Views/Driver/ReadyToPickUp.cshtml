@@ -2,7 +2,7 @@
 
 <div class="side-2">
 
-    @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.CustomerId)
+    @await Html.PartialAsync("DriverNavigation", Model.CustomerId)
 
 </div>
 <div class="center-2">
@@ -14,18 +14,22 @@
         </div>
         <div class="page-body">
             <h3>List of package ready to pick up that match your criteria of </h3>
-
+            <p><label>Pickup Distance: <span>@Model.PickupDistance</span> Miles</label></p>
+            <p><label>Deliver Distance: <span>@Model.DeliverDistance</span> Miles</label></p>
+            
             <div class="row">
                 <table class="table">
 
                     <tr>
                         <th>#</th>
                         <th><div>Date </div> Status</th>
-                        <th>Priority</th>
-                        <th><div>Amount</div>discount</th>
+                        <th><div>Priority</div></th>
+                        <th><div>Amount</div>Discount</th>
                         <th>Pickup Address</th>
                         <th>Delivery Address</th>
-                        <th> </th>
+                      
+                        <th> <div>Delivery Distance </div></th>
+                        <th> Map</th>
 
                     </tr>
 
@@ -51,11 +55,11 @@
                             </td>
 
                             <td>
-                                @Html.DisplayFor(modelItem => item.PriorityType.Name)/
-                                @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                              <div>  @Html.DisplayFor(modelItem => item.PriorityType.Name) </div>
+                              
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Amount)/
+                                @Html.DisplayFor(modelItem => item.ChargeAmount)/
                                 @Html.DisplayFor(modelItem => item.Discount)
                             </td>
                             <td>
@@ -73,6 +77,9 @@
                                     @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
                                 </div>
                                 @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Distance) Miles
                             </td>
                             <td>
                                 <div>

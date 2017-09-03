@@ -100,6 +100,9 @@
                 <input asp-for="Distance" hidden />
                 <input asp-for="CustomerTypeId" hidden />
 
+                <input asp-for="PickupLatitude" hidden />
+                <input asp-for="PickupLongitude" hidden />
+               
 
 
                 <div class="fieldset">
@@ -484,6 +487,9 @@
                          }
 
 
+                         //assign lat and lng
+                         $("#PickupLatitude").val(place.geometry.location.lat());
+                         $("#PickupLongitude").val(place.geometry.location.lng());
 
                          document.getElementById('autocomplete').value = '';
                      });

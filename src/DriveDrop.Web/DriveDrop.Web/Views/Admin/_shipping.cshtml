@@ -37,7 +37,7 @@
         @Html.DisplayFor(modelItem => modelItem.PriorityType.Name) 
     </td>
     <td>
-        @Html.DisplayFor(modelItem => modelItem.Amount)/
+        @Html.DisplayFor(modelItem => modelItem.ChargeAmount)/
         @Html.DisplayFor(modelItem => modelItem.Discount)
     </td>
     <td>
@@ -56,7 +56,8 @@
         </div>
         @Html.DisplayFor(modelItem => modelItem.DeliveryAddress.ZipCode)
     </td>
-    <td>
+<td>@Html.DisplayFor(modelItem => modelItem.Distance) </td>
+<td>
         <div>
             <button id="@Model.Id"
                     pickup-id="@Model.PickupAddress.Street @Model.PickupAddress.City @Model.PickupAddress.ZipCode"

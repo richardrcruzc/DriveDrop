@@ -14,7 +14,8 @@ namespace DriveDrop.Web.ViewModels
         
         public int? ShippingStatusFilterAApplied { get; set; }
         public int? PriorityTypeFilterApplied { get; set; }
-         
+        public string IdentityCode { get; set; }
+
         public PaginationInfo PaginationInfo { get; set; }
     }
 

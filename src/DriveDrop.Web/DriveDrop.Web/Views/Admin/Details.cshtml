@@ -135,7 +135,7 @@
             </div>
 @if (Model.CustomerType.ToLower() != "administrator")
 {
-            @if (Model.CustomerType == "driver")
+            @if (Model.CustomerType.ToLower() == "driver")
             {
                 <div class="fieldset">
                     <div class="title">
@@ -203,7 +203,7 @@
                     </li>
                 </ol>
 
-                @if (Model.Addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default").FirstOrDefault() == null)
+                @if (Model.Addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress.ToLower() == "default").FirstOrDefault() == null)
                 {
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -316,7 +316,7 @@
                 }
             </div>
 
-            @if (Model.CustomerType == "sender" && Model.ShipmentSenders.Count() > 0)
+            @if (Model.CustomerType.ToLower() == "sender" && Model.ShipmentSenders.Count() > 0)
             {
                 <div class="order-list">
                     <div class="page-title">
@@ -361,54 +361,57 @@
 
                 </div>
             }
-            @if (Model.CustomerType == "driver" && Model.ShipmentDrivers.Count() > 0)
+            @if (Model.CustomerType.ToLower() == "driver" && Model.ShipmentDrivers.Count() > 0)
             {
-                <div class="order-list">
-                    <div class="page-title">
-                        <h1>Packages</h1>
+                <div class="page-body">
+                    <div class="order-list">
+                        <div class="page-title">
+                            <h1>Packages</h1>
+                        </div>
+                        @foreach (var item in Model.ShipmentDrivers)
+                        {
+                            var urlPickup = ViewBag.Uri + item.PickupPictureUri;
+                            var urlDelivery = "";
+                            if (string.IsNullOrEmpty(item.DeliveredPictureUri))
+                            {
+                                urlDelivery = ViewBag.Uri + "/images/DefaultProfileImage.png";
+                            }
+                            else
+                            { urlDelivery = ViewBag.Uri + item.DeliveredPictureUri;
+                            }
+
+                        <div class="section order-item">
+                            <div class="title">
+                                <strong>Shipping #: @item.IdentityCode</strong>
+                            </div>
+                            <ul class="info">
+                                <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
+                                <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                                <li><label>Priority</label> <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                                <li><label>Order Total:</label> <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
+                                <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
+                                <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
+                                <li>
+                                    <div class="pull-left">
+                                        <div><label>PickUp Image</label></div>
+                                        <img src="@ViewBag.Uri/@item.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
+                                    </div>
+                                    <div class="col-5">
+                                        <div><label>Delivery Image</label></div>
+                                        <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        }
+
                     </div>
-                    @foreach (var item in Model.ShipmentDrivers)
-        {
-            var urlPickup = ViewBag.Uri + item.PickupPictureUri;
-            var urlDelivery = "";
-            if (string.IsNullOrEmpty(item.DeliveredPictureUri))
-            {
-                urlDelivery = ViewBag.Uri + "/images/DefaultProfileImage.png";
-            }
-            else
-            { urlDelivery = ViewBag.Uri + item.DeliveredPictureUri; }
-
-            <div class="section order-item">
-                <div class="title">
-                    <strong>Shipping #: @item.IdentityCode</strong>
-                </div>
-                <ul class="info">
-                    <li>Status: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
-                    <li>Date: <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                    <li>Priority: <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                    <li>Order Total: <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
-                    <li>Pickup Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
-                    <li>Delivery Address: <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
-                    <li>
-                        <div class="pull-left">
-                            <div>PickUp Image</div>
-                            <img src="@urlPickup" class="img-rounded" alt="no package image" width="100" height="75">
-                        </div>
-                        <div class="col-5">
-                            <div>Delivery Image</div>
-                            <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
-                        </div>
-                    </li>
-                </ul>
-
-            </div>
-                    }
-
                 </div>
             }
 
 }
-        </div>
+                </div>
     </div>
 </div>
  <script>

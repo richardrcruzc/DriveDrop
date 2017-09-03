@@ -27,6 +27,10 @@ namespace DriveDrop.Web.ViewModels
         public int Two { get; set; }
         public int Three { get; set; }
 
+        public double PickupDistance { get; set; }
+        public double DeliverDistance { get; set; }
+        public int CustomerId { get; set; }
+
         public IEnumerable<SelectListItem> ShippingStatusList { get; set; }
         public IEnumerable<SelectListItem> ListOne { get; set; }
         public IEnumerable<SelectListItem> ListTwo { get; set; }

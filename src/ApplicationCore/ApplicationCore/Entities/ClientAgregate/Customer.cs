@@ -72,7 +72,9 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
         public Customer AddDefaultAddress(Address address)
         {
+            address.UpdateType("home");
             DefaultAddress = address; 
+
             return this;
         }
         public Customer UpdateVehicleInfo(string lincensePictureUri, string vehiclePhotoUri, string insurancePhotoUri, int vehicleTypeId, 
@@ -183,9 +185,7 @@ namespace ApplicationCore.Entities.ClientAgregate
 
             Commission = commission;
             UserName = userName; 
-
-            CustomerStatusId = CustomerStatus.WaitingApproval.Id;
-
+             
             PrimaryPhone = primaryPhone;
             PersonalPhotoUri = personalPhotoUri;
             DriverLincensePictureUri = driverLincensePictureUri;
@@ -240,12 +240,12 @@ namespace ApplicationCore.Entities.ClientAgregate
             return this;
         }
         public Address AddAddress(Address address)
-        {
+        { 
             var existing = Addresses.Where(a => a.Equals(address)).SingleOrDefault();
-
+           
             if (existing != null)            
                 return existing;
-
+           
             Addresses.Add(address);
  
             return address;

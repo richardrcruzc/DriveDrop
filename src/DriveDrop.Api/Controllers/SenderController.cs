@@ -200,7 +200,7 @@ namespace DriveDrop.Api.Controllers
                 if (ModelState.IsValid)
                 {
                  //   var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode,"","", 0, 0);
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode,"","",c.PickupLatitude,c.PickupLongitude);
 
                     var tmpUser = Guid.NewGuid().ToString();
 
@@ -286,8 +286,8 @@ namespace DriveDrop.Api.Controllers
                     var sender = _context.Customers.Find(c.CustomerId);
 
 
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0);
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact,c.DeliveryLatitude,c.DeliveryLongitude);
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact,c.PickupLatitude, c.PickupLongitude);
 
                     var tmpUser = Guid.NewGuid().ToString();
 

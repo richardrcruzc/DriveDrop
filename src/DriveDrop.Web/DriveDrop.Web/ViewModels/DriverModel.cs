@@ -123,7 +123,10 @@ namespace DriveDrop.Web.ViewModels
         public int? PickupRadius { get; set; }
         [Display(Name = "Deliver Radius")]
         [Required(ErrorMessage = "Your must provide a Deliver Radius")]
-        public int? DeliverRadius { get; set; } 
+        public int? DeliverRadius { get; set; }
+
+        public Double DeliveryLatitude { get; set; }
+        public Double DeliveryLongitude { get; set; }
 
         [Display(Name = "Street")]
         [Required(ErrorMessage = "Your must provide a delivery street")]

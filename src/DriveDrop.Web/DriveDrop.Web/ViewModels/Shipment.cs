@@ -59,6 +59,8 @@ namespace DriveDrop.Web.ViewModels
         public string DeliveredPictureUri { get;  set; }
         public PackageSize PackageSize { get; set; }
 
+        public Double Latitude { get; set; }
+        public Double Longitude { get; set; }
 
         public string Note { get;  set; }
 

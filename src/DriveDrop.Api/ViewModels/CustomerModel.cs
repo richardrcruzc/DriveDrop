@@ -100,6 +100,8 @@ namespace DriveDrop.Api.ViewModels
         [DataType(DataType.PostalCode)]
         public String PickupZipCode { get; set; }
 
+        public Double PickupLatitude { get; set; }
+        public Double PickupLongitude { get; set; }
     }
 
     public class CustomerModel
@@ -339,8 +341,8 @@ namespace DriveDrop.Api.ViewModels
         [Required(ErrorMessage = "Your must provide a pickup Postal Code")]
         [DataType(DataType.PostalCode)]
         public String PickupZipCode { get; set; }
-        //public Double PickupLatitude { get;  set; }
-        //public Double PickupLongitude { get;  set; }
+        public Double PickupLatitude { get;  set; }
+        public Double PickupLongitude { get;  set; }
 
 
 
@@ -364,10 +366,9 @@ namespace DriveDrop.Api.ViewModels
         [Required(ErrorMessage = "Your must provide a delivery Postal Code")]
         [DataType(DataType.PostalCode)]
         public String DeliveryZipCode { get; set; }
-        //public Double DeliveryLatitude { get;  set; }
-        //public Double DeliveryLongitude { get;  set; }
-
-
+        public Double DeliveryLatitude { get;  set; }
+         public Double DeliveryLongitude { get;  set; }
+         
 
 
         /// <summary>

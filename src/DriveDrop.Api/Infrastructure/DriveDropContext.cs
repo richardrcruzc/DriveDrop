@@ -28,10 +28,10 @@ namespace DriveDrop.Api.Infrastructure
         public DbSet<ShippingStatus> ShippingStatuses { get; set; }
         public DbSet<TransportType> TransportTypes { get; set; }
         public DbSet<PackageSize> PackageSizes { get; set; }
-
+        public DbSet<Coupon> Coupons { get; set; }
         public DbSet<CustomerStatus> CustomerStatuses { get; set; }
 
-        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<ZipCodeState> ZipCodeStates { get; set; }
 
         public DbSet<Rate> Rates { get; set; }

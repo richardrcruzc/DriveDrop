@@ -26,6 +26,8 @@ namespace DriveDrop.Api.Controllers
     [Route("api/v1/[controller]")]
     public class ShippingsController : Controller
     {
+        
+        private readonly IDistanceService _distanceService;
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
         private readonly IIdentityService _identityService;
@@ -34,7 +36,7 @@ namespace DriveDrop.Api.Controllers
         private readonly IOptionsSnapshot<AppSettings> _settings;
 
         public ShippingsController(IHostingEnvironment env, DriveDropContext context, IIdentityService identityService, 
-            IRateService rateService, IPayPalStandardPaymentProcessor pp, IOptionsSnapshot<AppSettings> settings)
+            IRateService rateService, IPayPalStandardPaymentProcessor pp, IOptionsSnapshot<AppSettings> settings, IDistanceService distanceService)
         {
             _settings = settings;
             _context = context;
@@ -42,8 +44,8 @@ namespace DriveDrop.Api.Controllers
             _identityService = identityService;
             _rateService = rateService;
             _pp = pp;
+            _distanceService = distanceService;
         }
-
 
         
         [HttpGet]
@@ -336,8 +338,8 @@ namespace DriveDrop.Api.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/shippingStatusId/{shippingStatusId:int}/priorityTypeId/{priorityTypeId:int}")]
-        public async Task<IActionResult> GetShipping(int shippingStatusId, int priorityTypeId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        [Route("[action]/shippingStatusId/{shippingStatusId:int}/priorityTypeId/{priorityTypeId:int}/identityCode/{identityCode}")]
+        public async Task<IActionResult> GetShipping(int shippingStatusId, int priorityTypeId, string identityCode, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             try
             {
@@ -351,6 +353,8 @@ namespace DriveDrop.Api.Controllers
                 if (priorityTypeId > 0)
                     root = root.Where(x => x.PriorityTypeId == priorityTypeId);
 
+                if( identityCode!="null")
+                    root = root.Where(x => x.IdentityCode == identityCode);
 
                 var totalItems = await root
                  .LongCountAsync();
@@ -429,28 +433,67 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var driver = _context.Customers.Where(x => x.Id == driverId).FirstOrDefault();
+                var driver = _context
+                    .Customers
+                    .Include(x=>x.DefaultAddress)
+                    .Where(x => x.Id == driverId && x.CustomerType.Id==3).FirstOrDefault();
                 if (driver == null)
-                    return Ok(null);
+                    return NotFound(null);
 
-                var root = _context.Shipments
-               .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id && x.DriverId == null)
+
+                var driverActualLat = driver.DefaultAddress.Latitude;
+                var driverActualLng = driver.DefaultAddress.Longitude;
+
+                var driverPickupDistance = driver.PickupRadius ?? 0;
+                var driverDelivertDistance = driver.DeliverRadius ?? 0;
+
+
+                var ready = new List<Shipment>();
+
+
+
+                var root = await _context.Shipments
+               .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id 
+                && x.DriverId == null && x.Distance<= driverDelivertDistance)
                .Include(d => d.DeliveryAddress)
                .Include(d => d.PickupAddress)
                .Include(d => d.ShippingStatus)
-               .Include(d => d.PriorityType);
+               .Include(d => d.PriorityType)
+               .ToListAsync(); 
 
                 //root = root.Where(d=>d.Distance<=driver.PickupRadius)
+                foreach (var dir in root)
+                {
+
+                    var pickUpLat = dir.PickupAddress.Latitude;
+                    var pickUpLng = dir.PickupAddress.Longitude;
+
+                    var deliveryLat = dir.DeliveryAddress.Latitude;
+                    var deliverypLng = dir.DeliveryAddress.Longitude;
+
+
+                    var pickupDistance  = DistanceAlgorithm.DistanceBetweenPlaces(driverActualLng, driverActualLat, pickUpLng, pickUpLat);
+                    var deliveryDistance = DistanceAlgorithm.DistanceBetweenPlaces(pickUpLng, pickUpLat, deliverypLng, deliveryLat);
+
+                    if (pickupDistance > driverPickupDistance || deliveryDistance > driverDelivertDistance)
+                        continue; 
+
+                    
+
+                    ready.Add(dir); 
+
+                }
+                 
 
 
 
-                var totalItems = await root
-                 .LongCountAsync();
+                var totalItems =   ready
+                 .LongCount();
 
-                var itemsOnPage = await root
+                var itemsOnPage =   ready
                .Skip(pageSize * pageIndex)
                .Take(pageSize)
-               .ToListAsync();
+               .ToList();
 
                 itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
@@ -594,8 +637,8 @@ namespace DriveDrop.Api.Controllers
                     var sender = _context.Customers.Find(c.CustomerId);
 
 
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0, "drop");
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity,c.PickupState,c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact, 0, 0, "pickup");
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, c.DeliveryLatitude,c.DeliveryLongitude, "drop");
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity,c.PickupState,c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact,c.PickupLatitude,c.PickupLongitude, "pickup");
 
                     var tmpUser = Guid.NewGuid().ToString();
 

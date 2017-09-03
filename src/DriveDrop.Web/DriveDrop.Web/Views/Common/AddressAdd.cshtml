@@ -38,6 +38,9 @@
             <input asp-for="CustomerId" hidden />
             <input asp-for="TypeAddress" hidden />
 
+            <input asp-for="Latitude" hidden />
+            <input asp-for="Longitude" hidden />
+
 
         <div class="page account-page address-edit-page">
             <div class="page-title">
@@ -176,6 +179,10 @@
             }
         }
 
+        //assign lat and lng
+        $("#Latitude").val(place.geometry.location.lat());
+        $("#Longitude").val(place.geometry.location.lng());
+
         document.getElementById('Phone').disabled = false;
         document.getElementById('Contact').disabled = false;
 
@@ -191,7 +198,8 @@
 
     $("#asDrop").click(function () {
         // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace();
+        var place = autocomplete.getPlace(); 
+
         // Get each component of the address from the place details
         // and fill the corresponding field on the form.
         for (var i = 0; i < place.address_components.length; i++) {
@@ -221,6 +229,10 @@
             }
         }
 
+        //assign lat and lng
+        $("#Latitude").val(place.geometry.location.lat());
+        $("#Longitude").val(place.geometry.location.lng());
+        
         document.getElementById('Phone').disabled = false;
         document.getElementById('Contact').disabled = false;
 
@@ -273,6 +285,7 @@
             document.getElementById(component).disabled = false;
         }
 
+      
         // Get each component of the address from the place details
         // and fill the corresponding field on the form.
         for (var i = 0; i < place.address_components.length; i++) {

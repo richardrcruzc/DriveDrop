@@ -156,12 +156,21 @@ namespace DriveDrop.Web.Controllers
         }
         public async Task<IActionResult> ReadyToPickUp(int id)
         {
-            @ViewBag.CustomerId = id;
-            //call shipping api service
+
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetNotAssignedShipping(_remoteServiceShippingsUrl);
+
+            var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+            if (customer == null)
+                return View(new PaginatedShippings());
+
+            @ViewBag.CustomerId = id;
+            //call shipping api service
+            
+            var allnotassignedshipings = API.Shipping.GetPackagesReadyForDriver(_remoteServiceShippingsUrl, customer.Id);
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -169,6 +178,10 @@ namespace DriveDrop.Web.Controllers
             if (shippings == null)
                 return View(new PaginatedShippings());
             shippings.ShippingStatusList = await PrepareShippingStatus();
+
+            shippings.DeliverDistance = customer.DeliverRadius;
+            shippings.PickupDistance = customer.PickupRadius;
+
             return View(shippings);
         }
 
@@ -188,7 +201,8 @@ namespace DriveDrop.Web.Controllers
         public async Task<IActionResult> NewDriver(DriverModel c) //, List<IFormFile> personalfiles, List<IFormFile> licensefiles, List<IFormFile> Vehiclefiles, List<IFormFile> insurancefiles
         {
             try
-            { 
+            {
+                c.Email = c.UserEmail;
 
                 foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
                 {
@@ -476,6 +490,7 @@ namespace DriveDrop.Web.Controllers
                     if (customer != null)
                     {
 
+                        
 
                         var updateInfo = API.Driver.UpdateInfo(_remoteServiceDriversUrl);
 

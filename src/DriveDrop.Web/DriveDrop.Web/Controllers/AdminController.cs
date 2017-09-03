@@ -229,7 +229,7 @@ namespace DriveDrop.Web.Controllers
 
 
         }
-        public async Task<IActionResult> Shippings(int? PriorityTypeFilterApplied, int? ShippingStatusFilterAApplied,   int? page)
+        public async Task<IActionResult> Shippings(int? PriorityTypeFilterApplied, int? ShippingStatusFilterAApplied, string IdentityCode,   int? page)
         {
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
@@ -247,7 +247,7 @@ namespace DriveDrop.Web.Controllers
             @ViewBag.CustomerId = 1;
             //call shipping api service     
 
-            var allnotassignedshipings = API.Shipping.GetShipping(_remoteServiceShippingsUrl, ShippingStatusFilterAApplied??0, PriorityTypeFilterApplied??0, page ?? 0, itemsPage);
+            var allnotassignedshipings = API.Shipping.GetShipping(_remoteServiceShippingsUrl, ShippingStatusFilterAApplied??0, PriorityTypeFilterApplied??0, IdentityCode, page ?? 0, itemsPage);
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 

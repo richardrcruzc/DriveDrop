@@ -279,7 +279,7 @@ namespace DriveDrop.Api.Controllers
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.DriverIDInUse.ToString());
                 }
 
-                var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode,"","", 0, 0);
+                var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity,c.DeliveryState,c.DeliveryCountry, c.DeliveryZipCode,"","",c.DeliveryLatitude,c.DeliveryLongitude);
 
                 var tmpUser = Guid.NewGuid().ToString();
 

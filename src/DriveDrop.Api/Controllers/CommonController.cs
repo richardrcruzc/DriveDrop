@@ -243,19 +243,33 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var updateCustomer = await _context.Customers 
-               .Include(s => s.Addresses)
-           .FirstOrDefaultAsync(x => x.Id == id);
+                var updateCustomer = await _context
+                    .Customers 
+                    .Include(s => s.Addresses)
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
-                var defaultAddress = updateCustomer.Addresses.Where(x => x.Id == addressId).FirstOrDefault();
-                if(defaultAddress==null)
-                return NotFound("UnableToSaveChanges");
+                if (updateCustomer == null)
+                    return NotFound("UnableToSaveChanges");
+
+                var currentDefaultAddress = updateCustomer.DefaultAddress;
+
+                var newDefaultAddress = updateCustomer.Addresses.Where(x => x.Id == addressId).FirstOrDefault();
+
+                if(newDefaultAddress == null)
+                    return NotFound("UnableToSaveChanges");
                 
-
-
-                updateCustomer.AddDefaultAddress(defaultAddress); 
-
+                updateCustomer.AddDefaultAddress(newDefaultAddress);
                 _context.Customers.Update(updateCustomer);
+         
+
+                currentDefaultAddress.UpdateType("pickup");
+                _context.Addresses.Update(currentDefaultAddress);
+
+                newDefaultAddress.UpdateType("home");
+                _context.Addresses.Update(newDefaultAddress);
+
+
+                 _context.Customers.Update(updateCustomer);
 
                 await _context.SaveChangesAsync();
 

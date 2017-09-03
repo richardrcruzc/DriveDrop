@@ -22,6 +22,14 @@
                 <input asp-for="CustomerId" hidden />
                 <input asp-for="Distance" hidden />  
                 <input asp-for="TotalCharge" hidden /> 
+ 
+
+                <input asp-for="DeliveryLatitude" hidden />
+                <input asp-for="DeliveryLongitude" hidden />
+                <input asp-for="PickupLatitude" hidden />
+                <input asp-for="PickupLongitude" hidden />
+                 
+
 
                 <div asp-validation-summary="ModelOnly" class="result"></div>
                 <div class="fieldset">
@@ -632,7 +640,13 @@
                         
                      }
 
+
                  }
+
+                 //assign lat and lng
+                 $("#DeliveryLatitude").val(place.geometry.location.lat());
+                 $("#DeliveryLongitude").val(place.geometry.location.lng());
+
                  $("#autocomplete1").val("");
             }
             function fillInAddress() {
@@ -671,6 +685,10 @@
                     }
 
                 }
+
+                //assign lat and lng
+                $("#PickupLatitude").val(place.geometry.location.lat());
+                $("#PickupLongitude").val(place.geometry.location.lng());
             $("#autocomplete").val("");
 
 

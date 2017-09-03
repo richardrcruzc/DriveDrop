@@ -30,6 +30,12 @@ namespace ApplicationCore.Entities.ClientAgregate
         public Double Longitude { get; private set; }
         protected Address() { }
 
+        public Address UpdateType(string typeAddress)
+        {
+            TypeAddress = typeAddress;
+            return this;
+        }
+
         public Address(string street, string city, string state, string country, string zipcode,string phone, string contact, Double latitude, Double longitude, string typeAddress ="home" )
         {
             TypeAddress = typeAddress;

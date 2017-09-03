@@ -515,7 +515,7 @@ namespace DriveDrop.Web.Controllers
                     var addNewSenderUri = API.Sender.NewSender(_remoteServiceBaseUrl);
 
                     c.CustomerTypeId = 2;
-
+                    c.Email = c.UserEmail;
                     var response = await _apiClient.PostAsync(addNewSenderUri, c);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)

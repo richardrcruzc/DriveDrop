@@ -135,7 +135,10 @@ namespace DriveDrop.Api.ViewModels
         [DataType(DataType.PostalCode)]
         public String DeliveryZipCode { get; set; }
 
-
+        public double DeliveryLatitude { get; set; }
+        public double DeliveryLongitude { get; set; }
+        
+            
     }
 
 
