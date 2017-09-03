@@ -5,8 +5,8 @@
 
     <div class="side-2">
 
-        
-    @await Html.PartialAsync("AdminNavigation", 1)
+
+        @await Html.PartialAsync("AdminNavigation", 1)
 
 
     </div>
@@ -24,7 +24,11 @@
                             <strong><label>Shipping #:</label> @Model.IdentityCode</strong>
                         </div>
                         <ul class="info">
-                            <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingStatus.Name)</span></li>
+                            <li><label>Status:</label> <span class="order-status pending">
+     
+                            <select asp-for="ShippingStatusId" asp-items="Model.ShippingStatusList" class="esh-catalog-filter" onchange="changshippingstatus(this,@(Model.Id))"></select>
+                        </span>
+  </li>
                             <li><label>Priority:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PriorityType.Name)</span></li>
                             <li><label>Package size:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PackageSize.Name)</span></li>
 
@@ -41,12 +45,37 @@
                             <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
                             <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
                             <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
-
                             <li>
-                                <label>Driver:</label>
+                                @if (Model.Sender != null)
+                                {
+                                    var sender = Model.Sender.FirstName + " " + Model.Sender.LastName;
+                                    <div>
+                                        <label>Sender:</label> @Html.ActionLink(sender, "details", "admin", new { id = Model.SenderId })
+                                    </div>
+
+                                }
+                            </li>
+                            <li>
+                               
                                 @if (Model.Driver != null)
                                 {
-                                    <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Driver.FullName)</span>
+                                    var driver = Model.Driver.FirstName + " " + Model.Driver.LastName;
+                                    <div>
+                                        <label>Driver:</label>   @Html.ActionLink(driver, "details", "admin", new { id = Model.DriverId })
+                                    </div>
+                                  
+                                    <div>
+                                        <label>Assign New Driver: </label>
+                                        <input type="text" id="DriverName" data-autocomplete="@Url.Action("driverautocomplete","admin")" autocomplete="on" />
+                                    </div>
+                                    <div id="newDriver" class="hidden">
+                                        <div>
+                                            <h3> <label>New Driver:</label><span class="order-status pending" id="hfCustomer"></span> </h3>
+                                        </div>
+                                        <div>
+                                            <input type="button" class="btn btn-primary" value="Please Confirm" id="PleaseConfirm"/>
+                                        </div>
+                                    </div>
                                 }
                                 else
                                 {
@@ -126,12 +155,137 @@
         </div>
     </div>
 
- 
+ <!-- Button to trigger modal -->
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Modal header</h3>
+    </div>
+    <div class="modal-body">
+        <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+        <script type="text/javascript">
+
+            var newDriverId;
+            $(document).ready(function () {
+
+
+                $('#PleaseConfirm').click(function () {
+                     
+                    $.ajax({
+                        cache: false,
+                        url: '/admin/AssignDriver/',
+                        type: "POST",
+                        dataType: "json",
+                        data: { shipingId: @Model.Id, driverId: newDriverId},
+                        success: function (data) {
+                            if (data == "Ok"){
+                                    alert("New Driver Assigned");
+                                    location.href = '/admin/ShippingDetails/@Model.Id';
+                                }
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+
+                 });
+
+
+
+                //$("#DriverName").each(function () {
+                //    $(this).autocomplete(
+                //        {
+                //            source: $(this).attr("data-autocomplete"),
+                //            minLength: 3
+                //        });
+                //});
+
+                $("#DriverName").autocomplete({
+                    minLength: 3,
+                    source: function (request, response) {
+
+                        $.ajax({
+                            url: '/admin/driverautocomplete/',
+                            type: "POST",
+                            dataType: "json",
+                            data: { value: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.firstName + " " + item.firstName, value: item.id };
+                                }))
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    },
+                    select: function (e, i) {
+                        $("#newDriver").removeClass("hidden");
+                        $("#hfCustomer").text(i.item.value + " " + i.item.label);
+
+                        newDriverId = i.item.value;
+                    },
+                    minLength: 1
+                });
+
+
+            });
+
+
+            function changshippingstatus(newId, shippingId) {
+
+        var selectedValue = $(newId).val();
+        var selectedText = $(newId).find("option:selected").text();
+
+        if (confirm('Are you sure to change status to: ' + selectedText+" ?")) {
+                                var postData = {
+                                    shippingId: shippingId,
+                                    statusId: selectedValue,
+                                };
+                                $.ajax({
+                cache: false,
+                                    type: 'POST',
+                                    url: '/admin/changshippingstatus',
+                                    data: postData,
+                                    dataType: 'json',
+                                    success: function (data) {
+                alert(data);
+            @*location.href = '/common/Address/@ViewBag.Id';*@
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to update');
+                                    }
+                                });
+                            }
+    }
+
+
+
+
+
+
          // <!-- begin snippet: js hide: false console: false babel: false -->
         //<div class="btn btn-{% if rate.value > 0 %}warning{% else %}default{% endif %}{% if rate.value == 1 %} selected{% endif %} btn-sm"><span class="glyphicon glyphicon-star-empty"></span></div>
 

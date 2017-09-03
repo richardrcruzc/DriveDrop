@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,13 @@ namespace DriveDrop.Web.ViewModels
 {
     public class Shipment 
     {
+        public Shipment()
+        {
+            var ShippingStatusList= new List<SelectListItem>();
+        }
+
+        public List<SelectListItem> ShippingStatusList { get; set; }
+
         public int Id { get; set; }
         public string IdentityCode { get;  set; } 
 

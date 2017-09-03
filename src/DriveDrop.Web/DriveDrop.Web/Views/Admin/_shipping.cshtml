@@ -2,11 +2,12 @@
 
  
     <td>
-        
-        <img src="@Model.PickupPictureUri" class="img-rounded" alt="Cinque Terre" width="90" height="60">
         <div>
-            @Html.DisplayFor(modelItem => modelItem.IdentityCode)
+
+            @Html.ActionLink(Model.IdentityCode, "ShippingDetails", "admin", new { id = Model.Id });
         </div>
+        @*<img src="@Model.PickupPictureUri" class="img-rounded" alt="Pickup Picture is Missing" width="90" height="60">*@
+       
     </td>
 <td>
 @if (Model.Sender != null)
@@ -28,12 +29,13 @@
     <td>
         <div> @Html.DisplayFor(modelItem => modelItem.ShippingCreateDate)</div>
 
-        <div>
-            @Html.DisplayFor(modelItem => modelItem.ShippingStatus.Name)
-        </div>
+        
     </td>
 
     <td>
+        <div>
+            @Html.DisplayFor(modelItem => modelItem.ShippingStatus.Name)
+        </div>
         @Html.DisplayFor(modelItem => modelItem.PriorityType.Name) 
     </td>
     <td>

@@ -28,7 +28,8 @@ namespace DriveDrop.Web.Controllers
         private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
-         
+
+        private readonly string _remoteServiceDriversUrl;
 
         public AdminController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, 
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
@@ -40,8 +41,72 @@ namespace DriveDrop.Web.Controllers
             _apiClient = httpClient;
             _appUserParser = appUserParser;
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
+            _remoteServiceDriversUrl = $"{settings.Value.DriveDropUrl}/api/v1/drivers";
+        }
+
+
+
+        public async Task<IActionResult> AssignDriver(int shipingId, int driverId)
+        {
+
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return Json("Invalid entry");
+
+
+            var assign = API.Driver.AssignDriver(_remoteServiceDriversUrl, driverId, shipingId);
+
+
+            var dataString = await _apiClient.GetStringAsync(assign, token);
+             
+
+            return Json("Ok");
+             
 
         }
+
+
+
+        public async Task<IActionResult> DriverAutoComplete(string value)
+        {
+
+            if(value==null)
+                return Json(new List<CustomerInfoModel>());
+
+            if (value.Length<3)
+                return Json(new List<CustomerInfoModel>());
+
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return Json("Invalid entry");
+
+            var auto = API.Driver.AutoComplete(_remoteServiceDriversUrl, value);
+
+            var dataString = await _apiClient.GetStringAsync(auto, token);
+
+            var impersonateResponse = JsonConvert.DeserializeObject<List<CustomerInfoModel>>((dataString));
+
+
+            return Json(impersonateResponse);
+
+
+        }
+
+
 
         public async Task<IActionResult> EndImpersonated()
         {
@@ -112,6 +177,28 @@ namespace DriveDrop.Web.Controllers
 
         }
 
+        public async Task<IActionResult> ChangShippingStatus(int shippingId, int statusId)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return Json("Invalid entry");
+
+            var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, shippingId, statusId);
+
+
+            var dataString = await _apiClient.GetStringAsync(assign, token);
+             
+           
+            return Json("Status Updated");
+
+
+        }
 
         public async Task<IActionResult> ChangeCustomerStatus(int customerId, int statusId)
         {
@@ -256,6 +343,28 @@ namespace DriveDrop.Web.Controllers
                 return View(new ShipingIndex());
             
             return View(shippings);
+        }
+        public async Task<IActionResult> ShippingDetails(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return NotFound("Invalid entry");
+
+            var shiipingDetailUri = API.Shipping.GetById(_remoteServiceShippingsUrl, id);
+            var dataString = await _apiClient.GetStringAsync(shiipingDetailUri, token);
+            var shipping = JsonConvert.DeserializeObject<Shipment>((dataString));
+
+
+
+            shipping.ShippingStatusList = await PrepareShippingStatus();
+
+
+            return View(shipping);
         }
 
         public async Task<IActionResult> ReadyToPickUp(int id)

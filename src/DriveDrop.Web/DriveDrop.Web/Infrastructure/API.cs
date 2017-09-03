@@ -169,6 +169,11 @@ namespace DriveDrop.Web.Infrastructure
         }
         public static class Driver
         {
+            public static string AutoComplete(string baseUri, string values)
+            {
+                return $"{baseUri}/AutoComplete/{values}";
+            }
+
             public static string GetByUserName(string baseUri, string userName)
             {
                 return $"{baseUri}/GetByUserName/{userName}";

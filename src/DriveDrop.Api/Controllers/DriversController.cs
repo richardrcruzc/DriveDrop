@@ -38,6 +38,48 @@ namespace DriveDrop.Api.Controllers
             _settings = settings;
         }
 
+        
+        [HttpGet]
+        [Route("[action]/{fullName}")]
+        public async Task<IActionResult> AutoComplete(string fullName)
+        {
+            try
+            {
+
+                if (fullName.Length < 3)
+                    return NotFound("null");
+
+
+                    var drivers = await _context.Customers
+                 .Include(x => x.CustomerStatus)
+                 .Where(x => x.CustomerTypeId == 3  && x.CustomerStatus.Id ==2
+                 && ( x.FirstName.StartsWith(fullName) || x.LastName.StartsWith(fullName)))
+                 .Select(x=> new CustomerInfoModel
+                 {
+                    CustomerStatus = x.CustomerStatus.Name,
+                    Email = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Id=x.Id,
+                    Phone = x.Phone,
+                    PhotoUrl=x.PersonalPhotoUri,
+                    PrimaryPhone=x.PrimaryPhone,
+                    StatusId= x.CustomerStatus.Id,
+                    VerificationId = x.VerificationId
+                 })
+                 .ToListAsync();
+
+                
+                return Ok(drivers);
+
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest("DriverNotFound" + exe.Message);
+            }
+
+        }
 
         [Route("[action]")]
         [HttpPost]
