@@ -435,11 +435,10 @@ namespace DriveDrop.Web.ViewModels
         public int PriorityTypeId { get; set; }
 
         [DataType(DataType.MultilineText)]
-        public string Note { get; set; }
+        public string Note { get; set; } 
 
-         
-
-
+        public Decimal? ExtraCharge { get; set; }
+        public string ExtraChargeNote { get; set; }
 
 
     }

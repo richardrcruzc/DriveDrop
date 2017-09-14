@@ -26,7 +26,7 @@ namespace DriveDrop.Api.Services
 
 
 
-        public async Task<CalculatedCharge> CalculateAmount(decimal distance, decimal weight,  int priority, string promoCode, int packageSizeId=0) {
+        public async Task<CalculatedCharge> CalculateAmount(double distance, decimal weight,  int priority, string promoCode, int packageSizeId=0) {
 
             var miles = distance; // await _distance.FromZipToZipInMile(zipFrom, zipTo);
             var milesDecimal = distance; // (decimal)miles;
@@ -39,7 +39,10 @@ namespace DriveDrop.Api.Services
             if (myRate == null)
                 return new CalculatedCharge();
 
-            var rateDistance =_context.RateDetails.Where(x => x.MileOrLbs == "miles" && x.WeightOrDistance == "distance" && x.From <= milesDecimal && milesDecimal < x.To).FirstOrDefault();
+
+            var milesDecimalD = decimal.Parse(milesDecimal.ToString());
+
+            var rateDistance =_context.RateDetails.Where(x => x.MileOrLbs == "miles" && x.WeightOrDistance == "distance" && x.From <= milesDecimalD && milesDecimalD < x.To).FirstOrDefault();
             var rateWeight = _context.RateDetails.Where(x => x.MileOrLbs == "lbs" && x.WeightOrDistance == "weight" && x.From <= weight && weight < x.To).FirstOrDefault();
             if(rateWeight==null)
                 rateWeight = _context.RateDetails.Where(x => x.MileOrLbs == "lbs" && x.WeightOrDistance == "weight").OrderByDescending(x=>x.From).FirstOrDefault();

@@ -5,15 +5,17 @@
 
     <div class="side-2">
 
-        
-    @await Html.PartialAsync("AdminNavigation", 1)
+
+        @await Html.PartialAsync("CustomerNavigation", (int)Model.SenderId)
+
+
 
 
     </div>
     <div class="center-2">
         <div class="page account-page order-list-page">
             <div class="page-title">
-                <h1>My packages Details</h1>
+                <h1>My Packages Details</h1>
             </div>
 
             <div class="page-body">
@@ -26,19 +28,22 @@
                         <ul class="info">
                             <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingStatus.Name)</span></li>
                             <li><label>Priority:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PriorityType.Name)</span></li>
-                            <li><label>Package size:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PackageSize.Name)</span></li>
+                            <li><label>Package Size:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PackageSize.Name)</span></li>
 
-                            <li><label>Charge amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ChargeAmount)</span></li>
+                            <li><label>Charge Amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ChargeAmount)</span></li>
                             <li><label>Discount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Discount)</span></li>
                             <li><label>Promo Code:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PromoCode)</span></li>
-                            <li><label>Tax amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Tax)</span></li>
-                            <li><label>Amount paid:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.AmountPay)</span></li>
+                            <li><label>Tax Amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Tax)</span></li>
+                            <li><label>Extra Charge:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ExtraCharge)</span></li>
+                            <li><label>Extra Charge Note:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ExtraChargeNote)</span></li>
+
+
+                            <li><label>Amount Paid:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.AmountPay)</span></li>
                             <li><label>Note:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Note)</span></li>
 
 
                             <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
-                            <li><label>Priority: </label><span class="order-date"> @Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
-                            <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                             <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
                             <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
                             <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
 
@@ -50,7 +55,7 @@
                                 }
                                 else
                                 {
-                                    <span class="order-status pending">Driver not asigned yet</span>
+                                    <span class="order-status pending">Driver not Asigned Yet</span>
                                 }
                             </li>
 
@@ -99,7 +104,7 @@
                             <div class="info">
 
                                 <div class="title">
-                                    <strong>Review to driver</strong>
+                                    <strong>Review to Driver</strong>
                                 </div>
                                 @if (Model.Reviews == null || Model.Reviews.Count() == 0)
                             {

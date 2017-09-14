@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities.Helpers
     { 
         public static PackageSize Envelopes = new PackageSize(1, "Envelope"); 
         public static PackageSize SmallPackages = new PackageSize(2, "Small Package");
-        public static PackageSize MidiunPackages = new PackageSize(3, "Mediun Package");
+        public static PackageSize MidiunPackages = new PackageSize(3, "Medium Package");
         public static PackageSize LargePackages = new PackageSize(4, "Large Package");
         public static PackageSize XLargePackages = new PackageSize(4, "Xtra Large Package");
         public static PackageSize OddPackages = new PackageSize(4, "Odd Size Package");

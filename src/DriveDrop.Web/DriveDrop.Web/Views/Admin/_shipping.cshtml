@@ -2,37 +2,30 @@
 
  
     <td>
-        <div>
+        
 
-            @Html.ActionLink(Model.IdentityCode, "ShippingDetails", "admin", new { id = Model.Id });
-        </div>
+            @Html.ActionLink(Model.IdentityCode, "ShippingDetails", "admin", new { id = Model.Id })
+       
         @*<img src="@Model.PickupPictureUri" class="img-rounded" alt="Pickup Picture is Missing" width="90" height="60">*@
        
     </td>
 <td>
-@if (Model.Sender != null)
-{
-    var sender = Model.Sender.FirstName + " " + Model.Sender.LastName;
-    <div>
-        <label>Sender:</label> (@Html.ActionLink(sender, "details", "admin", new { id = Model.SenderId });)
-    </div>
-
-}
+ 
     @if (Model.Driver != null)
     {
         var driver =   Model.Driver.FirstName + " " + Model.Driver.LastName;
-        <div>
-            <label>Driver:</label>   @Html.ActionLink(driver, "details", "admin", new {id = Model.DriverId });
-        </div>
+        
+             @Html.ActionLink(driver, "details", "admin", new {id = Model.DriverId })
+         
     }
 </td>
-    <td>
-        <div> @Html.DisplayFor(modelItem => modelItem.ShippingCreateDate)</div>
+    <td class="align-center">
+        @Html.DisplayFor(modelItem => modelItem.ShippingCreateDate) 
 
         
     </td>
 
-    <td>
+    @*<td>
         <div>
             @Html.DisplayFor(modelItem => modelItem.ShippingStatus.Name)
         </div>
@@ -58,16 +51,16 @@
         </div>
         @Html.DisplayFor(modelItem => modelItem.DeliveryAddress.ZipCode)
     </td>
-<td>@Html.DisplayFor(modelItem => modelItem.Distance) </td>
+<td>@Html.DisplayFor(modelItem => modelItem.Distance) </td>*@
 <td>
-        <div>
+         
             <button id="@Model.Id"
                     pickup-id="@Model.PickupAddress.Street @Model.PickupAddress.City @Model.PickupAddress.ZipCode"
                     delivery-id="@Model.DeliveryAddress.Street @Model.DeliveryAddress.City @Model.DeliveryAddress.ZipCode"
                     onClick="javascript:SetAddressFunction(this);">
                 <i class="material-icons" style="font-size:36px">directions_car</i>
             </button>
-        </div>
+       
 
     </td>
 

@@ -22,6 +22,23 @@ namespace DriveDrop.Web.Infrastructure
 
             
         }
+        public static class Tax
+        {
+            public static string Get(string baseUri)
+            {
+                return $"{baseUri}GetTaxes";
+            }
+            public static string GetTax(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                var filterQs = $"{idQs}";
+                return $"{baseUri}GetTax/{filterQs}";
+            }
+            public static string SaveTax(string baseUri)
+            {
+                return $"{baseUri}SaveTax";
+            }
+        }
             public static class Rate
         {
             public static string Amount(string baseUri, decimal distance, decimal weight,   int priority,int packageSizeId,  string promoCode="")

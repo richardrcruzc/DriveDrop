@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DD.Mobile.Pages.Drivers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,13 @@ namespace DD.Mobile.Pages
     public class SplashPage : ContentPage
     {
         public SplashPage()
-        {
-
+        { 
 
             AbsoluteLayout splashLayOut = new AbsoluteLayout { HeightRequest = 600 };
 
             var image = new Image()
             {
-                Source = ImageSource.FromFile("brand.png"),
+                Source = "logo.png",
                 Aspect = Aspect.AspectFill,
             };
 
@@ -36,8 +36,8 @@ namespace DD.Mobile.Pages
             await Task.Delay(300);
 
             //instantiate a navigationPage with the mainpage
-            var navPage = new NavigationPage(new DriverPage() {
-                Title = "Driver Details"
+            var navPage = new NavigationPage(new MainPage() {
+                Title = "List Drivers"
             });
 
             Application.Current.MainPage = navPage;

@@ -86,7 +86,17 @@
         margin-bottom: 2px;
     }
 </style>
- 
+@if (User.FindFirst(x => x.Type == "preferred_username") != null)
+{
+
+<div class="side-2">
+
+
+    @await Html.PartialAsync("AdminNavigation", 1)
+
+
+</div>
+}
 <div class="center-2">
 
     <div class="page account-page customer-info-page">
@@ -137,14 +147,14 @@
                             <div class="form-group">
 
                                 <div class="col-md-4">
-                                    <input asp-for="PrimaryPhone" class="form-control" placeholder="Primary Phone Number" data-inputmask="'mask': '(999)999-9999'" />
+                                    <input asp-for="PrimaryPhone" class="form-control" placeholder="Primary Phone Number" data-inputmask="'mask': '(999) 999-9999'" />
                                     <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
 
                                 <div class="col-md-4">
-                                    <input asp-for="Phone" class="form-control" placeholder="Cell Number" data-inputmask="'mask': '(999)999-9999'" />
+                                    <input asp-for="Phone" class="form-control" placeholder="Cell Number" data-inputmask="'mask': '(999) 999-9999'" />
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
                             </div>
@@ -194,8 +204,8 @@
                         <div class="form-group">
 
                             <div class="col-md-4">
-                                <input id="autocomplete" class="form-control" placeholder="Enter your address" />
-                                <a class="btn btn-primary btn-lg" role="button" id="asPickup">pickup</a>
+                                <input id="autocomplete" class="form-control" placeholder="Enter Your Address" /><br />
+                                <a class="btn btn-primary btn-lg" role="button" id="asPickup">Pickup</a>
                             </div>
                         </div>
                     </div>
@@ -219,16 +229,17 @@
                             </div>
                         </div>
 
+                     
                         <div class="form-group">
                             <div class="col-md-4">
-                                <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
-                                <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+                                <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
+                                <span asp-validation-for="PickupState" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-4">
-                                <input asp-for="PickupState" class="form-control" placeholder="state" readonly />
-                                <span asp-validation-for="PickupState" class="text-danger"></span>
+                                <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
+                                <span asp-validation-for="PickupZipCode" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">

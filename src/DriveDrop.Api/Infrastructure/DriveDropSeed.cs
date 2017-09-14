@@ -31,7 +31,8 @@ namespace DriveDrop.Api.Infrastructure
 
                 if (!context.TaxRates.Any())
                 {
-                    context.TaxRates.Add(new Tax("WA", "Tacoma", 12.5M));
+                    context.TaxRates.Add(new Tax("WA","Pierce", "Tacoma", 12.5M, true));
+                    context.TaxRates.Add(new Tax("WA", "King", "Seattle", 14.5M, false));
                 }
 
 

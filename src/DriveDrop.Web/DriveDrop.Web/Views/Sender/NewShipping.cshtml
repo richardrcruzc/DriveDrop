@@ -38,7 +38,7 @@
                         <strong>Send a Package</strong>
                     </div>
                     <div class="title">
-                        <strong>Select a pickup address from your address book or enter a new address</strong>
+                        <strong>Select a Pickup Address From Your Address Book or Enter a New Address</strong>
 
                     </div>
                     <div class="title">
@@ -79,7 +79,7 @@
                                     <span asp-validation-for="PickupCountry" class="text-danger"></span>
                                 </div>
                                 <div class="inputs">
-                                    <input asp-for="PickupPhone" class="form-control" placeholder="Phone"   data-inputmask = "'mask': '(999)999-9999'" />
+                                    <input asp-for="PickupPhone" class="form-control" placeholder="Phone"   data-inputmask = "'mask': '(999) 999-9999'" />
                                     <span class="required">*</span>
                                     <span asp-validation-for="PickupPhone" class="text-danger"></span>
                                 </div>
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="title">
-                        <strong>Select a dropoff address from your address book or enter a new address </strong>
+                        <strong>Select a Dropoff Address From Your Address Book or Enter a New Address </strong>
 
                     </div>
                     <div class="title">
@@ -118,22 +118,23 @@
                                 <span asp-validation-for="DeliveryCity" class="text-danger"></span>
                             </div>
                             <div class="inputs">
-                                <input asp-for="DeliveryState" class="form-control" placeholder="State" readonly />
-                                <span class="required">*</span>
-                                <span asp-validation-for="DeliveryState" class="text-danger"></span>
-                            </div>
-                            <div class="inputs">
                                 <input asp-for="DeliveryZipCode" class="form-control" placeholder="ZipCode" readonly />
                                 <span class="required">*</span>
                                 <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
                             </div>
+                            <div class="inputs">
+                                <input asp-for="DeliveryState" class="form-control" placeholder="State" readonly />
+                                <span class="required">*</span>
+                                <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                            </div>
+                           
                             <div class="inputs">
                                 <input asp-for="DeliveryCountry" class="form-control" placeholder="Country" readonly />
                                 <span class="required">*</span>
                                 <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
                             </div>
                             <div class="inputs">
-                                <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone"  data-inputmask = "'mask': '(999)999-9999'"   />
+                                <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone"  data-inputmask = "'mask': '(999) 999-9999'"   />
                                 <span class="required">*</span>
                                 <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
                             </div>
@@ -159,7 +160,7 @@
 
                         </div>
                         <div class="title">
-                            <strong>Package information </strong>
+                            <strong>Package Information </strong>
                         </div>
                         <div class="edit-address">
                             <div class="inputs">
@@ -196,8 +197,19 @@
                                 <textarea name="Note" class="span6" rows="3" placeholder="Note to the Driver"></textarea>
                                 <span asp-validation-for="Note" class="text-danger"></span>
                             </div>
+                            <div class="inputs">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input asp-for="ExtraCharge" class="form-control" placeholder="Extra Charge" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                    <span asp-validation-for="ExtraCharge" class="text-danger"></span>
+                                </div>
+                            </div>
 
-
+                            <div class="inputs">
+                                @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
+                                <textarea name="ExtraChargeNote" class="span6" rows="2" placeholder="Extra Charge Note"></textarea>
+                                <span asp-validation-for="ExtraChargeNote" class="text-danger"></span>
+                            </div>
 
                         </div>
 
@@ -424,7 +436,10 @@
                             var promoCode = $("#PromoCode").val();
                             var shippingWeight = $("#ShippingWeight").val();
                             var packageSizeId = $("#PackageSizeId").val();
-                            
+
+                            $("#Distance").val(km); 
+                            alert($("#Distance").val());
+
                             $.ajax({
                                 url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
@@ -437,7 +452,7 @@
                                     // data is your result from controller
                                     
                                     if (data) { 
-                                        $("#Distance").val(km); 
+                                       
                                         $(".value-Priority").text(data.strPriorityAmount);
                                         $(".value-Distance").text(data.strDistanceAmount);
                                         $(".value-Weight").text(data.strWeightAmount);

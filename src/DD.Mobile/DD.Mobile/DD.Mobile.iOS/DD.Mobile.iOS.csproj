@@ -113,12 +113,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DD.Mobile\DD.Mobile.csproj">
-      <Project>{357fb5fa-84b2-4717-bb56-e5c5e455e33e}</Project>
-      <Name>DD.Mobile</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>

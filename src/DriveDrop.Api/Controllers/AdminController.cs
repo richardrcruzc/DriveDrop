@@ -185,7 +185,7 @@ namespace DriveDrop.Api.Controllers
             }
             vm.CustomerStatus = items;
 
-              dataItems = await _context.TransportTypes.Select(x => (new SelectListItem { Value = x.Id.ToString(), Text = x.Name })).ToListAsync();
+              dataItems = await _context.TransportTypes.OrderBy(x=>x.Name).Select(x => (new SelectListItem { Value = x.Id.ToString(), Text = x.Name })).ToListAsync();
               items = new List<SelectListItem>();
             items.Add(new SelectListItem() { Value = null, Text = "All Transport", Selected = true });
             foreach (var itm in dataItems)

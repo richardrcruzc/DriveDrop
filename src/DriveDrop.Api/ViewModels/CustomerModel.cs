@@ -309,7 +309,7 @@ namespace DriveDrop.Api.ViewModels
 
         public int Quantity { get; set; }
         public int CustomerId { get; set; }
-        public decimal Distance { get; set; }
+        public double Distance { get; set; }
         
         public IFormFile file { get; set; }
 
@@ -412,6 +412,8 @@ namespace DriveDrop.Api.ViewModels
 
 
 
+        public Decimal ExtraCharge { get;   set; }
+        public string ExtraChargeNote { get;   set; }
 
 
     }

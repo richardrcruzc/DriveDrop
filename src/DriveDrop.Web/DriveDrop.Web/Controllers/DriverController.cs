@@ -179,8 +179,8 @@ namespace DriveDrop.Web.Controllers
                 return View(new PaginatedShippings());
             shippings.ShippingStatusList = await PrepareShippingStatus();
 
-            shippings.DeliverDistance = customer.DeliverRadius;
-            shippings.PickupDistance = customer.PickupRadius;
+            shippings.DeliverDistance = customer.DeliverRadius??0;
+            shippings.PickupDistance = customer.PickupRadius??0;
 
             return View(shippings);
         }

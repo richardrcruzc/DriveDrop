@@ -8,7 +8,7 @@ namespace DriveDrop.Api.ViewModels
     public class CalculatedCharge
     {
         
-        public Decimal Distance { get;  set; }
+        public double Distance { get;  set; }
         public Decimal PriorityAmount { get; set; }
         public Decimal DistanceAmount { get; set; }
         public Decimal WeightAmount { get; set; }

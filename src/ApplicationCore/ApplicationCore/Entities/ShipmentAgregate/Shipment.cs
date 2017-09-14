@@ -43,13 +43,15 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public Decimal ShippingWeight { get; private set; }
         public Decimal ShippingValue { get; private set; }
 
-        public Decimal Distance { get; private set; }
+        public double Distance { get; private set; }
         public Decimal ChargeAmount { get; private set; }
         public Decimal Discount { get; private set; }
         public string PromoCode { get; private set; }        
         public Decimal Tax { get; private set; }
 
         public Decimal AmountPay { get; private set; }
+         public Decimal ExtraCharge { get; private set; }
+       public string ExtraChargeNote { get; private set; }
 
         public string PickupPictureUri { get; private set; }
         public string DeliveredPictureUri { get; private set; }
@@ -81,21 +83,25 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         }
 
 
-        public Shipment SetupPayAmount(decimal distance, decimal chargeAmount, decimal discount, string promoCode, decimal tax, int qty = 1, decimal amountPay=0)
+        public Shipment SetupPayAmount(double distance, decimal chargeAmount, decimal discount, string promoCode, decimal tax,  decimal amountPay, decimal extraCharge,string extraChargeNote)
         {
             Distance = distance;
             ChargeAmount = chargeAmount;
             Discount = discount;
             PromoCode = promoCode;
             Tax = tax;
-            Quantity = qty;
+            Quantity = 1;
             AmountPay = amountPay;
+            ExtraCharge = extraCharge;
+            ExtraChargeNote = extraChargeNote;
+
             return this;
         }
 
         public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal shippingWeight, int priorityTypeId ,
                             int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri,
-                            decimal distance, decimal chargeAmount,  string promoCode, decimal tax, int packageSizeId 
+                            double distance, decimal chargeAmount,  string promoCode, decimal tax, int packageSizeId ,
+                            decimal extraCharge, string extraChargeNote
                             ) : this()
         {
             ShippingStatusId = ShippingStatus.PendingPickUp.Id;
@@ -129,6 +135,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             Tax = tax;
 
             PackageSizeId = packageSizeId;
+
+            ExtraCharge = extraCharge;
+            ExtraChargeNote = extraChargeNote;
 
         }
         public static string RandomString()

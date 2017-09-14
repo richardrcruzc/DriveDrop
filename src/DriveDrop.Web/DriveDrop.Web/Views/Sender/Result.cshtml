@@ -26,7 +26,7 @@
                     <input asp-for="Id" hidden />
                     <input asp-for="CustomerStatusId" hidden />
                     <input asp-for="CustomerStatus" hidden />
-                <input asp-for="PersonalPhotoUri" hidden />
+                    <input asp-for="PersonalPhotoUri" hidden />
                 
                     <div class="fieldset">
 
@@ -84,7 +84,7 @@
                             </div>
                             <div class="inputs">
                                 @Html.LabelFor(m => m.PrimaryPhone)
-                                @Html.TextBoxFor(m => m.PrimaryPhone, new {   @data_inputmask = "'mask': '(999)999-9999'" })
+                                @Html.TextBoxFor(m => m.PrimaryPhone, new {   @data_inputmask = "'mask': '(999) 999-9999'" })
                                 <span class="required">*</span>
                                 @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
@@ -96,7 +96,7 @@
                             </div>
                             <div class="inputs">
                                 @Html.LabelFor(m => m.Phone)
-                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999)999-9999'" })
+                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
                                 <span class="required">*</span>
                                 @Html.ValidationMessageFor(m => m.Phone)
 

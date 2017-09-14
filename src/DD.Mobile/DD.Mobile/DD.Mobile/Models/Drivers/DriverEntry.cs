@@ -25,7 +25,8 @@ namespace DD.Mobile.Models.Drivers
         //public Dictionary<int, String> PackageSizeList { get; set; }
 
 
-         
+        public double Latitude { get; set; }
+        public double longitude { get; set; }
 
         public string Personalfiles { get; set; }
        

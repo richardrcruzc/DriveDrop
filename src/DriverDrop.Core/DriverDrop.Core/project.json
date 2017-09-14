@@ -1,0 +1,27 @@
+﻿{
+  "dependencies": {
+    "Acr.UserDialogs": "6.5.1",
+    "Autofac": "4.6.1",
+    "IdentityModel": "2.11.0" ,
+    "Microsoft.Bcl": "1.1.10",
+    "Microsoft.Bcl.Build": "1.0.21",
+    "Microsoft.Net.Http": "2.2.29",
+    "modernhttpclient": "2.4.2",
+    "Newtonsoft.Json": "10.0.3",
+    "PCLCrypto": "2.0.147",
+    "SlideOverKit": "2.1.4",
+    "Splat": "2.0.0",
+    "System.ComponentModel.Annotations": "4.4.0",
+    "Xam.Plugin.Geolocator": "4.0.1",
+    "Xam.Plugins.Settings": "3.0.1",
+    "Xamarin.FFImageLoading": "2.2.11",
+    "Xamarin.FFImageLoading.Forms": "2.2.11",
+    "Xamarin.Forms": "2.3.4.270",
+    "Xamarin.Forms.Pages": "2.3.4.270",
+    "Xamarin.Forms.Theme.Base": "1.0.0.43-pre1",
+    "Xamarin.Forms.Theme.Light": "1.0.0.43-pre1"
+  },
+  "frameworks": {
+    ".NETPortable,Version=v4.5,Profile=Profile111": {}
+  }
+}

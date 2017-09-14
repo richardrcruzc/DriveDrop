@@ -27,8 +27,8 @@ namespace ApplicationCore.Entities.ClientAgregate
         public int? CustomerStatusId { get; private set; }
         public CustomerStatus CustomerStatus { get; private set; }
         public int? MaxPackage { get; private set; }
-        public int? PickupRadius { get; private set; }
-        public int? DeliverRadius { get; private set; }
+        public double? PickupRadius { get; private set; }
+        public double? DeliverRadius { get; private set; }
 
         public decimal Commission { get; private set; }
 

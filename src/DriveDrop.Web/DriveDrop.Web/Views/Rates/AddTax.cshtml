@@ -1,0 +1,105 @@
+@model  DriveDrop.Web.ViewModels.TaxModel
+
+@{
+        ViewData["Title"] = "Add Tax";
+}
+
+
+
+<div class="side-2">
+
+
+    @await Html.PartialAsync("AdminNavigation", 1)
+
+
+</div>
+<div class="center-2">
+    <div class="page account-page customer-info-page">
+        <div class="page-title">
+            <h1>Add Tax Rate</h1>
+        </div>
+        <div class="page-body">
+
+            <form asp-action="AddTax">
+                @Html.AntiForgeryToken()
+
+                <div class="fieldset">
+
+                    <div class="form-fields">
+
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="inputs">
+
+                            <label for="State" class="pull-left">State</label>
+                            <input asp-for="State" placeholder="State" />
+
+
+                            <span asp-validation-for="State" class="text-danger"></span>
+
+
+                        </div>
+                        <div class="inputs">
+
+                            <label for="County" class="pull-left">County</label>
+                            <input asp-for="County" placeholder="County" />
+
+
+                            <span asp-validation-for="County" class="text-danger"></span>
+
+
+                        </div>
+
+                        <div class="inputs">
+
+                            <label for="City" class="pull-left">City</label>
+                            <input asp-for="City" placeholder="City" />
+
+
+                            <span asp-validation-for="City" class="text-danger"></span>
+
+
+                        </div>
+                        <div class="inputs">
+
+                            <label for="Rate" class="pull-left">Rate</label>
+
+                            <input asp-for="Rate" placeholder="Rate" />
+
+                            <span class="required">*</span>
+
+                            <span asp-validation-for="Rate" class="text-danger"></span>
+
+
+                        </div>
+                        <div class="inputs">
+
+                            <label for="RateDefault" class="pull-left">Default</label>
+
+                            <input asp-for="RateDefault" placeholder="RateDefault" />
+
+
+                            <span asp-validation-for="RateDefault" class="text-danger"></span>
+
+
+                        </div>
+
+                        <div class="buttons">
+                            <input type="submit" value="Save" class="button-1 save-customer-info-button" />
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

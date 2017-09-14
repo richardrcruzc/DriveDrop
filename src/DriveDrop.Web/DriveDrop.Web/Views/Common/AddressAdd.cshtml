@@ -53,7 +53,7 @@
 
                 <div class="edit-address">
                     <div class="inputs">
-                        <input id="autocomplete" class="form-control" placeholder="Enter your address" />
+                        <input id="autocomplete" class="form-control" placeholder="Enter Your Address" />
 
                     </div>
                     <a class="btn btn-primary btn-lg" role="button" id="asPickup">Set as pickup </a>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="inputs">
                          
-                        @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999)999-9999'", @disabled= "disabled", placeholder = "Phone" })
+                        @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @disabled= "disabled", placeholder = "Phone" })
                         <span class="required">*</span>
                         @Html.ValidationMessageFor(m => m.Phone)
 

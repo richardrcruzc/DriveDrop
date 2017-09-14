@@ -14,6 +14,9 @@ namespace DriveDrop.Web.ViewModels
             var ShippingStatusList= new List<SelectListItem>();
         }
 
+        public Decimal ExtraCharge { get; set; }
+        public string ExtraChargeNote { get; set; }
+
         public List<SelectListItem> ShippingStatusList { get; set; }
 
         public int Id { get; set; }
@@ -73,6 +76,13 @@ namespace DriveDrop.Web.ViewModels
         public string Note { get;  set; }
 
         public List<RatingModel> Reviews { get; set; }
-          
+
+
+
+
+        public double? PickupRadius { get; set; }
+        public double? DeliverRadius { get; set; }
+
+
     }
 }

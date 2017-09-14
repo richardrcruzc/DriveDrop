@@ -15,12 +15,16 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using Polly.CircuitBreaker;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace DriveDrop.Web.Controllers
 {
     [Authorize]
     public class AdminController : Controller
     {
+        private readonly IHostingEnvironment _env;
         private readonly string _remoteServiceShippingsUrl;
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
@@ -31,9 +35,11 @@ namespace DriveDrop.Web.Controllers
 
         private readonly string _remoteServiceDriversUrl;
 
-        public AdminController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, 
-            IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
+        public AdminController(IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings, 
+            IHttpContextAccessor httpContextAccesor, IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
         {
+            _env = env;
+
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/admin"; 
             _settings = settings;
@@ -45,6 +51,63 @@ namespace DriveDrop.Web.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateInfo(CustomerInfoModel model, List<IFormFile> PersonalPhotoUri)
+        {
+            var result = "Info updated";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    var fileName = await SaveFile(PersonalPhotoUri, "driver");
+
+                    if (!string.IsNullOrWhiteSpace(fileName))
+                        model.PhotoUrl = fileName;
+                    else
+                        model.PhotoUrl = model.PersonalPhotoUri;
+
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
+
+                    var getUserUri = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+                    var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                    var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+                    if (customer != null)
+                    {
+
+
+
+                        var updateInfo = API.Driver.UpdateInfo(_remoteServiceDriversUrl);
+
+                        var response = await _apiClient.PostAsync(updateInfo, model, token);
+                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            //throw new Exception("Error creating Shipping, try later.");
+
+                            ModelState.AddModelError("", "Error creating Shipping, try later.");
+
+                        }
+                        else
+                            return RedirectToAction("details", new { id = 1 });
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    var error = string.Format("Unable to save changes. " +
+                        "Try again, and if the problem persists " +
+                        "see your system administrator. {0}", ex.Message);
+
+                    ModelState.AddModelError("", error);
+                    result = error;
+                }
+            }
+
+           
+           return View(model);
+        }
 
         public async Task<IActionResult> AssignDriver(int shipingId, int driverId)
         {
@@ -158,7 +221,7 @@ namespace DriveDrop.Web.Controllers
 
             if (currentUser == null || currentUser.UserName == null)
             {
-                return Json("Invalid entry: User Name invalid!");
+                return Json("Invalid entry: User Name invalid!"+ userToImpersonate);
             }
             if (currentUser.VerificationId==null || currentUser.VerificationId.ToLower() != code.ToLower())
             {
@@ -499,5 +562,49 @@ namespace DriveDrop.Web.Controllers
         {
             TempData["DriveDropInoperativeMsg"] = "DriveDrop Service is inoperative, please try later on. (Business Msg Due to Circuit-Breaker)";
         }
+        [NonAction]
+        public async Task<string> SaveFile(List<IFormFile> files, string belong)
+        {
+
+            Guid extName = Guid.NewGuid();
+            //saving files
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+            var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
+            var fileName = "";
+
+            foreach (var formFile in files)
+            {
+
+                if (formFile.Length > 0)
+                {
+                    var extension = ".jpg";
+                    if (formFile.FileName.ToLower().EndsWith(".jpg"))
+                        extension = ".jpg";
+                    if (formFile.FileName.ToLower().EndsWith(".tif"))
+                        extension = ".tif";
+                    if (formFile.FileName.ToLower().EndsWith(".png"))
+                        extension = ".png";
+                    if (formFile.FileName.ToLower().EndsWith(".gif"))
+                        extension = ".gif";
+
+
+
+
+                    filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+                    fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+            return fileName;
+
+        }
+
     }
 }

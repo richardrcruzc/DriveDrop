@@ -17,13 +17,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace DriveDrop.Web.Controllers
-{
-
+{ 
     [Authorize]
     public class RatesController : Controller
-    {
-
-
+    { 
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
@@ -52,6 +49,150 @@ namespace DriveDrop.Web.Controllers
             _env = env;
 
         }
+
+        public async Task<IActionResult> ListTaxes()
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return RedirectToAction("index", "home");
+
+            var taxUri = API.Tax.Get(_remoteServiceRatessUrl );
+            var taxString = await _apiClient.GetStringAsync(taxUri, token);
+            var response = JsonConvert.DeserializeObject<List<TaxModel>>(taxString);
+
+            return View(response);
+        }
+
+        public async Task<IActionResult> AddTax()
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return RedirectToAction("index", "home"); 
+           
+
+            return View(new TaxModel());
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTax(TaxModel model)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return NotFound("Invalid entry");
+
+            //if (ModelState.IsValid)
+            //{
+            try
+            {
+
+                var taxUri = API.Tax.SaveTax(_remoteServiceRatessUrl);
+
+                var response = await _apiClient.PostAsync(taxUri, model, token);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    //throw new Exception("Error creating Shipping, try later.");
+
+                    ModelState.AddModelError("", "Error updating tax table, try later.");
+
+                }
+                return RedirectToAction("ListTaxes");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+
+            return View(model);
+        }
+
+
+
+        // GET: Rates/Edit/5
+        public async Task<IActionResult> EditTax(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return RedirectToAction("index", "home");
+
+            var taxUri = API.Tax.GetTax(_remoteServiceRatessUrl, id);
+            var taxString = await _apiClient.GetStringAsync(taxUri, token);
+            var response = JsonConvert.DeserializeObject<TaxModel>(taxString);
+
+            return View(response);
+             
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTax(TaxModel model)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return NotFound("Invalid entry");
+
+            //if (ModelState.IsValid)
+            //{
+            try
+            {
+
+                var taxUri = API.Tax.SaveTax(_remoteServiceRatessUrl);
+
+                var response = await _apiClient.PostAsync(taxUri, model, token);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    //throw new Exception("Error creating Shipping, try later.");
+
+                    ModelState.AddModelError("", "Error updating tax table, try later.");
+
+                }
+                return RedirectToAction("ListTaxes");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+
+            return View(model);
+        }
+
+
+
+
 
         [AllowAnonymous]
         public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode)

@@ -29,21 +29,21 @@
         <div class="form-group">
             <label asp-for="CustomerTypeId" class="col-md-2 control-label"></label>
             <div class="col-md-10"> 
-                @Html.DropDownListFor(m => m.CustomerTypeId, Model.CustomerTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999)999-9999'" })
+                @Html.DropDownListFor(m => m.CustomerTypeId, Model.CustomerTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999) 999-9999'" })
                 <span asp-validation-for="CustomerTypeId" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="TransportTypeId" class="col-md-2 control-label"></label>
             <div class="col-md-10"> 
-                @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999)999-9999'" })
+                @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999) 999-9999'" })
                 <span asp-validation-for="TransportTypeId" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="CustomerStatusId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.DropDownListFor(m=>m.CustomerStatusId, Model.CustomerStatusList, "-- Select Status --", new {@data_inputmask = "'mask': '(999)999-9999'" })
+                @Html.DropDownListFor(m=>m.CustomerStatusId, Model.CustomerStatusList, "-- Select Status --", new {@data_inputmask = "'mask': '(999) 999-9999'" })
                 <span asp-validation-for="CustomerStatusId" class="text-danger"></span>
             </div>
         </div>
@@ -168,14 +168,14 @@
         <div class="form-group">
             <label asp-for="PriorityTypeId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.PriorityTypeId, Model.CustomerTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999)999-9999'" })
+                @Html.DropDownListFor(m => m.PriorityTypeId, Model.CustomerTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999) 999-9999'" })
                 <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="TransportTypeIdS" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.TransportTypeIdS, Model.TransportTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999)999-9999'" })
+                @Html.DropDownListFor(m => m.TransportTypeIdS, Model.TransportTypeList, "-- Select Status --", new {@data_inputmask = "'mask': '(999) 999-9999'" })
                 <span asp-validation-for="TransportTypeIdS" class="text-danger"></span>
             </div>
         </div>

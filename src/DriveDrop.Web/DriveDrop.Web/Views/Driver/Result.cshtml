@@ -13,7 +13,7 @@
 <div class="center-2">
     <div class="page account-page customer-info-page">
         <div class="page-title">
-            <h1>My Personal info</h1>
+            <h1>My Personal Info</h1>
         </div>
 
         <div class="page-body">
@@ -31,7 +31,7 @@
                 <div class="fieldset">
 
                     <div class="title">
-                        <strong>My personal information details</strong>
+                        <strong>My Personal Information Details</strong>
                     </div>
 
 
@@ -80,21 +80,21 @@
                         </div>
                         <div class="inputs">
                             @Html.LabelFor(model => model.PrimaryPhone )
-                            @Html.TextBoxFor(model => model.PrimaryPhone, new { @data_inputmask = "'mask': '(999)999-9999'" })
+                            @Html.TextBoxFor(model => model.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
                             <span class="required">*</span>
                             @Html.ValidationMessageFor(model => model.PrimaryPhone)
                              
                         </div>
                         <div class="inputs">
                             @Html.LabelFor(model => model.Phone)
-                            @Html.TextBoxFor(model => model.Phone, new { @data_inputmask = "'mask': '(999)999-9999'" })
+                            @Html.TextBoxFor(model => model.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
                             <span class="required">*</span>
                             @Html.ValidationMessageFor(model => model.Phone)
                             
                         </div>
                         <div class="inputs">
 
-                            <label for="VerificationId">Verification Id</label>
+                            <label for="VerificationId">Verification ID</label>
                             <input asp-for="VerificationId" placeholder="Verification Id" />
                             <span class="required">*</span>
                             <span asp-validation-for="VerificationId" class="text-danger"></span>

@@ -60,15 +60,15 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                       <th>#</th>
-                                        <th>Customer</th>
-                            <th><div>Date </div></th>
-                            <th><div> Status</div>Priority</th>
+                                       <td>Package #</td>
+                                        <td>Driver</td>
+                            <td>Date </td>
+                            @*<th><div> Status</div>Priority</th>
                             <th><div>Amount</div>Discount</th>
                             <th>Pickup Address</th>
                             <th>Delivery Address</th>
-                                        <th>Distance</th>
-                                        <th>Route</th>
+                                        <th>Distance</th>*@
+                                        <td>Route</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,7 +84,7 @@
                                     }
 
                                     <tr>
-                                        <td colspan="5">
+                                        <td colspan="4">
                                             @Html.Partial("_pagination", Model.PaginationInfo)
                                         </td>
                                     </tr>
@@ -123,8 +123,8 @@
 
             <input id="submit" type="button" value="Geocode">
         </div>
-        <div id="right-panel-map"></div>
-        <div id="mapgoogle"></div>
+        <div id="right-panel-map" class="hide"></div>
+        <div id="mapgoogle" class="hide"></div>
 
     </div>
 </div>
@@ -158,7 +158,9 @@
             }
         }
         function SetAddressFunction(obj) {
-
+            
+            $("#right-panel-map").removeClass('hide');
+            $("#mapgoogle").removeClass('hide');
             var pu = $(obj).attr('pickup-id');            
             var dl = $(obj).attr('delivery-id');             
 

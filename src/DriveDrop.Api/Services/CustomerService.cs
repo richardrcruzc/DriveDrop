@@ -160,9 +160,14 @@ namespace DriveDrop.Api.Services
                  .Include("ShipmentDrivers.ShippingStatus")
                  .Include("ShipmentDrivers.PickupAddress")
                  .Include("ShipmentDrivers.DeliveryAddress")
+                 .Include("ShipmentDrivers.PriorityType")
+                 .Include("ShipmentDrivers.PackageSize")
                  .Include("ShipmentSenders.ShippingStatus")
-                     .Include("ShipmentSenders.PickupAddress")
+                 .Include("ShipmentSenders.PickupAddress")
                  .Include("ShipmentSenders.DeliveryAddress")
+                 .Include("ShipmentSenders.PriorityType")
+                 .Include("ShipmentSenders.PackageSize")
+                 
                 .Where(x =>  x.Id == customerId)
                 .FirstOrDefaultAsync();
 

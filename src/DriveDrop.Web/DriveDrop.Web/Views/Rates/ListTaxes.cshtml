@@ -1,0 +1,61 @@
+@model  IEnumerable<DriveDrop.Web.ViewModels.TaxModel>
+      
+@{ 
+    ViewData["Title"] = "List Taxes"; 
+}
+     
+<div class="side-2">
+
+
+    @await Html.PartialAsync("AdminNavigation",1)
+
+
+</div>
+<div class="center-2">
+    <div class="page account-page address-list-page">
+        <div class="page-title">
+            <h1>List Taxes</h1>
+        </div>
+        <div class="buttons">
+             <a asp-action="AddTax" class="button-1 save-customer-info-button">Add Tax Rate</a>
+
+        </div>
+        <div class="page-body">
+            
+            
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>State</th>
+                                <th>City</th>
+                                <th>Rate %</th>
+                                <th>Default</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+                                    <td class="title">@item.State</td>
+                                    <td class="title">@item.City</td>
+                                    <td class="title">@item.Rate</td>
+                                    <td class="title">@item.RateDefault</td>
+                                    <td><a asp-action="EditTax" asp-route-id="@item.Id"><label class="title">Edit</label></a></td>
+
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+         
+                </div>
+
+            </div>
+
+        </div>
+

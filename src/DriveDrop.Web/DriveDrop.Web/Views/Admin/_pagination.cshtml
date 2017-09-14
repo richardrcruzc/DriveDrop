@@ -2,7 +2,7 @@
 
 <div class="pager">
     
-         
+    <br />
                 <a class="previous-page @Model.Previous"
                    id="Previous" 
                    asp-route-page="@(Model.ActualPage -1)"
@@ -10,7 +10,7 @@
                     <img title="" alt="DriveDrop" src="~/images/first.png">
                     
                 </a>
-
+ 
                 <span class="span">
                     Showing @Model.ItemsPerPage of @Model.TotalItems items - Page @(Model.ActualPage + 1) - @Model.TotalPages
                 </span>

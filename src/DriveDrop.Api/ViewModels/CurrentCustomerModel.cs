@@ -30,8 +30,8 @@ namespace DriveDrop.Api.ViewModels
         public int? CustomerStatusId { get; set; }
         public string CustomerStatus { get; set; }
         public int? MaxPackage { get; set; }
-        public int? PickupRadius { get; set; }
-        public int? DeliverRadius { get; set; }
+        public double? PickupRadius { get; set; }
+        public double? DeliverRadius { get; set; }
 
 
         public string VehicleInfo { get; set; }

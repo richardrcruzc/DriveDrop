@@ -644,12 +644,16 @@ namespace DriveDrop.Api.Controllers
 
 
                 // var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, c.Quantity, c.PriorityTypeId, c.TransportTypeId, c.PromoCode);
-                var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode);
+                var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,c.PackageSizeId);
 
+                 
+                var test = rate.AmountToCharge+ c.ExtraCharge;
+
+                rate.AmountToCharge += c.ExtraCharge;
 
                     var shipment = new Shipment(pickup: pickUpAddres, delivery: deliveryAddres, sender: sender, amount: c.Amount, discount: rate.Discount,
                         shippingWeight: c.ShippingWeight, priorityTypeId: c.PriorityTypeId, transportTypeId: c.TransportTypeId,note: c.Note, pickupPictureUri: c.PickupPictureUri, deliveredPictureUri: "", 
-                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount, packageSizeId: c.PackageSizeId);
+                        distance: rate.Distance, chargeAmount:rate.AmountToCharge, promoCode: c.PromoCode, tax:rate.TaxAmount, packageSizeId: c.PackageSizeId,extraCharge: c.ExtraCharge,extraChargeNote:c.ExtraChargeNote );
 
                     _context.Add(shipment);
 

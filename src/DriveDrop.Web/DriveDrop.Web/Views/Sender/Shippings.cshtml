@@ -19,9 +19,50 @@
                               <div class="page-body">
 
                                   <div class="order-list">
-    @foreach (var item in Model)
-    {
-        var urlPickup = ViewBag.Uri + item.PickupPictureUri;
+    
+        @if (Model != null && Model.Any())
+        {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Package #</td>
+                    <td>Driver</td>
+                    <td>Date </td>
+                   
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (var shipping in Model)
+                {
+                    <tr>
+
+                      <td>
+                          @Html.ActionLink(shipping.IdentityCode, "ShippingDetails", "sender", new { id = shipping.Id })
+                        </td>
+                        <td>
+
+                            @if (shipping.Driver != null)
+                            {
+                                var driver = shipping.Driver.FirstName + " " + shipping.Driver.LastName;
+
+                                @Html.ActionLink(driver, "details", "admin", new { id = shipping.DriverId })
+
+                            }
+                        </td>
+                        <td class="align-center">
+                            @Html.DisplayFor(modelItem => shipping.ShippingCreateDate)
+
+
+                        </td>
+                    </tr>
+                } 
+            </tbody>
+        </table>
+        }
+        @*var urlPickup = ViewBag.Uri + item.PickupPictureUri;
         var urlDelivery = "";
         if (string.IsNullOrEmpty(item.DeliveredPictureUri))
         {
@@ -35,6 +76,12 @@
         <div class="section order-item">
             <div class="title">
                 <strong>Shipping #: @item.IdentityCode</strong>
+
+
+                @Html.ActionLink(item.IdentityCode, "ShippingDetails", "sender", new { id = item.Id })
+
+
+
             </div>
             <ul class="info">
                 <li><label>Status</label> <span class="order-completed">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
@@ -58,15 +105,12 @@
                 </li>
             </ul>
 
-            @*<div class="buttons">
-                <input type="button" value="Details" class="button-2 order-details-button" onclick="setLocation('/sender/ShippingDetails/@(item.Id)')" />
-            </div>*@
+            
 
 
-
-        </div>
+        </div>*@
        
-    }
+    
            
 
                                        

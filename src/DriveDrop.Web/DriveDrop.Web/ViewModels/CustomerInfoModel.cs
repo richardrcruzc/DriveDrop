@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace DriveDrop.Web.ViewModels
         public string Email { get; set; }
         public string Phone { get; set; }
         public string PrimaryPhone { get; set; }
-        public string PhotoUrl { get; set; }
+        public string PhotoUrl { get; set; } 
         public int StatusId { get; set; }
         public string CustomerStatus { get; set; }
         public int Id { get; set; }

@@ -80,7 +80,7 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<int?>("DefaultAddressId");
 
-                    b.Property<int?>("DeliverRadius");
+                    b.Property<double?>("DeliverRadius");
 
                     b.Property<string>("DriverLincensePictureUri");
 
@@ -102,7 +102,7 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("Phone");
 
-                    b.Property<int?>("PickupRadius");
+                    b.Property<double?>("PickupRadius");
 
                     b.Property<string>("PrimaryPhone");
 
@@ -222,9 +222,13 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<decimal>("Discount");
 
-                    b.Property<decimal>("Distance");
+                    b.Property<double>("Distance");
 
                     b.Property<int?>("DriverId");
+
+                    b.Property<decimal>("ExtraCharge");
+
+                    b.Property<string>("ExtraChargeNote");
 
                     b.Property<string>("IdentityCode");
 
@@ -482,7 +486,11 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<string>("City");
 
+                    b.Property<string>("County");
+
                     b.Property<decimal>("Rate");
+
+                    b.Property<bool>("RateDefault");
 
                     b.Property<string>("State");
 
