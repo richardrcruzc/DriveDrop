@@ -30,7 +30,24 @@ namespace DriveDrop.Api.Controllers
 
         }
 
+        [HttpDelete]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> DeleteTax(int id)
+        {
 
+            var tax = await _context.TaxRates
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (tax==null)
+                return Ok("Invalid");
+
+            _context.Remove(tax);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Deleted");
+
+        }
         [HttpGet]
         [Route("[action]/{id:int}")]
         public async Task<IActionResult> GetTax(int id)
@@ -99,9 +116,9 @@ namespace DriveDrop.Api.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> CalculateAmount(double distance, decimal weight, int priority, int packageSizeId, string promoCode = "")
+        public async Task<IActionResult> CalculateAmount(double distance, decimal weight, int priority, int packageSizeId, string promoCode =null, decimal extraCharge=0, string extraNote = null, string state = null, string city = null)
         {
-            return Ok(await _rate.CalculateAmount(distance, weight, priority, promoCode, packageSizeId));
+            return Ok(await _rate.CalculateAmount(distance, weight, priority, promoCode, packageSizeId,extraCharge, extraNote, state, city));
         }
 
         [HttpGet]

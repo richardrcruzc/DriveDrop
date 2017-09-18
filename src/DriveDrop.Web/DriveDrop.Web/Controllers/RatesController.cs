@@ -190,16 +190,52 @@ namespace DriveDrop.Web.Controllers
             return View(model);
         }
 
+        // GET: Rates/Edit/5
+        public async Task<IActionResult> DeleteTax(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
 
+            if (!isAdminResponse)
+                return Json("Invalid entry");
+
+
+
+            try
+            {
+
+                var taxDeleteUri = API.Tax.DeleteTax(_remoteServiceRatessUrl, id);
+
+                var response = await _apiClient.DeleteAsync(taxDeleteUri, token);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    //throw new Exception("Error creating Shipping, try later.");
+
+                    return Json( "Error updating tax table, try later.");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return  Json(ex.Message);
+            }
+
+            return Json("Deleted");
+
+        }
 
 
 
         [AllowAnonymous]
-        public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode)
+        public async Task<IActionResult> CalculateAmount(decimal distance, decimal weight, int priority, int packageSizeId, string promoCode,decimal extraCharge, string extraChargeNote, string pickupState, string pickupCity)
         {
            // var token = await GetUserTokenAsync();
 
-            var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl, distance,  weight,   priority, packageSizeId, promoCode);
+            var allRatesUri = API.Rate.Amount(_remoteServiceRatessUrl, distance,  weight,   priority, packageSizeId, promoCode, extraCharge, extraChargeNote, pickupState, pickupCity);
 
             var dataString = await _apiClient.GetStringAsync(allRatesUri);
 

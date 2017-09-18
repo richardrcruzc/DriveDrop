@@ -207,7 +207,7 @@
 
                             <div class="inputs">
                                 @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
-                                <textarea name="ExtraChargeNote" class="span6" rows="2" placeholder="Extra Charge Note"></textarea>
+                                <textarea name="ExtraChargeNote" id="ExtraChargeNote" class="span6" rows="2" placeholder="Extra Charge Note"></textarea>
                                 <span asp-validation-for="ExtraChargeNote" class="text-danger"></span>
                             </div>
 
@@ -240,6 +240,9 @@
                                                 <td class="cart-total-left">
                                                     <label>Priority:</label>
                                                 </td>
+                                                <td>
+                                                    <span class="desc-Priority"></span>
+                                                </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Priority">$0.00</span>
                                                 </td>
@@ -247,6 +250,9 @@
                                             <tr class="order-subtotal">
                                                 <td class="cart-total-left">
                                                     <label>Distance:</label>
+                                                </td>
+                                                <td class="total-info">
+                                                    <span class="desc-Distance"></span>
                                                 </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Distance">$0.00</span>
@@ -256,6 +262,9 @@
                                                 <td class="cart-total-left">
                                                     <label>Weight:</label>
                                                 </td>
+                                                <td class="total-info">
+                                                    <span class="desc-Weight"></span>
+                                                </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Weight">$0.00</span>
                                                 </td>
@@ -264,20 +273,33 @@
                                                 <td class="cart-total-left">
                                                     <label>Size:</label>
                                                 </td>
+                                                <td class="total-info">
+                                                    <span class="desc-Size"></span>
+                                                </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Size">$0.00</span>
                                                 </td>
-                                            </tr>
-
-
-
-
-
+                                            </tr> 
 
 
                                             <tr class="order-subtotal">
                                                 <td class="cart-total-left">
+                                                    <label>Extra Charge:</label>
+                                                </td>
+                                                <td class="total-info">
+                                                    <span class="desc-extra"></span>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-extra">$0.00</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
                                                     <label>Sub-Total:</label>
+                                                </td>
+                                                <td class="total-info">
+                                                    <span class="desc-Sub"></span>
                                                 </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Sub">$0.00</span>
@@ -287,6 +309,9 @@
                                                 <td class="cart-total-left">
                                                     <label>Discount:</label>
                                                 </td>
+                                                <td class="total-info">
+                                                    <span class="desc-Discount"></span>
+                                                </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Discount">$0.00</span>
                                                 </td>
@@ -295,6 +320,9 @@
                                                 <td class="cart-total-left">
                                                     <label>Tax:</label>
                                                 </td>
+                                                <td class="total-info">
+                                                    <span class="desc-Tax"></span>
+                                                </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-Tax">$0.00</span>
                                                 </td>
@@ -302,6 +330,9 @@
                                             <tr class="order-total">
                                                 <td class="cart-total-left">
                                                     <label>Total:</label>
+                                                </td>
+                                                <td class="total-info">
+                                                    <span class="desc-total"></span>
                                                 </td>
                                                 <td class="cart-total-right">
                                                     <span class="value-total">$0.00</span>
@@ -437,29 +468,45 @@
                             var shippingWeight = $("#ShippingWeight").val();
                             var packageSizeId = $("#PackageSizeId").val();
 
+                            var extraCharge = $("#ExtraCharge").val();
+                            var extraChargeNote = $("#ExtraChargeNote").val();
+                            var pickupState = $("#PickupState").val();
+                            var pickupCity = $("#PickupCity").val();
+
+
+
+
                             $("#Distance").val(km); 
-                            alert($("#Distance").val());
+                            //alert($("#Distance").val());
 
                             $.ajax({
                                 url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
                                 type: "POST", //to do a post request
-
-                               //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
                                 cache: false, //avoid caching results
-                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode, packageSizeId: packageSizeId}, // here you can pass arguments to your request if you need
+                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode, packageSizeId: packageSizeId, extraCharge: extraCharge, extraChargeNote: extraChargeNote, pickupState: pickupState, pickupCity: pickupCity}, // here you can pass arguments to your request if you need
                                 success: function (data) {
                                     // data is your result from controller
                                     
                                     if (data) { 
-                                       
+                                        //alert(data.priorityAmountDetail);
                                         $(".value-Priority").text(data.strPriorityAmount);
+                                        $(".desc-Priority").text(data.priorityAmountDetail);
                                         $(".value-Distance").text(data.strDistanceAmount);
+                                        $(".desc-Distance").text(data.distanceAmountDetails);
                                         $(".value-Weight").text(data.strWeightAmount);
+                                        $(".desc-Weight").text(data.weightAmountDetails);
                                         $(".value-Size").text(data.strAmountPerSize); 
+                                        $(".desc-Size").text(data.amountPerSizeDetails); 
+
+                                        $(".value-extra").text(data.strExtraCharge);
+                                        $(".desc-extra").text(extraChargeNote); 
+                                        
 
                                         $(".value-Sub").text(data.strSubTotal);
                                         $(".value-Discount").text(data.strDiscount);
+                                        $(".desc-Tax").text(data.taxRate+" %"); 
                                         $(".value-Tax").text(data.strTaxAmount);
                                         $(".value-total").text(data.strAmountToCharge);
 
@@ -727,8 +774,7 @@
             }
 
             //distance service
-//https://maps.googleapis.com/maps/api/distancematrix/json?units=miles&origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=drive&key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o
-        </script>
+         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
                 async defer></script>
 

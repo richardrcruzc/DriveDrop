@@ -26,7 +26,7 @@ namespace DriveDrop.Api.Services
 
 
 
-        public async Task<CalculatedCharge> CalculateAmount(double distance, decimal weight,  int priority, string promoCode, int packageSizeId=0) {
+        public async Task<CalculatedCharge> CalculateAmount(double distance, decimal weight,  int priority, string promoCode, int packageSizeId,decimal extraCharge, string extraNote,  string state  , string city ) {
 
             var miles = distance; // await _distance.FromZipToZipInMile(zipFrom, zipTo);
             var milesDecimal = distance; // (decimal)miles;
@@ -49,20 +49,14 @@ namespace DriveDrop.Api.Services
 
             var chargePerPriority = myRate.RatePriorities.Where(p => p.PriorityTypeId == priority).FirstOrDefault();
 
-            //    _context.RatePriorities.Where(x => x.RateId == myRate.Id && x.PriorityTypeId == priority).FirstOrDefault();
-            // var chargePerTransport = _context.RateTranportTypes.Where(x => x.RateId == myRate.Id && x.TranportTypeId == transportTypeId).FirstOrDefault();
+              decimal rateSize = myRate.OverHead;
+            
 
-            decimal rateSize = myRate.OverHead;
-         
-            //if (chargePerSize.ChargePercentage)
-            //    rateSize = chargePerSize.Charge / 100;
-            //else
-            //    rateSize = chargePerSize.Charge;
-
-            var amountToCharge =    rateWeight.Charge
-                                     +   rateDistance.Charge 
+               var amountToCharge =    rateWeight.Charge
+                                     + rateDistance.Charge 
                                      + chargePerPriority.Charge 
-                                     + rateSize;
+                                     + rateSize
+                                     + extraCharge;
 
 
             var totalDiscount = 0M;
@@ -81,24 +75,58 @@ namespace DriveDrop.Api.Services
 
             }
             var taxRates = 0M;
-            var taxes =await _context.TaxRates.Where(x=>x.Id>0).FirstOrDefaultAsync();
-            if (taxes != null)
-                taxRates = taxes.Rate;
+            var qTaxes = _context.TaxRates.Where(x=>x.Id>0);
 
-           // amountToCharge += taxRates;
+            if (city != null)
+                qTaxes = qTaxes.Where(x => x.City.ToLower() == city.ToLower());
+
+            if (state != null)
+                qTaxes = qTaxes.Where(x => x.State.ToLower() == state.ToLower());
+            
+            var tax = qTaxes.FirstOrDefault();
+
+            if (tax != null)
+                taxRates = tax.Rate;
+            else {
+                var defaultTax = _context.TaxRates.Where(x => x.RateDefault == true).FirstOrDefault();
+                if (defaultTax != null)
+                    taxRates = defaultTax.Rate;
+                else
+                    taxRates = 0;
+                }
+
+            var priorityName = _context.PriorityTypes.Where(x => x.Id == priority).FirstOrDefault();
+
+            var taxAmountDetails = string.Format("Tax Rate:{0}", taxRates);
+            var distanceAmountDetails = string.Format("{0} Miles Range From: {1} To:{2}", milesDecimal, rateDistance.From, rateDistance.To);
+            var priorityAmountDetail = string.Format("{0}", priorityName.Name);
+            var weightAmountDetails = string.Format("{0} Lbs Weight Range From: {1} To:{2}", weight, rateWeight.From, rateWeight.To);
+            var amountPerSizeDetails = string.Format("{0}", myRate.PackageSize.Name);
+            var extraChargeDetail = string.Format("{0} {1}",extraNote, extraCharge);
 
             var model = new CalculatedCharge
             {
+                AmountToCharge = amountToCharge,
+
+                ExtraCharge =extraCharge,
+                ExtraChargeDetail= extraChargeDetail,
+
                 TaxRate = taxRates,
                 TaxAmount = taxRates / 100 * amountToCharge,
-                 AmountToCharge = amountToCharge,
-                Distance = milesDecimal,
+                TaxAmountDetails = taxAmountDetails,
+
                 DistanceAmount = rateDistance.Charge,
-                PriorityAmount = chargePerPriority.Charge,
-                //TransportTypeAmount = 0, //chargePerTransport.Charge,
-               WeightAmount =  rateWeight.Charge,
-                //Discount = totalDiscount,
-                AmountPerSize = rateSize
+                Distance = milesDecimal,
+                DistanceAmountDetails = distanceAmountDetails,
+                                
+                PriorityAmount = chargePerPriority.Charge, 
+                PriorityAmountDetail = priorityAmountDetail,
+
+                WeightAmount =  rateWeight.Charge, 
+                WeightAmountDetails = weightAmountDetails,
+
+                AmountPerSize = rateSize,
+                AmountPerSizeDetails = amountPerSizeDetails,
 
             };
 

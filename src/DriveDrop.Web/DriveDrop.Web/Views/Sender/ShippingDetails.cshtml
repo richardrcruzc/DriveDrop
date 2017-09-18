@@ -43,8 +43,8 @@
 
 
                             <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
-                             <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
-                            <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
+                             <li><label>Pickup Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                            <li><label>Delivery Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
                             <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
 
                             <li>
@@ -75,6 +75,8 @@
                                     <div><label>PickUp Image </label></div>
                                     <img src="@Model.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
                                 </div>
+                            </div>
+                            <div class="row"><br />
                                 <div class="col-md-5">
                                     <div><label>Delivery Image</label></div>
                                     <img src="@Model.DeliveredPictureUri" class="img-rounded" alt="no package image" width="100" height="75">

@@ -644,7 +644,7 @@ namespace DriveDrop.Api.Controllers
 
 
                 // var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, c.Quantity, c.PriorityTypeId, c.TransportTypeId, c.PromoCode);
-                var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,c.PackageSizeId);
+                var rate = await _rateService.CalculateAmount(c.Distance, c.ShippingWeight, c.PriorityTypeId, c.PromoCode,c.PackageSizeId, c.ExtraCharge, c.ExtraChargeNote, c.PickupState, c.PickupCity);
 
                  
                 var test = rate.AmountToCharge+ c.ExtraCharge;

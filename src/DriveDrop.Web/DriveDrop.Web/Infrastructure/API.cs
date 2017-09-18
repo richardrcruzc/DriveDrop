@@ -38,10 +38,16 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}SaveTax";
             }
+            public static string DeleteTax(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                var filterQs = $"{idQs}";
+                return $"{baseUri}DeleteTax/{filterQs}";
+            }
         }
             public static class Rate
         {
-            public static string Amount(string baseUri, decimal distance, decimal weight,   int priority,int packageSizeId,  string promoCode="")
+            public static string Amount(string baseUri, decimal distance, decimal weight,   int priority,int packageSizeId,  string promoCode, decimal extraCharge, string extraChargeNote, string pickupState, string pickupCity)
             {
                 var packageSizeIdQs = packageSizeId.ToString();
                 var distanceQs = distance.ToString();
@@ -49,7 +55,7 @@ namespace DriveDrop.Web.Infrastructure
                 var priorityQs = priority.ToString();  
                     var pcQs = promoCode;
 
-                var filterQs = $"distance={distanceQs}&weight={weightQs}&priority={priorityQs}&packageSizeId={packageSizeIdQs}&promoCode={pcQs}";
+                var filterQs = $"distance={distanceQs}&weight={weightQs}&priority={priorityQs}&packageSizeId={packageSizeIdQs}&promoCode={pcQs}&extraCharge={extraCharge}&extraChargeNote={extraChargeNote}&pickupState={pickupState}&pickupCity={pickupCity}";
                              
                 return $"{baseUri}CalculateAmount?{filterQs}";
             }
