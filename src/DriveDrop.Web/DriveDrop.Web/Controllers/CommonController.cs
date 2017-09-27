@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using DriveDrop.Web.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
+using System.IO;
 
 namespace DriveDrop.Web.Controllers
 {
@@ -50,6 +51,45 @@ namespace DriveDrop.Web.Controllers
 
             _env = env;
         }
+        public FileResult DisplayPDF(string file)
+        {
+            return File( "/uploads/img/driver/cdd440a5-ca7a-4509-ab84-7038ce0f4f97.jpg", "application /jpg");            
+        } 
+
+        [HttpPost]
+        public ActionResult ViewPDF(string file)
+        {
+            string embed = "<object data=\"{0}\" type=\"application/pdf\" width=\"500px\" height=\"300px\">";
+            embed += "If you are unable to view file, you can download from <a href = \"{0}\">here</a>";
+            embed += " or download <a target = \"_blank\" href = \"http://get.adobe.com/reader/\">Adobe PDF Reader</a> to view the file.";
+            embed += "</object>";
+            TempData["Embed"] = string.Format(embed, file);
+
+            return Json("Index");
+        }
+        public async Task<IActionResult> WelcomeEmail(string UserName)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUser = API.Common.GetUser(_remoteServiceCommonUrl, user.Email);
+            var dataString = await _apiClient.GetStringAsync(getUser, token);
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
+            if (response == null || !response.IsAdmin)
+                return Json("Something wrong happened");
+            
+            var sendEmail = API.Common.WelcomeEmail(_remoteServiceCommonUrl, UserName);
+            var sendString = await _apiClient.GetStringAsync(sendEmail, token);
+            //var sendEmailResponse = JsonConvert.DeserializeObject<string>((sendString));
+
+
+            return Json(sendString);
+            //var allRatesUri = API.Rating.GetAllReviews
+        }
+
+
+
+
         public async Task<IActionResult> SaveReview(int shippingId, string questionIdValues, string reviewed)
         {
 

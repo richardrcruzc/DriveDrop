@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using DriveDrop.Api.Services;
+using Microsoft.Extensions.Options;
 
 namespace DriveDrop.Api.Controllers
 {
@@ -21,16 +22,64 @@ namespace DriveDrop.Api.Controllers
     [Route("api/v1/[controller]")]
     public class CommonController : Controller
     {
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+
+        private readonly IEmailSender _emailSender;
         private readonly ICustomerService _cService;
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
-        public CommonController(ICustomerService cService, IHostingEnvironment env, DriveDropContext context)
+        public CommonController(IOptionsSnapshot<AppSettings> settings, IEmailSender emailSender, ICustomerService cService, IHostingEnvironment env, DriveDropContext context)
         {
+            _settings = settings;
+            _emailSender = emailSender;
             _context = context;
             _env = env;
             _cService = cService;
         }
 
+        [HttpGet]
+        [Route("[action]/userName/{userName}")]
+        public async Task<IActionResult> WelcomeEmail(string userName)
+        {
+            try
+            {
+                var customer = await _cService.Get(userName);
+                var type = customer.CustomerTypeId;
+                if(type ==2 )
+                    await _emailSender.SendEmailAsync(customer.UserName, "DriveDrop account created",
+                       $"{customer.FullName}: your account have been create and your status is {CustomerStatus.Active.Name},<br /> <br />  " +
+                       $"Your login infomation:<br /> Email: {customer.UserName}<br /><br />  " +
+                       $" you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+
+                else
+                    await _emailSender.SendEmailAsync(customer.UserName, "DriveDrop account created",
+                   $"{customer.FullName}: your account have been create and your status is {customer.CustomerStatus}, " +
+                   $"we'll review you application ASAP, you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+
+
+
+                // var customer = await _context.Customers
+                //    .Include(s => s.TransportType)
+                //    .Include(t => t.CustomerStatus)
+                //    .Include(s => s.CustomerType)
+                //    .Include(a => a.Addresses)
+                //.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+
+                if (customer != null)
+                {
+                    return Ok("Sent");
+                }
+
+
+            }
+            //catch (Exception exe)
+            catch
+            {
+                //return BadRequest("CustomerNotFound" + exe.Message);
+            }
+
+            return Ok(null);
+        }
         [HttpGet]
         [Route("[action]/user/{userName}")]
         public async Task<IActionResult> GetUser(string userName)

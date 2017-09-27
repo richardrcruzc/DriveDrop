@@ -312,6 +312,11 @@ namespace DriveDrop.Web.Infrastructure
         public static class Common
         {
 
+            public static string WelcomeEmail(string baseUri, string userName)
+            {
+                return $"{baseUri}WelcomeEmail/userName/{userName}";
+            }
+             
             public static string PostFiles(string baseUri )
             {
                 return $"{baseUri}PostFiles";

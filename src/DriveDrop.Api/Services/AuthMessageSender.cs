@@ -45,7 +45,7 @@ namespace DriveDrop.Api.Services
                 using (var client = new SmtpClient())
                 {
 
-                    client.LocalDomain = "smtp.sendgrid.net";
+                    client.LocalDomain = _settings.Value.EmailLocalDomain;
 
                     await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.None).ConfigureAwait(false);
                     await client.AuthenticateAsync(_settings.Value.EmailUser, _settings.Value.EmailPassword);

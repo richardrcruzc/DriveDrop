@@ -4,7 +4,7 @@ using DriverDrop.Core.Services.Identity;
 using DriverDrop.Core.Services.Locations;
 using DriverDrop.Core.Services.OpenUrl;
 using DriverDrop.Core.Services.RequestProvider;
-using eShopOnContainers.Core.Services.Locations;
+using DriverDrop.Core.Services.Locations;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

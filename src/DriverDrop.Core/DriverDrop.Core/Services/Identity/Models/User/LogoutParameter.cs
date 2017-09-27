@@ -1,4 +1,4 @@
-﻿namespace eShopOnContainers.Core.Models.User
+﻿namespace DriverDrop.Core.Models.User
 {
     public class LogoutParameter
     {

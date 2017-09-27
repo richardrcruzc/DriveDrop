@@ -42,6 +42,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Behaviors\Base\BindableBehavior.cs" />
+    <Compile Include="Behaviors\EventToCommandBehavior.cs" />
+    <Compile Include="Behaviors\LineColorBehavior.cs" />
+    <Compile Include="Controls\AddBasketButton.xaml.cs">
+      <DependentUpon>AddBasketButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomTabbedPage.cs" />
+    <Compile Include="Controls\ToggleButton.cs" />
+    <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Exceptions\ServiceAuthenticationException.cs" />
     <Compile Include="GlobalSetting.cs" />
     <Compile Include="Helpers\EasingHelper.cs" />
@@ -137,7 +146,12 @@
     <None Include="packages.config" />
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\AddBasketButton.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.2.3.4.270\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

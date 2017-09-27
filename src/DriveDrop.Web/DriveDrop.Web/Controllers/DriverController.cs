@@ -593,6 +593,8 @@ namespace DriveDrop.Web.Controllers
                         extension = ".png";
                     if (formFile.FileName.ToLower().EndsWith(".gif"))
                         extension = ".gif";
+                    if (formFile.FileName.ToLower().EndsWith(".pdf"))
+                        extension = ".pdf";
 
 
 

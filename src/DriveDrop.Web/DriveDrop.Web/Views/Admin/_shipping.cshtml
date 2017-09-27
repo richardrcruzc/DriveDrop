@@ -10,6 +10,17 @@
        
     </td>
 <td>
+
+    @if (Model.Sender != null)
+    {
+        var sender = Model.Sender.FirstName + " " + Model.Sender.LastName;
+
+        @Html.ActionLink(sender, "details", "admin", new { id = Model.SenderId })
+
+    }
+</td>
+
+<td>
  
     @if (Model.Driver != null)
     {

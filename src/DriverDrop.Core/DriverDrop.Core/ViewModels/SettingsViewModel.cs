@@ -2,7 +2,7 @@
 using DriverDrop.Core.Models.Locations;
 using DriverDrop.Core.Services.Locations;
 using DriverDrop.Core.ViewModels.Base;
-using eShopOnContainers.Core.Models.User;
+using DriverDrop.Core.Models.User;
 using Plugin.Geolocator;
 using System;
 using System.Collections.Generic;

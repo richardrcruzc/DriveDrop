@@ -10,7 +10,7 @@ using Xamarin.Forms;
 using DriverDrop.Core.Validations;
 using DriverDrop.Core.Services.OpenUrl;
 using DriverDrop.Core.Services.Identity;
-using eShopOnContainers.Core.Models.User;
+using DriverDrop.Core.Models.User;
 using DriverDrop.Core.Helpers;
 using IdentityModel.Client;
 

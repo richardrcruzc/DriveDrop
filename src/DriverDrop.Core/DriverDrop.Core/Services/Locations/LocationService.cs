@@ -1,4 +1,4 @@
-﻿namespace eShopOnContainers.Core.Services.Locations
+﻿namespace DriverDrop.Core.Services.Locations
 {
     using System;
     using System.Threading.Tasks;

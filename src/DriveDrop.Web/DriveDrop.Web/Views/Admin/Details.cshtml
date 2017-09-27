@@ -35,118 +35,121 @@
 
                 <div class="fieldset">
                     <h3>@Model.CustomerType: User Details</h3>
+                    
+                         
+                        <div class="form-fields">
 
-                    <div class="form-fields">
-
-                        <div class="inputs">
-                            <label>Customer Status</label>
-                            <div class="gender">
-                                <span>
-
-                                    <label class="male">@Model.CustomerStatus</label>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="inputs">
-                            <label>Login User</label>
-
-                            <div class="gender">
-                                <span>
-
-                                    <label class="male">@Model.UserName</label>
-                                </span>
-                            </div>
-                        </div>
-
-                        @if (!Model.IsAdmin)
-                        {
-
-                        <div id="impersonateDiv" class="invisible">
                             <div class="inputs">
-                                <label>Verification ID</label>
-                                @*<input name="ImpersonateCode" id="ImpersonateCode" />*@
-                                @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode" })
+                                <label>Customer Status</label>
+                                <div class="gender">
+                                    <span>
+
+                                        <label class="male">@Model.CustomerStatus</label>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                            <div class="inputs">
+                                <label>Login User</label>
 
-                        <div class="buttons">
-                            <input type="button" class="btn btn-danger" id="impersonateBtn" value="Impersonate" />
+                                <div class="gender">
+                                    <span>
 
-                        </div>
-                        }
+                                        <label class="male">@Model.UserName</label>
+                                    </span>
+                                </div>
+                                <button class="btn btn-primary" id="reSendEmail" style="text-align: right;"> Resend welcome email</button>
 
 
-                        <div class="inputs">
-                            <label>Customer Type</label>
 
-                            <div class="gender">
-                                <span>
+                                @if (!Model.IsAdmin)
+                                {
 
-                                    <label class="male">@Model.CustomerType</label>
-                                </span>
+                                    <div id="impersonateDiv" class="hidden">
+                                        <div class="inputs">
+                                            <label>Verification ID</label>
+                                            @*<input name="ImpersonateCode" id="ImpersonateCode" />*@
+                                            @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode" })
+                                        </div>
+                                    </div>
+
+                                    <div class="buttons">
+                                        <input type="button" class="btn btn-danger" id="impersonateBtn" value="Impersonate" />
+
+                                    </div>
+                                }
                             </div>
-                        </div>
+
+                            <div class="inputs">
+                                <label>Customer Type</label>
+
+                                <div class="gender">
+                                    <span>
+
+                                        <label class="male">@Model.CustomerType</label>
+                                    </span>
+                                </div>
+                            </div>
 
 
-                        <div class="inputs">
+                            <div class="inputs">
 
-                            @Html.LabelFor(m => m.LastName)
-                            @Html.TextBoxFor(m => m.LastName)
-                            <span class="required">*</span>
-                            @Html.ValidationMessageFor(m => m.LastName)
-                        </div>
-                        <div class="inputs">
-                            @Html.LabelFor(m => m.FirstName)
-                            @Html.TextBoxFor(m => m.FirstName)
-                            <span class="required">*</span>
-                            @Html.ValidationMessageFor(m => m.FirstName)
-
-
-                        </div>
-
-                        <div class="inputs">
-
-                            @Html.LabelFor(m => m.PrimaryPhone)
-                            @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                            <span class="required">*</span>
-                            @Html.ValidationMessageFor(m => m.PrimaryPhone)
+                                @Html.LabelFor(m => m.LastName)
+                                @Html.TextBoxFor(m => m.LastName)
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.LastName)
+                            </div>
+                            <div class="inputs">
+                                @Html.LabelFor(m => m.FirstName)
+                                @Html.TextBoxFor(m => m.FirstName)
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.FirstName)
 
 
-                        </div>
+                            </div>
 
-                        <div class="inputs">
+                            <div class="inputs">
 
-                            @Html.LabelFor(m => m.Phone)
-                            @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                            <span class="required">*</span>
-                            @Html.ValidationMessageFor(m => m.Phone)
+                                @Html.LabelFor(m => m.PrimaryPhone)
+                                @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
 
-                        </div>
-                        
-                        <div class="inputs">
-                           
-                           
+                            </div>
+
+                            <div class="inputs">
+
+                                @Html.LabelFor(m => m.Phone)
+                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.Phone)
+
+
+                            </div>
+
+                            <div class="inputs">
+
+
                                 <Label><strong>Profile Photo</strong><br /><br /></Label>
-                            
-                            <div class="avatar-page">
-                                <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
-                                <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+
+                                <div class="avatar-page">
+                                    <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
+                                    <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                </div>
+
                             </div>
 
+                            @if (Model.CustomerType.ToLower() == "administrator")
+                            {
+                                <div class="buttons">
+                                    <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+
+                                </div>
+
+                            }
+
                         </div>
-
-                        @if (Model.CustomerType.ToLower() == "administrator")
-                        {
-                        <div class="buttons">
-                            <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
-
-                        </div>
-
-                        }
-
                     </div>
-                </div>
             </form>
         </div>
                 @if (Model.CustomerType.ToLower() != "administrator")
@@ -201,7 +204,10 @@
                                             <div>
                                                 <label>Proof of insurance</label>
                                             </div>
-                                            <img id="blah" src="@Model.InsurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                            @*<img id="blah" src="@Model.InsurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
+
+                                            <iframe src="@Model.InsurancePhotoUri"  width="250" height="150">dfg </iframe>
+
                                         </div>
                                     </div>
                                 </div>
@@ -452,12 +458,45 @@
     </script>
 
 
-    @section Scripts {
+@section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-
-
 <script>
+
+    $("#reSendEmail").click(function () {
+        if (confirm('Are You Sure Send Email to: @Model.UserName ?')) {
+
+            var userName = '@Model.UserName';
+            
+                            $.ajax({
+                                url: '@Url.Action("WelcomeEmail", "Common")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "GET", //to do a post request
+
+                                contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { UserName: userName }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    alert(data);
+                                   
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    //alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    alert(thrownError);
+
+                                }
+                            });
+        }
+        else
+        {
+            alert('Email not Sent.');
+
+         }
+
+        return false;
+     });
+
 
     function readURL(input) {
 
@@ -471,13 +510,13 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#PersonalPhotoUri").change(function () {
+    $(".file-select").change(function () {
         readURL(this);
     });
 
     $(document).ready(function () {
         $("#impersonateBtn").click(function () {
-            $("#impersonateDiv").removeClass('invisible');
+            $("#impersonateDiv").removeClass('hidden');
             if ($("#ImpersonateCode").val() == '')
             {
                 alert("enter Verification ID");
@@ -506,7 +545,7 @@
 
                                 }
                             });
-            
+
 
             //alert($("#UserName").val());
         });
