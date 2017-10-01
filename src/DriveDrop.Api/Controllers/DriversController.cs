@@ -52,7 +52,7 @@ namespace DriveDrop.Api.Controllers
 
                     var drivers = await _context.Customers
                  .Include(x => x.CustomerStatus)
-                 .Where(x => x.CustomerTypeId == 3  && x.CustomerStatus.Id ==2
+                 .Where(x => x.CustomerTypeId == 3  && x.CustomerStatus.Id ==2 && x.Isdeleted==false
                  && ( x.FirstName.StartsWith(fullName) || x.LastName.StartsWith(fullName)))
                  .Select(x=> new CustomerInfoModel
                  {
@@ -232,7 +232,7 @@ namespace DriveDrop.Api.Controllers
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
 
-                if (customer == null)
+                if (customer == null|| customer.Isdeleted)
                     return StatusCode(StatusCodes.Status409Conflict, "DriverNotFound");
                 return Ok(customer);
 

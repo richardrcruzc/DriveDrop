@@ -51,6 +51,16 @@ namespace DriveDrop.Web.Controllers
 
             _env = env;
         }
+        public FileResult GetFileFromDisk(string fileName, string name)
+        {
+            return File(fileName, "multipart/form-data", name);
+        }
+        //public FileResult Download()
+        //{
+        //    byte[] fileBytes = System.IO.File.ReadAllBytes(@"c:\folder\myfile.ext");
+        //    string fileName = "myfile.ext";
+        //    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        //}
         public FileResult DisplayPDF(string file)
         {
             return File( "/uploads/img/driver/cdd440a5-ca7a-4509-ab84-7038ce0f4f97.jpg", "application /jpg");            

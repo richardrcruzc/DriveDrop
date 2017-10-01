@@ -4,64 +4,64 @@ $(document).ready(function () {
     $(":input").inputmask(); 
 });
 
+function mouseOver() {
+    var img1 = document.getElementById("img1");
+    img1.src = "images/p2.jpg";
+    img1.width = "";
+    img1.height = "";
+}
+function mouseOut() {
+    var img1 = document.getElementById("img1");
+    img1.src = "images/p1.jpg";
+    img1.width = "90";
+    img1.height = "110";
+}
 
+$(document).ready(function () {
 
-//$('.phone-number')
+    $('.imgSum').on('click', function () {
+        var img = this;
+         img.width = "500";
+         img.height = "500";
 
-//    .keydown(function (e) {
-//        var key = e.which || e.charCode || e.keyCode || 0;
-//        $phone = $(this);
+    });
+    $('.imgSum').on('mouseleave', function () {
+        var img = this;
+        img.width = "150";
+        img.height = "150";
+    });
 
-//        // Don't let them remove the starting '('
-//        if ($phone.val().length === 1 && (key === 8 || key === 46)) {
-//            $phone.val('(');
-//            return false;
-//        }
-//        // Reset if they highlight and type over first char.
-//        else if ($phone.val().charAt(0) !== '(') {
-//            $phone.val('(' + $phone.val());
-//        }
+    $('.iframeClass').on('click', function () {
+        var img = this;
+        img.width = "500%";
+        img.height = "500%";
 
-//        // Auto-format- do not expose the mask as the user begins to type
-//        if (key !== 8 && key !== 9) {
-//            if ($phone.val().length === 4) {
-//                $phone.val($phone.val() + ')');
-//            }
-//            if ($phone.val().length === 5) {
-//                $phone.val($phone.val() + ' ');
-//            }
-//            if ($phone.val().length === 9) {
-//                $phone.val($phone.val() + '-');
-//            }
-//        }
+    });
+    $('.iframeClass').on('mouseleave', function () {
+        var img = this;
+        img.width = "100%";
+        img.height = "100%";
+    });
 
-//        // Allow numeric (and tab, backspace, delete) keys only
-//        return (key == 8 ||
-//            key == 9 ||
-//            key == 46 ||
-//            (key >= 48 && key <= 57) ||
-//            (key >= 96 && key <= 105));
-//    })
+    //var $tooltip = $('#fullsize');
 
-//    .bind('focus click', function () {
-//        $phone = $(this);
+    //$('img').on('mouseenter', function () {
+    //    var img = this,
+    //        $img = $(img),
+    //        offset = $img.offset();
 
-//        if ($phone.val().length === 0) {
-//            $phone.val('(');
-//        }
-//        else {
-//            var val = $phone.val();
-//            $phone.val('').val(val); // Ensure cursor remains at the end
-//        }
-//    })
+    //    $tooltip
+    //        .css({
+    //            'top': offset.top,
+    //            'left': offset.left
+    //        })
+    //        .append($img.clone())
+    //        .removeClass('hidden');
+    //});
 
-//    .blur(function () {
-//        $phone = $(this);
+    //$tooltip.on('mouseleave', function () {
+    //    $tooltip.empty().addClass('hidden');
+    //});
 
-//        if ($phone.val() === '(') {
-//            $phone.val('');
-//        }
-//    });
-
-
+});
 

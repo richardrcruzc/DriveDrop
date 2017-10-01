@@ -33,6 +33,7 @@ namespace DriveDrop.Api.ViewModels
         public double? PickupRadius { get; set; }
         public double? DeliverRadius { get; set; }
 
+        public bool IsDeleted { get; set; }
 
         public string VehicleInfo { get; set; }
 

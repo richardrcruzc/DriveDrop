@@ -49,14 +49,19 @@ namespace ApplicationCore.Entities.ClientAgregate
         public string PersonalPhotoUri { get; private set; }
         public string VehiclePhotoUri { get; private set; }
         public string InsurancePhotoUri { get; private set; }
+        public bool Isdeleted { get; private set; }
+        public Customer Delete()
+        {
+            Isdeleted = true; 
 
+            return this;
+        }
         public Customer EndImpersonate()
         {
             UserNameToImpersonate = null;
 
             return this;
         }
-
         public Customer Impersonate(string userName)
         {
             UserNameToImpersonate = userName;

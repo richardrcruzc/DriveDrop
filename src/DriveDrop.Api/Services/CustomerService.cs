@@ -92,9 +92,9 @@ namespace DriveDrop.Api.Services
                 .Include(x => x.ShipmentSenders)
                 .ThenInclude(ps => ps.Reviews)
 
-                .Where(x => x.UserName == user)
+                .Where(x => x.UserName == user || x.Isdeleted==false)
                 .FirstOrDefaultAsync();
-            if (c == null)
+            if (c == null )
                 return new CurrentCustomerModel();
 
             var cc = await GetCustomerById(c.Id);
@@ -132,10 +132,11 @@ namespace DriveDrop.Api.Services
             var canBeUnImpersonate = false;
             //check for impersonated
             var isImpersonated = await _context.Customers
-                .Where(x => x.Id == customerId)
+                .Where(x => x.Id == customerId&&x.Isdeleted==false)
                 .FirstOrDefaultAsync();
 
-            if (!string.IsNullOrWhiteSpace(isImpersonated.UserNameToImpersonate))
+            if (!string.IsNullOrWhiteSpace(isImpersonated.UserNameToImpersonate) 
+                && !string.IsNullOrEmpty(isImpersonated.UserNameToImpersonate))
             {
                 var iUser= await _context.Customers
                 .Where(x => x.UserName == isImpersonated.UserNameToImpersonate)
@@ -168,24 +169,24 @@ namespace DriveDrop.Api.Services
                  .Include("ShipmentSenders.PriorityType")
                  .Include("ShipmentSenders.PackageSize")
                  
-                .Where(x =>  x.Id == customerId)
+                .Where(x =>  x.Id == customerId && x.Isdeleted == false)
                 .FirstOrDefaultAsync();
 
-            if (c == null)
+            if (c == null )
                 return new CurrentCustomerModel();
 
             var currentCustomer = new CurrentCustomerModel
             {
-                    Id =c.Id,
+                Id = c.Id,
                 UserName = c.UserName,
-                    PersonalPhotoUri = c.PersonalPhotoUri,
-                    VerificationId = c.VerificationId,
-                    CustomerStatus =c.CustomerStatus.Name,
-                    CustomerTypeId = c.CustomerTypeId,
-                    CustomerStatusId = c.CustomerStatusId,
-                    CustomerType = c.CustomerType.Name,
-                    
-                    
+                PersonalPhotoUri = c.PersonalPhotoUri,
+                VerificationId = c.VerificationId,
+                CustomerStatus = c.CustomerStatus.Name,
+                CustomerTypeId = c.CustomerTypeId,
+                CustomerStatusId = c.CustomerStatusId,
+                CustomerType = c.CustomerType.Name,
+
+                IsDeleted = c.Isdeleted,
                     Email =c.Email,
                     FirstName=c.FirstName,
                     LastName =c.LastName,

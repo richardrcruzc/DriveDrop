@@ -36,6 +36,18 @@ namespace DriveDrop.Api.Controllers
             _env = env;
             _cService = cService;
         }
+        [HttpGet]
+        [Route("[action]/id/{id:int}")]
+        public async Task<IActionResult> DeleteCustomer(int id)
+        {
+            var customer = await _context.Customers.Where(x=>x.Id==id&&x.Isdeleted==false).FirstOrDefaultAsync();
+            if (customer == null)
+                return NotFound();
+            customer.Delete();
+            _context.Update(customer);
+            await _context.SaveChangesAsync();
+            return Ok("CustomerDeleted");
+        }
 
         [HttpGet]
         [Route("[action]/userName/{userName}")]
@@ -43,17 +55,20 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var customer = await _cService.Get(userName);
+                // var customer = await _cService.Get(userName);
+                var customer = await _context.Customers
+                    .Include(c=>c.CustomerStatus)
+                    .Where(x => x.UserName == userName).FirstOrDefaultAsync();
                 var type = customer.CustomerTypeId;
                 if(type ==2 )
                     await _emailSender.SendEmailAsync(customer.UserName, "DriveDrop account created",
-                       $"{customer.FullName}: your account have been create and your status is {CustomerStatus.Active.Name},<br /> <br />  " +
+                       $"{customer.FullName}: your account have been create and your status is {customer.CustomerStatus.Name},<br /> <br />  " +
                        $"Your login infomation:<br /> Email: {customer.UserName}<br /><br />  " +
                        $" you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
 
                 else
                     await _emailSender.SendEmailAsync(customer.UserName, "DriveDrop account created",
-                   $"{customer.FullName}: your account have been create and your status is {customer.CustomerStatus}, " +
+                   $"{customer.FullName}: your account have been create and your status is {customer.CustomerStatus.Name}, " +
                    $"we'll review you application ASAP, you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
 
 
@@ -179,7 +194,7 @@ namespace DriveDrop.Api.Controllers
                 var customer = await _context.Customers.Where(u => u.UserName == userName).FirstOrDefaultAsync();
                     
 
-                if (customer== null)
+                if (customer== null || customer.Isdeleted)
                     return Ok("valid"); 
 
             }
@@ -211,8 +226,8 @@ namespace DriveDrop.Api.Controllers
                 //    .Include(a => a.Addresses)
                 //    .Include(a => a.DefaultAddress)
                 //.FirstOrDefaultAsync(x => x.Id == id);
-                
-                 if (customer == null)
+
+                if (customer == null|| customer.IsDeleted)
                  return StatusCode(StatusCodes.Status409Conflict, "CustomerNotFound");
 
                 return Ok(customer);

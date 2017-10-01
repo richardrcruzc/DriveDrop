@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using DriveDrop.Api.Infrastructure;
-using ApplicationCore.Entities.Helpers;
 
 namespace DriveDrop.Api.Migrations
 {
     [DbContext(typeof(DriveDropContext))]
-    partial class DriveDropContextModelSnapshot : ModelSnapshot
+    [Migration("20170930222130_isdelete")]
+    partial class isdelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -358,56 +358,6 @@ namespace DriveDrop.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("packageSizes","shippings");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Entities.Helpers.QueuedEmail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AttachedDownloadId");
-
-                    b.Property<string>("AttachmentFileName");
-
-                    b.Property<string>("AttachmentFilePath");
-
-                    b.Property<string>("Bcc");
-
-                    b.Property<string>("Body");
-
-                    b.Property<string>("CC");
-
-                    b.Property<DateTime>("CreatedOnUtc");
-
-                    b.Property<DateTime?>("DontSendBeforeDateUtc");
-
-                    b.Property<int>("EmailAccountId");
-
-                    b.Property<string>("From");
-
-                    b.Property<string>("FromName");
-
-                    b.Property<int>("Priority");
-
-                    b.Property<int>("PriorityId");
-
-                    b.Property<string>("ReplyTo");
-
-                    b.Property<string>("ReplyToName");
-
-                    b.Property<DateTime?>("SentOnUtc");
-
-                    b.Property<int>("SentTries");
-
-                    b.Property<string>("Subject");
-
-                    b.Property<string>("To");
-
-                    b.Property<string>("ToName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QueuedEmails");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.Rate", b =>

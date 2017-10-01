@@ -85,9 +85,7 @@ namespace DriveDrop.Api.Controllers
 
                 await _emailSender.SendEmailAsync(customer.UserName, "Status updated",
                     $"{customer.FullName}: your status have been updated, access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
-
-
-
+                 
                 return Ok("CustomerstatusChanged");
         }
             catch (Exception exe)
@@ -102,7 +100,7 @@ namespace DriveDrop.Api.Controllers
         [Route("[action]/type/{customertype}/status/{statusId}/transporType/{transporTypeId}/LastName/{LastName}")]
         public async Task<IActionResult> Items(int? customertype, int? statusId, int? transporTypeId, string LastName, [FromQuery]int pageIndex = 0, [FromQuery]int pageSize = 10)
         {
-            var root = (IQueryable<Customer>)_context.Customers;
+            var root = (IQueryable<Customer>)_context.Customers.Where(x=>x.Isdeleted==false);
 
             if (customertype.HasValue)
             {

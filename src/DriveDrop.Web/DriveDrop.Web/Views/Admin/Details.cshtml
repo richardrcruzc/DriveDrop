@@ -57,9 +57,8 @@
                                         <label class="male">@Model.UserName</label>
                                     </span>
                                 </div>
-                                <button class="btn btn-primary" id="reSendEmail" style="text-align: right;"> Resend welcome email</button>
 
-
+                                
 
                                 @if (!Model.IsAdmin)
                                 {
@@ -71,84 +70,94 @@
                                             @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode" })
                                         </div>
                                     </div>
-
-                                    <div class="buttons">
-                                        <input type="button" class="btn btn-danger" id="impersonateBtn" value="Impersonate" />
-
-                                    </div>
+                                  
                                 }
                             </div>
-
-                            <div class="inputs">
-                                <label>Customer Type</label>
-
-                                <div class="gender">
-                                    <span>
-
-                                        <label class="male">@Model.CustomerType</label>
-                                    </span>
-                                </div>
-                            </div>
+                            <div class="center-block">
+                                <button class="btn btn-primary text-center" id="reSendEmail" style="text-align: right;"> Resend welcome email</button>
 
 
-                            <div class="inputs">
+                                <button class="btn btn-primary text-center" id="DeleteCustomer" style="text-align: right;">Delete User</button>
+@if (!Model.IsAdmin)
+{
 
-                                @Html.LabelFor(m => m.LastName)
-                                @Html.TextBoxFor(m => m.LastName)
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.LastName)
-                            </div>
-                            <div class="inputs">
-                                @Html.LabelFor(m => m.FirstName)
-                                @Html.TextBoxFor(m => m.FirstName)
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.FirstName)
+                               
+                                    <input type="button" class="btn btn-danger" id="impersonateBtn" value="Impersonate" />
 
+                                 }
 
                             </div>
 
-                            <div class="inputs">
+                                <div class="inputs">
+                                    <label>Customer Type</label>
 
-                                @Html.LabelFor(m => m.PrimaryPhone)
-                                @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.PrimaryPhone)
+                                    <div class="gender">
+                                        <span>
 
-
-                            </div>
-
-                            <div class="inputs">
-
-                                @Html.LabelFor(m => m.Phone)
-                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.Phone)
-
-
-                            </div>
-
-                            <div class="inputs">
-
-
-                                <Label><strong>Profile Photo</strong><br /><br /></Label>
-
-                                <div class="avatar-page">
-                                    <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
-                                    <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                            <label class="male">@Model.CustomerType</label>
+                                        </span>
+                                    </div>
                                 </div>
 
-                            </div>
 
-                            @if (Model.CustomerType.ToLower() == "administrator")
-                            {
-                                <div class="buttons">
-                                    <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+                                <div class="inputs">
+
+                                    @Html.LabelFor(m => m.LastName)
+                                    @Html.TextBoxFor(m => m.LastName)
+                                    <span class="required">*</span>
+                                    @Html.ValidationMessageFor(m => m.LastName)
+                                </div>
+                                <div class="inputs">
+                                    @Html.LabelFor(m => m.FirstName)
+                                    @Html.TextBoxFor(m => m.FirstName)
+                                    <span class="required">*</span>
+                                    @Html.ValidationMessageFor(m => m.FirstName)
+
 
                                 </div>
 
-                            }
+                                <div class="inputs">
 
-                        </div>
+                                    @Html.LabelFor(m => m.PrimaryPhone)
+                                    @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                    <span class="required">*</span>
+                                    @Html.ValidationMessageFor(m => m.PrimaryPhone)
+
+
+                                </div>
+
+                                <div class="inputs">
+
+                                    @Html.LabelFor(m => m.Phone)
+                                    @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                    <span class="required">*</span>
+                                    @Html.ValidationMessageFor(m => m.Phone)
+
+
+                                </div>
+
+                                <div class="inputs">
+
+
+                                    <Label><strong>Profile Photo</strong><br /><br /></Label>
+
+                                    <div class="avatar-page">
+                                        <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
+                                        <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                    </div>
+
+                                </div>
+
+                                @if (Model.CustomerType.ToLower() == "administrator")
+                                {
+                                    <div class="buttons">
+                                        <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+
+                                    </div>
+
+                                }
+
+                            </div>
                     </div>
             </form>
         </div>
@@ -187,30 +196,49 @@
                                 </div>
 
                                 <div class="inputs">
-                                    <div class="row">
-                                        <div class="col-md-4">
+                                             
                                             <div>
-                                                <label>Driver license</label>
-                                            </div>
-                                            <img id="blah" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive" width="150" height="150" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div>
-                                                <label>Vehicle photo</label>
-                                            </div>
-                                            <img id="blah" src="@Model.VehiclePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div>
-                                                <label>Proof of insurance</label>
-                                            </div>
-                                            @*<img id="blah" src="@Model.InsurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
+                                                <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.DriverLincensePictureUri" asp-route-name="Driver license" style="cursor:pointer;"  target=_blank><label>
+                                                    <span class="glyphicon glyphicon-download-alt"></span>
+                                                    Driver license</label></a>
 
-                                            <iframe src="@Model.InsurancePhotoUri"  width="250" height="150">dfg </iframe>
-
+                                              
+                                            </div>
+                                             <br />
+                                            <img id="blah" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
                                         </div>
+                                <div class="inputs">
+                                    <div>
+                                        <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.VehiclePhotoUri" asp-route-name="Vehicle photo" style="cursor:pointer;" target=_blank>
+                                            <label>
+                                                <span class="glyphicon glyphicon-download-alt"></span>
+                                                Vehicle photo
+                                            </label>
+                                        </a>
+
+
                                     </div>
+
+                                    <img id="blah" src="@Model.VehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
+
                                 </div>
+                                <div class="inputs">
+                                    <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.InsurancePhotoUri" asp-route-name=" Proof of insurance" style="cursor:pointer;" target=_blank>
+
+                                        <label>
+                                            <span class="glyphicon glyphicon-download-alt"></span>
+                                            Proof of insurance
+                                        </label>
+
+                                    </a><div>
+
+                                    </div>
+                                    @*<img id="blah" src="@Model.InsurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
+
+                                    <iframe src="@Model.InsurancePhotoUri"  class="iframeClass" width="100%" height="100%"> </iframe>
+                                </div>
+                                    
+                                
                             </div>
                         </div>
                     }
@@ -436,7 +464,8 @@
                 }
 </div>
     </div>
- 
+
+  
  <script>
        //$(document).ready(function () {
        //$(".btnAssingShipping").click(function () { alert(1); });
@@ -463,11 +492,49 @@
 
 <script>
 
+    $("#DeleteCustomer").click(function (event) {
+        event.preventDefault();
+
+        if (confirm('Are You Sure? Delete UserName @Model.UserName')) {
+
+            var id = '@Model.Id';
+
+                            $.ajax({
+                                url: '@Url.Action("DeleteCustomer", "Admin")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "GET", //to do a post request
+
+                                contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { id: id }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    alert(data);
+                                    window.location.href = "/admin";
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    //alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    alert(thrownError);
+
+                                }
+                            });
+        }
+        else
+        {
+            alert('Use not Deleted.');
+
+         }
+
+        return false;
+     });
+
+
+
     $("#reSendEmail").click(function () {
         if (confirm('Are You Sure Send Email to: @Model.UserName ?')) {
 
             var userName = '@Model.UserName';
-            
+
                             $.ajax({
                                 url: '@Url.Action("WelcomeEmail", "Common")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
@@ -478,7 +545,7 @@
                                 data: { UserName: userName }, // here you can pass arguments to your request if you need
                                 success: function (data) {
                                     alert(data);
-                                   
+
                                 },
                                 error: function (xhr, ajaxOptions, thrownError) {
                                     //alert(xhr.responseText);

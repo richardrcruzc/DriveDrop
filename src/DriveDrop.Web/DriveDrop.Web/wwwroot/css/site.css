@@ -49,9 +49,7 @@ textarea {
     }
 }
 
-
-<style >
-/* Always set the map height explicitly to define the size of the div
+ /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
 #map {
     height: 100%;
@@ -115,6 +113,20 @@ html, body {
     box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
     display: none;
 }
+ 
+img {
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+
+#fullsize {
+    position: absolute;
+}
+
+    #fullsize.hidden {
+        display: none;
+    }
 
 @media print {
     #map {

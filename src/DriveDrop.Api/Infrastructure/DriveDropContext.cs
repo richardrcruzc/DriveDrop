@@ -43,6 +43,8 @@ namespace DriveDrop.Api.Infrastructure
         public DbSet<ReviewDetail> ReviewDetails { get; set; }
         public DbSet<ReviewQuestion> ReviewQuestions { get; set; }
 
+        public DbSet<QueuedEmail> QueuedEmails { get; set; }
+
         //public DbSet<RateTranportType> RateTranportTypes { get; set; }
         //public DbSet<RatePackageSize> RatePackageSizes { get; set; }
 

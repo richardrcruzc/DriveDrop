@@ -311,6 +311,12 @@ namespace DriveDrop.Web.Infrastructure
 
         public static class Common
         {
+            public static string DeleteCustomer(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                
+                return $"{baseUri}DeleteCustomer/id/{idQs}";
+            }
 
             public static string WelcomeEmail(string baseUri, string userName)
             {

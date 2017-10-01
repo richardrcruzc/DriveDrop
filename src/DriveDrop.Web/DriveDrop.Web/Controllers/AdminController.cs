@@ -50,6 +50,28 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceDriversUrl = $"{settings.Value.DriveDropUrl}/api/v1/drivers";
         }
 
+        public async Task<IActionResult> DeleteCustomer(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
+
+            if (!isAdminResponse)
+                return Json("Invalid entry");
+
+            var assign = API.Common.DeleteCustomer(_remoteServiceCommonUrl, id);
+            var dataString = await _apiClient.GetStringAsync(assign, token);
+
+
+            return Json("CustomerDeleted");
+
+
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -589,6 +611,8 @@ namespace DriveDrop.Web.Controllers
                         extension = ".png";
                     if (formFile.FileName.ToLower().EndsWith(".gif"))
                         extension = ".gif";
+                    if (formFile.FileName.ToLower().EndsWith(".pdf"))
+                        extension = ".pdf";
 
 
 

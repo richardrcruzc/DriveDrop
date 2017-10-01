@@ -23,6 +23,7 @@ using Polly;
 using System.Data.SqlClient;
 using DriveDrop.Api.Services;
 using Newtonsoft.Json;
+using Hangfire;
 
 namespace DriveDrop.Api
 {
@@ -53,7 +54,6 @@ namespace DriveDrop.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -68,7 +68,8 @@ namespace DriveDrop.Api
 
             services.Configure<AppSettings>(Configuration);
 
-            
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+
 
 
             services.AddEntityFrameworkSqlServer()
@@ -133,6 +134,10 @@ namespace DriveDrop.Api
 
             app.UseDeveloperExceptionPage();
                app.UseBrowserLink();
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
+
 
             // Use frameworks
             app.UseCors("CorsPolicy");
