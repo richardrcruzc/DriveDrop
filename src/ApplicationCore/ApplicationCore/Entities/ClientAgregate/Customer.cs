@@ -31,12 +31,20 @@ namespace ApplicationCore.Entities.ClientAgregate
         public double? DeliverRadius { get; private set; }
 
         public decimal Commission { get; private set; }
+        public Customer UpdateCommission(decimal comission)
+        {
+            Commission = comission;
+
+            return this;
+        }
+
 
         public string VehicleMake { get; private set; }
         public string VehicleModel { get; private set; }
         public string VehicleColor { get; private set; }
-        public string VehicleYear { get; private set; } 
-
+        public string VehicleYear { get; private set; }
+         
+        
         public Address DefaultAddress { get; private set; }
 
         public string PaymentMethodId { get; private set; }

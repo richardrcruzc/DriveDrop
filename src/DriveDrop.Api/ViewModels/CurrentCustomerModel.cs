@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities.ClientAgregate;
 using ApplicationCore.Entities.ClientAgregate.ShipmentAgregate;
+using ApplicationCore.Entities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,8 @@ namespace DriveDrop.Api.ViewModels
         public ICollection<AddressModel> Addresses { get;  set; }
         public virtual ICollection<Shipment> ShipmentDrivers { get; set; }
         public virtual ICollection<Shipment> ShipmentSenders { get; set; }
+
+        public virtual ICollection<PackageStatusHistory> PackageStatusHistories { get; set; }
 
         public string DriverLincensePictureUri { get; set; }
 

@@ -73,7 +73,9 @@
                 //SecurityNumber = "535",
                 NormalizedEmail = "ADMIN@DRIVEDROP.COM",
                 NormalizedUserName = "ADMIN@DRIVEDROP.COM",
-                SecurityStamp = Guid.NewGuid().ToString("D")
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                EmailConfirmed=true
+               
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");

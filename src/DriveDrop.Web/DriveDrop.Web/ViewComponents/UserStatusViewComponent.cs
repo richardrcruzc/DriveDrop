@@ -71,7 +71,7 @@ namespace DriveDrop.Web.ViewComponents
 
             if (currentUser.CanBeUnImpersonate)
                 model.Impersonated = currentUser.UserName;
-            
+            model.CustomerType = currentUser.CustomerType;
 
             return View(model);
         }

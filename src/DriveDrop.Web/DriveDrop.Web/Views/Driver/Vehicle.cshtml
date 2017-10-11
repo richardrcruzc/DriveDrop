@@ -84,8 +84,7 @@
                             <span asp-validation-for="VehicleYear" class="text-danger"></span>
                         </div>
                        
-                        <div class="row">
-                            <div class="col-md-4">
+                       
                                 <div class="inputs">
                                     <div class="title">
                                         <strong>Driver license  photo</strong>
@@ -93,48 +92,45 @@
                                     <div class="avatar-page">
 
                                         <input type='file' id="my-file-selector-license" name="DriverLincensePictureUri" />
-                                        <img id="license-image" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        <img id="license-image" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
 
                                     </div>
 
                                 </div>
-                            </div>
-
-                            <div class="col-md-4">
+                             
                                 <div class="inputs">
                                     <div class="title">
                                         <strong>Vehicle photo</strong>
                                     </div>
                                     <div class="avatar-page">
                                         <input type='file' id="my-file-selector-insurance" name="VehiclePhotoUri" />
-                                        <img id="insurance-image" src="@Model.vehiclePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        <img id="insurance-image" src="@Model.vehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
                                     </div>
 
                                 </div>
+                            
+
+                        <div class="inputs">
+                            <div class="title">
+                                <strong>Proof of insurance</strong>
                             </div>
-                            <div class="col-md-4">
-                                <div class="inputs">
-                                    <div class="title">
-                                        <strong>Proof of insurance</strong>
-                                    </div>
-                                    <div class="avatar-page">
+                            <div class="avatar-page">
 
-                                        <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri" />
-                                        <img id="insurance-image" src="@Model.insurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
-                                    </div>
+                                <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri" />
+                                @*<img id="insurance-image" src="@Model.insurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
+                                <iframe src="@(Model.insurancePhotoUri)" class="iframeClass" style="width:700px; height:300px;"> </iframe>
 
-                                </div>
                             </div>
 
                         </div>
-                        <div class="buttons">
-                            <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+                            <div class="buttons">
+                                <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
 
-                        </div>
-                        <div class="center-block bg-primary text-center" id="bar-notification">
+                            </div>
+                            <div class="center-block bg-primary text-center" id="bar-notification">
 
+                            </div>
                         </div>
-                    </div>
 
                 </div>
 

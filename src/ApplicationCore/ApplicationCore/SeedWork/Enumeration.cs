@@ -10,15 +10,17 @@ namespace ApplicationCore.SeedWork
         public string Name { get; private set; }
 
         public int Id { get; private set; }
+        public int GroupId { get; private set; }
 
         protected Enumeration()
         {
         }
 
-        protected Enumeration(int id, string name)
+        protected Enumeration(int id, string name, int groupId=0)
         {
             Id = id;
             Name = name;
+            GroupId = groupId;
         }
 
         public override string ToString()

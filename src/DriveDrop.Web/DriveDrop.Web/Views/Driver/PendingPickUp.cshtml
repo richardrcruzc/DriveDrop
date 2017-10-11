@@ -15,12 +15,12 @@
 
     <div class="page account-page address-list-page">
         <div class="page-title">
-            <h1>Pending Pickup</h1>
+            <h1>Pick-Up Packages</h1>
         </div>
         <div class="page-body">
 @if(Model.Count>0)
             {
-            <h3>List of Shipping Asigned to You That Need to Be PickUp</h3>
+            <h3>List Pick-Up Packages</h3>
             <div class="row">
             
                 <table class="table">
@@ -29,7 +29,7 @@
                         @*<th>#</th>*@
                         <th><div>Date </div> Status</th>
                         <th>Priority</th>
-                        <th><div>Amount</div>Discount</th>
+                       
                         <th>Pickup Address</th>
                         <th>Delivery Address</th>
 
@@ -42,7 +42,12 @@
                         <tr>
 
                             <td>
-                                <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                                <div>
+                                 @*   @Html.DisplayFor(modelItem => PackageStatusHistories.OrderByDescending(x => x.StatusDate).FirstOrDefault().StatusDate)*@
+
+
+                                @Html.DisplayFor(modelItem => item.ShippingCreateDate)
+                                </div>
                                 <div>
                                     @Html.DisplayFor(modelItem => item.IdentityCode) 
                                 </div>
@@ -50,27 +55,21 @@
                                     @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
                                 </div>
                                 <div>
-                                    <form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST" >
+                                    @*<form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST" >
                                         <input value="@item.DriverId" hidden name="DriverId"/>
                                         <input value="@item.Id" hidden name="shippingId" />
 
                                         @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList,  htmlAttributes: new {@data_inputmask = "'mask': '(999) 999-9999'" })                                     
-
-                                        @*@Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})*@
-
+ 
                                         <input type="submit" class="btn btn-danger" value="Change" />
-                                        </form>
+                                        </form>*@
 </div>
                             </td>
 
                             <td>
-                                @Html.DisplayFor(modelItem => item.PriorityType.Name)/
-                                @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                                @Html.DisplayFor(modelItem => item.PriorityType.Name) 
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Amount)/
-                                @Html.DisplayFor(modelItem => item.Discount)
-                            </td>
+                            
                             <td>
                                 <div>
                                     @Html.DisplayFor(modelItem => item.PickupAddress.Street)
@@ -89,13 +88,43 @@
                             </td>
                             <td>
                                 <div>
-                                    <button id="@item.Id"
-                                            pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
-                                            delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
-                                            onClick="javascript:SetAddressFunction(this);">
-                                        <i class="material-icons" style="font-size:14px;color:red">directions</i>
-                                    </button>
-                                </div>
+                                    @if (item.ShippingStatus.Id == 2)
+                                    {
+                                    <form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST">
+                                        <input value="@item.DriverId" hidden name="DriverId" />
+                                        <input value="@item.Id" hidden name="shippingId" />
+                                        <input value="3" hidden name="item.ShippingStatusId" />
+                                        
+
+                                        @*@Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList, htmlAttributes: new { @data_inputmask = "'mask': '(999) 999-9999'" })*@
+
+                                        @*@Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})*@
+
+                                        <input type="submit" class="btn btn-danger" value="Start Picking up" />
+                                    </form>
+                                    } 
+                                    @if (item.ShippingStatus.Id == 3)
+                                    {
+                                    <form asp-controller="Driver" asp-action="AceptPackage" role="form" data-method="POST">
+
+                                        <input value="@item.DriverId" hidden name="DriverId" />
+                                        <input value="@item.Id" hidden name="shippingId" />
+                                        <input value="3" hidden name="item.ShippingStatusId" />
+                                        <input name="identification" placeholder="Security Code" />
+                                        <div class="avatar-page">
+                                            <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
+                                            <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        </div>
+                                         <input type="submit" class="btn btn-danger" value="Acept Package" />
+                                    </form>
+                                    }
+                                        @*<button id="@item.Id"
+                    pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                    delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                    onClick="javascript:SetAddressFunction(this);">
+                <i class="material-icons" style="font-size:14px;color:red">directions</i>
+            </button>*@
+</div>
 
                             </td>
                         </tr>
@@ -125,5 +154,21 @@
     //$(".clickableLabel").click(function () {
     //    alert($(this).attr("name"));
     //})
+         function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#photoUrl").change(function () {
+            readURL(this);
+            });
+
     </script>
 }

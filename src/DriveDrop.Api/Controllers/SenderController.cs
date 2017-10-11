@@ -240,10 +240,10 @@ namespace DriveDrop.Api.Controllers
 
 
 
-                    await _emailSender.SendEmailAsync(newCustomer.UserName, "DriveDrop account created",
-                        $"{newCustomer.FullName}: your account have been create and your status is {CustomerStatus.Active.Name},<br /> <br />  " +
-                        $"Your login infomation:<br /> Email: {newCustomer.UserName}<br /> Password:{c.Password} <br /><br />  " +
-                        $" you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+                    //await _emailSender.SendEmailAsync(newCustomer.UserName, "DriveDrop account created",
+                    //    $"{newCustomer.FullName}: your account have been create and your status is {CustomerStatus.Active.Name},<br /> <br />  " +
+                    //    $"Your login infomation:<br /> Email: {newCustomer.UserName}<br /> Password:{c.Password} <br /><br />  " +
+                    //    $" you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
 
 
 

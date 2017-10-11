@@ -72,7 +72,9 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         [AllowAnonymous] 
         public async Task<IActionResult> RegisterUser(string userName, string password)
         {
-            
+            string callbackUrl = string.Empty;
+
+
             if (ModelState.IsValid)
             {
 
@@ -86,8 +88,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = userName,
-                    Email = userName,
-                     
+                    Email = userName, 
+
                 }; 
 
                 var result = await _userManager.CreateAsync(user, password);
@@ -98,7 +100,15 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     // If we got this far, something failed, redisplay form
                     return Ok(result);
                 }
+                if (result.Succeeded)
+                {
+                    // Send an email with this link
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = System.Net.WebUtility.UrlEncode(code);
+                      callbackUrl = string.Format("Account/ConfirmEmail?userId={0}&code={1}", user.Id, code);
 
+
+                }
                 var actualUser = await _loginService.FindByUsername(userName);
                 if (await _loginService.ValidateCredentials(user, password))
                 {
@@ -108,28 +118,78 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                     props = new AuthenticationProperties
                     {
                         IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)                      
                     };
                     //};
 
-                    await _loginService.SignIn(actualUser);
+                     // await _loginService.SignIn(actualUser);
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
-                    
+
+
+
+                  
                 }
 
-
+                
+                
+                return Ok("IsAuthenticated " + callbackUrl);
 
 
                 //await _loginService.FindByUsername(userName);
 
             }
  
-                if (HttpContext.User.Identity.IsAuthenticated)
-                return Ok("IsAuthenticated");
-            else
+         
                 return Ok("IsNotAuthenticated");
         }
-         
+        // GET: /Account/RegisterUser
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GenerateEmailConfirmationTokenAsync(string userName)
+        {
+            try
+            {
+                var user = await _loginService.FindByUsername(userName);
+                if (user == null)
+                    return NotFound();
+
+                // Send an email with this link
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                code = System.Net.WebUtility.UrlEncode(code);
+                // Comment out following line to prevent a new user automatically logged on.
+                // await _signInManager.SignInAsync(user, isPersistent: false);
+                _logger.LogInformation(3, "User GenerateEmailConfirmationTokenAsync.");
+
+                var callbackUrl = string.Format("Account/ConfirmEmail?userId={0}&code={1}", user.Id, code);
+
+
+                return Ok(callbackUrl);
+            }
+            catch( Exception ex)
+            {
+                return Ok("Cannot Generate Token");
+            }
+        }
+        // GET: /Account/ConfirmEmail
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient;
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
 
         /// <summary>
         /// Show login page
@@ -163,7 +223,19 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 var user = await _loginService.FindByUsername(model.Email);
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                     AuthenticationProperties props = null;
+                    
+                        // Require the user to have a confirmed email before they can log on.
+                        if (!await _userManager.IsEmailConfirmedAsync(user))
+                        {
+                            ModelState.AddModelError(string.Empty,
+                                          "You must have a confirmed email to log in.");
+                        var vm1 = await BuildLoginViewModelAsync(model);
+                        ViewData["ReturnUrl"] = model.ReturnUrl;
+                        return View(vm1);
+                    }
+                    
+
+                    AuthenticationProperties props = null;
                     if (model.RememberMe)
                     {
                         props = new AuthenticationProperties
@@ -347,6 +419,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
+                  
                     //CardHolderName = model.User.CardHolderName,
                     //CardNumber = model.User.CardNumber,
                     //CardType = model.User.CardType,

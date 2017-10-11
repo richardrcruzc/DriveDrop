@@ -135,7 +135,18 @@
 
 
                                 </div>
+@if (Model.CustomerType.ToLower() == "driver")
+{
+                            <div class="inputs">
 
+                                @Html.LabelFor(m => m.Commission)
+                                @Html.TextBoxFor(m => m.Commission)
+                                <span class="required">*</span>
+                                @Html.ValidationMessageFor(m => m.Commission)
+
+
+                            </div>
+}
                                 <div class="inputs">
 
 
@@ -148,14 +159,14 @@
 
                                 </div>
 
-                                @if (Model.CustomerType.ToLower() == "administrator")
-                                {
+                                @*@if (Model.CustomerType.ToLower() == "administrator")
+                                {*@
                                     <div class="buttons">
                                         <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
 
                                     </div>
 
-                                }
+                                @*}*@
 
                             </div>
                     </div>
@@ -220,22 +231,26 @@
                                     </div>
 
                                     <img id="blah" src="@Model.VehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
-
+                    
                                 </div>
                                 <div class="inputs">
-                                    <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.InsurancePhotoUri" asp-route-name=" Proof of insurance" style="cursor:pointer;" target=_blank>
+                                    @*<a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.InsurancePhotoUri" asp-route-name=" Proof of insurance" style="cursor:pointer;" target=_blank>
 
-                                        <label>
-                                            <span class="glyphicon glyphicon-download-alt"></span>
-                                            Proof of insurance
-                                        </label>
+        <label>
+            <span class="glyphicon glyphicon-download-alt"></span>
+            Proof of insurance
+        </label>
 
-                                    </a><div>
+    </a>*@
+                                    <div>
+                                            <label>
+                                                 Proof of insurance
+                                            </label>
 
                                     </div>
                                     @*<img id="blah" src="@Model.InsurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
 
-                                    <iframe src="@Model.InsurancePhotoUri"  class="iframeClass" width="100%" height="100%"> </iframe>
+                                    <iframe src="@(Model.InsurancePhotoUri)"  class="iframeClass" style="width:700px; height:300px;"> </iframe>
                                 </div>
                                     
                                 

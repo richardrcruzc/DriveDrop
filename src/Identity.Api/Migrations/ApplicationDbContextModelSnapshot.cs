@@ -29,6 +29,8 @@ namespace Identity.Api.Migrations
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
+                    b.Property<string>("EmailConfirmationToken");
+
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<bool>("LockoutEnabled");

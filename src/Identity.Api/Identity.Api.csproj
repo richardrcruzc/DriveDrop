@@ -8,11 +8,15 @@
 
   <ItemGroup>
     <None Remove="Certificate\idsrv3test.pfx" />
+    <None Remove="Properties\PublishProfiles\DriveDropApi20170718110358 - FTP.pubxml" />
+    <None Remove="Properties\PublishProfiles\DriveDropApi20170718110358 - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\drivedropIdentity - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\drivedropIdentityApi - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\IdentityApi20170717020138 - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\IdentityApi20170717023407 - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\IdentityApi20170717035807 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityApi20170717040137 - FTP.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityApi20170717040137 - Web Deploy.pubxml" />
   </ItemGroup>
 
  

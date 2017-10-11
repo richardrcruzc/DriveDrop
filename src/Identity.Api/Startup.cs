@@ -52,11 +52,24 @@ namespace Identity.Api
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<Models.ApplicationUser, IdentityRole>()
+            services.AddIdentity<Models.ApplicationUser, IdentityRole>(
+                config =>
+                {
+                    config.SignIn.RequireConfirmedEmail = true;
+                    
+                }
+                )
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.Configure<AppSettings>(Configuration);
+
+        //    services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+        //    {
+        //        config.SignIn.RequireConfirmedEmail = true;
+        //    })
+        //    .AddEntityFrameworkStores<ApplicationDbContext>()
+        //.AddDefaultTokenProviders();
 
 
             // Add framework services.

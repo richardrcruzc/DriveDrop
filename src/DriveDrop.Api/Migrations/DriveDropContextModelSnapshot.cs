@@ -259,6 +259,8 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<int>("Quantity");
 
+                    b.Property<string>("SecurityCode");
+
                     b.Property<int>("SenderId");
 
                     b.Property<DateTime>("ShippingCreateDate");
@@ -358,6 +360,26 @@ namespace DriveDrop.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("packageSizes","shippings");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.PackageStatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DriverId");
+
+                    b.Property<int>("ShipmentId");
+
+                    b.Property<DateTime>("StatusDate");
+
+                    b.Property<int>("StatusId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.ToTable("PackageStatusHistories");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.Helpers.QueuedEmail", b =>
@@ -643,6 +665,18 @@ namespace DriveDrop.Api.Migrations
                     b.HasOne("ApplicationCore.Entities.ClientAgregate.ShipmentAgregate.TransportType", "TransportType")
                         .WithMany()
                         .HasForeignKey("TransportTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.Helpers.PackageStatusHistory", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.ShipmentAgregate.Shipment", "Shipment")
+                        .WithMany("PackageStatusHistories")
+                        .HasForeignKey("ShipmentId");
+
+                    b.HasOne("ApplicationCore.Entities.ClientAgregate.ShipmentAgregate.ShippingStatus", "ShippingStatus")
+                        .WithMany()
+                        .HasForeignKey("ShipmentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

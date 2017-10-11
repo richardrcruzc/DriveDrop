@@ -2,33 +2,33 @@
 <div class="block block-account-navigation">
     <div class="title">
         <strong>Driver Dashboard</strong>
-    </div>
+    </div>    
     <div class="listbox">
         <ul class="list">
             <li class="customer-info">
-                @Html.ActionLink("Ready To Pickup", "readytopickup", "driver", new { id = Model }, null)
+                @Html.ActionLink("Packages Available for Pick up Based on the Driver's requirements.", "readytopickup", "driver", new { id = Model }, null)
 
             </li>
             <li class="customer-info">
-                @Html.ActionLink("Pending Pickup", "PendingPickUp", "driver", new { id = Model }, null)
+                @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model }, null)
 
             </li>
             <li class="customer-info">
-                @Html.ActionLink("PickedUp", "PickedUp", "driver", new { id = Model }, null)
+                @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model }, null)
 
             </li>
             <li class="customer-info">
                 @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, null)
 
             </li> 
-            <li class="customer-info">
+            @*<li class="customer-info">
                 @Html.ActionLink("Deliver", "Deliver", "driver", new { id = Model }, null)
 
             </li> 
             <li class="customer-info">
                 @Html.ActionLink("Canceled", "Canceled", "driver", new { id = Model }, null)
 
-            </li> 
+            </li>*@ 
             <li class="customer-info">
                 @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model }, null)
                  

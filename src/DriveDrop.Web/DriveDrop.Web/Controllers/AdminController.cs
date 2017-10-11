@@ -350,6 +350,117 @@ namespace DriveDrop.Web.Controllers
             return View(new List<CustomerIndex>());
 
         }
+        
+
+public async Task<IActionResult> DriverDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getcurrent = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+            var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
+
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            if (!currentUser.IsAdmin)
+                return NotFound("Invalid entry");
+
+            var getById = API.Driver.GetbyId(_remoteServiceBaseUrl, id ?? 0);
+            var dataString = await _apiClient.GetStringAsync(getById, token);
+            var response = JsonConvert.DeserializeObject<CurrentCustomerModel>((dataString));
+
+
+            if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
+                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+
+            if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
+                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+
+            if (string.IsNullOrWhiteSpace(response.VehiclePhotoUri))
+                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+
+
+            if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
+                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+
+            response.CustomerType = response.CustomerType.ToTitleCase();
+            response.CustomerStatus = response.CustomerStatus.ToTitleCase();
+
+
+
+            return View(response);
+
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateDriverInfo(DriverInfoModel model )
+        {
+            var result = "Info updated";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    //var fileName = await SaveFile(PersonalPhotoUri, "driver");
+
+                    //if (!string.IsNullOrWhiteSpace(fileName))
+                    //    model.PhotoUrl = fileName;
+                    //else
+                    //    model.PhotoUrl = model.PersonalPhotoUri;
+
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
+
+                    var getUserUri = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
+                    var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                    var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+                    if (customer != null)
+                    {
+
+
+
+                        var updateInfo = API.Driver.UpdateInfo(_remoteServiceDriversUrl);
+
+                        var response = await _apiClient.PostAsync(updateInfo, model, token);
+                        if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                        {
+                            //throw new Exception("Error creating Shipping, try later.");
+
+                            ModelState.AddModelError("", "Error creating Shipping, try later.");
+
+                        }
+                        else
+                            return RedirectToAction("details", new { id = 1 });
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    var error = string.Format("Unable to save changes. " +
+                        "Try again, and if the problem persists " +
+                        "see your system administrator. {0}", ex.Message);
+
+                    ModelState.AddModelError("", error);
+                    result = error;
+                }
+            }
+
+
+            return View(model);
+        }
+
+
 
         public async Task<IActionResult> Details(int? id)
         {

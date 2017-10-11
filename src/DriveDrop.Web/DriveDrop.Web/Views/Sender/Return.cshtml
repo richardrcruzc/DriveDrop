@@ -16,12 +16,27 @@
 
     <div class="page account-page address-list-page">
         <div class="page-title">
-            <h1>My Account - Addresses</h1>
+            <h1>My Account - New Package</h1>
         </div>
         <div class="page-body">
             <h2>Shipping Have Been Processed</h2>
         </div>
     </div>
 </div>
+
+@*<button onclick="htmlSendNotice('dddddddddddddddddddddddd')">sendButton</button>
+<button id="sendButton">sendButton</button>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        
+
+        htmlSendNotice('dddddddddddddddddddddddd');
+
+        
+</script>
+}
 
 

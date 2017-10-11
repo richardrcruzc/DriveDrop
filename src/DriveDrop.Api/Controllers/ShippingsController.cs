@@ -260,8 +260,8 @@ namespace DriveDrop.Api.Controllers
             }
         }
         [HttpGet]
-        [Route("[action]/{id:int}/{statusId:int}")]
-        public async Task<IActionResult> GetByDriverIdAndStatusId(int id,int statusId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        [Route("[action]")]
+        public async Task<IActionResult> GetByDriverIdAndStatusId([FromQuery]int id, [FromQuery]int[] statusId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
             try
             {
@@ -277,7 +277,7 @@ namespace DriveDrop.Api.Controllers
 
 
                 var root = _context.Shipments
-              .Where(x => x.DriverId == id && x.ShippingStatusId == statusId)
+              .Where(x => x.DriverId == id && statusId.Contains( x.ShippingStatusId))
               .Include(d => d.DeliveryAddress)
               .Include(d => d.PickupAddress)
               .Include(d => d.ShippingStatus)
@@ -453,7 +453,7 @@ namespace DriveDrop.Api.Controllers
 
 
                 var root = await _context.Shipments
-               .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id 
+               .Where(x => x.ShippingStatusId == ShippingStatus.NoDriverAssigned.Id 
                 && x.DriverId == null && x.Distance<= driverDelivertDistance)
                .Include(d => d.DeliveryAddress)
                .Include(d => d.PickupAddress)
@@ -470,10 +470,13 @@ namespace DriveDrop.Api.Controllers
 
                     var deliveryLat = dir.DeliveryAddress.Latitude;
                     var deliverypLng = dir.DeliveryAddress.Longitude;
-
+                    
 
                     var pickupDistance  = DistanceAlgorithm.DistanceBetweenPlaces(driverActualLng, driverActualLat, pickUpLng, pickUpLat);
-                    var deliveryDistance = DistanceAlgorithm.DistanceBetweenPlaces(pickUpLng, pickUpLat, deliverypLng, deliveryLat);
+
+                    var deliveryDistance = driverDelivertDistance;
+                    if (deliverypLng!=0 && deliveryLat!=0)
+                     deliveryDistance = DistanceAlgorithm.DistanceBetweenPlaces(pickUpLng, pickUpLat, deliverypLng, deliveryLat);
 
                     if (pickupDistance > driverPickupDistance || deliveryDistance > driverDelivertDistance)
                         continue; 

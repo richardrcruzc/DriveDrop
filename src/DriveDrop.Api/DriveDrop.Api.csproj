@@ -10,6 +10,8 @@
     <None Remove="Properties\PublishProfiles\DriveDropApi - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\DriveDropApi20170717021542 - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\DriveDropApi20170717040707 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\DriveDropApi20170718110358 - FTP.pubxml" />
+    <None Remove="Properties\PublishProfiles\DriveDropApi20170718110358 - Web Deploy.pubxml" />
   </ItemGroup>
 
  
@@ -58,7 +60,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore\ApplicationCore.csproj" />
     <ProjectReference Include="..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
-    <ProjectReference Include="..\PayPal.Api\PayPal.Api.csproj" />
   </ItemGroup>
  
   <ItemGroup>

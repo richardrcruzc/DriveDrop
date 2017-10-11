@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 
 namespace DriveDrop.Api.Controllers
 {
-    // [Authorize]
+     [Authorize]
     [Route("api/v1/[controller]")]
     public class CommonController : Controller
     {
@@ -48,7 +48,14 @@ namespace DriveDrop.Api.Controllers
             await _context.SaveChangesAsync();
             return Ok("CustomerDeleted");
         }
-
+        [Route("[action]")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendEmail([FromBody]SendEmailModel m)
+        {
+            await _emailSender.SendEmailAsync(m.UserName, m.Subject, m.Message);
+            return Ok("Sent");
+        }
         [HttpGet]
         [Route("[action]/userName/{userName}")]
         public async Task<IActionResult> WelcomeEmail(string userName)
@@ -194,8 +201,11 @@ namespace DriveDrop.Api.Controllers
                 var customer = await _context.Customers.Where(u => u.UserName == userName).FirstOrDefaultAsync();
                     
 
-                if (customer== null || customer.Isdeleted)
-                    return Ok("valid"); 
+                if (customer== null  )
+                    return Ok("valid");
+
+                if(customer.Isdeleted)
+                    return Ok("duplicate");
 
             }
             //catch (Exception exe)

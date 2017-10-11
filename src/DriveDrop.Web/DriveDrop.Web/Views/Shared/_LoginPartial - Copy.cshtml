@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DriveDrop.Web.ViewModels
+@using DriveDrop.Web.Services
+
+@inject IIdentityParser<ApplicationUser> UserManager
+
+@*@if (Context.User.Identity.IsAuthenticated)*@
+@if (User.FindFirst(x => x.Type == "preferred_username") != null)
+{
+  
+            <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm"  >
+
+
+                    <ul>
+                         
+                        <li>
+                              
+
+                            <a asp-area="" asp-controller="home" asp-action="MyAccount" title="Manage" >
+                                <span class="glyphicon glyphicon-user"></span>
+                                Hello @await Component.InvokeAsync("UserInfo")
+                                <span class="glyphicon glyphicon-cog" ></span> <span style="margin-right: 10px"></span>
+                            </a>
+                         
+                          
+                            <a class="ico-logout"
+                               href="javascript:document.getElementById('logoutForm').submit()">
+                                <span class="glyphicon glyphicon-log-out"></span>log Out 
+                            </a>
+                        </li>
+                    </ul>
+                 
+                </form>
+
+}
+else
+{
+
+    <ul>
+        <li><a asp-area="" asp-controller="Account" asp-action="Register"  class="ico-register">Register</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="SignIn" class="ico-login">Log in</a></li>
+    </ul>
+
+    
+}

@@ -14,11 +14,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using DriveDrop.Api.Services;
 using Microsoft.Extensions.Options;
+using ApplicationCore.Entities.Helpers;
 
 namespace DriveDrop.Api.Controllers
 {
     [Route("api/v1/[controller]")]
-   // [Authorize]
+   [Authorize]
     public class DriversController : Controller
     {
         private readonly DriveDropContext _context;
@@ -80,6 +81,26 @@ namespace DriveDrop.Api.Controllers
             }
 
         }
+
+        [Route("[action]/driver/{id:int}/comission/{comission}")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateComission(int id, decimal comission)
+        {
+            var updateCustomer = _context.Customers
+                .Include(x => x.CustomerStatus)
+                .Where(x => x.Id == id  ).FirstOrDefault();
+            if (updateCustomer != null)
+            {
+
+                updateCustomer.UpdateCommission(comission);
+
+                _context.Update(updateCustomer);
+                await _context.SaveChangesAsync();
+            }
+            return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
+
+        }
+
 
         [Route("[action]")]
         [HttpPost]
@@ -171,6 +192,9 @@ namespace DriveDrop.Api.Controllers
 
                 shipping.SetDriver(driver);
                 shipping.ChangeStatus(ShippingStatus.PendingPickUp.Id);
+
+                shipping.AddStatusHistory(new PackageStatusHistory(ShippingStatus.PendingPickUp.Id, shippingId, driver.Id));
+
                 _context.Update(driver);
 
                 await _context.SaveChangesAsync();
@@ -345,9 +369,9 @@ namespace DriveDrop.Api.Controllers
 
 
 
-                await _emailSender.SendEmailAsync(newCustomer.UserName, "DriveDrop account created",
-                    $"{newCustomer.FullName}: your account have been create and your status is {newCustomer.CustomerStatus.Name}, " +
-                    $"we'll review you application ASAP, you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
+                //await _emailSender.SendEmailAsync(newCustomer.UserName, "DriveDrop account created",
+                //    $"{newCustomer.FullName}: your account have been create and your status is {newCustomer.CustomerStatus.Name}, " +
+                //    $"we'll review you application ASAP, you can access your account by clicking here: <a href='{_settings.Value.MvcClient}'>link</a>");
 
 
 

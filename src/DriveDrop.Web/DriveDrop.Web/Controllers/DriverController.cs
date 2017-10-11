@@ -68,7 +68,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 5);
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 5 });
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -86,7 +86,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 4);
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 4});
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -104,7 +104,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 3);
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 3 });
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -123,7 +123,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id,2);
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 5 });
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -142,13 +142,21 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, 1);
+            var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+            if (customer == null)
+                return View(new PaginatedShippings());
 
-            var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+            id = customer.Id;
+            @ViewBag.CustomerId = id;
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 2,3 });
+             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
-            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>((dataString));
+            var shippings = JsonConvert.DeserializeObject<PaginatedShippings>(dataString);
             if (shippings == null)
                 return View(new PaginatedShippings());
+
 
             shippings.ShippingStatusList =await PrepareShippingStatus();
 
@@ -224,13 +232,13 @@ namespace DriveDrop.Web.Controllers
 
                     if (dataString == null)
                     {
-                        ModelState.AddModelError("", "Unable to register user 1");
+                        ModelState.AddModelError("", "Unable to register user : " + c.UserEmail);
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
                         if(!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
                     {
-                        ModelState.AddModelError("", "Unable to register user 2");
+                        ModelState.AddModelError("", "Unable to register user : " + c.UserEmail);
                         await PrepareCustomerModel(c);
                         return View(c);
                     }
@@ -255,8 +263,30 @@ namespace DriveDrop.Web.Controllers
                         return View(c);
                     }
 
+                    var callbackUrl = string.Empty;
+                    var modfyMsg = string.Empty;
+                    if (dataString.Contains("IsAuthenticated"))
+                    {
+                        dataString = dataString.Replace("IsAuthenticated", "");
+                        callbackUrl = string.Format("{0}/{1}", _settings.Value.IdentityUrl.Trim(), dataString.Trim());
+                        modfyMsg = string.Format("Hi {0} ! You have been sent this email because you created an account on our website. Please click on <a href =\"{1}\">this link</a> to confirm your email address is correct. ", c.UserEmail, callbackUrl);
 
-                    return RedirectToAction("NewDriverResults", new { user = c.UserEmail });
+
+
+                        var message = new SendEmailModel
+                        {
+                            Subject = "Confirm Email Address for New Account",
+                            UserName = c.UserEmail,
+                            Message = modfyMsg
+                        };
+
+                        var sendEmailUri = API.Common.SendEmail(_remoteServiceCommonUrl);
+                        var emailResponse = await _apiClient.PostAsync(sendEmailUri, message, token);
+
+                    }
+
+
+                    return RedirectToAction("NewDriverResults", new { user = c.UserEmail  });
 
                     //return RedirectToAction("index", "admin");
 
@@ -541,7 +571,7 @@ namespace DriveDrop.Web.Controllers
 
 
 
-            return RedirectToAction("PendingPickUp", new { id = customer.Id });
+            return RedirectToAction("readytopickup", new { id = customer.Id });
 
         }
 

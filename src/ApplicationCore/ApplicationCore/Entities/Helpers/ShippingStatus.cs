@@ -10,11 +10,14 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class ShippingStatus
          : Enumeration
     {
-        public static ShippingStatus PendingPickUp = new ShippingStatus(1, "Pending PickUp");
-        public static ShippingStatus Pickup = new ShippingStatus(2, nameof(Pickup).ToLowerInvariant());
-        public static ShippingStatus DeliveryInProcess = new ShippingStatus(3,"Delivery in Process");
-        public static ShippingStatus Delivered = new ShippingStatus(4, "Delivered");
-        public static ShippingStatus Cancelled = new ShippingStatus(5, "Cancelled");
+        public static ShippingStatus NoDriverAssigned = new ShippingStatus(1, "No Driver Assigned");
+        public static ShippingStatus PendingPickUp = new ShippingStatus(2, "Pending Pick-Up");
+        public static ShippingStatus Pickup = new ShippingStatus(3, "Pick-Up in Transit");
+        public static ShippingStatus DeliveryInProcess = new ShippingStatus(4, "Accepted – Waiting Delivery");
+        public static ShippingStatus PendingDelivery = new ShippingStatus(5, "Pending Delivery");
+        public static ShippingStatus DeliveryInTransit = new ShippingStatus(6, "Delivery in Transit");
+        public static ShippingStatus Delivered = new ShippingStatus(7, "Delivered");
+        public static ShippingStatus Cancelled = new ShippingStatus(8, "Cancelled");
 
         protected ShippingStatus()
         {
@@ -27,7 +30,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public static IEnumerable<ShippingStatus> List()
         {
-            return new[] { PendingPickUp, Pickup, DeliveryInProcess, Delivered, Cancelled };
+            return new[] { NoDriverAssigned, PendingPickUp, Pickup, DeliveryInProcess, PendingDelivery, DeliveryInTransit, Delivered, Cancelled };
         }
 
         public static ShippingStatus FromName(string name)

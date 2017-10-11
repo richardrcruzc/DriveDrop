@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
          : Enumeration
     {
         public static CustomerStatus WaitingApproval = new CustomerStatus(1, "WaitingApproval");
-        public static CustomerStatus Active = new CustomerStatus(2, "Active)");
+        public static CustomerStatus Active = new CustomerStatus(2, "Active");
         public static CustomerStatus Suspended = new CustomerStatus(3, "Suspended");
         public static CustomerStatus Canceled = new CustomerStatus(4, "Canceled");
 

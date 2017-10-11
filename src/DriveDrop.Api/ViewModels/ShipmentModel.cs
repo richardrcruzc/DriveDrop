@@ -21,6 +21,7 @@ namespace DriveDrop.Api.ViewModels
     {
         public int Id { get; set; }
         public string IdentityCode { get; set; }
+        public string SecurityCode { get; set; }
 
         public DateTime ShippingCreateDate { get; set; }
         public DateTime ShippingUpdateDate { get; set; }

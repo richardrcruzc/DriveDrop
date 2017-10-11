@@ -2,7 +2,7 @@
 @model  DriveDrop.Web.ViewModels.UserStatusModel 
     @if (!string.IsNullOrWhiteSpace(Model.Status))
     {
-        <p class="alert alert-info">
+        <p class="alert alert-danger">
             <label>   User Status: <strong>@Model.Status</strong> </label><br />
             <label>   <strong>Your Access to DriveDrop is limited</strong> </label><br />
             <label>   <strong>Please contact customer service </strong> </label>
@@ -17,8 +17,14 @@
         </p>
             @Html.ActionLink("End Impersonation", "endimpersonated", "admin")
             }
+ 
+@if (!string.IsNullOrWhiteSpace(Model.CustomerType) && Model.CustomerType.ToLower() == "driver")
+{
+     
+<div id="You-Got-Packages" class="alert alert-info hidden">
+    <div><strong>Info!</strong> You Got Package !</div>
 
-
-
-
-
+    @*<div id="DriverNotificationWS"></div>*@
+</div>
+     
+}

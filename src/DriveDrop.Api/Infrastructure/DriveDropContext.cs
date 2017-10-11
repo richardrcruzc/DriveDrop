@@ -18,6 +18,7 @@ namespace DriveDrop.Api.Infrastructure
 
         const string DEFAULT_SCHEMA = "shippings";
 
+        public DbSet<PackageStatusHistory> PackageStatusHistories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
         public DbSet<PaymentMethod> Payments { get; set; }
@@ -72,6 +73,7 @@ namespace DriveDrop.Api.Infrastructure
             modelBuilder.Entity<Customer>(ConfigureCustomer);
             modelBuilder.Entity<Shipment>(ConfigureShipment);
             modelBuilder.Entity<Address>(ConfigureAddress);
+            modelBuilder.Entity<PackageStatusHistory>(ConfigurePackageStatusHistory);
 
             //modelBuilder.Entity<RateDetail>()
             // .HasOne(p => p.Rate)
@@ -80,8 +82,21 @@ namespace DriveDrop.Api.Infrastructure
             // .IsRequired();
 
         }
- 
 
+
+        void ConfigurePackageStatusHistory(EntityTypeBuilder<PackageStatusHistory> builder)
+        {
+            builder.HasOne(ci => ci.Shipment)
+     .WithMany(f => f.PackageStatusHistories)
+     .HasForeignKey(c => c.ShipmentId)
+     .OnDelete(DeleteBehavior.Restrict);
+             
+
+            builder.HasOne(ci => ci.ShippingStatus)
+          .WithMany()
+          .HasForeignKey(ci => ci.ShipmentId);
+
+        }
             void ConfigureAddress(EntityTypeBuilder<Address> addressConfiguration)
         {
             addressConfiguration.ToTable("address", DEFAULT_SCHEMA);

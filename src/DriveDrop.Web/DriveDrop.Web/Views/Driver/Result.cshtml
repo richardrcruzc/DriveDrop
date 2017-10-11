@@ -93,6 +93,22 @@
                             
                         </div>
                         <div class="inputs">
+                            @Html.LabelFor(model => model.PickupRadius)
+                            @Html.TextBoxFor(model => model.PickupRadius )
+                            <span class="required">*</span>
+                            @Html.ValidationMessageFor(model => model.PickupRadius)
+
+                        </div>
+                        <div class="inputs">
+                            @Html.LabelFor(model => model.DeliverRadius)
+                            @Html.TextBoxFor(model => model.DeliverRadius)
+                            <span class="required">*</span>
+                            @Html.ValidationMessageFor(model => model.DeliverRadius)
+
+                        </div>
+
+                      
+                        <div class="inputs">
 
                             <label for="VerificationId">Verification ID</label>
                             <input asp-for="VerificationId" placeholder="Verification Id" />

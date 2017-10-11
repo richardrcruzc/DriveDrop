@@ -483,18 +483,21 @@ namespace DriveDrop.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
+
+
                     //try register new user
 
                     var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, c.UserEmail, c.Password);
 
-                    var dataString = await _apiClient.GetStringAsync(addNewUserUri);
+                    var dataString = await _apiClient.GetStringAsync(addNewUserUri, token);
 
                     //var userStatus = JsonConvert.DeserializeObject<object>((dataString));
 
                     if (dataString == null)
                     {
-                        ModelState.AddModelError("", "Unable to register sender user " ); 
+                        ModelState.AddModelError("", "Unable to register sender user: "+ c.UserEmail ); 
                         return View(c);
                     }
 
@@ -503,7 +506,7 @@ namespace DriveDrop.Web.Controllers
                     if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
                     {
 
-                        ModelState.AddModelError("", "Unable to register Login infomation "); 
+                        ModelState.AddModelError("", "Unable to register Login infomation user: "+ c.UserEmail); 
                         return View(c);
                     }
                      
@@ -516,7 +519,7 @@ namespace DriveDrop.Web.Controllers
 
                     c.CustomerTypeId = 2;
                     c.Email = c.UserEmail;
-                    var response = await _apiClient.PostAsync(addNewSenderUri, c);
+                    var response = await _apiClient.PostAsync(addNewSenderUri, c, token);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                     {
@@ -526,6 +529,29 @@ namespace DriveDrop.Web.Controllers
                     // return RedirectToAction("result", new { id = c.CustomerId });
                     //return RedirectToAction("SignIn", "Account");
                     // var results = new NewSenderResult { Amount = "", Message="", UserName =c.UserEmail };
+
+                    var callbackUrl = string.Empty;
+                    var modfyMsg = string.Empty;
+                    if (dataString.Contains("IsAuthenticated"))
+                    {
+                        dataString = dataString.Replace("IsAuthenticated", "");
+                          callbackUrl = string.Format("{0}/{1}", _settings.Value.IdentityUrl.Trim(), dataString.Trim());
+                        modfyMsg = string.Format("Hi {0} ! You have been sent this email because you created an account on our website. Please click on <a href =\"{1}\">this link</a> to confirm your email address is correct. ",c.UserEmail, callbackUrl);
+
+
+
+                        var message = new SendEmailModel
+                        {
+                            Subject = "Confirm Email Address for New Account",
+                            UserName = c.UserEmail,
+                            Message = modfyMsg
+                        };
+
+                        var sendEmailUri = API.Common.SendEmail(_remoteServiceCommonUrl);
+                        var emailResponse = await _apiClient.PostAsync(sendEmailUri, message, token);
+
+                    }
+
 
                     return RedirectToAction("NewSenderResults", new { user = c.UserEmail });
                 }

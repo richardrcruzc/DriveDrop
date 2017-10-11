@@ -191,7 +191,14 @@ namespace DriveDrop.Web.Infrastructure
 
         }
         public static class Driver
-        {
+        { 
+        public static string UpdateComission(string baseUri,int id,  decimal comission)
+            {
+                var idQs = id.ToString();
+                var comissionQs = comission.ToString();
+                return $"{baseUri}/UpdateComission/driver/{idQs}/comission/{comissionQs}";
+            }
+
             public static string AutoComplete(string baseUri, string values)
             {
                 return $"{baseUri}/AutoComplete/{values}";
@@ -291,11 +298,14 @@ namespace DriveDrop.Web.Infrastructure
                 return $"{baseUri}/GetShippingByDriverId{filterQs}";
             }
 
-            public static string GetByDriverIdAndStatusId(string baseUri, int id, int statusId)
+            public static string GetByDriverIdAndStatusId(string baseUri, int id, int[] statusId)
             {
-                var statusidQs = statusId.ToString();
+                var statusidQs = string.Empty;
+                foreach(int i in statusId)
+                statusidQs += string.Format("&statusId={0}", i);
                 var idQs = id.ToString();
-                var filterQs = $"/{idQs}/{statusidQs}";
+                var filterQs = $"?id={idQs}{statusidQs}";
+                //filterQs = filterQs.Replace("?&", "?");
                 return $"{baseUri}/GetByDriverIdAndStatusId{filterQs}";
             }
 
@@ -311,6 +321,11 @@ namespace DriveDrop.Web.Infrastructure
 
         public static class Common
         {
+            public static string SendEmail(string baseUri)
+            {
+                return $"{baseUri}SendEmail";
+            }
+
             public static string DeleteCustomer(string baseUri, int id)
             {
                 var idQs = id.ToString();

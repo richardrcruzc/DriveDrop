@@ -18,10 +18,11 @@
         <div class="customer-blocks">
             <div class="new-wrapper register-block">
                 <div class="title">
-                    <strong> New Customer</strong>
+                    <strong> New Senders/Drivers</strong>
                 </div>
                 <div class="text">
-                    By creating an account on our website you will be able to shop faster, be up to date on an orders status, and keep track of the orders you have previously made.
+                    By creating an account you will be able to shop faster, 
+                    be up to date an order status, and track orders you have previously made.
                 </div>
                 <div class="buttons">                
                     <a href="@ViewData["ReturnHomeUrl"]/sender/NewSender" class="button-1 register-button">Sender</a>
@@ -31,7 +32,7 @@
             </div>
             <div class="returning-wrapper fieldset">
                 <div class="title">
-                    <strong>Returning Customer </strong>
+                    <strong>Returning Senders/Drivers </strong>
                 </div>
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                     <div asp-validation-summary="All" class="text-danger"></div>

@@ -13,6 +13,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public int Quantity { get; private set; }
         public string IdentityCode { get; private set; }
+        public string SecurityCode { get; private set; }
 
         public DateTime ShippingCreateDate { get; private set; }
         public DateTime ShippingUpdateDate { get; private set; }
@@ -67,10 +68,20 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public string PaymentReceived { get; private set; }
         public string PaymentReceivedDate { get; private set; }
         public string PaymentNotes { get; private set; }
+        
+
+        public List<PackageStatusHistory> PackageStatusHistories { get; private set; }
+        public Shipment AddStatusHistory(PackageStatusHistory history)
+        {
+            if (PackageStatusHistories == null)
+                PackageStatusHistories = new List<PackageStatusHistory>();
+
+            PackageStatusHistories.Add(history);
+            return this;
+        }
 
 
         public List<Review> Reviews { get; private set; }
-
 
         protected Shipment()
         {
@@ -104,7 +115,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
                             decimal extraCharge, string extraChargeNote
                             ) : this()
         {
-            ShippingStatusId = ShippingStatus.PendingPickUp.Id;
+            ShippingStatusId = ShippingStatus.NoDriverAssigned.Id;
             ShippingCreateDate = DateTime.Now;
             ShippingUpdateDate = DateTime.Now;
             ShippingValue = amount;
@@ -126,6 +137,9 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             // SenderId = sender.Id;
 
             IdentityCode = string.Format("WA-{0}-{1}",pickup.ZipCode, RandomString());
+
+            Random randObj = new Random(1000);
+            SecurityCode = randObj.Next(10000,99999).ToString();
 
             ShippingWeight = shippingWeight;
             Quantity = 1; 
@@ -168,7 +182,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
             return this;
         }
-
+         
         public Shipment SetDriver(Customer driver)
         {
             Driver = driver;

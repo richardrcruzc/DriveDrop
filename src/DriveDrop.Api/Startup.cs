@@ -167,7 +167,8 @@ namespace DriveDrop.Api
             {
                 Authority = identityUrl.ToString(),
                 ApiName = "drivedrop",
-                RequireHttpsMetadata = false
+                RequireHttpsMetadata = false,
+                 
             });
         }
 

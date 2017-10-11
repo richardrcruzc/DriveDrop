@@ -80,6 +80,7 @@ namespace DriveDrop.Api.Infrastructure
                 }
                 if (!context.ShippingStatuses.Any())
                 {
+                    context.ShippingStatuses.Add(ShippingStatus.NoDriverAssigned);
                     context.ShippingStatuses.Add(ShippingStatus.PendingPickUp);
                     context.ShippingStatuses.Add(ShippingStatus.Pickup);
                     context.ShippingStatuses.Add(ShippingStatus.DeliveryInProcess);
@@ -259,7 +260,7 @@ namespace DriveDrop.Api.Infrastructure
                 if (!context.Customers.Any())
                 {
 
-                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan2.Id, CustomerStatus.WaitingApproval.Id,"123213123","admin@driveDrop.com",1,0,0,0,0, "admin@driveDrop.com", "","","","","","", "", "", "" ));
+                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan2.Id, CustomerStatus.Active.Id, "admin@driveDrop.com", "1234567890",1,0,0,0,0, "admin@driveDrop.com", "1234567890","","","","","", "", "", "" ));
 
                     //context.Customers.Add(new Customer("Sender1", "First", "Sender", TransportType.Sedan4.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",   "", "", "", "", "", "", "", "", ""));
                     //context.Customers.Add(new Customer("Sender2", "Second", "Sender", TransportType.PickUp.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));

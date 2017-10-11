@@ -25,9 +25,20 @@
 
 <td>
     
-   
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+   @if (Model.CustomerTypeId == 1)
+   {
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+   }
+   else if (Model.CustomerTypeId == 2)
+   {
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
     
+   }
+   else  if (Model.CustomerTypeId == 3)
+   {
+    <a asp-action="DriverDetails" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+     
+   }
 </td>
 
 <script type="text/javascript">

@@ -16,11 +16,13 @@ namespace DriveDrop.Web.ViewModels
 
         public Decimal ExtraCharge { get; set; }
         public string ExtraChargeNote { get; set; }
+        public virtual ICollection<PackageStatusHistory> PackageStatusHistories { get; set; }
 
         public List<SelectListItem> ShippingStatusList { get; set; }
 
         public int Id { get; set; }
-        public string IdentityCode { get;  set; } 
+        public string IdentityCode { get;  set; }
+        public string SecurityCode { get;  set; }
 
         public DateTime ShippingCreateDate { get;  set; }
         public DateTime ShippingUpdateDate { get;  set; }

@@ -91,8 +91,11 @@ namespace DriveDrop.Api.Services
 
                 .Include(x => x.ShipmentSenders)
                 .ThenInclude(ps => ps.Reviews)
-
-                .Where(x => x.UserName == user || x.Isdeleted==false)
+                 .Include(x => x.ShipmentSenders)
+                .ThenInclude(ps => ps.Driver)
+                .Include(x => x.ShipmentSenders)
+                .ThenInclude(ps => ps.PackageStatusHistories)
+                .Where(x => x.UserName == user && x.Isdeleted==false)
                 .FirstOrDefaultAsync();
             if (c == null )
                 return new CurrentCustomerModel();
