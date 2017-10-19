@@ -39,7 +39,7 @@
                 @if (Model.ShipmentDrivers != null && Model.ShipmentDrivers.Count > 0)
             {
 
-                    <table class="table">
+                    <table class="table table-responsive table-hover">
 
                         <tr>
                             <th colspan="5">  <label> Shipment Assigned to Me</label></th>
@@ -56,7 +56,7 @@
                         </tr>
 
                         @foreach (var item in Model.ShipmentDrivers)
-                            {
+                        {
                             <tr>
                                 <td class="btnAssingShipping"> @item.Id</td>
                                 <td>
@@ -102,10 +102,10 @@
                                 </td>
                                 <td><div>Get Address info</div></td>
                             </tr>
-                            }
+                        }
                     </table>
 
-                    }
+                }
 
             </div>
 

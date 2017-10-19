@@ -17,6 +17,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public DateTime ShippingCreateDate { get; private set; }
         public DateTime ShippingUpdateDate { get; private set; }
+        public DateTime ShippingPickupDate { get; private set; }
 
         public  int SenderId { get; private set; }
         public int? DriverId { get; private set; }
@@ -56,6 +57,8 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public string PickupPictureUri { get; private set; }
         public string DeliveredPictureUri { get; private set; }
+        public string DropPictureUri { get; private set; }
+        public string DropComment { get; private set; }
 
 
         public string Note { get; private set; }
@@ -182,7 +185,18 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
             return this;
         }
-         
+
+        public Shipment SetDropPictureUri(string uri)
+        {
+            DropPictureUri = uri;
+            return this;
+        }
+        public Shipment SetDropComment(string comment)
+        {
+            DropComment = comment;
+            return this;
+        }
+        
         public Shipment SetDriver(Customer driver)
         {
             Driver = driver;
@@ -194,6 +208,8 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         {
             ShippingStatusId = shippingStatusId;
             ShippingUpdateDate = DateTime.Now;
+            if(shippingStatusId==4)
+            ShippingPickupDate = DateTime.Now;
         }
 
  

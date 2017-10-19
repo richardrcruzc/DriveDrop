@@ -133,7 +133,10 @@ namespace DriveDrop.Api.Controllers
                 .Include(d => d.Sender)
                 .Include(d => d.Driver)
                 .Include(d => d.PackageSize)
+                .Include(d => d.PackageStatusHistories)
+                .ThenInclude(d=>d.ShippingStatus)
                 
+
                 .FirstOrDefaultAsync();
 
                 return Ok(root);
@@ -171,6 +174,36 @@ namespace DriveDrop.Api.Controllers
             {
                 return BadRequest("CustomerTypesNotFound");
             }
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> SetDeliveredPictureUri([FromBody]AcceptModel model)
+        {
+            try
+            {
+                var shipping = _context.Shipments.Find(model.Id);
+
+                if (shipping == null)
+                    return NotFound("PackageNoFound");
+                if (model.StatusId > 0)
+                    shipping.ChangeStatus(model.StatusId);
+                else
+                {
+                    shipping.ChangeStatus(ShippingStatus.DeliveryInProcess.Id);
+
+                }
+                shipping.SetDeliveredPictureUri(System.Net.WebUtility.UrlDecode(model.fileName));
+                _context.Update(shipping);
+                await _context.SaveChangesAsync();
+
+                return Ok("SetDeliveredPictureUri");
+            }
+
+            catch (Exception)
+            {
+                return BadRequest("cannotChangeShippingDeveleryUri");
+            }
+
         }
 
 

@@ -24,6 +24,8 @@ namespace DriveDrop.Web.ViewModels
         public string IdentityCode { get;  set; }
         public string SecurityCode { get;  set; }
 
+        public DateTime ShippingPickupDate { get;  set; }
+
         public DateTime ShippingCreateDate { get;  set; }
         public DateTime ShippingUpdateDate { get;  set; }
 

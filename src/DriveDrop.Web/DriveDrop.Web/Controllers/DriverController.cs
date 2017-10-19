@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using static DriveDrop.Web.Services.PasswordAdvisor;
 
 namespace DriveDrop.Web.Controllers
 {
@@ -123,7 +123,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 5 });
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 4 });
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -136,9 +136,121 @@ namespace DriveDrop.Web.Controllers
             return View(shippings);
         }
 
+        public async Task<IActionResult> AceptPackageFromSender(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+            if (customer == null)
+                return NotFound();
+            @ViewBag.CustomerId = customer.Id;
+            var package = customer.ShipmentDrivers.Where(x => x.Id == id).FirstOrDefault();
+                        
+            return View(package);
+        }
+        [HttpPost]
+       // [ValidateAntiForgeryToken]
+//        public async Task<IActionResult> AceptPackageFromSender(Shipment model, List<IFormFile> photoUrl)
+            public async Task<IActionResult> AceptPackageFromSender(int Id, string SecurityCode,  List<IFormFile> photoUrl)
+
+        {
+             
+            if (Id == 0)
+                return NotFound();
+
+            if (photoUrl.Count() ==0)
+                return NotFound();
+            if (string.IsNullOrEmpty(SecurityCode))
+                return NotFound();
+            try
+            {
+                var user = _appUserParser.Parse(HttpContext.User);
+                var token = await GetUserTokenAsync();
+
+                var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+                var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+                if (customer == null)
+                    return NotFound();
+                @ViewBag.CustomerId = customer.Id;
+
+
+                var getUri = API.Shipping.GetById(_remoteServiceShippingsUrl, Id);
+                var packageString = await _apiClient.GetStringAsync(getUri, token);
+                var package = JsonConvert.DeserializeObject<Shipment>(packageString);
+                if (package == null)
+                    return NotFound();
+
+                var fileName = await SaveFile(photoUrl, "driver");
+
+                var model = new AceptPackageFromSenderModel
+                {
+                    Id=Id,
+                    SecurityCode = SecurityCode,
+                    fileName= System.Net.WebUtility.UrlEncode(fileName),
+                    StatusId=0,
+
+                };
+
+                var shpUri = API.Shipping.SetDeliveredPictureUri(_remoteServiceShippingsUrl);
+                var shpString = await _apiClient.PostAsync(shpUri, model, token);
+
+                if (shpString.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    return Json(shpString.ReasonPhrase);
+                }
+                
+                    if (shpString.ReasonPhrase.Contains("OK"))
+                {
+                    return Json("PackageAccepted");
+
+                }
+                ViewBag.Msg = shpString;
+
+                return Json(shpString);
+            }
+            catch
+            {
+                return Json("PackageNotAccepted");
+            }
+
+        }
+
+        public async Task<IActionResult> ShippingSecurityCode(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
+            var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            var shipping = currentUser.ShipmentSenders.Where(x => x.Id == id).FirstOrDefault();
+
+            //var allnotassignedshipings = API.Shipping.GetById(_remoteServiceShippingsUrl, id);
+
+            //var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
+
+            //var shippings = JsonConvert.DeserializeObject<Shipment>((dataString));
+            //if (shippings == null)
+            //    return View(new Shipment());
+            return Json(shipping.SecurityCode);
+
+        }
+
+
+
+
         public async Task<IActionResult> PendingPickUp(int id)
         {
-            @ViewBag.CustomerId = id;
+            
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
@@ -210,6 +322,34 @@ namespace DriveDrop.Web.Controllers
         {
             try
             {
+
+                String password =c.Password;  
+                PasswordScore passwordStrengthScore = PasswordAdvisor.CheckStrength(password);
+                var valid = false;
+                switch (passwordStrengthScore)
+                {
+                    case PasswordScore.Blank:
+                        ModelState.AddModelError("", "Unable to Register User : " + c.UserEmail + " password is Blank!");
+                        break;
+                    case PasswordScore.VeryWeak:                        
+                    case PasswordScore.Weak:
+                        ModelState.AddModelError("", "Unable to Register User : " + c.UserEmail + " Password is Too Weak!");
+                        // Show an error message to the user
+                        break;
+                    case PasswordScore.Medium:
+                    case PasswordScore.Strong:
+                    case PasswordScore.VeryStrong:
+                        // Password deemed strong enough, allow user to be added to database etc
+                        valid = true;
+                        break;
+                }
+               
+                if (!valid)
+                {
+                    await PrepareCustomerModel(c);
+                    return View(c);
+                }
+
                 c.Email = c.UserEmail;
 
                 foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
@@ -487,7 +627,7 @@ namespace DriveDrop.Web.Controllers
 
 
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
-                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
             currentUser.CustomerStatus=  currentUser.CustomerStatus.ToTitleCase();
 
@@ -805,15 +945,7 @@ namespace DriveDrop.Web.Controllers
 
         //    //return View(c);
         //}
-        [AllowAnonymous]
-        public async Task<JsonResult> ValidateUserName(string UserEmail)
-        {
-            var validateUri = API.Common.ValidateUserName(_remoteServiceCommonUrl, UserEmail);
-
-            var response = await _apiClient.GetStringAsync(validateUri);
-
-            return Json(!response.Equals("duplicate"));
-        }
+       
 
         public async Task<List<SelectListItem>>  PrepareShippingStatus()
         {

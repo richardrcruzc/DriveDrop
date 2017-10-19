@@ -221,6 +221,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Email);
+                
                 if (await _loginService.ValidateCredentials(user, model.Password))
                 {
                     
@@ -259,6 +260,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             }
 
             // something went wrong, show form with error
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient;
             var vm = await BuildLoginViewModelAsync(model);
             ViewData["ReturnUrl"] = model.ReturnUrl;
             return View(vm);

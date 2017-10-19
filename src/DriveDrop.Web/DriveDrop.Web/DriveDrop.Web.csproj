@@ -85,5 +85,15 @@
   <ItemGroup>
     <None Include="ViewComponents\ShippingByCustomerViewComponent.cs" />
     <None Include="Views\Sender\PostToPayPalAsync.cshtml" />
+    <None Include="wwwroot\images\banner1.svg" />
+    <None Include="wwwroot\images\banner2.svg" />
+    <None Include="wwwroot\images\banner3.svg" />
+    <None Include="wwwroot\images\banner4.svg" />
+    <None Include="wwwroot\images\driver\Thumbs.db" />
+    <None Include="wwwroot\images\Dropbox.lnk" />
+    <None Include="wwwroot\images\sender\Thumbs.db" />
+    <None Include="wwwroot\images\Skype.lnk" />
+    <None Include="wwwroot\images\TeamViewer 12.lnk" />
+    <None Include="wwwroot\images\Thumbs.db" />
   </ItemGroup>
 </Project>

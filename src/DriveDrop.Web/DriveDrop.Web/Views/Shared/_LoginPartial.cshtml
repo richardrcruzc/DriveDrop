@@ -3,43 +3,85 @@
 @using DriveDrop.Web.Services
 
 @inject IIdentityParser<ApplicationUser> UserManager
-
 @*@if (Context.User.Identity.IsAuthenticated)*@
+
+
 @if (User.FindFirst(x => x.Type == "preferred_username") != null)
 {
-  
-            <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm"  >
+
+    
+        <header class="blue-bg deshbord-head sub-nav-hed">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-2 mobile-header-logo">
+                        <img src="~/images/logo.png">
+                    </div>
+                    <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm">
+
+                        <div class="col-xs-6 col-xs-offset-4">
+                            <div class="login-profile">
+                                <a asp-area="" asp-controller="home" asp-action="MyAccount" title="Manage">
+                                    <span>Hi <br>@await Component.InvokeAsync("UserInfo")</span>
+                                    <figure><img src="~/images/profile.jpg"></figure>
+                                </a>
 
 
-                    <ul>
-                         
-                        <li>
-                              
+                            </div>
 
-                            <a asp-area="" asp-controller="home" asp-action="MyAccount" title="Manage" >
-                                <span class="glyphicon glyphicon-user"></span>
-                                Hello @await Component.InvokeAsync("UserInfo")
-                                <span class="glyphicon glyphicon-cog" ></span> <span style="margin-right: 10px"></span>
+
+                        </div>
+                        <div class="login-profile">
+                            <br />
+                            <a href="javascript:document.getElementById('logoutForm').submit()">
+                                <span class="glyphicon glyphicon-log-out"></span><span>log Out</span>
                             </a>
-                         
-                          
-                            <a class="ico-logout"
-                               href="javascript:document.getElementById('logoutForm').submit()">
-                                <span class="glyphicon glyphicon-log-out"></span>log Out 
-                            </a>
-                        </li>
-                    </ul>
-                 
-                </form>
+                        </div>
+                    </form>
+                        </div>
+                    </div>
+
+                </header>
+
+
 
 }
 else
 {
 
-    <ul>
-        <li><a asp-area="" asp-controller="Account" asp-action="Register"  class="ico-register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="SignIn" class="ico-login">Log in</a></li>
-    </ul>
+    <header class="blue-bg">
+        <div class="container">
+            <div class="row descktop-menu">
+                <div class="col-xs-2">
+                    <a href="/"><img src="~/images/logo.png"></a>
+                </div>
+                <div class="col-xs-8 pull-right ">
+                    <nav>
+                        <ul class="main-menu">
 
-    
+                            <li>
+                                <a asp-area="" asp-controller="sender" asp-action="NewSender" class="ico-register">Sign Up Senders <i class="fa fa-angle-down"></i></a>
+
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="driver" asp-action="newDriver" class="ico-register">Sign Up Drivers <i class="fa fa-angle-down"></i></a>
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="bttn">Sign-In</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="mobile-menu">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()"> <img src="~/images/mobile-nav.png"></span>
+                <a href="index.html"><img src="~/images/logo.png"></a>
+            </div>
+
+        </div>
+    </header>
+
+
+
+
+
 }

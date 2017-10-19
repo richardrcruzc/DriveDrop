@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-  <table class="table">
+<table class="table table-responsive table-hover">
     <tr>
         <th colspan="5"><h3><label class="title"> My Shippings </label> </h3> </th>
 
@@ -18,12 +17,12 @@
         <th>Delivery Address</th>
 
     </tr>
-    @foreach (var item in Model )
+    @foreach (var item in Model)
     {
 
         var url = ViewBag.Uri + item.PickupPictureUri;
         <tr>
-           
+
             <td>
                 <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
                 <div class="btn-outline-danger">
@@ -64,5 +63,6 @@
         </tr>
     }
 </table>
+
 
  

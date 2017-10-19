@@ -1,149 +1,147 @@
 ﻿@model  DriveDrop.Web.ViewModels.VehicleInfoModel
 
-    @{
-        ViewData["Title"] = "Details";
-    }
-<div class="side-2">
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("DriverNavigation", Model.Id)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Vehicle Details</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <form data-ajax-method="POST" asp-action="UpdateVehicleInfo" enctype="multipart/form-data"
+                                          data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+
+                                        @Html.AntiForgeryToken()
 
 
-    @await Html.PartialAsync("DriverNavigation", Model.Id)
+                                        <input asp-for="Id" hidden />
+
+                                        <div class="form-group">
+
+                                            <div class="title">
+                                                <strong>My Vehicle Infomation Details</strong>
+                                            </div>
+
+                                            <div asp-validation-summary="ModelOnly" class="result"></div>
+
+                                            <div class="form-group">
+
+                                                <div class="form-field">
+                                                    <label for="TransportTypeId">Vehicle Type</label>
 
 
-</div>
-<div class="center-2">
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h1>Vehicle Details</h1>
-        </div>
+                                                    @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, new  {@class= "form-control" })
 
-        <div class="page-body">
-            <form data-ajax-method="POST" asp-action="UpdateVehicleInfo" enctype="multipart/form-data"
-                  data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+                                                    <span class="required">*</span>
 
-                @Html.AntiForgeryToken()
+                                                    <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+
+                                                </div>
+
+                                                <div class="form-field">
+                                                    <label for="VehicleMake">Vehicle Make</label>
+
+                                                    <input asp-for="VehicleMake" placeholder="Vehicle Make" />
+                                                    <span class="required">*</span>
+
+                                                    <span asp-validation-for="VehicleMake" class="text-danger"></span>
 
 
-                <input asp-for="Id" hidden /> 
+                                                </div>
+                                                <div class="form-field">
+                                                    <label for="VehicleModel">Vehicle Model</label>
+                                                    <input asp-for="VehicleModel" placeholder="VehicleModel" />
+                                                    <span class="required">*</span>
+                                                    <span asp-validation-for="VehicleModel" class="text-danger"></span>
+                                                </div>
 
-                <div class="fieldset">
+                                                <div class="form-field">
+                                                    <label for="VehicleColor">Vehicle Color</label>
+                                                    <input asp-for="VehicleColor" placeholder="VehicleColor" />
+                                                    <span class="required">*</span>
+                                                    <span asp-validation-for="VehicleColor" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-field">
 
-                    <div class="title"> 
-                        <strong>My Vehicle Infomation Details</strong>
+                                                    <label for="VehicleYear">Vehicle Year</label>
+                                                    <input asp-for="VehicleYear" placeholder="VehicleYear" />
+                                                    <span class="required">*</span>
+                                                    <span asp-validation-for="VehicleYear" class="text-danger"></span>
+                                                </div>
+
+
+                                               <div class="form-field">
+                                                    <div class="title">
+                                                        <strong>Driver license  photo</strong>
+                                                    </div>
+                                                    <div class="avatar-page">
+
+                                                        <input type='file' id="my-file-selector-license" name="DriverLincensePictureUri" />
+                                                        <img id="license-image" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-field">
+                                                    <div class="title">
+                                                        <strong>Vehicle photo</strong>
+                                                    </div>
+                                                    <div class="avatar-page">
+                                                        <input type='file' id="my-file-selector-insurance" name="VehiclePhotoUri" />
+                                                        <img id="insurance-image" src="@Model.vehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="form-field">
+                                                    <div class="title">
+                                                        <strong>Proof of insurance</strong>
+                                                    </div>
+                                                    <div class="avatar-page">
+
+                                                        <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri" />
+                                                        @*<img id="insurance-image" src="@Model.insurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
+                                                        <iframe src="@(Model.insurancePhotoUri)" class="iframeClass" style="width:700px; height:300px;"> </iframe>
+
+                                                    </div>
+
+                                                </div>
+      
+                                                <div class="buttons">
+                                                    <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+
+                                                </div>
+                                                <div class="center-block bg-primary text-center" id="bar-notification">
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
-
-                    <div asp-validation-summary="ModelOnly" class="result"></div>
-
-
-
-
-
-                    <div class="form-fields">
-
-                        <div class="inputs">
-                            <label for="TransportTypeId">Vehicle Type</label>
-
-
-                            @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList )
-                             
-                            <span class="required">*</span>
-
-                            <span asp-validation-for="TransportTypeId" class="text-danger"></span>
-                             
-                        </div>
-
-                        <div class="inputs">
-                            <label for="VehicleMake">Vehicle Make</label>
-
-                            <input asp-for="VehicleMake" placeholder="Vehicle Make" />
-                            <span class="required">*</span>
-
-                            <span asp-validation-for="VehicleMake" class="text-danger"></span>
-
-
-                        </div>
-                        <div class="inputs">
-                            <label for="VehicleModel">Vehicle Model</label>
-                            <input asp-for="VehicleModel" placeholder="VehicleModel" />
-                            <span class="required">*</span>
-                            <span asp-validation-for="VehicleModel" class="text-danger"></span>
-                        </div>
-
-                        <div class="inputs">
-                            <label for="VehicleColor">Vehicle Color</label>
-                            <input asp-for="VehicleColor" placeholder="VehicleColor" />
-                            <span class="required">*</span>
-                            <span asp-validation-for="VehicleColor" class="text-danger"></span>
-                        </div>
-                        <div class="inputs">
-
-                            <label for="VehicleYear">Vehicle Year</label>
-                            <input asp-for="VehicleYear" placeholder="VehicleYear" />
-                            <span class="required">*</span>
-                            <span asp-validation-for="VehicleYear" class="text-danger"></span>
-                        </div>
-                       
-                       
-                                <div class="inputs">
-                                    <div class="title">
-                                        <strong>Driver license  photo</strong>
-                                    </div>
-                                    <div class="avatar-page">
-
-                                        <input type='file' id="my-file-selector-license" name="DriverLincensePictureUri" />
-                                        <img id="license-image" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
-
-                                    </div>
-
-                                </div>
-                             
-                                <div class="inputs">
-                                    <div class="title">
-                                        <strong>Vehicle photo</strong>
-                                    </div>
-                                    <div class="avatar-page">
-                                        <input type='file' id="my-file-selector-insurance" name="VehiclePhotoUri" />
-                                        <img id="insurance-image" src="@Model.vehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
-                                    </div>
-
-                                </div>
-                            
-
-                        <div class="inputs">
-                            <div class="title">
-                                <strong>Proof of insurance</strong>
-                            </div>
-                            <div class="avatar-page">
-
-                                <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri" />
-                                @*<img id="insurance-image" src="@Model.insurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
-                                <iframe src="@(Model.insurancePhotoUri)" class="iframeClass" style="width:700px; height:300px;"> </iframe>
-
-                            </div>
-
-                        </div>
-                            <div class="buttons">
-                                <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
-
-                            </div>
-                            <div class="center-block bg-primary text-center" id="bar-notification">
-
-                            </div>
-                        </div>
-
                 </div>
-
-            </form>
-
+            </div>
         </div>
-
-
     </div>
-</div>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
+</section>
+                                                     @section Scripts {
+                                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                                                        <script>
 
     $(function () {
         $('form').submit(function () {
@@ -376,5 +374,5 @@
 
 
 
-</script>
-        }
+                                                        </script>
+                                                    }

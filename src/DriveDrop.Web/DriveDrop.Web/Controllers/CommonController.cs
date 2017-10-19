@@ -15,6 +15,7 @@ using DriveDrop.Web.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using System.IO;
+using static DriveDrop.Web.Services.PasswordAdvisor;
 
 namespace DriveDrop.Web.Controllers
 {
@@ -51,6 +52,40 @@ namespace DriveDrop.Web.Controllers
 
             _env = env;
         }
+
+        [AllowAnonymous]
+        [AcceptVerbs("Get", "Post")]
+        public async Task<JsonResult> ValidateUserName(string UserEmail)
+        {
+            var validateUri = API.Common.ValidateUserName(_remoteServiceCommonUrl, UserEmail);
+
+            var response = await _apiClient.GetStringAsync(validateUri);
+            if(!response.Equals("duplicate"))
+                return Json(data: true);
+            else
+                return Json(data: $"Email {UserEmail} is already in use.");
+
+             
+        }
+
+        [AllowAnonymous]
+        [AcceptVerbs("Get", "Post")]
+        public   JsonResult ValidatePassword(string Password)
+        {
+            var message = string.Empty;
+            PasswordScore score;
+            var valid = PasswordAdvisor.ValidatePassword(Password, out message, out score);
+
+            if (valid)
+                return Json(data: true);
+
+            return Json(data: $"{message} this is {score} password");
+
+           
+
+
+        }
+
         public FileResult GetFileFromDisk(string fileName, string name)
         {
             return File(fileName, "multipart/form-data", name);

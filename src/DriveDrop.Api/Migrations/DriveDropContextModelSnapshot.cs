@@ -229,6 +229,10 @@ namespace DriveDrop.Api.Migrations
 
                     b.Property<int?>("DriverId");
 
+                    b.Property<string>("DropComment");
+
+                    b.Property<string>("DropPictureUri");
+
                     b.Property<decimal>("ExtraCharge");
 
                     b.Property<string>("ExtraChargeNote");
@@ -264,6 +268,8 @@ namespace DriveDrop.Api.Migrations
                     b.Property<int>("SenderId");
 
                     b.Property<DateTime>("ShippingCreateDate");
+
+                    b.Property<DateTime>("ShippingPickupDate");
 
                     b.Property<int>("ShippingStatusId");
 

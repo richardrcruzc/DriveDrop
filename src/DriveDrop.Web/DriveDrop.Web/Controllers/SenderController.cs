@@ -162,7 +162,7 @@ namespace DriveDrop.Web.Controllers
 
               
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
-                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
 
             currentUser.CustomerStatus = currentUser.CustomerStatus.ToTitleCase();
@@ -235,7 +235,7 @@ namespace DriveDrop.Web.Controllers
             await PrepareCustomerAddresses(model, id);
 
 
-            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+            ViewBag.PhotoUrl = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
             return View(model);
 

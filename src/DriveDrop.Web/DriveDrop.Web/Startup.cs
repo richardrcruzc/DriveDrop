@@ -70,6 +70,7 @@ namespace DriveDrop.Web
                 .PersistKeysToRedis(Configuration["DPConnectionString"]);
             }
 
+
             services.Configure<AppSettings>(Configuration);
 
             //By connecting here we are making sure that our service
@@ -197,6 +198,7 @@ namespace DriveDrop.Web
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
+                 
                 AuthenticationScheme = "Cookies",
                 AutomaticAuthenticate = true,
             });
@@ -228,6 +230,11 @@ namespace DriveDrop.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                  name: "defaultError",
+                  template: "{controller=Error}/{action=Error}");
+
             });
 
             //app.UseSignalR(r => r.MapHub<NotificationHub>("/notification"));

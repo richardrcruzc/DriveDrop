@@ -1,146 +1,96 @@
 @model IEnumerable<DriveDrop.Web.ViewModels.Shipment>
-    @{
-    
-
-    }
-<div class="side-2">
+@{
 
 
-    @await Html.PartialAsync("CustomerNavigation",(int)@ViewBag.Id)
+}
 
 
-</div>
-                      <div class="center-2">
-                          <div class="page account-page order-list-page">
-                              <div class="page-title">
-                                  <h1>My Packages</h1>
-                              </div>
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
 
-                              <div class="page-body">
+                @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
 
-                                  <div class="order-list">
-    
-        @if (Model != null && Model.Any())
-        {
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">My Packages</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
 
-        <table class="table">
-            <thead>
-                <tr>
-                   
-                    <td>Priority</td>
-                    <td>Package #</td>
-                    <td>Driver</td>
-                    <td>Status</td>
-                    <td>Status Date </td>
-                    <td>Created Date </td>
-                    <td>Security Code</td>
-                </tr>
-            </thead>
-            <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
 
+                                        <table class="table table-responsive table-hover">
+                                            <thead>
+                                                <tr>
 
-                @foreach (var shipping in Model.OrderBy(x=>x.PriorityTypeId))
-                {
-                    <tr>
-                         <td>
-                            @Html.DisplayFor(modelItem => shipping.PriorityType.Name)
-                        </td>
-                      <td>
-                          @Html.ActionLink(shipping.IdentityCode, "ShippingDetails", "sender", new { id = shipping.Id })
-                        </td>
-                        <td>
-
-                            @if(shipping.Driver != null)
-                            {
-
-                                var driver = shipping.Driver.FirstName + " " + shipping.Driver.LastName;
-
-                                @*@Html.ActionLink(driver, "details", "admin", new { id = shipping.DriverId })*@
-                                @Html.ActionLink(driver, "ShippingDetails", "sender", new { id = shipping.Id })
-
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => shipping.ShippingStatus.Name)
-                        </td>
-                        <td class="align-center">
-                            @Html.DisplayFor(modelItem => shipping.PackageStatusHistories.OrderByDescending(x=>x.StatusDate).FirstOrDefault().StatusDate)
-
-                        </td>
-                        <td class="align-center">
-                            @Html.DisplayFor(modelItem => shipping.ShippingCreateDate)
+                                                    <td>Priority</td>
+                                                    <td>Package #</td>
+                                                    <td>Driver</td>
+                                                    <td>Status</td>
+                                                    <td>Status Date </td>
+                                                    <td>Created Date </td>
+                                                    <td>Security Code</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
 
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => shipping.SecurityCode)
-                        </td>
+                                                @foreach (var shipping in Model.OrderBy(x => x.PriorityTypeId))
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => shipping.PriorityType.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink(shipping.IdentityCode, "ShippingDetails", "sender", new { id = shipping.Id })
+                                                        </td>
+                                                        <td>
 
-                    </tr>
-                } 
-            </tbody>
-        </table>
-        }
-        @*var urlPickup = ViewBag.Uri + item.PickupPictureUri;
-        var urlDelivery = "";
-        if (string.IsNullOrEmpty(item.DeliveredPictureUri))
-        {
-            urlDelivery = ViewBag.Uri + "/images/DefaultProfileImage.png";
-        }
-        else
-        {
-            urlDelivery = ViewBag.Uri + item.DeliveredPictureUri;
-        }
+                                                            @if (shipping.Driver != null)
+                                                            {
 
-        <div class="section order-item">
-            <div class="title">
-                <strong>Shipping #: @item.IdentityCode</strong>
+                                                                var driver = shipping.Driver.FirstName + " " + shipping.Driver.LastName;
 
+                                                                @*@Html.ActionLink(driver, "details", "admin", new { id = shipping.DriverId })*@
+                                                                @Html.ActionLink(driver, "ShippingDetails", "sender", new { id = shipping.Id })
 
-                @Html.ActionLink(item.IdentityCode, "ShippingDetails", "sender", new { id = item.Id })
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => shipping.ShippingStatus.Name)
+                                                        </td>
+                                                        <td class="align-center">
+                                                            @Html.DisplayFor(modelItem => shipping.PackageStatusHistories.OrderByDescending(x => x.StatusDate).FirstOrDefault().StatusDate)
+
+                                                        </td>
+                                                        <td class="align-center">
+                                                            @Html.DisplayFor(modelItem => shipping.ShippingCreateDate)
 
 
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => shipping.SecurityCode)
+                                                        </td>
 
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                                <div class="post-gig">
+                                    <input type="submit" value="Add New" name="save-info-button" class="bttn save-customer-info-button"  onclick="location.href='/sender/NewShipping/@(ViewBag.Id)'"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <ul class="info">
-                <li><label>Status</label> <span class="order-completed">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
-                <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                <li><label>Priority: </label><span class="order-date"> @Html.DisplayFor(modelItem => item.PriorityType.Name)</span></li>
-                <li><label>Order Total: </label><span class="order-total">@Html.DisplayFor(modelItem => item.ChargeAmount)</span></li>
-                <li><label>Order Discount: </label><span class="order-total">@Html.DisplayFor(modelItem => item.Discount)</span></li>
-                <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
-                <li><label>Delivery Address:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
-                <li><label>Distance Miles:</label> <span class="order-total">@Html.DisplayFor(modelItem => item.Distance)</span></li>
-                <li>
-                    <div class="pull-left">
-                        <div><label>Pickup Image</label></div>
-                        <img src="@urlPickup" class="img-rounded" alt="no package image" width="100" height="75">
-                    </div>
-                    <div class="pull-right"></div>
-                    <div class="col-5">
-                        <div><label>Delivery Image</label></div>
-                        <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
-                    </div>
-                </li>
-            </ul>
-
-            
-
-
-        </div>*@
-       
-    
-           
-
-                                       
-
-</div>
-                                  <div class="form-fields">
-                                      <div class="add-button">
-                                          <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/NewShipping/@(ViewBag.Id)'" value="Add new" />
-                                      </div>
-                                  </div>
-
-                                  </div>
-                          </div>
-                      </div>
+        </div>
+    </div>
+        </section>
+                     

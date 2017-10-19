@@ -19,7 +19,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Identity.Api.Models;
 using Identity.Api.Configuration;
-using IdentityServer4; 
+using IdentityServer4;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace Identity.Api
 {
@@ -53,10 +55,25 @@ namespace Identity.Api
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<Models.ApplicationUser, IdentityRole>(
-                config =>
+                options =>
                 {
-                    config.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedEmail = true;
+                    // Password settings
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireLowercase = true;
                     
+
+                    // Lockout settings
+                    options.Lockout.DefaultLockoutTimeSpan = System.TimeSpan.FromMinutes(30);
+                    options.Lockout.MaxFailedAccessAttempts = 10;
+                    options.Lockout.AllowedForNewUsers = true;
+
+                    // User settings
+                    options.User.RequireUniqueEmail = true;
+
                 }
                 )
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -64,12 +81,17 @@ namespace Identity.Api
 
             services.Configure<AppSettings>(Configuration);
 
-        //    services.AddIdentity<ApplicationUser, IdentityRole>(config =>
-        //    {
-        //        config.SignIn.RequireConfirmedEmail = true;
-        //    })
-        //    .AddEntityFrameworkStores<ApplicationDbContext>()
-        //.AddDefaultTokenProviders();
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
+
+            //    services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            //    {
+            //        config.SignIn.RequireConfirmedEmail = true;
+            //    })
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //.AddDefaultTokenProviders();
 
 
             // Add framework services.
@@ -103,6 +125,12 @@ namespace Identity.Api
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+       //     var options = new RewriteOptions()
+       //.AddRedirectToHttps();
+
+       //     app.UseRewriter(options);
+
 
             if (env.IsDevelopment())
             {

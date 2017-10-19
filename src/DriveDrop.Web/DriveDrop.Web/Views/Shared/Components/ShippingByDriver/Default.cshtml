@@ -2,7 +2,7 @@
 @model DriveDrop.Web.ViewModels.PaginatedShippings
 
     <div class="row">
-        <table class="table">
+        <table class="table table-responsive table-hover">
 
             <tr>
                 @*<th>#</th>*@
@@ -18,14 +18,14 @@
             {
 
                 <tr>
-                   
+
                     <td>
                         <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
                         <div>
                             @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
                         </div>
-                        <div >
-                            @Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})
+                        <div>
+                            @Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id, customerId = item.DriverId }, new { @class = "btn-danger" })
                         </div>
                     </td>
 

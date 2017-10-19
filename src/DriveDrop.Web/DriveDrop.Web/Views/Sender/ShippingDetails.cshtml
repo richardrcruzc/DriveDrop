@@ -43,7 +43,7 @@
 
 
                             <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
-                             <li><label>Pickup Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                            <li><label>Pickup Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
                             <li><label>Delivery Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
                             <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
 
@@ -76,7 +76,8 @@
                                     <img src="@Model.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
                                 </div>
                             </div>
-                            <div class="row"><br />
+                            <div class="row">
+                                <br />
                                 <div class="col-md-5">
                                     <div><label>Delivery Image</label></div>
                                     <img src="@Model.DeliveredPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
@@ -85,7 +86,7 @@
                         </div>
                     </div>
 
-                        @if (Model.ShippingStatus.Id == 4)
+                    @if (Model.ShippingStatus.Id == 4)
                     {
 
                         <div class="section order-item">
@@ -109,26 +110,53 @@
                                     <strong>Review to Driver</strong>
                                 </div>
                                 @if (Model.Reviews == null || Model.Reviews.Count() == 0)
-                            {
+                                {
 
                                     <div class="add-button">
                                         <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/InitializeReview/@(Model.Id)'" value="Review Driver" />
                                     </div>
 
-                            }
+                                }
                                 @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 1, shippingId = Model.Id })
-                                
+
 
                             </div>
 
                         </div>
 
-                         } 
+                    }
 
 
-                   
+                    <div class="section order-item">
+                        <div class="title">
+                            <strong><label>Status History</label></strong>
+                        </div>
+                        <div class="info">
+                            <table class="table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        @*<th>#</th>*@
+                                        <th> Status</th>
+                                        <th>Date</th>
+                                        
 
-                </div>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var h in Model.PackageStatusHistories)
+                                    {
+                                    <tr>
+                                        <td>@h.ShippingStatus.Name</td>
+                                        <td>@h.StatusDate</td>
+                                        
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                        
+                    </div>
             </div>
         </div>
     </div>

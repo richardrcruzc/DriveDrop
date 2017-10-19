@@ -1,266 +1,122 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drivedrop Identity</title>
-    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Drivedrop</title>
 
-    @*<environment names="Development,Staging,Production">
-        <link rel="stylesheet" href="@(Url.Content("~/lib/bootstrap/dist/css/bootstrap.css"))" />
-        <link rel="stylesheet" href="@(Url.Content("~/css/site.css"))" />
-        <link rel="stylesheet" href="@(Url.Content("~/css/styles.css"))" />
-    </environment>*@
-    @*<environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="@(Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css"))"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="@(Url.Content("~/css/styles.min.css"))" />
-    </environment>*@
+    <!-- Bootstrap -->
 
-    <environment names="Development">
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link href="~/css/owl.carousel.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet">
 
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/styles.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link href="@(Url.Content("/css/styles.css"))" rel="stylesheet" />
-    </environment>
-
-
-</head>
+   </head>
 <body>
-    
-
-    <div class="master-wrapper-page">
-
-        <div class="header">
-
-
-            <div class="header-logo"> 
-                <a  href="@ViewBag.returnUrl">
-                    <div class="navbar-brand">
-                        <img title="" alt="DriveDrop" src="~/images/brand.png" width="100" height="75">
-                    </div>
-                </a>
-            </div>
-            
-
-        </div>
-
-
-        <div class="master-wrapper-content">
-
-
-            <div class="master-column-wrapper">
-
-                <div class="center-1">
-                    @RenderBody()
+     
+    <header class="blue-bg">
+        <div class="container">
+            <div class="row descktop-menu">
+                <div class="col-xs-2">
+                    <a href="@ViewBag.returnUrl"><img src="~/images/logo.png"></a>
                 </div>
-            </div>
-        </div>
+                <div class="col-xs-8 pull-right ">
+                    <nav>
+                        <ul class="main-menu">
 
-        <div class="footer">
-            <div class="footer-upper">
-                <div class="footer-block information">
-                    <div class="title">
-                        <strong>Information</strong>
-                    </div>
-                    <ul class="list">
-                        <li><a href="/sitemap">Sitemap</a></li>
-                        <li><a href="/shipping-returns">Shipping &amp; returns</a></li>
-                        <li><a href="/privacy-notice">Privacy notice</a></li>
-                        <li><a href="/conditions-of-use">Conditions of use</a></li>
-                        <li><a href="/about-us">About us</a></li>
-                        <li><a href="/contactus">Contact us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-block customer-service">
-                    <div class="title">
-                        <strong>Customer service</strong>
-                    </div>
-                    <ul class="list">
-                        <li><a href="/search">Search</a> </li>
-                        <li><a href="/news">News</a></li>
-                        <li><a href="/blog">Blog</a></li>
+                            <li>
+                                <a href="@ViewData["ReturnHomeUrl"]/sender/NewSender"  class="ico-register">Sign Up Senders <i class="fa fa-angle-down"></i></a>
 
-                    </ul>
-                </div>
-                <div class="footer-block my-account">
-                    <div class="title">
-                        <strong>My account</strong>
-                    </div>
-                    <ul class="list">
-                        <li><a href="/customer/info">My account</a></li>
-                        <li><a href="/order/history">Shipping</a></li>
-                        <li><a href="/customer/addresses">Addresses</a></li>
-
-                        <li><a href="/vendor/apply">Apply for vendor account</a></li>
-                    </ul>
-                </div>
-                <div class="footer-block follow-us">
-                    <div class="social">
-                        <div class="title">
-                            <strong>Follow us</strong>
-                        </div>
-                        <ul class="networks">
-                            <li class="facebook"><a href="http://www.facebook.com/drivedrop" target="_blank">Facebook</a></li>
-                            <li class="twitter"><a href="https://twitter.com/drivedrop" target="_blank">Twitter</a></li>
-                            <li class="rss"><a href="/news/rss/1">RSS</a></li>
-                            <li class="youtube"><a href="http://www.youtube.com/user/drivedrop" target="_blank">YouTube</a></li>
-                            <li class="google-plus"><a href="https://plus.google.com/+drivedrop" target="_blank">Google+</a></li>
+                            </li>
+                            <li>
+                                <a  href="@ViewData["ReturnHomeUrl"]/Driver/NewDriver"  class="ico-register">Sign Up Drivers <i class="fa fa-angle-down"></i></a>
+                            </li>
+                            <div class="clearfix"></div>
                         </ul>
-                    </div>
-                    <div class="newsletter">
-                        <div class="title">
-                            <strong>Newsletter</strong>
-                        </div>
-                        <div class="newsletter-subscribe" id="newsletter-subscribe-block">
-                            <div class="newsletter-email">
-                                <input class="newsletter-subscribe-text" id="newsletter-email" name="NewsletterEmail" placeholder="Enter your email here..." type="text" value="" />
-                                <input type="button" value="Subscribe" id="newsletter-subscribe-button" class="button-1 newsletter-subscribe-button" />
-                            </div>
-                            <div class="newsletter-validation">
-                                <span id="subscribe-loading-progress" style="display: none;" class="please-wait">Wait...</span>
-                                <span class="field-validation-valid" data-valmsg-for="NewsletterEmail" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        <div class="newsletter-result" id="newsletter-result-block"></div>
-                        <script type="text/javascript">
-                        //function newsletter_subscribe(subscribe) {
-                        //    var subscribeProgress = $("#subscribe-loading-progress");
-                        //    subscribeProgress.show();
-                        //    var postData = {
-                        //        subscribe: subscribe,
-                        //        email: $("#newsletter-email").val()
-                        //    };
-                        //    $.ajax({
-                        //        cache: false,
-                        //        type: "POST",
-                        //        url: "/subscribenewsletter",
-                        //        data: postData,
-                        //        success: function (data) {
-                        //            subscribeProgress.hide();
-                        //            $("#newsletter-result-block").html(data.Result);
-                        //            if (data.Success) {
-                        //                $('#newsletter-subscribe-block').hide();
-                        //                $('#newsletter-result-block').show();
-                        //            } else {
-                        //                $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
-                        //            }
-                        //        },
-                        //        error: function (xhr, ajaxOptions, thrownError) {
-                        //            alert('Failed to subscribe.');
-                        //            subscribeProgress.hide();
-                        //        }
-                        //    });
-                        //}
 
-                        //$(document).ready(function () {
-                        //    $('#newsletter-subscribe-button').click(function () {
-                        //        newsletter_subscribe('true');
-                        //    });
-                        //    $("#newsletter-email").keydown(function (event) {
-                        //        if (event.keyCode == 13) {
-                        //            $("#newsletter-subscribe-button").click();
-                        //            return false;
-                        //        }
-                        //    });
-                        //});
-                        </script>
-                    </div>
-
+                       
+                    </nav>
                 </div>
             </div>
-            <div class="footer-lower">
-                <div class="footer-info">
-                    <span class="footer-disclaimer">Copyright &copy; 2017 Your store name. All rights reserved.</span>
-                </div>
-                <div class="footer-powered-by">
-
-                    Powered by <a href="http://www.drivedrop.com/">drivedrop</a>
-                </div>
-
+            <div class="mobile-menu">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()"> <img src="~/images/mobile-nav.png"></span>
+                <a href="index.html"><img src="~/images/logo.png"></a>
             </div>
 
         </div>
-    </div>            
-
-                @*<environment names="Development,Staging,Production">
-
-                    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-                    <script src="@(Url.Content("~/lib/jquery/dist/jquery.js"))"></script>
-
-                    <script src="@(Url.Content("~/lib/bootstrap/dist/js/bootstrap.js"))"></script>
-                    <script src="@(Url.Content("~/js/site.js"))" asp-append-version="true"></script>
-
-
-                </environment>*@
-                @*<environment names="Staging,Production">
-                    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                            asp-fallback-src="@(Url.Content("~/lib/jquery/dist/jquery.min.js"))"
-                            asp-fallback-test="window.jQuery"
-                            crossorigin="anonymous"
-                            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-                    </script>
-                    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-                    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                            asp-fallback-src="@(Url.Content("~/lib/bootstrap/dist/js/bootstrap.min.js"))"
-                            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                            crossorigin="anonymous"
-                            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-                    </script>
-                    <script src="@(Url.Content("~/js/site.min.js"))" asp-append-version="true"></script>
-
-
-                </environment>*@
-
-    <environment names="Development">
-
-        <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-
-
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="@(Url.Content("~/lib/jquery/dist/jquery.min.js"))"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="@(Url.Content("~/lib/bootstrap/dist/js/bootstrap.min.js"))"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="@(Url.Content("/js/site.min.js"))"></script>
-
-    </environment>
+    </header>
 
 
 
-                @RenderSection("scripts", required: false)
+    @RenderBody()
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-3 footer-logo">
+                    <figure><img src="~/images/footer-logo.png"> </figure>
+                </div>
+                <div class="col-xs-9 footer-links">
+                    <ul class="footer-menu">
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Become An Agent</a></li>
+                        <div class="clearfix"></div>
+                    </ul>
+                    <div class="clearfix"></div>
+                    <ul class="social-media footer-con">
+                        <li><a href="#" class="fa fa-facebook"></a> </li>
+                        <li><a href="#" class="fa fa-google-plus"></a> </li>
+                        <li><a href="#" class="fa fa-twitter"></a> </li>
+                        <div class="clearfix"></div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right">
+            <div class="container">
+                <p>Copyright 2017 | ALL RIGHTS RESERVED</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/sticky-sidebar.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "100%";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+
+    </script>
+
+    <script src="@(Url.Content("~/lib/Inputmask/dist/jquery.inputmask.bundle.js"))"></script>
+    <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone.js"))"></script>
+    <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone-be.js"))"></script>
+    <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone-ru.js"))"></script>
+
+    @RenderSection("scripts", required: false)
+
+
 </body>
-
-
-
-
-
-
-
 </html>
-
+ 
 
 
 

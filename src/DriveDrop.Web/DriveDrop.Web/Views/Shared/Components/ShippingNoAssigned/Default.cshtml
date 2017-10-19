@@ -2,7 +2,7 @@
 @model DriveDrop.Web.ViewModels.PaginatedShippings
 
     <div class="row">
-        <table class="table">
+        <table class="table table-responsive table-hover">
 
             <tr>
                 <th>#</th>
@@ -19,9 +19,9 @@
             {
                 var url = ViewBag.Uri + item.PickupPictureUri;
                 <tr>
-                    
+
                     <td>
-                        @Html.ActionLink("Asign to me!","AssignDriver", new { id = ViewBag.DriverId , shipingId  = item.Id})
+                        @Html.ActionLink("Asign to me!", "AssignDriver", new { id = ViewBag.DriverId, shipingId = item.Id })
 
                         <img src="@url" class="img-rounded" alt="Cinque Terre" width="90" height="60">
                     </td>
@@ -56,17 +56,19 @@
                         </div>
                         @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
                     </td>
-                    <td><div><button id="@item.Id" 
-                                     pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
-                                     delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"                                     
-                                     onClick="javascript:SetAddressFunction(this);"> 
-                                 <i class="material-icons" style="font-size:12px;color:red">directions</i>
-                        </button>
+                    <td>
+                        <div>
+                            <button id="@item.Id"
+                                    pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                    delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                                    onClick="javascript:SetAddressFunction(this);">
+                                <i class="material-icons" style="font-size:12px;color:red">directions</i>
+                            </button>
                         </div>
-                        
+
                     </td>
 
-                    
+
                 </tr>
             }
         </table>

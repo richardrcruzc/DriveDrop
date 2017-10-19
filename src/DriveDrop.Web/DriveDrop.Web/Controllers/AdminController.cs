@@ -381,17 +381,17 @@ public async Task<IActionResult> DriverDetails(int? id)
 
 
             if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
-                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
             if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
-                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
             if (string.IsNullOrWhiteSpace(response.VehiclePhotoUri))
-                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
 
             if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
-                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
             response.CustomerType = response.CustomerType.ToTitleCase();
             response.CustomerStatus = response.CustomerStatus.ToTitleCase();
@@ -491,17 +491,17 @@ public async Task<IActionResult> DriverDetails(int? id)
 
 
             if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
-                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
           
             if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
-                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
           
             if (string.IsNullOrWhiteSpace(response.VehiclePhotoUri))
-                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
             
           
             if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
-                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/DefaultProfileImage.png";
+                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
             response.CustomerType = response.CustomerType.ToTitleCase();
             response.CustomerStatus = response.CustomerStatus.ToTitleCase();

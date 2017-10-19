@@ -1,5 +1,118 @@
 ﻿// Write your Javascript code.
 
+
+var stickySidebar = new StickySidebar('#sidebar', {
+    topSpacing: 150,
+    containerSelector: '.container',
+    innerWrapperSelector: '.sidebar__inner'
+});
+
+$(document).ready(function () {
+   // $(document).on("scroll", onScroll);
+
+    //smoothscroll
+    $('.gig-information').on('click', function (e) {
+        
+        //e.preventDefault();
+       // $(document).off("scroll");
+
+        $('a').each(function () {
+            $(this).removeClass('active');
+        })
+
+        $(this).addClass('active');
+        
+        //var target = this.hash,
+        //    menu = target;
+        //$target = $(target);
+        //$('html, body').stop().animate({
+        //    'scrollTop': $target.offset().top + 2
+        //}, 500, 'swing', function () {
+        //    window.location.hash = target;
+        //    $(document).on("scroll", onScroll);
+        //});
+    });
+});
+
+//function onScroll(event) {
+//    var scrollPos = $(document).scrollTop();
+//    $('#side-navbar a').each(function () {
+//        var currLink = $(this);
+//        var refElement = $(currLink.attr("href"));
+//        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+//            $('#menu-center ul li a').removeClass("active");
+//            currLink.addClass("active");
+//        }
+//        else {
+//            currLink.removeClass("active");
+//        }
+//    });
+//}
+
+
+$(function () {
+    var priorityClock = document.getElementsByClassName('priorityClock');
+    if (priorityClock.length) {
+        $(".priorityClock").each(function () {
+
+            var temp = $(this);
+            //alert($(this).data("pickupdate"));
+
+            // Set the date we're counting down to
+            // var countDownDate = new Date($.now()).getTime();
+            var countDownDate = new Date(temp.data("pickupdate")).getTime();
+            // Update the count down every 1 second
+           var x = setInterval(function () {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+//                document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+//                    + minutes + "m " + seconds + "s ";
+
+
+                temp.html(days + "d " + hours + "h "+ minutes + "m " + seconds + "s ");
+
+
+                // If the count down is finished, write some text 
+                if (distance < 0) {
+                    clearInterval(x);
+  //                  document.getElementById("demo").innerHTML = "EXPIRED";
+                    temp.html("EXPIRED");
+                }
+
+            
+            }, 1000);
+
+        });
+    }
+
+});
+
+
+
+//$('.acept-package').keypress(function (e) {  
+     
+//    var str = $(this).val();
+     
+//    $("#dynamic").load('/drive/ShippingSecurityCode', { id:@(Model.DriverId) },
+//        function () {
+//        });
+//});
+//$('.acept-package').keypress(function (e) { return e.which != 13; });
+
+
+
 //if ($("#DriverNotificationWS").length) {
     var socket;
    // var sendButton = document.getElementById("sendButton");

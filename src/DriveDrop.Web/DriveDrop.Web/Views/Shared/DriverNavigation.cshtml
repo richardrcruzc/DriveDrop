@@ -1,44 +1,131 @@
 @model int
-<div class="block block-account-navigation">
+
+<div id="sidebar" class="col-sm-3 sidebar-desktop">
+    <ul id="side-navbar" class="side-fixed-menu">
+        <li >
+            @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model } , new { @class = "active gig-information" })
+
+        </li>
+        <li >
+            @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model }, new { @class = "gig-information" })
+
+        </li>
+        <li >
+            @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model }, new { @class = "gig-information" })
+
+        </li>
+        <li >
+            @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, new { @class = "gig-information" })
+
+        </li>
+
+        <li >
+            @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model }, new { @class ="gig-information" })
+
+        </li>
+        <li >
+            @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model }, null)
+
+        </li>
+
+        <li >
+            @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model }, null)
+        </li>
+
+        <li class="change-password">
+            @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model }, null)
+
+        </li>
+    </ul>
+    <div class="credits">
+        <p>CREDITS <a href="#" class="help">?</a></p>
+        <a href="#" class="price">$0.00</a>
+    </div>
+    <h3>Redeem Promo Code</h3>
+    <div class="clearfix"></div>
+</div>
+
+<div class="col-sm-3 sidebar-mobile">
+    <ul id="side-navbar" class="side-fixed-menu">
+        <li>
+            @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model }, null)
+
+        </li>
+        <li>
+            @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model }, null)
+
+        </li>
+        <li>
+            @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model }, null)
+
+        </li>
+        <li>
+            @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, null)
+
+        </li>
+
+        <li>
+            @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model }, null)
+
+        </li>
+        <li>
+            @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model }, null)
+
+        </li>
+
+        <li>
+            @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model }, null)
+        </li>
+
+        <li class="change-password">
+            @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model }, null)
+
+        </li>
+    </ul>
+    <div class="credits">
+        <p>CREDITS <a href="#" class="help">?</a></p>
+        <a href="#" class="price">$0.00</a>
+    </div>
+    <h3>Redeem Promo Code</h3>
+    <div class="clearfix"></div>
+</div>
+
+
+
+
+@*<div class="block block-account-navigation">
     <div class="title">
         <strong>Driver Dashboard</strong>
     </div>    
     <div class="listbox">
         <ul class="list">
-            <li class="customer-info">
+            <li >
                 @Html.ActionLink("Packages Available for Pick up Based on the Driver's requirements.", "readytopickup", "driver", new { id = Model }, null)
 
             </li>
-            <li class="customer-info">
+            <li >
                 @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model }, null)
 
             </li>
-            <li class="customer-info">
+            <li >
                 @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model }, null)
 
             </li>
-            <li class="customer-info">
+            <li >
                 @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, null)
 
             </li> 
-            @*<li class="customer-info">
-                @Html.ActionLink("Deliver", "Deliver", "driver", new { id = Model }, null)
-
-            </li> 
-            <li class="customer-info">
-                @Html.ActionLink("Canceled", "Canceled", "driver", new { id = Model }, null)
-
-            </li>*@ 
-            <li class="customer-info">
+            
+            <li >
                 @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model }, null)
                  
             </li>
-            <li class="customer-info"> 
+            <li > 
                 @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model }, null)
 
             </li>
 
-            <li class="customer-info">
+            <li >
                 @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model }, null)
             </li>
             
@@ -50,4 +137,4 @@
 
         </ul>
     </div>
-</div>
+</div>*@

@@ -69,13 +69,14 @@ namespace DriveDrop.Web.ViewModels
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
-        [Remote("ValidateUserName", "Driver", ErrorMessage = "Username is not available.")]
+        [Remote(action:"ValidateUserName", controller:"Common")]
         public string UserEmail { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [Remote(action: "ValidatePassword", controller: "Common")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
@@ -103,14 +104,17 @@ namespace DriveDrop.Web.ViewModels
         //[EmailAddress]
         //[Display(Name = "Email")]
         public string Email { get; set; }
+
         [Required(ErrorMessage = "Your must provide a Last Name")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
         [Required(ErrorMessage = "Your must provide a First Name")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+
         public int TransportTypeId { get; set; }
         public TransportType TransportType { get; set; }
         public int CustomerStatusId { get; set; }

@@ -1,149 +1,177 @@
 ﻿@model  DriveDrop.Web.ViewModels.CurrentCustomerModel
 
-    @{
-        ViewData["Title"] = "Details";
-    }
- <div class="side-2">
-
-
-     @await Html.PartialAsync("CustomerNavigation", Model.Id)
-
-
-</div>
-<div class="center-2">
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h1>Sender Information</h1>
-        </div>
-
-        <div class="page-body">
-            <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data"
-                  data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification" >                 
-
-                    @Html.AntiForgeryToken()
-
-
-                    <input asp-for="Id" hidden />
-                    <input asp-for="CustomerStatusId" hidden />
-                    <input asp-for="CustomerStatus" hidden />
-                    <input asp-for="PersonalPhotoUri" hidden />
-                
-                    <div class="fieldset">
-
-                        <div class="title">
-                            <strong>My Personal Information Details</strong>
-                        </div>
+@{
+    ViewData["Title"] = "Details";
+}
 
 
 
-                        <div asp-validation-summary="ModelOnly" class="result"></div>
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("CustomerNavigation", Model.Id)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Sender Information</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="profile">
+                                            <div class="photo">
+                                                <input type="file" accept="image/*" id="my-file-selector-Personal" name="photoUrl">
+                                                <div class="photo__helper">
+                                                    <div class="photo__frame photo__frame--circle">
+                                                        <canvas class="photo__canvas"></canvas>
+                                                        <div class="message is-empty">
+                                                            <p class="message--desktop">
+                                                                @*<input type='file' id="my-file-selector-Personal" name="PersonalPhotoUri" />*@
+                                                                <img id="Personal-image" src="@Model.PersonalPhotoUri" />
+
+                                                                @*<img src="~/images/profile-icon.png">*@
+                                                                
+
+                                                                Recommended
+                                                            </p>
+                                                            <p class="message--mobile">Tap here to select your picture.</p>
+                                                        </div>
+                                                        <div class="message is-loading">
+                                                            <i class="fa fa-2x fa-spin fa-spinner"></i>
+                                                        </div>
+                                                        <div class="message is-dragover">
+                                                            <i class="fa fa-2x fa-cloud-upload"></i>
+                                                            <p>Drop your photo</p>
+                                                        </div>
+                                                        <div class="message is-wrong-file-type">
+                                                            <p>Only images allowed.</p>
+                                                            <p class="message--desktop">Drop your photo here or browse your computer.</p>
+                                                            <p class="message--mobile">Tap here to select your picture.</p>
+                                                        </div>
+                                                        <div class="message is-wrong-image-size">
+                                                            <p>Your photo must be larger than 350px.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="photo__options hide">
+                                                    <div class="photo__zoom">
+                                                        <input type="range" class="zoom-handler">
+                                                    </div><a href="javascript:;" class="remove"><i class="fa fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                   
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data"
+                                                  data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+
+                                                @Html.AntiForgeryToken()
 
 
+                                                <input asp-for="Id" hidden />
+                                                <input asp-for="CustomerStatusId" hidden />
+                                                <input asp-for="CustomerStatus" hidden />
+                                                <input asp-for="PersonalPhotoUri" hidden />
+
+                                                <div class="form-group">
+
+                                                    <div class="title">
+                                                        <strong>My Personal Information Details</strong>
+                                                    </div>
+
+                                                    <div asp-validation-summary="ModelOnly" class="result"></div>
+
+                                                     
+                                                    <div class="form-fields">
+                                                        <div class="form-field">
+                                                            <label for="CustomerStatus"><span>Status </span>@Model.CustomerStatus</label>
+                                                           
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label for="FirstName">First Name</label>
+
+                                                            <input asp-for="FirstName" placeholder="First name" />
+                                                            <span class="required">*</span>
+
+                                                            <span asp-validation-for="FirstName" class="text-danger"></span>
 
 
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label for="LastName">Last Name</label>
+                                                            <input asp-for="LastName" placeholder="Last name" />
+                                                            <span class="required">*</span>
+                                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label for="LastName">Email address</label>
+                                                            <input asp-for="Email" placeholder="Email" />
+                                                            <span class="required">*</span>
+                                                            <span asp-validation-for="Email " class="text-danger"></span>
+                                                        </div>
+                                                        
+                                                        <div class="form-field">
+                                                            @Html.LabelFor(m => m.PrimaryPhone)
+                                                            @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                                            <span class="required">*</span>
+                                                            @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
-                        <div class="form-fields">
-                            <div class="inputs">
-                                <label for="CustomerStatus">Status</label>
-                                <div class="gender">
-                                    <span>
 
-                                        <label class="male">@Model.CustomerStatus</label>
-                                    </span>
+                                                         </div>
+                                                        <div class="form-field">
+                                                            @Html.LabelFor(m => m.Phone)
+                                                            @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                                            <span class="required">*</span>
+                                                            @Html.ValidationMessageFor(m => m.Phone)
+
+
+                                                             
+                                                        </div>
+                                                        <div class="form-field">
+
+                                                            <label for="VerificationId">Verification ID</label>
+                                                            <input asp-for="VerificationId" placeholder="Verification ID" />
+                                                            <span class="required">*</span>
+                                                            <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                        </div>
+                                                     
+                                                         
+
+                                                        <div class="post-gig">
+                                                            <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
+                                                        </div>
+
+                                                        <div class="center-block bg-primary text-center" id="bar-notification">
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="inputs">
-                                <label for="FirstName">First Name</label>
-
-                                <input asp-for="FirstName" placeholder="First name"  />
-                                <span class="required">*</span>
-
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
-
-
-                            </div>
-                            <div class="inputs">
-                                <label for="LastName">Last Name</label>
-                                <input asp-for="LastName" placeholder="Last name" />
-                                <span class="required">*</span>
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
-
-                            <div class="inputs">
-                                @Html.LabelFor(m => m.Email)
-                                @Html.TextBoxFor(m => m.Email, new { @class = "email"  })
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.Email)
-
-
-
-                                @*<label for="Email">Email</label>
-                                <input asp-for="Email" placeholder="Email" />
-                                <span class="required">*</span>
-                                <span asp-validation-for="Email" class="text-danger"></span>*@
-                            </div>
-                            <div class="inputs">
-                                @Html.LabelFor(m => m.PrimaryPhone)
-                                @Html.TextBoxFor(m => m.PrimaryPhone, new {   @data_inputmask = "'mask': '(999) 999-9999'" })
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.PrimaryPhone)
-
-
-                                @*<label for="PrimaryPhone">Primary Phone</label>
-                                <input asp-for="PrimaryPhone" placeholder="Phone" class="phone-number"/>
-                                <span class="required">*</span>
-                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>*@
-                            </div>
-                            <div class="inputs">
-                                @Html.LabelFor(m => m.Phone)
-                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.Phone)
-
-
-                                @*<label for="Phone">Phone</label>
-                                <input asp-for="Phone" class="phone-number" placeholder="Phone"  />
-                                <span class="required">*</span>
-                                <span asp-validation-for="Phone" class="text-danger"></span>*@
-                            </div>
-                            <div class="inputs">
-
-                                <label for="VerificationId">Verification ID</label>
-                                <input asp-for="VerificationId"   placeholder="Verification ID" />
-                                <span class="required">*</span>
-                                <span asp-validation-for="VerificationId" class="text-danger"></span>
-                            </div>
-                            <div class="inputs">
-                                <div class="title">
-                                    <strong>Profile Photo</strong>
+                                    </div>
                                 </div>
-                                <div class="avatar-page">
-                                    <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
-                                    <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="200" height="200" />
-                                </div>
-
-                            </div>
-                            <div class="buttons">
-                                <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
-
-                            </div>
-                            <div class="center-block bg-primary text-center" id="bar-notification">
-                               
-                            </div>
-                        </div>
-
                     </div>
-
-                </form>
-         
+                </div>
+            </div>
         </div>
-
-
     </div>
-</div>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        <script>
+</section>
+                                    
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
 
             $(function () {
                 $('form').submit(function () {
@@ -153,7 +181,7 @@
                     $(".file-select").each(function () { data.append($(this).val(), $(this).get(0).files[0]); i++; })
 
                     var postData = $('#fields :input');
-                    
+
                     $.each(postData, function (key, input) {
                         alert(input.name);
                         alert(input.value);
@@ -181,20 +209,19 @@
             });
 
 
-
             function readURL(input) {
 
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        $('#blah').attr('src', e.target.result);
+                        $('#Personal-image').attr('src', e.target.result);
                     }
 
                     reader.readAsDataURL(input.files[0]);
                 }
             }
-            $("#photoUrl").change(function () {
+            $("#my-file-selector-Personal").change(function () {
                 readURL(this);
             });
 
@@ -302,5 +329,5 @@
 
 
 
-        </script>
-        }
+                                        </script>
+                                    }

@@ -8,80 +8,49 @@
 @{
     ViewData["Title"] = "Log in";
 }
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
 
-<div class="page login-page">
-    <div class="page-title">
-        <h1>Welcome</h1>
-    </div>
-
-    <div class="page-body">
-        <div class="customer-blocks">
-            <div class="new-wrapper register-block">
-                <div class="title">
-                    <strong> New Senders/Drivers</strong>
-                </div>
-                <div class="text">
-                    By creating an account you will be able to shop faster, 
-                    be up to date an order status, and track orders you have previously made.
-                </div>
-                <div class="buttons">                
-                    <a href="@ViewData["ReturnHomeUrl"]/sender/NewSender" class="button-1 register-button">Sender</a>
-                    <a href="@ViewData["ReturnHomeUrl"]/Driver/NewDriver" class="button-1 register-button">Driver</a>
-
-                </div>
+    <section class="login-page pt-220">
+        <div class="container">
+            <div class="headline width-40 mb-50 ">
+                <h3>LOG IN</h3>
+                <P>Returning Senders/Drivers.</P>
             </div>
-            <div class="returning-wrapper fieldset">
-                <div class="title">
-                    <strong>Returning Senders/Drivers </strong>
+            <div class="login-form">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-field "> 
+                     
+                    @Html.TextBoxFor(m => m.Email, new { @class = "email", autofocus = "autofocus", placeholder = "Email Address" })
+                    @Html.ValidationMessageFor(m => m.Email)
                 </div>
-                <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-fields">
-                        <div class="inputs">
+                <div class="form-field">
+                    @Html.PasswordFor(m => m.Password, new { @class = "password", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password)
 
-                            @Html.LabelFor(m => m.Email)
-                            @Html.TextBoxFor(m => m.Email, new { @class = "email", autofocus = "autofocus" })
-                            @Html.ValidationMessageFor(m => m.Email)
+                </div>
+                <div class="inputs reversed">
+                    <input asp-for="RememberMe" />
+                    <label for="RememberMe">Remember me?</label>
+                    <span class="forgot-password">
+                        <a href="/account/ForgotPassword?returnUrl=@(ViewData["ReturnUrl"])">Forgot password?</a>
+                    </span>
+                </div> 
+                <button type="submit" class="login-bttn">Login into Your Account</button>
+                <a href="/account/ForgotPassword?returnUrl=@(ViewData["ReturnUrl"])" class="forget">forget you password?</a>
+                <div class="clearfix"></div>
+                <div class="border"><span><spam>&amp;</spam></span></div>
+                <a href="#" class="fb-bttn">Log in with Facebook </a>
+                 
+                @*<div class="sign-up"><a href="#">New Here? <span>Sign Up</span></a></div>*@
 
+            </div>
 
-                            @*<label asp-for="Email"></label>
-                            <input asp-for="Email" autofocus="autofocus" class="username email"  />
-                            <span asp-validation-for="Email" class="text-danger"></span>*@
-                        </div>
-                        <div class="inputs">
-
-
-                            @Html.LabelFor(m => m.Password)
-                            @Html.PasswordFor(m => m.Password, new { @class = "password" })
-                            @Html.ValidationMessageFor(m => m.Password)
-
-                            @*<label asp-for="Password"></label>
-                            <input asp-for="Password" class="password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>*@
-                        </div>
-                        <div class="inputs reversed">
-                            <input asp-for="RememberMe" />
-                            <label for="RememberMe">Remember me?</label>
-                            <span class="forgot-password">
-                                <a href="/account/ForgotPassword?returnUrl=@(ViewData["ReturnUrl"])">Forgot password?</a>
-                            </span>
-                        </div>
-
-                      
-
-                    </div>
-
-                    <div class="buttons">
-                        <button type="submit" class="button-1 login-button">LOG IN</button>
-                    </div>
-                </form>
-</div>
         </div>
-    </div>
+    </section>
+</form>
   
-</div>
- 
-            @section Scripts {
-                @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-            }
+    @section Scripts {
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    }
 

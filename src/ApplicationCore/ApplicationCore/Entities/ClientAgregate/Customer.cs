@@ -141,13 +141,14 @@ namespace ApplicationCore.Entities.ClientAgregate
             }
         }
 
-        private List<PaymentMethod> _paymentMethods;
-        public ICollection<Address> Addresses { get; private set; }
+        private readonly List<PaymentMethod> _paymentMethods;
+        public readonly List<Address> _addresses;
+        public IReadOnlyCollection<Address> Addresses => _addresses;
 
         protected Customer()
         {
             _paymentMethods = new List<PaymentMethod>();
-            Addresses = new List<Address>();
+            _addresses = new List<Address>();
         }
 
 
@@ -254,24 +255,24 @@ namespace ApplicationCore.Entities.ClientAgregate
         }
         public Address AddAddress(Address address)
         { 
-            var existing = Addresses.Where(a => a.Equals(address)).SingleOrDefault();
+            var existing = _addresses.Where(a => a.Equals(address)).SingleOrDefault();
            
             if (existing != null)            
                 return existing;
-           
-            Addresses.Add(address);
+
+            _addresses.Add(address);
  
             return address;
         }
 
         public Address DeleteAddress(Address address)
         {
-            var existing = Addresses.Where(a => a.Equals(address)).SingleOrDefault();
+            var existing = _addresses.Where(a => a.Equals(address)).SingleOrDefault();
 
             if (existing == null)
                 return existing;
 
-            Addresses.Remove(address);
+            _addresses.Remove(address);
 
             return address;
         }

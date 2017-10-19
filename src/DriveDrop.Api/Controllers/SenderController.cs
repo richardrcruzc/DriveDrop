@@ -289,6 +289,26 @@ namespace DriveDrop.Api.Controllers
                     var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact,c.DeliveryLatitude,c.DeliveryLongitude);
                     var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact,c.PickupLatitude, c.PickupLongitude);
 
+                    foreach (var s in sender.Addresses)
+                    {
+                        if (s.Equals(deliveryAddres))
+                        {
+                            deliveryAddres = s;
+                             
+                        }
+
+                        if (s.Equals(pickUpAddres))
+                        {
+
+                            pickUpAddres = s;
+                            
+                        }
+                    }
+
+
+
+                    
+
                     var tmpUser = Guid.NewGuid().ToString();
 
                     //var rate = await _rateService.CalculateAmount(int.Parse(c.PickupZipCode), int.Parse(c.DeliveryZipCode), c.ShippingWeight, 1, c.PriorityTypeId, c.TransportTypeId  , c.PromoCode);
