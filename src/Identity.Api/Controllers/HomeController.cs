@@ -27,6 +27,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
 
         public IActionResult Index(string returnUrl)
         {
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["ReturnHomeUrl"] = _settings.Value.MvcClient;
             return View();
         }
 

@@ -1,12 +1,17 @@
 
 @model DriveDrop.Web.ViewModels.PaginatedShippings
+@{ 
 
+    
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id= (int)@ViewBag.CustomerId, Option= "PendingPickUp" };
+
+}
 <section class="sender-desh">
     <div class="container">
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.CustomerId)
+                @await Html.PartialAsync("DriverNavigation", option )
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">

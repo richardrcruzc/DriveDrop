@@ -1,30 +1,47 @@
 @using DriveDrop.Web.ViewModels;
-@model  DriveDrop.Web.ViewModels.UserStatusModel 
-    @if (!string.IsNullOrWhiteSpace(Model.Status))
-    {
-        <p class="alert alert-danger">
-            <label>   User Status: <strong>@Model.Status</strong> </label><br />
-            <label>   <strong>Your Access to DriveDrop is limited</strong> </label><br />
-            <label>   <strong>Please contact customer service </strong> </label>
-        </p>
-    }
-       @if (!string.IsNullOrWhiteSpace(Model.Impersonated))
-       {
-        <p class="alert alert-info">
-            <label>
-                Impersonated user: <strong>@Model.Impersonated</strong>
-            </label>
-        </p>
-            @Html.ActionLink("End Impersonation", "endimpersonated", "admin")
-            }
- 
-@if (!string.IsNullOrWhiteSpace(Model.CustomerType) && Model.CustomerType.ToLower() == "driver")
-{
-     
-<div id="You-Got-Packages" class="alert alert-info hidden">
-    <div><strong>Info!</strong> You Got Package !</div>
+@model  DriveDrop.Web.ViewModels.UserStatusModel
 
-    @*<div id="DriverNotificationWS"></div>*@
-</div>
-     
+@if (!string.IsNullOrWhiteSpace(Model.Status) || !string.IsNullOrWhiteSpace(Model.Impersonated) || (!string.IsNullOrWhiteSpace(Model.CustomerType) && Model.CustomerType.ToLower() == "driver"))
+{
+<section class="sender-desh">
+    <div class="container">
+     @*   <div id="content" class="col-sm-9">
+    <div id="gig-information" class="sender-form">*@
+
+
+
+                @if (!string.IsNullOrWhiteSpace(Model.Status))
+                {
+                    <div class="alert alert-danger">
+                        <label>   User Status: <strong>@Model.Status</strong> </label><br />
+                        <label>   <strong>Your Access to DriveDrop is limited</strong> </label><br />
+                        <label>   <strong>Please contact customer service </strong> </label>
+                    </div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Impersonated))
+                {
+                    <p class="alert alert-info">
+                        <label>
+                            Impersonated user: <strong>@Model.Impersonated</strong>
+                        </label>
+                    </p>
+                    @Html.ActionLink("End Impersonation", "endimpersonated", "admin")
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.CustomerType) && Model.CustomerType.ToLower() == "driver")
+                {
+
+                    <div id="You-Got-Packages" class="alert alert-info hidden">
+                        <div><strong>Info!</strong> You Got Package !</div>
+
+                        @*<div id="DriverNotificationWS"></div>*@
+                    </div>
+
+                }
+
+                 
+           </div>
+       @* </div>
+    </div>*@
+    </section>
 }

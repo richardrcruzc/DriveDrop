@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = Model.CustomerId, Option = "NewShipping" };
 }
 
 <section class="sender-desh">
@@ -9,11 +10,11 @@
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("CustomerNavigation", Model.CustomerId)
+                @await Html.PartialAsync("CustomerNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">
-                        <h3 class="blue-head active">My Packages</h3>
+                        <h3 class="blue-head active">New Packages Information</h3>
                         <div class="form-body">
                             <div class="profile-form">
                                 <div class="row">
@@ -44,334 +45,342 @@
                                             <div class="title">
                                                 @Html.DropDownListFor(m => m.PickupAddressId, Model.PickupAddresses, new { @class = "form-control", @id = "PickupAddressId" })
                                             </div>
-                                            <div id="pickup-new-address-form">
-                                                <div class="edit-address">
-                                                    <div class="inputs">
-                                                        <input id="autocomplete" class="form-control" placeholder="Enter your  pickup address" />
-                                                    </div>
-                                                    <div class="inputs">
+                                            <div class="form-fields">
+                                                <div class="form-horizontal">
+                                                    <div id="pickup-new-address-form">
+                                                        <div class="edit-address">
+                                                            <div class="form-group">
+                                                                <input id="autocomplete" class="form-control" placeholder="Enter your  pickup address" />
+                                                            </div>
+                                                            <div class="form-group">
 
-                                                        <input asp-for="PickupStreet" class="form-control" placeholder="Street" readonly />
-                                                        <span class="required">*</span>
+                                                                <input asp-for="PickupStreet" class="form-control" placeholder="Street" readonly />
+                                                                <span class="required">*</span>
 
-                                                        <span asp-validation-for="PickupStreet" class="text-danger"></span>
-                                                    </div>
+                                                                <span asp-validation-for="PickupStreet" class="text-danger"></span>
+                                                            </div>
 
-                                                    <div class="inputs">
-                                                        <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="PickupCity" class="text-danger"></span>
+                                                            <div class="form-group">
+                                                                <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="PickupCity" class="text-danger"></span>
 
-                                                    </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="PickupState" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="PickupZipCode" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="PickupCountry" class="form-control" placeholder="Country" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="PickupCountry" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="PickupPhone" class="form-control" placeholder="Phone" data-inputmask="'mask': '(999) 999-9999'" />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="PickupPhone" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="PickupContact" class="form-control" placeholder="Contact" />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="PickupContact" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="title">
-                                                <strong>Select a Dropoff Address From Your Address Book or Enter a New Address </strong>
-
-                                            </div>
-                                            <div class="title">
-                                                @Html.DropDownListFor(m => m.DropAddressId, Model.DropAddresses, new { @class = "form-control", @id = "DropAddressId" })
-                                            </div>
-                                            <div id="drop-new-address-form">
-                                                <div class="edit-address">
-
-                                                    <div class="inputs">
-                                                        <input id="autocomplete1" class="form-control" placeholder="Enter your drop address" />
-                                                    </div>
-                                                    <div class="inputs">
-
-                                                        <input asp-for="DeliveryStreet" class="form-control" placeholder="Street" readonly />
-                                                        <span class="required">*</span>
-
-                                                        <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="PickupState" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="PickupCountry" class="form-control" placeholder="Country" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="PickupCountry" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="PickupPhone" class="form-control" placeholder="Phone" data-inputmask="'mask': '(999) 999-9999'" />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="PickupPhone" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="PickupContact" class="form-control" placeholder="Contact" />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="PickupContact" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="inputs">
-                                                        <input asp-for="DeliveryCity" class="form-control" placeholder="City" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                                                    <div class="title">
+                                                        <strong>Select a Dropoff Address From Your Address Book or Enter a New Address </strong>
+
                                                     </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="DeliveryState" class="form-control" placeholder="State" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                                                    <div class="title">
+                                                        @Html.DropDownListFor(m => m.DropAddressId, Model.DropAddresses, new { @class = "form-control", @id = "DropAddressId" })
                                                     </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                                                    <div id="drop-new-address-form">
+                                                        <div class="edit-address">
+
+                                                            <div class="form-group">
+                                                                <input id="autocomplete1" class="form-control" placeholder="Enter your drop address" />
+                                                            </div>
+                                                            <div class="form-group">
+
+                                                                <input asp-for="DeliveryStreet" class="form-control" placeholder="Street" readonly />
+                                                                <span class="required">*</span>
+
+                                                                <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <input asp-for="DeliveryCity" class="form-control" placeholder="City" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="DeliveryState" class="form-control" placeholder="State" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <input asp-for="DeliveryCountry" class="form-control" placeholder="Country" readonly />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone" data-inputmask="'mask': '(999) 999-9999'" />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input asp-for="DeliveryContact" class="form-control" placeholder="Contact" />
+                                                                <span class="required">*</span>
+                                                                <span asp-validation-for="DeliveryContact" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-
-                                                    <div class="inputs">
-                                                        <input asp-for="DeliveryCountry" class="form-control" placeholder="Country" readonly />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+                                                    <div class="title">
+                                                        <strong> Package Photo </strong>
                                                     </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone" data-inputmask="'mask': '(999) 999-9999'" />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="inputs">
-                                                        <input asp-for="DeliveryContact" class="form-control" placeholder="Contact" />
-                                                        <span class="required">*</span>
-                                                        <span asp-validation-for="DeliveryContact" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="title">
-                                                <strong> Package Photo </strong>
-                                            </div>
-                                            <div class="edit-address">
-                                                <div class="inputs">
+                                                    <div class="edit-address">
+                                                        <div class="form-group">
 
-                                                    <div class="avatar-page">
-                                                        <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
-                                                        <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
-                                                    </div>
+                                                            <div class="avatar-page">
+                                                                <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
+                                                                <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
+                                                            </div>
 
-                                                </div>
-
-                                            </div>
-                                            <div class="title">
-                                                <strong>Package Information </strong>
-                                            </div>
-                                            <div class="edit-address">
-                                                <div class="inputs">
-                                                    @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
-                                                    @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
-                                                    <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
-
-                                                </div>
-                                                <div class="inputs">
-                                                    @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
-                                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
-                                                    <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
-
-                                                </div>
-                                                <div class="inputs">
-                                                    @Html.EditorFor(m => m.Amount, new { @class = "form-control" })
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
-                                                        <input asp-for="Amount" class="form-control" placeholder="Estimate Shipping Value" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
-                                                        <span asp-validation-for="Amount" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="inputs">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">#</span>
-                                                        <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
-                                                        <span asp-validation-for="ShippingWeight" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="inputs">
-                                                    @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
-                                                    <textarea name="Note" class="span6" rows="3" placeholder="Note to the Driver"></textarea>
-                                                    <span asp-validation-for="Note" class="text-danger"></span>
-                                                </div>
-                                                <div class="inputs">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-                                                        <input asp-for="ExtraCharge" class="form-control" placeholder="Extra Charge" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
-                                                        <span asp-validation-for="ExtraCharge" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="inputs">
-                                                    @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
-                                                    <textarea name="ExtraChargeNote" id="ExtraChargeNote" class="span6" rows="2" placeholder="Extra Charge Note"></textarea>
-                                                    <span asp-validation-for="ExtraChargeNote" class="text-danger"></span>
-                                                </div>
-
-                                            </div>
-
-
-
-
-                                            <div class="title">
-                                                <strong> Promo </strong>
-                                            </div>
-                                            <div class="edit-address">
-                                                <div class="inputs">
-                                                    <input asp-for="PromoCode" class="form-control" placeholder="Promo Code" />
-                                                    <span asp-validation-for="PromoCode" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="title">
-                                                <strong> Shipping Total </strong>
-                                            </div>
-                                            <div class="edit-address">
-                                                <div class="total">
-                                                    <div class="total-info">
-                                                        <div class="total-info">
-                                                            <table class="cart-total">
-                                                                <tbody>
-
-                                                                    <tr class="order-subtotal">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Priority:</label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <span class="desc-Priority"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Priority">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="order-subtotal">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Distance:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-Distance"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Distance">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="order-subtotal">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Weight:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-Weight"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Weight">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="order-subtotal">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Size:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-Size"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Size">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-
-
-                                                                    <tr class="order-subtotal">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Extra Charge:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-extra"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-extra">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    <tr class="order-subtotal">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Sub-Total:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-Sub"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Sub">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="shipping-cost">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Discount:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-Discount"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Discount">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="tax-value">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Tax:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-Tax"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-Tax">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="order-total">
-                                                                        <td class="cart-total-left">
-                                                                            <label>Total:</label>
-                                                                        </td>
-                                                                        <td class="total-info">
-                                                                            <span class="desc-total"></span>
-                                                                        </td>
-                                                                        <td class="cart-total-right">
-                                                                            <span class="value-total">$0.00</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
                                                         </div>
 
                                                     </div>
-                                                </div>
-                                            </div>
+                                                    <div class="title">
+                                                        <strong>Package Information </strong>
+                                                    </div>
+                                                    <div class="edit-address">
+                                                        <div class="form-group">
+                                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
+                                                            @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
+                                                            <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
 
+                                                        </div>
+                                                        <div class="form-group">
+                                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
+                                                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
+                                                            <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
 
+                                                        </div>
+                                                        <div class="form-group">
+                                                            @Html.EditorFor(m => m.Amount, new { @class = "form-control" })
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">$</span>
 
-                                            <div class="buttons">
-                                                <input id="calcTotal" type="button" value="Total" name="save-info-button" class="button-1 save-customer-info-button" />
+                                                                <input asp-for="Amount" class="form-control" placeholder="Estimate Shipping Value" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                                                <span asp-validation-for="Amount" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">#</span>
+                                                                <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                                                <span asp-validation-for="ShippingWeight" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
 
-                                            </div>
+                                                        <div class="form-group">
+                                                            <div class="sub-form">
+                                                                <div class="form-field">
+                                                                    @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
+                                                                    <textarea name="Note" class="span6" rows="3" placeholder="Note to the Driver, Pickup window, Special instructions, dimensions, if you're not inuding a picture, plase be descriptive."></textarea>
+                                                                    <span asp-validation-for="Note" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">$</span>
+                                                                <input asp-for="ExtraCharge" class="form-control" placeholder="Extra Charge" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                                                <span asp-validation-for="ExtraCharge" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
 
-                                            <div id="payPalBtn" class="invisible">
-                                                <div class="title">
-                                                    <strong> Payment Info </strong>
-                                                </div>
-                                                <div class="edit-address">
-                                                    <div class="buttons">
-                                                        <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="button-1 save-customer-info-button" />
+                                                        <div class="form-group">
+                                                            @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
+                                                            <textarea name="ExtraChargeNote" id="ExtraChargeNote" class="span6" rows="2" placeholder="Extra Charge Note"></textarea>
+                                                            <span asp-validation-for="ExtraChargeNote" class="text-danger"></span>
+                                                        </div>
 
                                                     </div>
+
+
+
+
+                                                    <div class="title">
+                                                        <strong> Promo </strong>
+                                                    </div>
+                                                    <div class="edit-address">
+                                                        <div class="form-group">
+                                                            <input asp-for="PromoCode" class="form-control" placeholder="Promo Code" />
+                                                            <span asp-validation-for="PromoCode" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="title">
+                                                        <strong> Shipping Total </strong>
+                                                    </div>
+                                                    <div class="edit-address">
+                                                        <div class="total">
+                                                            <div class="total-info">
+                                                                <div class="total-info">
+                                                                    <table class="cart-total">
+                                                                        <tbody>
+
+                                                                            <tr class="order-subtotal">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Priority:</label>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="desc-Priority"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Priority">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="order-subtotal">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Distance:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-Distance"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Distance">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="order-subtotal">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Weight:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-Weight"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Weight">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="order-subtotal">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Size:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-Size"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Size">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+
+
+                                                                            <tr class="order-subtotal">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Extra Charge:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-extra"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-extra">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr class="order-subtotal">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Sub-Total:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-Sub"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Sub">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="shipping-cost">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Discount:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-Discount"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Discount">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="tax-value">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Tax:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-Tax"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-Tax">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="order-total">
+                                                                                <td class="cart-total-left">
+                                                                                    <label>Total:</label>
+                                                                                </td>
+                                                                                <td class="total-info">
+                                                                                    <span class="desc-total"></span>
+                                                                                </td>
+                                                                                <td class="cart-total-right">
+                                                                                    <span class="value-total">$0.00</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                   
+                                                    <div class="post-gig"> 
+                                                        <input id="calcTotal" type="button" value="Total" name="save-info-button" class="bttn" />
+
+                                                    </div>
+
+                                                    <div id="payPalBtn" class="invisible">
+                                                        <div class="title">
+                                                            <strong> Payment Info </strong>
+                                                        </div>
+                                                        <div class="edit-address">
+                                                            <div class="buttons">
+                                                                <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="button-1 save-customer-info-button" />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
                                                 </div>
                                             </div>
-
-
-
                                         </div>
                                     </form>
                                     <div class="center-block bg-primary text-center" id="bar-notification">
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -57,8 +57,19 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
 
         public string PickupPictureUri { get; private set; }
         public string DeliveredPictureUri { get; private set; }
+
         public string DropPictureUri { get; private set; }
         public string DropComment { get; private set; }
+        public DateTime Dropby { get; private set; }
+
+        public Shipment SetDropInfo(string dropPictureUri, string comment)
+        {
+            DropPictureUri = dropPictureUri;
+            DropComment = comment;
+            Dropby = DateTime.Now;
+
+            return this;
+        }
 
 
         public string Note { get; private set; }
@@ -204,12 +215,13 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             return this;
         }
 
-        public void ChangeStatus(int shippingStatusId)
+        public Shipment ChangeStatus(int shippingStatusId)
         {
             ShippingStatusId = shippingStatusId;
             ShippingUpdateDate = DateTime.Now;
             if(shippingStatusId==4)
             ShippingPickupDate = DateTime.Now;
+            return this;
         }
 
  

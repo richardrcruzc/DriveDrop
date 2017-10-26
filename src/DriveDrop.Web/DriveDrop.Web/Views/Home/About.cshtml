@@ -2,341 +2,69 @@
     ViewData["Title"] = "About";
 }
 @*<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+    <h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>*@
- 
+    <p>Use this area to provide additional information.</p>*@
+
 
 <section class="sender-desh">
     <div class="container">
         <div class="main-cont">
             <div class="row ">
-                <div id="sidebar" class="col-sm-3 sidebar-desktop">
-                    <ul id="side-navbar" class="side-fixed-menu">
-                        <li><a class="active" href="#gig-information">Gig information</a></li>
-                        <li><a href="#pickup-location">Pickup Location</a></li>
-                        <li><a href="#delivery-location">Delivery Location</a></li>
-                        <li><a href="#insurance">Insurance</a></li>
-                    </ul>
-                    <div class="credits">
-                        <p>CREDITS <a href="#" class="help">?</a></p>
-                        <a href="#" class="price">$0.00</a>
-                    </div>
-                    <h3>Redeem Promo Code</h3>
-                    <div class="clearfix"></div>
-                </div>
-
-                <div class="col-sm-3 sidebar-mobile">
-                    <ul id="side-navbar" class="side-fixed-menu">
-                        <li><a class="active" href="#gig-information">Gig information</a></li>
-                        <li><a href="#pickup-location">Pickup Location</a></li>
-                        <li><a href="#delivery-location">Delivery Location</a></li>
-                        <li><a href="#insurance">Insurance</a></li>
-                    </ul>
-                    <div class="credits">
-                        <p>CREDITS <a href="#" class="help">?</a></p>
-                        <a href="#" class="price">$0.00</a>
-                    </div>
-                    <h3>Redeem Promo Code</h3>
-                    <div class="clearfix"></div>
-                </div>
-
-
-                <div id="content" class="col-sm-9">
-                    <div id="gig-information" class="sender-form">
-                        <h3 class="blue-head active">GIG INFORMATION</h3>
-                        <div class="form-body">
-                            <div class="profile-form">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="profile">
-                                            <div class="photo">
-                                                <input type="file" accept="image/*">
-                                                <div class="photo__helper">
-                                                    <div class="photo__frame photo__frame--circle">
-                                                        <canvas class="photo__canvas"></canvas>
-                                                        <div class="message is-empty">
-                                                            <p class="message--desktop">
-                                                                <img src="images/profile-icon.png">
-                                                                Recommended
-                                                            </p>
-                                                            <p class="message--mobile">Tap here to select your picture.</p>
-                                                        </div>
-                                                        <div class="message is-loading">
-                                                            <i class="fa fa-2x fa-spin fa-spinner"></i>
-                                                        </div>
-                                                        <div class="message is-dragover">
-                                                            <i class="fa fa-2x fa-cloud-upload"></i>
-                                                            <p>Drop your photo</p>
-                                                        </div>
-                                                        <div class="message is-wrong-file-type">
-                                                            <p>Only images allowed.</p>
-                                                            <p class="message--desktop">Drop your photo here or browse your computer.</p>
-                                                            <p class="message--mobile">Tap here to select your picture.</p>
-                                                        </div>
-                                                        <div class="message is-wrong-image-size">
-                                                            <p>Your photo must be larger than 350px.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="photo__options hide">
-                                                    <div class="photo__zoom">
-                                                        <input type="range" class="zoom-handler">
-                                                    </div><a href="javascript:;" class="remove"><i class="fa fa-trash"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--
-                                            <hr>
-                                            <button type="button" id="previewBtn">Preview</button>
-                                            <hr>
-                                            <img src="" alt="" class="preview">
-                                            <img src="" alt="" class="preview preview--rounded">
-                                                      -->
-                                    </div>
-                                    <div class="col-md-9">
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <div class="form-field">
-                                                    <input type="text" placeholder="Gig Name">
-                                                </div>
-                                                <div class="form-field">
-                                                    <input type="text" placeholder="Gig Value">
-                                                </div>
-                                                <a class="help" href="#">?</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-
-                                    <h4 class="text-center">How big your Gig is?</h4>
-                                    <div class="select-type ">
-                                        <ul>
-                                            <li>
-                                                <input type="radio" id="f-option" name="selector">
-                                                <label for="f-option">
-                                                    <img src="images/redio-01.png">
-                                                    <span>Small</span>
-                                                </label>
-                                                <div class="check"></div>
-                                            </li>
-
-                                            <li>
-                                                <input type="radio" id="s-option" name="selector">
-                                                <label for="s-option">
-                                                    <img src="images/redio-02.png">
-                                                    <span>Medium</span>
-                                                </label>
-                                                <div class="check"><div class="inside"></div></div>
-                                            </li>
-
-                                            <li>
-                                                <input type="radio" id="t-option" name="selector">
-                                                <label for="t-option">
-                                                    <img src="images/redio-03.png">
-                                                    <span>Large</span>
-                                                </label>
-                                                <div class="check"><div class="inside"></div></div>
-                                            </li>
-                                            <li>
-                                                <input type="radio" id="g-option" name="selector">
-                                                <label for="g-option">
-                                                    <img src="images/redio-04.png">
-                                                    <span> X-Large</span>
-                                                </label>
-                                                <div class="check"></div>
-                                            </li>
-
-                                            <li>
-                                                <input type="radio" id="x-option" name="selector">
-                                                <label for="x-option">
-                                                    <img src="images/redio-05.png">
-                                                    <span>Huge</span>
-                                                </label>
-                                                <div class="check"><div class="inside"></div></div>
-                                            </li>
-
-                                            <li>
-                                                <input type="radio" id="p-option" name="selector">
-                                                <label for="p-option">
-                                                    <img src="images/redio-06.png">
-                                                    <span>Pet</span>
-                                                </label>
-                                                <div class="check"><div class="inside"></div></div>
-                                            </li>
-                                        </ul>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <h3 class="sub-comment">Fits in the front seat of a car</h3>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="pickup-location" class="sender-form">
-                        <h3 class="blue-head">PIKUP LOCATION</h3>
-                        <div class="form-body">
-                            <div class="profile-form">
-                                <div class="col-md-3">
-                                    <div class="icon-bttn">
-                                        <a href="#">
-                                            <img src="images/location-icon.png">
-                                            <span>Pickup</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-9 ">
-                                    <div class="row">
-                                        <div class="form-group mobile-form-sec">
-                                            <div class="form-field">
-                                                <input type="text" placeholder="Enter You Pickup Location">
-                                            </div>
-                                            <div class="form-field">
-                                                <input type="text" placeholder="Apt, Building, Suite (Optional)">
-                                            </div>
-                                            <div class="form-field">
-                                                <textarea></textarea>
-                                            </div>
-                                            <div class="sub-form">
-                                                <h3>Who will meet the driver at the <span>pickup</span> location?</h3>
-                                                <ul>
-                                                    <li><label><i></i> <input type="text" placeholder="I Will"></label></li>
-                                                    <li><label><i></i> <input type="text" placeholder="Someone Else"></label></li>
-                                                    <li><label><i></i> <input type="text" placeholder="Pickup From Location"></label></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div id="delivery-location" class="sender-form">
-                        <h3 class="blue-head">DELEVERY LOCATION</h3>
-                        <div class="form-body">
-                            <div class="profile-form">
-                                <div class="col-md-3">
-                                    <div class="icon-bttn">
-                                        <a href="#">
-                                            <img src="images/location-delevery.png">
-                                            <span>Deliver</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="form-field">
-                                                <input type="text" placeholder="Enter Delivery Location">
-                                            </div>
-                                            <div class="form-field">
-                                                <input type="text" placeholder="Apt, Building, Suite (Optional)">
-                                            </div>
-                                            <div class="form-field">
-                                                <textarea></textarea>
-                                            </div>
-                                            <div class="sub-form">
-                                                <h3>Who will meet the driver at the <span>Delivery</span> location?</h3>
-                                                <ul>
-                                                    <li><label><i></i> <input type="text" placeholder="Leave At Location"></label></li>
-                                                    <li><label><i></i> <input type="text" placeholder="Someone Else"></label></li>
-                                                    <li><label><i></i> <input type="text" placeholder="I Will"></label></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div id="delevery-deadline" class="sender-form">
-                        <h3 class="blue-head">DELEVERY DEADLINE</h3>
-                        <div class="form-body">
-                            <div class="profile-form">
-                                <div class="col-md-3">
-                                    <div class="icon-bttn">
-                                        <a href="#">
-                                            <img src="images/dedline.png">
-                                            <span>Deadline</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="sub-form">
-                                                <h3>When do you need the package delivered?</h3>
-                                                <ul>
-                                                    <li><label><i></i> <input type="text" placeholder="Whenever"></label></li>
-                                                    <li><label><i></i> <input type="text" placeholder="Deliver by ..."></label></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div id="additional-details" class="sender-form">
-                        <h3 class="blue-head">ADDITIONAL DETAILS</h3>
-                        <div class="form-body">
-                            <div class="profile-form">
-                                <div class="col-md-3">
-                                    <div class="icon-bttn">
-                                        <a href="#">
-                                            <img src="images/details.png">
-                                            <span>Details</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="sub-form">
-                                                <h3>What else does the driver need to know?</h3>
-                                                <div class="form-field">
-                                                    <textarea placeholder="Pickup window, Special instructions, dimensions, if you're not inuding a picture, plase be descriptive."></textarea>
-                                                </div>
-
-                                                <h3>Are there any additonal expencess involved in the Gig that you'd like to cover? These expenceses may include parking fees, tolls, extra hessle, etc.</h3>
-                                                <ul>
-                                                    <li><label><i></i> <input type="text" placeholder="No additional expanses"></label></li>
-                                                    <li><label><i></i> <input type="text" placeholder="Yes, there will be addtional expanses "></label></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div id="insurance" class="sender-form insurance">
-                        <h3 class="blue-head">INSURANCE</h3>
-
-                        <div class="form-body">
-                            <div class="profile-form">
-                                <div class="gray-bg">
-                                    <h3>Roadie Inc. provides up to $500 protection on every Gig. Coverage up to $10,000 is available for Gigs valued over $500.</h3>
-                                    <h3 class="sub-comment">Relax, your Gig is fully protected!</h3>
-                                </div>
-                                <div class="post-gig">
-                                    <p>Your stuff is about to take a road trip!</p>
-                                    <a href="#" class="bttn">Post This Gig</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-
-                </div>
-
-
+                <iframe id="myIFrame"></iframe>
             </div>
         </div>
     </div>
-</section>
+    </section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                <script type="text/javascript">
+                    $(document).ready(function () {
+
+                        var iframeURL = 'http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/';
+                        var iframeID = 'MyIFrame';
+                        var credentials = "username=" + encodeURIComponent('rtaadmin') + "&password=" + encodeURIComponent('SecurityPass#1');
+
+                        var oReq = new XMLHttpRequest();
+                        oReq.open("POST", this.iframeUR + credentials, true);
+                        oReq.send();
+                        var iFrameWin = document.getElementById(this.iframeID);
+                        iFrameWin.src = this.iframeURL + "?extraParameters=true";
+
+
+                        //var iframeURL = 'http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/';
+                        //var iframeID = 'MyIFrame';
+
+                        //function loadIframe() {
+                        //    //pre-authenticate
+                        //    var req = new XMLHttpRequest();
+                        //    req.open("POST", this.iframeURL, false, "rtaadmin", "SecurityPass#1"); //use POST to safely send combination
+                        //    req.send(null); //here you can pass extra parameters through
+
+                        //    //setiFrame's SRC attribute
+                        //    var iFrameWin = document.getElementById(this.iframeID);
+                        //    iFrameWin.src = this.iframeURL + "?extraParameters=true";
+                        //}
+
+                        ////onload, call loadIframe() function
+                        //loadIframe();
+
+
+                        //// submit the form into iframe for login into remote site
+                        // document.getElementById('login').submit();
+
+                        //// once you're logged in, change the source url (if needed)
+                        //var iframe = document.getElementById('myIFrame');
+                        //iframe.onload = function() {
+                        //    if (iframe.src != "http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/") {
+                        //        iframe.src = "http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/";
+                        //    }
+                        //}
+                    });
+                </script>
+
+ 
+
+
+    }

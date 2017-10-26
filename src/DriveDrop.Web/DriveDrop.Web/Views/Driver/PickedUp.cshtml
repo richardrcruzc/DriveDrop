@@ -1,11 +1,14 @@
 @model DriveDrop.Web.ViewModels.PaginatedShippings
- 
+ @{ 
+
+         var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = (int)@ViewBag.CustomerId, Option = "PickedUp" };
+ }
 <section class="sender-desh">
     <div class="container">
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.CustomerId)
+                @await Html.PartialAsync("DriverNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">
@@ -49,17 +52,25 @@
                                                                         <div>
                                                                             @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
                                                                         </div>
-                                                                        <div>
-                                                                            <form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST">
+                                                                        <div class="license-btn" >
+                                                                           @if (item.ShippingStatusId == 4)
+                                                                           {
+                                                                            @Html.ActionLink("Start Deliver!", "UpdateDropStatus", new { shippingId = item.Id, shippingStatusId = 6 })
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                            @Html.ActionLink("Drop Package!", "SetDropByInfo", new { id = item.Id })
+                                                                           }
+                                                                            @*<form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST">
                                                                                 <input value="@item.DriverId" hidden name="DriverId" />
                                                                                 <input value="@item.Id" hidden name="shippingId" />
 
                                                                                 @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList, htmlAttributes: new { @data_inputmask = "'mask': '(999) 999-9999'" })
 
-                                                                                @*@Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})*@
+                                                                              
 
                                                                                 <input type="submit" class="btn btn-danger" value="Change" />
-                                                                            </form>
+                                                                            </form>*@
 
                                                                         </div>
                                                                     </td>

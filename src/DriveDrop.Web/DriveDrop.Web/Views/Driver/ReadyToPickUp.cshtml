@@ -1,5 +1,8 @@
 @model DriveDrop.Web.ViewModels.PaginatedShippings
+@{ 
 
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = Model.CustomerId, Option = "readytopickup" };
+}
 <style>
     /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -73,7 +76,7 @@
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("DriverNavigation", Model.CustomerId)
+                @await Html.PartialAsync("DriverNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">

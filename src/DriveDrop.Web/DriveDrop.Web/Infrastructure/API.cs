@@ -251,6 +251,11 @@ namespace DriveDrop.Web.Infrastructure
 
         public static class Shipping
         {
+            
+                public static string SetDropbyInfo(string baseUri)
+            {
+                return $"{baseUri}/SetDropbyInfo";
+            }
             public static string SetDeliveredPictureUri(string baseUri)
             {
                  return $"{baseUri}/SetDeliveredPictureUri";

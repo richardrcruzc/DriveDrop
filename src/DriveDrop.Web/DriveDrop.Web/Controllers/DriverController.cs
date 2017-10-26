@@ -123,7 +123,7 @@ namespace DriveDrop.Web.Controllers
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
 
-            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 4 });
+            var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 4,5,6 });
 
             var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -245,9 +245,88 @@ namespace DriveDrop.Web.Controllers
 
         }
 
+        public async Task<IActionResult> SetDropByInfo(int id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+            var userString = await _apiClient.GetStringAsync(getUserUri, token);
+            var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+            if (customer == null)
+                return NotFound();
+
+            var package = customer.ShipmentDrivers.Where(x => x.Id == id).FirstOrDefault();
+
+            return View(package);
+
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> SetDropByInfo(int Id, string DropNote, List<IFormFile> photoUrl)
+
+        {
+
+            if (Id == 0)
+                return NotFound();
+
+            if (photoUrl.Count() == 0)
+                return NotFound();
+            if (string.IsNullOrEmpty(DropNote))
+                return NotFound();
+            try
+            {
+                var user = _appUserParser.Parse(HttpContext.User);
+                var token = await GetUserTokenAsync();
+
+                var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+                var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+                if (customer == null)
+                    return NotFound();
+                @ViewBag.CustomerId = customer.Id;
 
 
+                var getUri = API.Shipping.GetById(_remoteServiceShippingsUrl, Id);
+                var packageString = await _apiClient.GetStringAsync(getUri, token);
+                var package = JsonConvert.DeserializeObject<Shipment>(packageString);
+                if (package == null)
+                    return NotFound();
 
+                var fileName = await SaveFile(photoUrl, "driver");
+
+                var model = new DropModel
+                {
+                    Id = Id,
+                     DropComment  = DropNote,
+                    DropPictureUri = System.Net.WebUtility.UrlEncode(fileName),
+                    StatusId = 7,
+
+                };
+
+                var shpUri = API.Shipping.SetDropbyInfo(_remoteServiceShippingsUrl);
+                var shpString = await _apiClient.PostAsync(shpUri, model, token);
+
+                if (shpString.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    return Json(shpString.ReasonPhrase);
+                }
+
+                if (shpString.ReasonPhrase.Contains("OK"))
+                {
+                    return Json("PackageDroped");
+
+                }
+                ViewBag.Msg = shpString;
+
+                return Json(shpString);
+            }
+            catch
+            {
+                return Json("PackageNotAccepted");
+            }
+
+        }
         public async Task<IActionResult> PendingPickUp(int id)
         {
             
@@ -261,7 +340,7 @@ namespace DriveDrop.Web.Controllers
                 return View(new PaginatedShippings());
 
             id = customer.Id;
-            @ViewBag.CustomerId = id;
+            ViewBag.CustomerId = id;
             var allnotassignedshipings = API.Shipping.GetByDriverIdAndStatusId(_remoteServiceShippingsUrl, id, new int[] { 2,3 });
              var dataString = await _apiClient.GetStringAsync(allnotassignedshipings, token);
 
@@ -323,32 +402,7 @@ namespace DriveDrop.Web.Controllers
             try
             {
 
-                String password =c.Password;  
-                PasswordScore passwordStrengthScore = PasswordAdvisor.CheckStrength(password);
-                var valid = false;
-                switch (passwordStrengthScore)
-                {
-                    case PasswordScore.Blank:
-                        ModelState.AddModelError("", "Unable to Register User : " + c.UserEmail + " password is Blank!");
-                        break;
-                    case PasswordScore.VeryWeak:                        
-                    case PasswordScore.Weak:
-                        ModelState.AddModelError("", "Unable to Register User : " + c.UserEmail + " Password is Too Weak!");
-                        // Show an error message to the user
-                        break;
-                    case PasswordScore.Medium:
-                    case PasswordScore.Strong:
-                    case PasswordScore.VeryStrong:
-                        // Password deemed strong enough, allow user to be added to database etc
-                        valid = true;
-                        break;
-                }
-               
-                if (!valid)
-                {
-                    await PrepareCustomerModel(c);
-                    return View(c);
-                }
+                
 
                 c.Email = c.UserEmail;
 
@@ -731,9 +785,35 @@ namespace DriveDrop.Web.Controllers
 
 
                 var dataString = await _apiClient.GetStringAsync(assign, token);
-            
+ 
 
             return RedirectToAction("PendingPickUp", new { id = customer.Id });
+
+        }
+        public async Task<IActionResult> UpdateDropStatus(int shippingId, int shippingStatusId)
+        {
+            int customerId = 0;
+        
+            try
+            {
+                var user = _appUserParser.Parse(HttpContext.User);
+                var token = await GetUserTokenAsync();
+
+                var getUserUri = API.Driver.GetByUserName(_remoteServiceDriversUrl, user.Email);
+                var userString = await _apiClient.GetStringAsync(getUserUri, token);
+                var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
+
+                customerId = customer.Id;
+
+                var assign = API.Shipping.UpdatePackageStatus(_remoteServiceShippingsUrl, shippingId, shippingStatusId);
+
+
+                var dataString = await _apiClient.GetStringAsync(assign, token);
+              
+            }
+            catch { }
+
+            return RedirectToAction("PickedUp", new { id = customerId });
 
         }
         [NonAction]

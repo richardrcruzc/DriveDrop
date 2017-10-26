@@ -2,110 +2,51 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "rates" };
 }
 
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
 
-<div class="side-2">
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Rates</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="side-2">
+                                    <div class="page-body">
+
+                                        <div class="address-list">
+                                            @foreach (var item in Model)
+                                            {
+
+                                                <ol class="opc">
+                                                    <li class="tab-section allow active">
+                                                        <div class="step-title">
+                                                            <h4 class="title">@item.PackageSize.Name</h4>
+                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Details</h4></a>
+                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Edit</h4></a>
+
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                            }
+                                        </div>
 
 
-    @await Html.PartialAsync("AdminNavigation",1)
+                                    </div>
 
-
-</div>
-<div class="center-2">
-    <div class="page account-page address-list-page">
-        <div class="page-title">
-            <h1>Rates</h1>
-        </div>
-        <div class="page-body">
-             
-            <div class="address-list">
-                @foreach (var item in Model)
-                {
-
-                    <ol class="opc">
-                        <li   class="tab-section allow active">
-                            <div class="step-title"><h4 class="title">@item.PackageSize.Name</h4>
-                                <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Details</h4></a> 
-                                <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Edit</h4></a> 
-                                
+                                </div>
                             </div>
-                        </li>                         
-                    </ol>                     
-                        }
-</div>
-
-               
+                        </div>
+                    </div>
+                </div>
             </div>
-    </div>
-</div>
-
+        </div>
+</section>
  
-
- @*<div class="fieldset">
-            <div class="form-fields">
-
-
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.StartDate)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.EndDate)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FixChargePerShipping)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FixChargePercentage)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.ChargePerItem)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Tax)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Active)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-    {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FixChargePerShipping)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FixChargePercentage)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ChargePerItem)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Tax)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Active)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="DeleteRate" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
-        </div>*@

@@ -7,6 +7,8 @@
 
     var addresses = Model;
     var customerTypeId = (int)ViewBag.CustomerType;
+
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = (int)@ViewBag.Id, Option = "Addresses" };
 }
 
 
@@ -17,15 +19,15 @@
             <div class="row">
                 @if (customerTypeId == 1)
                 {
-                    @await Html.PartialAsync("AdminNavigation", (int)@ViewBag.Id)
+                    @await Html.PartialAsync("AdminNavigation", option)
                 }
                 else if (customerTypeId == 2)
                 {
-                    @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
+                    @await Html.PartialAsync("CustomerNavigation", option)
                 }
                 else if (customerTypeId == 3)
                 {
-                    @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.Id)
+                    @await Html.PartialAsync("DriverNavigation", option)
                 }
 
 
@@ -77,14 +79,61 @@
                                                     </li>
                                                 </ul>
                                                 <div class="buttons">
-                                                    @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                                    @*<input type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
                                                     @*<input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />*@
                                                 </div>
                                             </div>
                                         }
                                     </div>
+                                    @if (customerTypeId == 3)
+                                    {
+                                         <br />
+                                        <div class="address-list">
+
+                                            <ol class="opc">
+                                                <li class="tab-section allow active">
+                                                    <div class="step-title">
+                                                        <h4 class="title">Others Addresses</h4>
+                                                    </div>
+                                                </li>
+                                            </ol>
+
+                                            @foreach (var address in addresses.Where(x => x.TypeAddress.ToLower()!= "home"))
+                                            {
+
+                                                <div class="section address-item">
+                                                    <div class="title">
+                                                        <strong>@address.Contact @address.Phone</strong>
+                                                    </div>
+                                                    <ul class="info">
+
+                                                        <li class="address1">
+
+                                                            @address.Street
+                                                        </li>
+                                                        <li class="city-state-zip">
+                                                            @address.City, @address.State, @address.ZipCode
+                                                        </li>
+                                                        <li class="country">
+                                                            @address.Country
+                                                        </li>
+                                                    </ul>
+                                                    <div class="buttons">
+
+                                                        <input type="button" class="btn btn-primary" onclick="defaultaddress(@(address.Id))" value="Set as default" />
+                                                        @*<input type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("AddressAdd","common", new {id = address.Id}))'" value="Edit" />*@
+                                                        <input type="button" class="btn btn-primary" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="btn-group"><br />
+                                                <input type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("AddressAdd","common", new {id =ViewBag.Id}))'" value="New" />
+                                            </div>
+                                        </div>
+                                    }
                                     @if (customerTypeId == 2)
                                     {
+                                        <br />
                                         <div class="address-list">
 
                                             <ol class="opc">
@@ -117,14 +166,14 @@
                                                     </ul>
                                                     <div class="buttons">
 
-                                                        <input type="button" class="button-2 edit-address-button" onclick="defaultaddress(@(address.Id))" value="Set as default" />
-                                                        @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                                        <input type="button" class="btn btn-primary" onclick="defaultaddress(@(address.Id))" value="Set as default" />
+                                                        @*<input type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
                                                         <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
                                                     </div>
                                                 </div>
                                             }
                                         </div>
-
+                                        <br />
                                                         <div class="address-list">
                                                             <ol class="opc">
                                                                 <li class="tab-section allow active">
@@ -157,7 +206,7 @@
                                                                     </ul>
                                                                     <div class="buttons">
 
-                                                                        @*<input type="button" class="button-2 edit-address-button" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
+                                                                        @*<input type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("EditAddress","Sender", new {id = address.Id}))'" value="Edit" />*@
                                                                         <input type="button" class="button-2 delete-address-button" onclick="deletecustomeraddress(@(address.Id))" value="Delete" />
                                                                     </div>
                                                                 </div>

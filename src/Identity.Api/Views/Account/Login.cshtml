@@ -32,9 +32,9 @@
                 <div class="inputs reversed">
                     <input asp-for="RememberMe" />
                     <label for="RememberMe">Remember me?</label>
-                    <span class="forgot-password">
+                    @*<span class="forgot-password">
                         <a href="/account/ForgotPassword?returnUrl=@(ViewData["ReturnUrl"])">Forgot password?</a>
-                    </span>
+                    </span>*@
                 </div> 
                 <button type="submit" class="login-bttn">Login into Your Account</button>
                 <a href="/account/ForgotPassword?returnUrl=@(ViewData["ReturnUrl"])" class="forget">forget you password?</a>

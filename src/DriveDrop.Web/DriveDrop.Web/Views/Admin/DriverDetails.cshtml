@@ -2,230 +2,232 @@
 
 @{
     ViewData["Title"] = "Driver Details";
+
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "index" };
 }
 
 
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
 
-<div class="side-2">
+                @await Html.PartialAsync("AdminNavigation", option)
+                <div class="page account-page customer-info-page">
+                    <div class="page-title">
+                        <h1>Administrator Information</h1>
+                    </div>
+                    <div class="page-body">
+                        <form data-ajax-method="POST" asp-action="UpdateDriverInfo" enctype="multipart/form-data"
+                              data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
 
-
-    @await Html.PartialAsync("AdminNavigation", 1)
-
-
-</div>
-<div class="center-2">
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h1>Administrator Information</h1>
-        </div>
-        <div class="page-body">
-            <form data-ajax-method="POST" asp-action="UpdateDriverInfo" enctype="multipart/form-data"
-                  data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
-
-                @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
 
 
-                <input asp-for="Id" hidden />
-                <input asp-for="CustomerStatusId" hidden />
-                <input asp-for="CustomerStatus" hidden />
-                <input asp-for="PersonalPhotoUri" hidden />
+                            <input asp-for="Id" hidden />
+                            <input asp-for="CustomerStatusId" hidden />
+                            <input asp-for="CustomerStatus" hidden />
+                            <input asp-for="PersonalPhotoUri" hidden />
 
 
 
 
-                <div class="fieldset">
-                    <h3>Driver: User Details</h3>
-                    
-                         
-                        <div class="form-fields">
-
-                            <div class="inputs">
-                                <label>Customer Status</label>
-                                <div class="gender">
-                                    <span>
-
-                                        <label class="male">@Model.CustomerStatus</label>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="inputs">
-                                <label>Login User</label>
-
-                                <div class="gender">
-                                    <span>
-
-                                        <label class="male">@Model.UserName</label>
-                                    </span>
-                                </div>
-
-                                 
-                            </div>
-                            <div class="center-block">
-                                <button class="btn btn-primary text-center" id="reSendEmail" style="text-align: right;"> Resend welcome email</button>
+                            <div class="fieldset">
+                                <h3>Driver: User Details</h3>
 
 
-                                <button class="btn btn-primary text-center" id="DeleteCustomer" style="text-align: right;">Delete User</button>
- 
+                                <div class="form-fields">
 
-                            </div>
+                                    <div class="inputs">
+                                        <label>Customer Status</label>
+                                        <div class="gender">
+                                            <span>
 
-                                <div class="inputs">
-                                    <label>Customer Type</label>
-
-                                    <div class="gender">
-                                        <span>
-
-                                            <label class="male">@Model.CustomerType</label>
-                                        </span>
+                                                <label class="male">@Model.CustomerStatus</label>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="inputs">
+                                        <label>Login User</label>
+
+                                        <div class="gender">
+                                            <span>
+
+                                                <label class="male">@Model.UserName</label>
+                                            </span>
+                                        </div>
 
 
-                                <div class="inputs">
-
-                                    @Html.LabelFor(m => m.LastName)
-                                    @Html.TextBoxFor(m => m.LastName)
-                                    <span class="required">*</span>
-                                    @Html.ValidationMessageFor(m => m.LastName)
-                                </div>
-                                <div class="inputs">
-                                    @Html.LabelFor(m => m.FirstName)
-                                    @Html.TextBoxFor(m => m.FirstName)
-                                    <span class="required">*</span>
-                                    @Html.ValidationMessageFor(m => m.FirstName)
+                                    </div>
+                                    <div class="center-block">
+                                        <button class="btn btn-primary text-center" id="reSendEmail" style="text-align: right;"> Resend welcome email</button>
 
 
-                                </div>
-
-                                <div class="inputs">
-
-                                    @Html.LabelFor(m => m.PrimaryPhone)
-                                    @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                    <span class="required">*</span>
-                                    @Html.ValidationMessageFor(m => m.PrimaryPhone)
+                                        <button class="btn btn-primary text-center" id="DeleteCustomer" style="text-align: right;">Delete User</button>
 
 
-                                </div>
-
-                                <div class="inputs">
-
-                                    @Html.LabelFor(m => m.Phone)
-                                    @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                    <span class="required">*</span>
-                                    @Html.ValidationMessageFor(m => m.Phone)
-
-
-                                </div>
- 
-                            <div class="inputs">
-
-                                @Html.LabelFor(m => m.Commission)
-                                @Html.TextBoxFor(m => m.Commission)
-                                <span class="required">*</span>
-                                @Html.ValidationMessageFor(m => m.Commission)
-
-
-                            </div>
- 
-                                <div class="inputs">
-
-
-                                    <Label><strong>Profile Photo</strong><br /><br /></Label>
-
-                                    <div class="avatar-page">
-                                        <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
-                                        <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
                                     </div>
 
-                                </div>
+                                    <div class="inputs">
+                                        <label>Customer Type</label>
 
-                               
+                                        <div class="gender">
+                                            <span>
+
+                                                <label class="male">@Model.CustomerType</label>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="inputs">
+
+                                        @Html.LabelFor(m => m.LastName)
+                                        @Html.TextBoxFor(m => m.LastName)
+                                        <span class="required">*</span>
+                                        @Html.ValidationMessageFor(m => m.LastName)
+                                    </div>
+                                    <div class="inputs">
+                                        @Html.LabelFor(m => m.FirstName)
+                                        @Html.TextBoxFor(m => m.FirstName)
+                                        <span class="required">*</span>
+                                        @Html.ValidationMessageFor(m => m.FirstName)
+
+
+                                    </div>
+
+                                    <div class="inputs">
+
+                                        @Html.LabelFor(m => m.PrimaryPhone)
+                                        @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                        <span class="required">*</span>
+                                        @Html.ValidationMessageFor(m => m.PrimaryPhone)
+
+
+                                    </div>
+
+                                    <div class="inputs">
+
+                                        @Html.LabelFor(m => m.Phone)
+                                        @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                        <span class="required">*</span>
+                                        @Html.ValidationMessageFor(m => m.Phone)
+
+
+                                    </div>
+
+                                    <div class="inputs">
+
+                                        @Html.LabelFor(m => m.Commission)
+                                        @Html.TextBoxFor(m => m.Commission)
+                                        <span class="required">*</span>
+                                        @Html.ValidationMessageFor(m => m.Commission)
+
+
+                                    </div>
+
+                                    <div class="inputs">
+
+
+                                        <Label><strong>Profile Photo</strong><br /><br /></Label>
+
+                                        <div class="avatar-page">
+                                            <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
+                                            <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        </div>
+
+                                    </div>
+
+
                                     <div class="buttons">
                                         <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
 
                                     </div>
 
-                               
 
+
+                                </div>
                             </div>
+                        </form>
                     </div>
-            </form>
-        </div>
-               
-                    
-                        <div class="fieldset">
-                            <div class="title">
-                                <strong><label>Vehicle informations</label></strong>
-                            </div>
-                            <div class="form-fields">
-                                <div class="inputs">
-
-                                    @Html.LabelFor(model => model.VehicleMake)
-                                    @Html.EditorFor(model => model.VehicleMake)
-
-                                </div>
-                                <div class="inputs">
-
-                                    @Html.LabelFor(model => model.VehicleModel)
-                                    @Html.EditorFor(model => model.VehicleModel)
-
-                                </div>
-                                <div class="inputs">
-
-                                    @Html.LabelFor(model => model.VehicleColor)
-                                    @Html.EditorFor(model => model.VehicleColor)
-
-                                </div>
-                                <div class="inputs">
-
-                                    @Html.LabelFor(model => model.VehicleYear)
-                                    @Html.EditorFor(model => model.VehicleYear)
-
-                                </div>
-
-                                <div class="inputs">
-                                             
-                                            <div>
-                                                <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.DriverLincensePictureUri" asp-route-name="Driver license" style="cursor:pointer;"  target=_blank><label>
-                                                    <span class="glyphicon glyphicon-download-alt"></span>
-                                                    Driver license</label></a>
-
-                                              
-                                            </div>
-                                             <br />
-                                            <img id="blah" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
-                                        </div>
-                                <div class="inputs">
-                                    <div>
-                                        <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.VehiclePhotoUri" asp-route-name="Vehicle photo" style="cursor:pointer;" target=_blank>
-                                            <label>
-                                                <span class="glyphicon glyphicon-download-alt"></span>
-                                                Vehicle photo
-                                            </label>
-                                        </a>
 
 
-                                    </div>
-
-                                    <img id="blah" src="@Model.VehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
-                    
-                                </div>
-                                <div class="inputs">
-                                    
-                                    <div>
-                                            <label>
-                                                 Proof of insurance
-                                            </label>
-
-                                    </div>
-                                 
-                                    <iframe src="@(Model.InsurancePhotoUri)"  class="iframeClass" style="width:700px; height:300px;"> </iframe>
-                                </div>
-                                    
-                                
-                            </div>
+                    <div class="fieldset">
+                        <div class="title">
+                            <strong><label>Vehicle informations</label></strong>
                         </div>
-                    
+                        <div class="form-fields">
+                            <div class="inputs">
+
+                                @Html.LabelFor(model => model.VehicleMake)
+                                @Html.EditorFor(model => model.VehicleMake)
+
+                            </div>
+                            <div class="inputs">
+
+                                @Html.LabelFor(model => model.VehicleModel)
+                                @Html.EditorFor(model => model.VehicleModel)
+
+                            </div>
+                            <div class="inputs">
+
+                                @Html.LabelFor(model => model.VehicleColor)
+                                @Html.EditorFor(model => model.VehicleColor)
+
+                            </div>
+                            <div class="inputs">
+
+                                @Html.LabelFor(model => model.VehicleYear)
+                                @Html.EditorFor(model => model.VehicleYear)
+
+                            </div>
+
+                            <div class="inputs">
+
+                                <div>
+                                    <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.DriverLincensePictureUri" asp-route-name="Driver license" style="cursor:pointer;" target=_blank>
+                                        <label>
+                                            <span class="glyphicon glyphicon-download-alt"></span>
+                                            Driver license
+                                        </label>
+                                    </a>
+
+
+                                </div>
+                                <br />
+                                <img id="blah" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
+                            </div>
+                            <div class="inputs">
+                                <div>
+                                    <a asp-controller="common" asp-action="GetFileFromDisk" asp-route-fileName="@Model.VehiclePhotoUri" asp-route-name="Vehicle photo" style="cursor:pointer;" target=_blank>
+                                        <label>
+                                            <span class="glyphicon glyphicon-download-alt"></span>
+                                            Vehicle photo
+                                        </label>
+                                    </a>
+
+
+                                </div>
+
+                                <img id="blah" src="@Model.VehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
+
+                            </div>
+                            <div class="inputs">
+
+                                <div>
+                                    <label>
+                                        Proof of insurance
+                                    </label>
+
+                                </div>
+
+                                <iframe src="@(Model.InsurancePhotoUri)" class="iframeClass" style="width:700px; height:300px;"> </iframe>
+                            </div>
+
+
+                        </div>
+                    </div>
+
 
 
                     <div class="address-list">
@@ -238,7 +240,7 @@
                         </ol>
 
                         @if (Model.Addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress.ToLower() == "default").FirstOrDefault() == null)
-                {
+                        {
                             <div class="alert alert-danger" role="alert">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 <span class="sr-only">Error:</span>
@@ -247,15 +249,15 @@
                         }
 
                         @foreach (var address in Model.Addresses.Where(x => x.TypeAddress.ToLower() == "home" || x.TypeAddress == "default"))
-                {
+                        {
                             <div class="address-list">
 
 
                                 <div class="section address-item">
-                                    
 
-                                        <h4>@address.Contact @address.Phone</h4>
-                                    
+
+                                    <h4>@address.Contact @address.Phone</h4>
+
                                     <ul class="info">
 
                                         <li class="address1">
@@ -279,63 +281,67 @@
 
                     </div>
 
-           <div class="page-body">
-                            <div class="order-list">
-                                <div class="page-title">
-                                    <h1>Packages</h1>
-                                </div>
-                                @foreach (var item in Model.ShipmentDrivers)
+                    <div class="page-body">
+                        <div class="order-list">
+                            <div class="page-title">
+                                <h1>Packages</h1>
+                            </div>
+                            @foreach (var item in Model.ShipmentDrivers)
+                            {
+                                var urlPickup = ViewBag.Uri + item.PickupPictureUri;
+                                var urlDelivery = "";
+                                if (string.IsNullOrEmpty(item.DeliveredPictureUri))
                                 {
-                                    var urlPickup = ViewBag.Uri + item.PickupPictureUri;
-                                    var urlDelivery = "";
-                                    if (string.IsNullOrEmpty(item.DeliveredPictureUri))
-                                    {
-                                        urlDelivery = ViewBag.Uri + "/images/profile-icon.png";
-                                    }
-                                    else
-                                    {
-                                        urlDelivery = ViewBag.Uri + item.DeliveredPictureUri;
-                                    }
-
-                                    <div class="section order-item">
-                                        <div class="title">
-                                            <strong>Shipping #: @item.IdentityCode</strong>
-                                        </div>
-                                        <ul class="info">
-                                            <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
-                                            <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                                            <li><label>Priority</label> <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
-                                            <li><label>Order Total:</label> <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
-                                            <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
-                                            <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
-                                            <li>
-                                                <div class="pull-left">
-                                                    <div><label>PickUp Image</label></div>
-                                                    <img src="@ViewBag.Uri/@item.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
-                                                </div>
-                                                <div class="col-5">
-                                                    <div><label>Delivery Image</label></div>
-                                                    <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
-                                                </div>
-                                            </li>
-                                        </ul>
-
-                                    </div>
+                                    urlDelivery = ViewBag.Uri + "/images/profile-icon.png";
+                                }
+                                else
+                                {
+                                    urlDelivery = ViewBag.Uri + item.DeliveredPictureUri;
                                 }
 
-                            </div>
-           </div>
-                   
-</div>
+                                <div class="section order-item">
+                                    <div class="title">
+                                        <strong>Shipping #: @item.IdentityCode</strong>
+                                    </div>
+                                    <ul class="info">
+                                        <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingStatus.Name)</span></li>
+                                        <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                                        <li><label>Priority</label> <span class="order-date"> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</span></li>
+                                        <li><label>Order Total:</label> <span class="order-total">@Html.DisplayFor(modelItem => item.Amount)/@Html.DisplayFor(modelItem => item.Discount)</span></li>
+                                        <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.PickupAddress.Street), @Html.DisplayFor(modelItem => item.PickupAddress.City), @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)</span></li>
+                                        <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => item.DeliveryAddress.Street), @Html.DisplayFor(modelItem => item.DeliveryAddress.City), @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)</span></li>
+                                        <li>
+                                            <div class="pull-left">
+                                                <div><label>PickUp Image</label></div>
+                                                <img src="@ViewBag.Uri/@item.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
+                                            </div>
+                                            <div class="col-5">
+                                                <div><label>Delivery Image</label></div>
+                                                <img src="@urlDelivery" class="img-rounded" alt="no package image" width="100" height="75">
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
+    </section>
 
-   
+              
 
 
-@section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                @section Scripts {
+                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+                    <script>
 
     $("#DeleteCustomer").click(function (event) {
         event.preventDefault();
@@ -426,8 +432,9 @@
         readURL(this);
     });
 
-    
 
-</script>
 
-    }
+                    </script>
+
+                }
+

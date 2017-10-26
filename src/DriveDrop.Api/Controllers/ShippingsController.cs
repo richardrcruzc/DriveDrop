@@ -177,6 +177,37 @@ namespace DriveDrop.Api.Controllers
         }
         [HttpPost]
         [Route("[action]")]
+        public async Task<IActionResult> SetDropbyInfo([FromBody]DropbyInfoModel model)
+        {
+
+            try
+            {
+                var shipping = _context.Shipments.Find(model.Id);
+
+                if (shipping == null)
+                    return NotFound("PackageNoFound");
+                if (model.StatusId > 0)
+                    shipping.ChangeStatus(model.StatusId);
+                else
+                {
+                    shipping.ChangeStatus(ShippingStatus.Delivered.Id);
+
+                }
+                shipping.SetDropInfo(System.Net.WebUtility.UrlDecode(model.DropPictureUri), model.DropComment );
+                _context.Update(shipping);
+                await _context.SaveChangesAsync();
+
+                return Ok("SetDeliveredPictureUri");
+            }
+
+            catch (Exception)
+            {
+                return BadRequest("cannotChangeShippingDeveleryUri");
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
         public async Task<IActionResult> SetDeliveredPictureUri([FromBody]AcceptModel model)
         {
             try
@@ -236,9 +267,9 @@ namespace DriveDrop.Api.Controllers
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("CustomerTypesNotFound");
+                return BadRequest(ex);
             }
         }
         

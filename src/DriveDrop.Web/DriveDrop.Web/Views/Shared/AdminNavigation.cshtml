@@ -1,57 +1,146 @@
-@model int
-<div class="block block-account-navigation">
-    <div class="title">
-        <strong>My Account (Administrator)</strong>
+@model  DriveDrop.Web.ViewModels.TwoParameterModel
+
+
+<div id="sidebar" class="col-sm-3 sidebar-desktop">
+    <ul id="side-navbar" class="side-fixed-menu">
+
+        <li>
+
+            @if (Model.Option == "Details")
+            {
+                @Html.ActionLink("My Personal Info", "Details", "admin", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("My Personal Info", "Details", "admin", new { id = Model.Id }, new { @class = "gig-information" })
+
+            }
+
+
+
+        </li>
+        <li>
+            @if (Model.Option == "ListTaxes")
+            {
+                @Html.ActionLink("Tax Rates", "ListTaxes", "rates", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+
+                @Html.ActionLink("Tax Rates", "ListTaxes", "rates", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+        </li>
+        <li>
+            @if (Model.Option == "rates")
+            {
+                @Html.ActionLink("Size Rates", "index", "rates", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+
+                @Html.ActionLink("Size Rates", "index", "rates", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+        </li>
+        <li>
+            @if (Model.Option == "DistanceAndWeight")
+            {
+                @Html.ActionLink("Distance And Weight Rates", "DistanceAndWeight", "rates", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+
+                @Html.ActionLink("Distance And Weight Rates", "DistanceAndWeight", "rates", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+        </li>
+
+
+        <li>
+            @if (Model.Option == "newsender")
+            {
+                @Html.ActionLink("Create New Sender", "newsender", "sender", new { @class = "active gig-information" }, null)
+            }
+            else
+            {
+                @Html.ActionLink("Create New Sender", "newsender", "sender", new { @class = "gig-information" }, null)
+            }
+        </li>
+
+        <li>
+            @if (Model.Option == "NewDriver")
+            {
+                @Html.ActionLink("Create New Driver", "NewDriver", "driver", new { @class = "active gig-information" }, null)
+            }
+            else
+            {
+                @Html.ActionLink("Create New Driver", "NewDriver", "driver", new { @class = "gig-information" }, null)
+            }
+        </li>
+        <li>
+            @if (Model.Option == "shippings")
+            {
+                
+                @Html.ActionLink("List Packages", "shippings", "admin", null, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("List Packages", "shippings", "admin", new { @class = "gig-information" }, null)
+            }
+        </li>
+
+        <li>
+             @if (Model.Option == "Index")
+            {
+                @Html.ActionLink("List Users", "Index", "admin", null, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("List Users", "Index", "admin", new { @class = "gig-information" }, null)
+            }
+
+        </li>
+
+        @*<li class="customer-info">
+                  @Html.ActionLink("My Shippings", "Shippings", "sender",new { id = Model.Id }, new { @class = "active gig-information" })
+              </li>
+            <li>
+                  @Html.ActionLink("Add new Shipping", "NewShipping", "sender",new { id = Model.Id }, new { @class = "active gig-information" })
+              </li>
+            <li>
+                  @Html.ActionLink("Rates", "index", "rates",new { id = Model.Id }, new { @class = "active gig-information" })
+              </li>*@
+        <li class="change-password">
+            @if (Model.Option == "ChangePassword")
+            {
+                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+
+            {
+                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+
+        </li>
+
+
+    </ul>
+    <div class="credits">
+        <p>CREDITS <a href="#" class="help">?</a></p>
+        <a href="#" class="price">$0.00</a>
     </div>
-    <div class="listbox">
-        <ul class="list">
-
-            <li class="customer-info">
-                @Html.ActionLink("My Personal Info", "Details", "admin", new { id = Model }, null)
-                 
-            </li>
-            <li class="customer-info">
-                @Html.ActionLink("Tax Rates", "ListTaxes", "rates", new { id = Model }, null)
-            </li>
-           <li class="customer-info"> 
-                @Html.ActionLink("Size Rates", "index", "rates", new { id = Model }, null)
-            </li>
-            <li class="customer-info">
-                @Html.ActionLink("Distance And Weight Rates", "DistanceAndWeight", "rates", new { id = Model }, null)
-            </li>
+    <h3>Redeem Promo Code</h3>
+    <div class="clearfix"></div>
+</div>
 
 
-            <li class="customer-info">
-                @Html.ActionLink("Create New Sender", "newsender", "sender" )
-            </li>
-
-            <li class="customer-info">
-                @Html.ActionLink("Create New Driver", "NewDriver", "driver" )
-            </li>
-            <li class="customer-info">
-                @Html.ActionLink("List Packages", "shippings", "admin")
-            </li>
-
-            <li class="customer-info">
-                @Html.ActionLink("List Users", "Index", "admin")
-
-            </li>
-
-            @*<li class="customer-info">
-        @Html.ActionLink("My Shippings", "Shippings", "sender", new { id = Model }, null)
-    </li>
-    <li class="customer-info">
-        @Html.ActionLink("Add new Shipping", "NewShipping", "sender", new { id = Model }, null)
-    </li>
-    <li class="customer-info">
-        @Html.ActionLink("Rates", "index", "rates", new { id = Model }, null)
-    </li>*@
-            <li class="change-password">
-                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model }, null)
-
-            </li>
-
-
-        </ul>
+<div class="col-sm-3 sidebar-mobile">
+    <ul id="side-navbar" class="side-fixed-menu"></ul>
+    <div class="credits">
+        <p>CREDITS <a href="#" class="help">?</a></p>
+        <a href="#" class="price">$0.00</a>
     </div>
+    <h3>Redeem Promo Code</h3>
+    <div class="clearfix"></div>
 </div>

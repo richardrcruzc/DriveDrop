@@ -1,11 +1,19 @@
 ﻿// Write your Javascript code.
+ 
+if ($("#sidebar").length) {
+    var stickySidebar = new StickySidebar('#sidebar', {
+        topSpacing: 150,
+        containerSelector: '.container',
+        innerWrapperSelector: '.sidebar__inner'
+    });
 
-
-var stickySidebar = new StickySidebar('#sidebar', {
-    topSpacing: 150,
-    containerSelector: '.container',
-    innerWrapperSelector: '.sidebar__inner'
-});
+    $('.side-fixed-menu').on('click', function (e) {        
+        $('a').each(function () {
+            $(this).removeClass('active');
+        })
+        $(this).addClass('active');
+    });
+}
 
 $(document).ready(function () {
    // $(document).on("scroll", onScroll);

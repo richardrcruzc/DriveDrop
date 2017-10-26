@@ -20,9 +20,11 @@
         Text = "Home",
         Value = "Home"
     });
+
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "newsender" };
 }
 
- 
+
 
 <style>
     /* Always set the map height explicitly to define the size of the div
@@ -86,237 +88,241 @@
         margin-bottom: 2px;
     }
 </style>
-@if (User.FindFirst(x => x.Type == "preferred_username") != null)
-{
-
-<div class="side-2">
 
 
-    @await Html.PartialAsync("AdminNavigation", 1)
+<section class="login-page  pt-220">
+    <div class="container">
 
-
-</div>
-}
-<div class="center-2">
-
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h2>New Sender Information</h2>
+        <div class="headline width-40 ">
+            <h3>SENDER SIGN UP</h3>
+            <p class="mb-90">New Sender Information</p>
         </div>
-        <div class="page-body">
-            @*<form asp-controller="Sender" asp-action="NewSender" data-ajax="true" role="form" data-ajax-method="POST" enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">*@
-            <form asp-controller="Sender" asp-action="NewSender" role="form" data-ajax-method="POST" enctype="multipart/form-data">
-
-                <input asp-for="Distance" hidden />
-                <input asp-for="CustomerTypeId" hidden />
-
-                <input asp-for="PickupLatitude" hidden />
-                <input asp-for="PickupLongitude" hidden />
-               
 
 
-                <div class="fieldset">
+        @if (User.FindFirst(x => x.Type == "preferred_username") != null)
+        {
 
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="title">
-                        <strong>Sender Information</strong>
-                    </div>
-
-                    <div class="form-fields">
-                        <div class="form-horizontal">
+            <div class="side-2">
 
 
-                            <div class="form-group">
+                @await Html.PartialAsync("AdminNavigation", option)
 
-                                <div class="col-md-4">
-                                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                                </div>
+
+            </div>
+        }
+        
+
+            <div class="login-form sign-up">
+
+                <div class="page-body">
+
+                    <form asp-controller="Sender" asp-action="NewSender" role="form" data-ajax-method="POST" enctype="multipart/form-data">
+
+                        <input asp-for="Distance" hidden />
+                        <input asp-for="CustomerTypeId" hidden />
+
+                        <input asp-for="PickupLatitude" hidden />
+                        <input asp-for="PickupLongitude" hidden />
+
+
+
+                        <div class="fieldset">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="title">
+                                <strong>Sender Information</strong>
                             </div>
 
+                            <div class="form-fields">
+                                <div class="form-horizontal">
 
-                            <div class="form-group">
 
-                                <div class="col-md-4">
-                                    <input asp-for="LastName" class="form-control" placeholder="Last Name" />
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
-                                </div>
-                            </div>
+                                    <div class="form-group">
 
-                            <div class="form-group">
-
-                                <div class="col-md-4">
-                                    <input asp-for="PrimaryPhone" class="form-control" placeholder="Primary Phone Number" data-inputmask="'mask': '(999) 999-9999'" />
-                                    <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-md-4">
-                                    <input asp-for="Phone" class="form-control" placeholder="Cell Number" data-inputmask="'mask': '(999) 999-9999'" />
-                                    <span asp-validation-for="Phone" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            @*<div class="form-group">
-
-                                    <div class="col-md-4">
-                                        <input asp-for="Email" class="form-control" placeholder="Email Address" />
-                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        <div class="col-md-12">
+                                            <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
                                     </div>
-                                </div>*@
 
 
+                                    <div class="form-group">
 
-                        </div>
-                    </div>
-               
-                <div class="title">
-                    <h3>Profile Photo</h3>
-                </div>
-                <div class="form-fields">
-                    <div class="form-horizontal">
+                                        <div class="col-md-12">
+                                            <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="PrimaryPhone" class="form-control" placeholder="Primary Phone Number" data-inputmask="'mask': '(999) 999-9999'" />
+                                            <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="Phone" class="form-control" placeholder="Cell Number" data-inputmask="'mask': '(999) 999-9999'" />
+                                            <span asp-validation-for="Phone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                 
+
+                                </div>
+                            </div>
+
+                            <div class="title">
+                                <h3>Profile Photo</h3>
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-horizontal">
 
 
-                        <div class="image-placeholder">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="col-md-4">
-                                        <input name="ImgeFoto" type='file' id="imgFoto" />
-                                        <img id="blah" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                    <div class="image-placeholder">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <input name="ImgeFoto" type='file' id="imgFoto" />
+                                                    <img id="blah" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="title">
+                                <h3>Address for Future Pickup and Dropoff</h3>
                             </div>
 
-                        </div>
-                    </div>
 
+                            <div class="form-fields">
+                                <div class="form-horizontal">
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input id="autocomplete" class="form-control" placeholder="Enter Your Address" /><br />
+                                            <a class="btn btn-primary btn-lg" role="button" id="asPickup">Set as Pickup Address</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3>Default Address</h3>
+                                <hr />
+                                <div class="form-horizontal">
+
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="PickupStreet" class="form-control" placeholder="Street" readonly />
+                                            <span asp-validation-for="PickupStreet" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
+                                            <span asp-validation-for="PickupCity" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
+                                            <span asp-validation-for="PickupState" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
+                                            <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="PickupCountry" class="form-control" placeholder="Country" readonly />
+                                            <span asp-validation-for="PickupCountry" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    @*<div class="form-group">
+                            <div class="col-md-12">
+                                <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Contact phone"   />
+                                <span asp-validation-for="PickupPhone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input asp-for="PickupContact" class="form-control" placeholder="Contact person"   />
+                                <span asp-validation-for="PickupContact" class="text-danger"></span>
+                            </div>
+                        </div>*@
+
+
+                                </div>
+
+                            </div>
+                            <div class="title">
+                                <h3>Login Infomation</h3>
+                            </div>
+
+                            <div class="form-fields">
+                                <div class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="UserEmail" class="form-control" placeholder="User Email" />
+                                            <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="Password" class="form-control" placeholder="Password" title="Password should contain at least one lower case letter, at least one upper case letter, at least one numeric value, at least one special case characters, should not be less than 6 or greater than 12 characters"/>
+                                            <span asp-validation-for="Password" class="Password"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                                            <span asp-validation-for="ConfirmPassword" class="ConfirmPassword"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div><div class="form-fields">
+                                <div class="buttons">
+                                    <input type="submit" value="Submit" name="save-info-button" class="btn btn-primary" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
-                <div class="title">
-                    <h3>Address for Future Pickup and Dropoff</h3>
-                </div>
-
-
-                <div class="form-fields">
-                    <div class="form-horizontal">
-
-                        <div class="form-group">
-
-                            <div class="col-md-4">
-                                <input id="autocomplete" class="form-control" placeholder="Enter Your Address" /><br />
-                                <a class="btn btn-primary btn-lg" role="button" id="asPickup">Set as Pickup Address</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3>Default Address</h3>
-                    <hr />
-                    <div class="form-horizontal">
-
-
-
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <input asp-for="PickupStreet" class="form-control" placeholder="Street" readonly />
-                                <span asp-validation-for="PickupStreet" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
-                                <span asp-validation-for="PickupCity" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                     
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
-                                <span asp-validation-for="PickupState" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
-                                <span asp-validation-for="PickupZipCode" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <input asp-for="PickupCountry" class="form-control" placeholder="Country" readonly />
-                                <span asp-validation-for="PickupCountry" class="text-danger"></span>
-                            </div>
-                        </div>
-                        @*<div class="form-group">
-                                <div class="col-md-4">
-                                    <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Contact phone"   />
-                                    <span asp-validation-for="PickupPhone" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <input asp-for="PickupContact" class="form-control" placeholder="Contact person"   />
-                                    <span asp-validation-for="PickupContact" class="text-danger"></span>
-                                </div>
-                            </div>*@
-
-
-                    </div>
-
-                </div>
-                <div class="title">
-                    <h3>Login Infomation</h3>
-                </div>
-
-                    <div class="form-fields">
-                        <div class="form-horizontal">
-
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <input asp-for="UserEmail" class="form-control" placeholder="User Email" />
-                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <input asp-for="Password" class="form-control" placeholder="Password" />
-                                    <span asp-validation-for="Password" class="Password"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
-                                    <span asp-validation-for="ConfirmPassword" class="ConfirmPassword"></span>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                      
-
-                    </div><div class="form-fields">
-                              <div class="buttons">
-                                  <input type="submit" value="Submit" name="save-info-button" class="btn btn-primary" />
-
-                              </div>
-    </div>
-</div>
-               
-            </form>
-        </div>
+            </div>
        
     </div>
-</div>
+</section>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+ 
+
+                    @section Scripts {
+                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-        <script>
+                        <script>
 
     //    $('input#submitButton').click(function () {
 
@@ -614,7 +620,7 @@
           });
         }
       }
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
-                async defer></script>
-    }
+                        </script>
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+                                async defer></script>
+                    }

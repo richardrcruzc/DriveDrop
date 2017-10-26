@@ -2,6 +2,7 @@
 @{
 
 
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = (int)@ViewBag.Id, Option = "Shippings" };
 }
 
 
@@ -10,7 +11,7 @@
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
+                @await Html.PartialAsync("CustomerNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">

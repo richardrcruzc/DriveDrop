@@ -20,55 +20,56 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    
 
- 
+
     @await Html.PartialAsync("_LoginPartial")
 
     @await Component.InvokeAsync("UserStatus")
+        
 
-    @RenderBody()
+            @RenderBody()
 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-3 footer-logo">
-                    <figure><img src="~/images/footer-logo.png"> </figure>
+
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-3 footer-logo">
+                            <figure><img src="~/images/footer-logo.png"> </figure>
+                        </div>
+                        <div class="col-xs-9 footer-links">
+                            <ul class="footer-menu">
+                                <li><a href="#">Help</a></li>
+                                <li><a href="#">FAQs</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">About us</a></li>
+                                <li><a href="#">Press</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Contact us</a></li>
+                                <li><a href="#">Become An Agent</a></li>
+                                <div class="clearfix"></div>
+                            </ul>
+                            <div class="clearfix"></div>
+                            <ul class="social-media footer-con">
+                                <li><a href="#" class="fa fa-facebook"></a> </li>
+                                <li><a href="#" class="fa fa-google-plus"></a> </li>
+                                <li><a href="#" class="fa fa-twitter"></a> </li>
+                                <div class="clearfix"></div>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-9 footer-links">
-                    <ul class="footer-menu">
-                        <li><a href="#">Help</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Become An Agent</a></li>
-                        <div class="clearfix"></div>
-                    </ul>
-                    <div class="clearfix"></div>
-                    <ul class="social-media footer-con">
-                        <li><a href="#" class="fa fa-facebook"></a> </li>
-                        <li><a href="#" class="fa fa-google-plus"></a> </li>
-                        <li><a href="#" class="fa fa-twitter"></a> </li>
-                        <div class="clearfix"></div>
-                    </ul>
+                <div class="copy-right">
+                    <div class="container">
+                        <p>Copyright 2017 | ALL RIGHTS RESERVED</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="copy-right">
-            <div class="container">
-                <p>Copyright 2017 | ALL RIGHTS RESERVED</p>
-            </div>
-        </div>
-    </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            </footer>
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/js/owl.carousel.min.js"></script>
+  <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/custom.js"></script>
     <script src="~/js/sticky-sidebar.js"></script>
-    <script src="~/js/site.js"></script>
+ 
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "100%";
@@ -79,14 +80,15 @@
         }
 
     </script>
-
+    <script src="~/js/site.js"></script>
     <script src="@(Url.Content("~/lib/Inputmask/dist/jquery.inputmask.bundle.js"))"></script>
     <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone.js"))"></script>
     <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone-be.js"))"></script>
     <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone-ru.js"))"></script>
-
-    @RenderSection("scripts", required: false)
+ 
+            @RenderSection("scripts", required: false)
 
 
 </body>
+
 </html>

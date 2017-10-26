@@ -2,26 +2,28 @@
 
 @{
     ViewData["Title"] = "Details";
-}
+ 
 
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = Model.Id, Option = "result" };
+}
 
 <section class="sender-desh">
     <div class="container">
         <div class="main-cont">
             <div class="row">
                 
-                @await Html.PartialAsync("DriverNavigation", Model.Id)
+                @await Html.PartialAsync("DriverNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">
-                        <h3 class="blue-head active">My Personal Info</h3>
+                        <h3 class="blue-head active">Driver Information</h3>
                         <div class="form-body">
                             <div class="profile-form">
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div class="profile">
                                             <div class="photo">
-                                                <input type="file" accept="image/*"  id="my-file-selector-Personal" name="PersonalPhotoUri">
+                                                <input type="file" accept="image/*"  id="my-file-selector-Personal" name="photoUrl">
                                                 <div class="photo__helper">
                                                     <div class="photo__frame photo__frame--circle">
                                                         <canvas class="photo__canvas"></canvas>
@@ -76,72 +78,94 @@
                                                 <input asp-for="CustomerStatus" hidden />
                                                 <input asp-for="PersonalPhotoUri" hidden />
 
-                                                <div class="form-group">
+                                                <div class="fieldset">
 
                                                     <div class="title">
                                                         <strong>My Personal Information Details</strong>
-                                                    </div> 
+                                                    </div>
+
                                                     <div asp-validation-summary="ModelOnly" class="result"></div>
-                                                    
-                                                    <div class="form-group">
-                                                        <div class="form-fields">
-                                                            <label for="CustomerStatus"><span>Status:</span> @Model.CustomerStatus</label>
-                                                             
-                                                        </div>
-                                                        
-                                                        <div class="form-field">
-                                                            <input asp-for="FirstName" placeholder="First name" />
-                                                            <span class="required">*</span>
-                                                            <span asp-validation-for="FirstName" class="text-danger"></span>
-                                                        </div>
-                                                             
-                                                            <div class="form-field">
-                                                                <input asp-for="LastName" placeholder="Last name" />
-                                                                <span class="required">*</span>
-                                                                <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                                    <div class="form-fields">
+                                                        <div class="form-horizontal">
+
+
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label for="CustomerStatus"><span>Status:</span> @Model.CustomerStatus</label>
+                                                                </div>
                                                             </div>
 
-                                                            <div class="form-field">
-                                                                @Html.TextBoxFor(model => model.Email, new { @class = "email" })
-                                                                <span class="required">*</span>
-                                                                @Html.ValidationMessageFor(model => model.Email)
+                                                            <div class="form-group">
 
-
-
-                                                            </div>
-                                                            <div class="form-field">
-                                                                @Html.TextBoxFor(model => model.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                                                <span class="required">*</span>
-                                                                @Html.ValidationMessageFor(model => model.PrimaryPhone)
-
-                                                            </div>
-                                                            <div class="form-field">
-                                                                @Html.TextBoxFor(model => model.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                                                <span class="required">*</span>
-                                                                @Html.ValidationMessageFor(model => model.Phone)
-
-                                                            </div>
-                                                            <div class="form-field">
-                                                                @Html.TextBoxFor(model => model.PickupRadius)
-                                                                <span class="required">*</span>
-                                                                @Html.ValidationMessageFor(model => model.PickupRadius)
-
-                                                            </div>
-                                                            <div class="form-field">
-                                                                @Html.TextBoxFor(model => model.DeliverRadius)
-                                                                <span class="required">*</span>
-                                                                @Html.ValidationMessageFor(model => model.DeliverRadius)
-
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="FirstName"></label>
+                                                                    <input asp-for="FirstName" class="form-control" placeholder="First name" />
+                                                                    <span class="required">*</span>
+                                                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                                                </div>
                                                             </div>
 
-
-                                                            <div class="form-field">
-
-                                                                <input asp-for="VerificationId" placeholder="Verification Id" />
-                                                                <span class="required">*</span>
-                                                                <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="LastName"></label>
+                                                                    <input asp-for="LastName" class="form-control" placeholder="Last name" />
+                                                                    <span class="required">*</span>
+                                                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                                                </div>
                                                             </div>
 
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="Email"></label>
+                                                                    @Html.TextBoxFor(model => model.Email, new { @class = "email form-control" })
+                                                                    <span class="required">*</span>
+                                                                    @Html.ValidationMessageFor(model => model.Email)
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="PrimaryPhone"></label>
+                                                                    @Html.TextBoxFor(model => model.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+                                                                    <span class="required">*</span>
+                                                                    @Html.ValidationMessageFor(model => model.PrimaryPhone)
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="Phone"></label>
+                                                                    @Html.TextBoxFor(model => model.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+                                                                    <span class="required">*</span>
+                                                                    @Html.ValidationMessageFor(model => model.Phone)
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="PickupRadius"></label>
+                                                                    @Html.TextBoxFor(model => model.PickupRadius, new { @class = "form-control" })
+                                                                    <span class="required">*</span>
+                                                                    @Html.ValidationMessageFor(model => model.PickupRadius)
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="DeliverRadius"></label>
+                                                                    @Html.TextBoxFor(model => model.DeliverRadius, new { @class = "form-control" })
+                                                                    <span class="required">*</span>
+                                                                    @Html.ValidationMessageFor(model => model.DeliverRadius)
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label asp-for="VerificationId"></label>
+                                                                    <input asp-for="VerificationId" class="form-control" placeholder="Verification Id" />
+                                                                    <span class="required">*</span>
+                                                                    <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
 
 
                                                             <div class="post-gig">
@@ -151,8 +175,8 @@
 
                                                             </div>
                                                         </div>
-                                                </div>
-                                            </form>
+                                                    </div>
+                                                </div></form>
                                         </div>
                                     </div>
                                 </div>

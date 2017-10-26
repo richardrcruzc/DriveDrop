@@ -2,8 +2,9 @@
 
 @{
     ViewData["Title"] = "Create";
-}
 
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "NewDriver" };
+}
 
 
 <section class="login-page  pt-220">
@@ -21,14 +22,14 @@
             <div class="side-2">
 
 
-                @await Html.PartialAsync("AdminNavigation", 1)
+                @await Html.PartialAsync("AdminNavigation", option)
 
 
             </div>
         }
         <div class="center-2">
 
-            <div class="login-form sign-up ">
+            <div class="login-form sign-up">
 
                 <div class="page-body">
 
@@ -37,312 +38,328 @@
                         <input asp-for="DeliveryLatitude" hidden />
                         <input asp-for="DeliveryLongitude" hidden />
 
+                        <div class="fieldset">
 
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                        <div class="title">
-                            <h3>Driver Information</h3>
-                        </div>
-
-                        <div class="border"><span></span></div>
-
-                        <div class="form-field">
-
-
-                            <input asp-for="FirstName" placeholder="First Name" />
-
-                             <div>
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            <div class="title">
+                                <h3>Driver Information</h3>
                             </div>
-                        </div>
 
-
-                        <div class="form-field">
-
-
-                            <input asp-for="LastName" placeholder="Last Name" />
-                          
-                            <div>
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-
-
-                            <input asp-for="PrimaryPhone" class="phone-number" placeholder="Contact Primary Phone" data-inputmask="'mask': '(999) 999-9999'" />
-                       
-                            <div>
-                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-
-
-                            <input asp-for="Phone" class="phone-number" placeholder="Cell Phone" data-inputmask="'mask': '(999) 999-9999'" />
-                       
-                            <div>
-                                <span asp-validation-for="Phone" class="text-danger"></span>
-                            </div>
-                        </div>
-
-
-
-                        <div class="border"><span></span></div>
-                         
-                        <div class="title">
-                            <h3>Default Address</h3>
-                        </div>
-                       
-                        <div class="border"><span></span></div>
-                        <div class="form-field">
-
-
-                            <input id="autocomplete" placeholder="Enter Your Address" />
-
-                        </div>
-
-                        <div class="form-field">
-
-                            <input asp-for="DeliveryStreet" placeholder="Street" ReadOnly />
-                            
-                            <div>
-                                <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-
-                            <input asp-for="DeliveryCity" placeholder="City" ReadOnly />
-                            
-                            <div>
-                                <span asp-validation-for="DeliveryCity" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="DeliveryState" placeholder="State" ReadOnly />
-                            
-                            <div>
-                                <span asp-validation-for="DeliveryState" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="DeliveryZipCode" placeholder="Zip Code" ReadOnly />
-                            
-                            <div>
-                                <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="DeliveryCountry" placeholder="Country" ReadOnly />
-                            
-                            <div>
-                                <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
-                            </div>
-                        </div>
-
-
-                        <div class="border"><span></span></div>
-                        <div class="title">
-                            <h3>Driver Package and Drive Information  </h3>
-                        </div>
-                        <div class="border"><span></span></div>
-                        <div class="form-field">
-
-
-                            <input asp-for="MaxPackage" placeholder="Maximum Package to Pickup" />
-                            
-                            <div>
-                                <span asp-validation-for="MaxPackage" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-
-                            <input asp-for="PickupRadius" placeholder="Maximum Drive Package Radius" />
-                            
-                            <div>
-                                <span asp-validation-for="PickupRadius" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-
-                            <input asp-for="DeliverRadius" placeholder="Maximum Drive Deliver Package Radius" />
-                            
-                            <div>
-                                <span asp-validation-for="DeliverRadius" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-
-                            @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, new { @class = "form-control dropdown" })
-                            
-                            <div>
-                                <span asp-validation-for="TransportTypeId" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="VehicleMake" placeholder="Vehicle Make" />
-                            
-                            <div>
-                                <span asp-validation-for="VehicleMake" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="VehicleModel" placeholder="Vehicle Model" />
-                            
-                            <div>
-                                <span asp-validation-for="VehicleModel" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="VehicleColor" placeholder="Vehicle Color" />
-                            
-                            <div>
-                                <span asp-validation-for="VehicleColor" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-field">
-
-                            <input asp-for="VehicleYear" placeholder="Vehicle Year" />
-                            
-                            <div>
-                                <span asp-validation-for="VehicleYear" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="border"><span></span></div>
-
-                        <div class="title">
-                            <h3>Profile Photo </h3>
-                        </div>
-                        <div class="border"><span></span></div>
-                        <div class="form-fields">
-
-                            <div class="image-placeholder">
+                            <div class="form-fields">
                                 <div class="form-horizontal">
-                                    <div class="form-field">
 
-                                        <input type='file' id="my-file-selector-Personal" name="personalfiles" />
-                                        <img id="Personal-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
-                                        
-                                        <div>
-                                            <span asp-validation-for="Personalfiles" class="text-danger"></span>
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+
+
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+
+
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="PrimaryPhone" class="form-control" placeholder="Contact Primary Phone" data-inputmask="'mask': '(999) 999-9999'" />
+
+
+                                            <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="Phone" class="form-control phone-number" placeholder="Cell Phone" data-inputmask="'mask': '(999) 999-9999'" />
+
+
+                                            <span asp-validation-for="Phone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="title">
+                                <h3>Default Address</h3>
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-horizontal">
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input id="autocomplete" class="form-control" placeholder="Enter Your Address" />
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="DeliveryStreet" class="form-control" placeholder="Street" ReadOnly />
+
+
+                                            <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="DeliveryCity" class="form-control" placeholder="City" ReadOnly />
+
+
+                                            <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="DeliveryState" class="form-control" placeholder="State" ReadOnly />
+
+
+                                            <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code" ReadOnly />
+
+
+                                            <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="DeliveryCountry" class="form-control" placeholder="Country" ReadOnly />
+
+
+                                            <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="title">
+                                <h3>Driver Package and Drive Information  </h3>
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <input asp-for="MaxPackage" class="form-control" placeholder="Maximum Package to Pickup" />
+
+
+                                            <span asp-validation-for="MaxPackage" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="PickupRadius" class="form-control" placeholder="Maximum Drive Pickup Radius in Miles" />
+
+
+                                            <span asp-validation-for="PickupRadius" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="DeliverRadius" class="form-control" placeholder="Maximum Drive Deliver Package Radius  in Miles" />
+
+
+                                            <span asp-validation-for="DeliverRadius" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, new { @class = "form-control" })
+
+
+                                            <span asp-validation-for="TransportTypeId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="VehicleMake" class="form-control" placeholder="Vehicle Make" />
+
+                                            <span asp-validation-for="VehicleMake" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="VehicleModel" class="form-control" placeholder="Vehicle Model" />
+
+
+                                            <span asp-validation-for="VehicleModel" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="VehicleColor" class="form-control" placeholder="Vehicle Color" />
+
+
+                                            <span asp-validation-for="VehicleColor" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="VehicleYear" class="form-control" placeholder="Vehicle Year" />
+
+
+                                            <span asp-validation-for="VehicleYear" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="title">
+                                <h3>Profile Photo </h3>
+                            </div>
 
-                        <div class="border"><span></span></div>
-                        <div class="title">
-                            <h3>Driver License Photo </h3>
-                        </div>
-                        <div class="border"><span></span></div>
-                        <div class="form-fields">
-                            <div class="image-placeholder">
-                                <div class="form-horizontal">
-                                    <div class="form-field">
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    <div class="image-placeholder">
+                                        <div class="form-horizontal">
 
-                                        <input type='file' id="my-file-selector-license" name="licensefiles" />
-                                        <img id="license-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+
+                                            <input type='file' id="my-file-selector-Personal" name="personalfiles" />
+                                            <img id="Personal-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+
+                                            <div>
+                                                <span asp-validation-for="Personalfiles" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="title">
+                                <h3>Driver License Photo </h3>
+                            </div>
+
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    <div class="image-placeholder">
+                                        <div class="form-horizontal">
 
 
-                        <div class="border"><span></span></div>
-                        <div class="title">
-                            <h3>Vehicle Photo </h3>
-                        </div>
-                        <div class="border"><span></span></div>
-                        <div class="form-fields">
-                            <div class="image-placeholder">
-                                <div class="form-horizontal">
-                                    <div class="form-field">
-
-                                        <input type='file' id="my-file-selector-Vehicle" name="Vehiclefiles" />
-                                        <img id="Vehicle-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                            <input type='file' id="my-file-selector-license" name="licensefiles" />
+                                            <img id="license-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        </div>
                                     </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="title">
+                                <h3>Vehicle Photo </h3>
+                            </div>
+
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    <div class="image-placeholder">
+                                        <div class="form-horizontal">
+
+
+                                            <input type='file' id="my-file-selector-Vehicle" name="Vehiclefiles" />
+                                            <img id="Vehicle-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="title">
+                                <h3>Proof of Insurance </h3>
+                            </div>
+
+                            <div class="form-fields">
+
+
+                                <div class="image-placeholder">
+                                    <div class="form-group">
+                                        <div class="form-horizontal">
+
+
+                                            <input type='file' id="my-file-selector-insurance" name="insurancefiles" />
+                                            <img id="insurance-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            @*<a href="#" class="fb-bttn ">Log in with Facebook </a>
+            <div class="border"><span><spam>&amp;</spam></span></div>*@
+                            <div class="title">
+                                <h3>  Login Information</h3>
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="UserEmail" class="form-control" placeholder="User Email" />
+
+                                            <span asp-validation-for="UserEmail" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            
+                                            <input asp-for="Password" class="form-control" placeholder="Password" title="Password should contain at least one lower case letter, at least one upper case letter, at least one numeric value, at least one special case characters, should not be less than 6 or greater than 12 characters" />
+
+                                            <span asp-validation-for="Password" class="Password text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+
+                                            <span asp-validation-for="ConfirmPassword" class="ConfirmPassword  text-danger"></span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
-                        </div>
-
-                        <div class="border"><span></span></div>
-                        <div class="title">
-                            <h3>Proof of Insurance </h3>
-                        </div>
-                        <div class="border"><span></span></div>
-                        <div class="form-fields">
-
-
-                            <div class="image-placeholder">
+                            <div class="form-fields">
                                 <div class="form-horizontal">
-                                    <div class="form-field">
+                                    <input type="submit" value="Register" class="login-bttn"  />
+                                    <div class="clearfix"></div>
 
-                                        <input type='file' id="my-file-selector-insurance" name="insurancefiles" />
-                                        <img id="insurance-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
-                                    </div>
                                 </div>
                             </div>
 
+
+
                         </div>
-                        <div class="border"><span></span></div>
-
-                        <a href="#" class="fb-bttn ">Log in with Facebook </a>
-                        <div class="border"><span><spam>&amp;</spam></span></div>
-                        <div class="title">
-                            <h3>  Login Information</h3>
-                        </div>
-                        <div class="border"><span></span></div>
-                        <div class="form-field">
-
-                            <input asp-for="UserEmail" placeholder="User Email" />
-                            <div>
-                                <span asp-validation-for="UserEmail" class="text-danger"></span>
-
-                            </div>
-                            </div>
-
-
-                        <div class="form-field">
-
-                            <input asp-for="Password" placeholder="Password" /> 
-                            <div>
-                                <span asp-validation-for="Password" class="Password text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-
-                            <input asp-for="ConfirmPassword" placeholder="Confirm Password" />
-                            <div>
-                                <span asp-validation-for="ConfirmPassword" class="ConfirmPassword  text-danger"></span>
-                            </div>
-                        </div>
-
-
-
-                        <input type="submit" value="Register" class="login-bttn" />
-                        <div class="clearfix"></div>
-
-
                     </form>
 
-                </div>
+            </div>
             </div>
         </div>
     </div>

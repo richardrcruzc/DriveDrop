@@ -1,124 +1,140 @@
 ﻿@model DriveDrop.Web.ViewModels.CustomerIndex
 @{
     ViewData["Title"] = "Admin";
+    
 
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "Index" };
 }
- 
-<div class="side-2">
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
 
+                @await Html.PartialAsync("AdminNavigation", option)
 
-    @await Html.PartialAsync("AdminNavigation", 1)
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Users List</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="page account-page customer-info-page">
+                                        <div class="page-title">
+                                            <h2>Senders / Drivers List</h2>
+                                        </div>
+                                        <div class="page-body">
+                                            <div class="fieldset">
 
-
-</div>
-<div class="center-2">
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h2>Senders / Drivers List</h2>
-        </div>
-        <div class="page-body">
-            <div class="fieldset">
-
-                <div class="order-list">
-
-
-
-                    <div class="title">
-                        <div class="form-fields">
-                            <form asp-action="Index" asp-controller="Admin" method="post">
-                                <label class="esh-catalog-label" data-title="Type">
-                                    <select asp-for="TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
-                                </label>
-                                <label class="esh-catalog-label" data-title="Status">
-                                    <select asp-for="StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
-                                </label>
-                                <label class="esh-catalog-label" data-title="Vehicle Types">
-                                    <select asp-for="TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
-                                </label>
-
-                                <label class="esh-catalog-label" data-title="Last Name">
-                                    <input asp-for="LastName" placeholder="Last Name" class="form-control esh-catalog-filter" />
-                                </label>
-
-
-                                <input type="submit" value="Search" name="save-info-button" class="button-1 save-customer-info-button" />
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                                                <div class="order-list">
 
 
 
-                <div class="fieldset">
-                    <div class="form-fields">
+                                                    <div class="title">
+                                                        <div class="form-fields">
+                                                            <form asp-action="Index" asp-controller="Admin" method="post">
+                                                                <label class="esh-catalog-label" data-title="Type">
+                                                                    <select asp-for="TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
+                                                                </label>
+                                                                <label class="esh-catalog-label" data-title="Status">
+                                                                    <select asp-for="StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
+                                                                </label>
+                                                                <label class="esh-catalog-label" data-title="Vehicle Types">
+                                                                    <select asp-for="TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
+                                                                </label>
+
+                                                                <label class="esh-catalog-label" data-title="Last Name">
+                                                                    <input asp-for="LastName" placeholder="Last Name" class="form-control esh-catalog-filter" />
+                                                                </label>
+
+
+                                                                <input type="submit" value="Search" name="save-info-button" class="button-1 save-customer-info-button" />
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
 
 
-                        @if (Model.CustomerList.Any())
+                                                <div class="fieldset">
+                                                    <div class="form-fields">
+
+
+
+                                                        @if (Model.CustomerList.Any())
             {
 
 
 
-                            @Html.Partial("_pagination", Model.PaginationInfo)
+                                                            @Html.Partial("_pagination", Model.PaginationInfo)
 
 
-                            <table class="table table-responsive table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Type
-                                        </th>
-                                        <th>
-                                            Full Name
-                                        </th>
-                                        <th>
-                                            Login User
-                                        </th>
-                                        <th>
-                                            Status
-                                        </th>
-                                        <th>
-                                            Vehicle
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                                            <table class="table table-responsive table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Type
+                                                                        </th>
+                                                                        <th>
+                                                                            Full Name
+                                                                        </th>
+                                                                        <th>
+                                                                            Login User
+                                                                        </th>
+                                                                        <th>
+                                                                            Status
+                                                                        </th>
+                                                                        <th>
+                                                                            Vehicle
+                                                                        </th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
 
 
-                                    @foreach (var customer in Model.CustomerList)
+                                                                    @foreach (var customer in Model.CustomerList)
                 {
-                                        <tr>
+                                                                        <tr>
 
-                                            @Html.Partial("_customer", customer)
+                                                                            @Html.Partial("_customer", customer)
 
-                                        </tr>
-                                    }
+                                                                        </tr>
+                                                                    }
 
-                                    <tr>
-                                        <td colspan="5">
-                                            @Html.Partial("_pagination", Model.PaginationInfo)
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        }
-                        else
-                        {
+                                                                    <tr>
+                                                                        <td colspan="5">
+                                                                            @Html.Partial("_pagination", Model.PaginationInfo)
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        }
+                                                        else
+                                                        {
 
-                            <div class="alert alert-danger" role="alert">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only">Error:</span>
-                                THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                                <span class="sr-only">Error:</span>
+                                                                THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                                                            </div>
+
+
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-
-
-                        }
-
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-</div>
+    </section>
+ 

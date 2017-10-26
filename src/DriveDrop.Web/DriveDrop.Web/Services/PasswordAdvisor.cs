@@ -31,32 +31,32 @@ namespace DriveDrop.Web.Services
             if (!hasLowerChar.IsMatch(input))
             {
                 scoreReturn = PasswordScore.VeryWeak;
-                ErrorMessage = "Password should contain At least one lower case letter";
+                ErrorMessage = "Password should contain at least one lower case letter";
                 return false;
             }
             else if (!hasUpperChar.IsMatch(input))
             {
                 scoreReturn = PasswordScore.VeryWeak;
-                ErrorMessage = "Password should contain At least one upper case letter";
+                ErrorMessage = "Password should contain at least one upper case letter";
                 return false;
             }
             else if (!hasMiniMaxChars.IsMatch(input))
             {
                 scoreReturn = PasswordScore.VeryWeak;
-                ErrorMessage = "Password should not be less than or greater than 12 characters";
+                ErrorMessage = "Password should not be less than 6 or greater than 12 characters";
                 return false;
             }
             else if (!hasNumber.IsMatch(input))
             {
                 scoreReturn = PasswordScore.VeryWeak;
-                ErrorMessage = "Password should contain At least one numeric value";
+                ErrorMessage = "Password should contain at least one numeric value";
                 return false;
             }
 
             else if (!hasSymbols.IsMatch(input))
             {
                 scoreReturn = PasswordScore.VeryWeak;
-                ErrorMessage = "Password should contain At least one special case characters";
+                ErrorMessage = "Password should contain at least one special case characters";
                 return false;
             }
             else

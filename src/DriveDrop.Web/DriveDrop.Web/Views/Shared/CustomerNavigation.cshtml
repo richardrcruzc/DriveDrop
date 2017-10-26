@@ -1,25 +1,74 @@
-@model int
+@model  DriveDrop.Web.ViewModels.TwoParameterModel
 
+@{
+
+   // Model.Option = "Addresses";
+
+}
 <div id="sidebar" class="col-sm-3 sidebar-desktop">
     <ul id="side-navbar" class="side-fixed-menu">
         <li>
-            @Html.ActionLink("My Personal Info", "result", "sender", new { id = Model },  new { @class = "active gig-information" })
-        </li>
-        <li>
-            @Html.ActionLink("My Address", "Addresses", "common", new { id = Model },  new { @class = "gig-information" })
+            @if (Model.Option == "result")
+            {
+                @Html.ActionLink("My Personal Info", "result", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+                @Html.ActionLink("My Personal Info", "result", "sender", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+
+
 
         </li>
         <li>
-            @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "Addresses")
+            {
+                @Html.ActionLink("My Address", "Addresses", "common", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("My Address", "Addresses", "common", new { id = Model.Id }, new { @class = "gig-information" })
+
+            }
+           
 
         </li>
         <li>
-            @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "Shippings")
+            {
+                @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            { @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "gig-information" }) }
+           
+
+        </li>
+        <li>
+            @if (Model.Option == "NewShipping")
+            {
+                @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+                @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+          
 
 
         </li>
         <li>
-            @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "ChangePassword")
+            {
+                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+           
 
 
         </li>

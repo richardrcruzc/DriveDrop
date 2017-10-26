@@ -1,7 +1,7 @@
-﻿@model DriveDrop.Web.ViewModels.Shipment
+@model DriveDrop.Web.ViewModels.Shipment
 @{
     ViewData["Title"] = "ShippingDetails";
-    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = (int)Model.SenderId, Option = "PendingPickUp" };
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = (int)Model.SenderId, Option = "PickedUp" };
 }
 
 
@@ -18,13 +18,13 @@
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">
-                        <h3 class="blue-head active">Acept Package</h3>
+                        <h3 class="blue-head active">Drop Info</h3>
                         <div class="form-body">
                             <div class="profile-form">
                                 <div class="row">
                                     <div class="page account-page order-list-page">
                                         <div class="page-title">
-                                            <h1>Acept Packages Details</h1>
+                                            <h1>Drop Packages Details</h1>
                                         </div>
 
                                         <div class="page-body">
@@ -47,10 +47,10 @@
                                                 </div>
                                                 <div class="section order-item">
                                                     <div class="title">
-                                                        <strong><label>Accept Package From Sender  </label></strong>
+                                                        <strong><label>Drop Package    </label></strong>
                                                     </div>
                                                     <div class="title">
-                                                        <strong><label>Please Enter Package Security Code and Photo   </label></strong>
+                                                        <strong><label>Please Enter Any Comment or Note about Package </label></strong>
                                                     </div>
                                                     <div class="info">
 
@@ -58,13 +58,13 @@
 
                                                         <input asp-for="DriverId" hidden />
                                                         <input asp-for="Id" hidden />
-                                                        <input asp-for="SecurityCode" placeholder="Security Code" autofocus />
+                                                        <textarea asp-for="DropComment" placeholder="Note to the Sender" autofocus ></textarea>
 
                                                         <div class="avatar-page">
                                                             <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
                                                             <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
                                                         </div>
-                                                        <input type="button" class="btn btn-danger acept-package" value="Acept Package" />
+                                                        <input type="button" class="btn btn-danger drop-package" value="Drop Package" />
                                                         @*</form>*@
                                                     </div>
                                                 </div>
@@ -82,30 +82,30 @@
     </div>
 </section>
 
-                                @section Scripts {
-                                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-                                    <script type="text/javascript">
-                                        $(".acept-package").click(function () {
+    <script type="text/javascript">
+        $(".drop-package").click(function () {
 
                                             var formData = new FormData();
                                             jQuery.each(jQuery('#photoUrl')[0].files, function (i, file) {
                                                 formData.append('photoUrl', file);
                                             });
                                             var id = $("#Id").val();
-                                            var SecurityCode = $("#SecurityCode").val();
+                                            var dropNote = $("#DropComment").val();
+                                            var driverId = $("#DriverId").val();
 
                                             formData.append('id', id);
-                                            formData.append('SecurityCode', SecurityCode);
+                                            formData.append('DropNote', dropNote);
                                            // alert(formData);
 
-
-
+           
 
                                             //var formData = new FormData(this);
                                             //alert(window.location.pathname);
                                             $.ajax({
-                                                url: '/driver/AceptPackageFromSender',
+                                                url: '/driver/SetDropByInfo',
                                                 type: 'POST',
                                                 data: formData,
                                                 async: false,
@@ -139,5 +139,5 @@
                                             readURL(this);
                                         });
 
-                                    </script>
-                                }
+    </script>
+}

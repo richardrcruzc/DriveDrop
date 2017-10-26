@@ -1,94 +1,115 @@
 @model  IEnumerable<DriveDrop.Web.ViewModels.TaxModel>
-      
-@{ 
-    ViewData["Title"] = "List Taxes"; 
+
+@{
+    ViewData["Title"] = "List Taxes";
+ 
+
+
+
+
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "ListTaxes" };
 }
-     
-<div class="side-2">
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">List Taxes</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="page account-page address-list-page">
+                                        <div class="page-title">
+                                            <h1>List Taxes</h1>
+                                        </div>
+                                        <div class="buttons">
+                                            <a asp-action="AddTax" class="button-1 save-customer-info-button">Add Tax Rate</a>
+
+                                        </div>
+                                        <div class="page-body">
 
 
-    @await Html.PartialAsync("AdminNavigation",1)
+                                            <table class="table table-responsive table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>State</th>
+                                                        <th>City</th>
+                                                        <th>Rate %</th>
+                                                        <th>Default</th>
+                                                        <th colspan="2">Action</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
 
-</div>
-<div class="center-2">
-    <div class="page account-page address-list-page">
-        <div class="page-title">
-            <h1>List Taxes</h1>
-        </div>
-        <div class="buttons">
-             <a asp-action="AddTax" class="button-1 save-customer-info-button">Add Tax Rate</a>
+                                                    @foreach (var item in Model)
+                                                    {
 
-        </div>
-        <div class="page-body">
-            
-            
-            <table class="table table-responsive table-hover">
-                <thead>
-                    <tr>
-                        <th>State</th>
-                        <th>City</th>
-                        <th>Rate %</th>
-                        <th>Default</th>
-                        <th colspan="2">Action</th>
+                                                        <tr>
 
-                    </tr>
-                </thead>
-                <tbody>
+                                                            <td class="title">@item.State</td>
+                                                            <td class="title">@item.City</td>
+                                                            <td class="title">@item.Rate</td>
+                                                            <td class="title">@item.RateDefault</td>
+                                                            <td><a asp-action="EditTax" asp-route-id="@item.Id"><label class="title">Edit</label></a></td>
+                                                            <td><a><label class="title deleteTax" data-id="@item.Id">Delete</label></a></td>
 
 
-                    @foreach (var item in Model)
-                    {
-
-                        <tr>
-
-                            <td class="title">@item.State</td>
-                            <td class="title">@item.City</td>
-                            <td class="title">@item.Rate</td>
-                            <td class="title">@item.RateDefault</td>
-                            <td><a asp-action="EditTax" asp-route-id="@item.Id"><label class="title">Edit</label></a></td>
-                            <td><a><label class="title deleteTax" data-id="@item.Id">Delete</label></a></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
 
 
-                        </tr>
-                    }
-                </tbody>
-            </table>
+
+                                        </div>
+
+                                    </div>
 
 
-         
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
+    </div>
+    </section>
+                                   
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $('.deleteTax').click(function (e) {
-            
-            if (confirm('Are you sure ?')) {
-                var id = $(this).data("id");
-                  $.ajax({
-                    cache: false,
-                    type: 'POST',
-                    url: '/rates/DeleteTax',
-                    data: { id: id },
-                    dataType: 'json',
-                    success: function (data) {
-                        alert(data);
-                        location.href = '/rates/ListTaxes/1';
-                                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert('Failed to update');
-                    }
-                });
-            }
-        });
+                                    @section Scripts {
+                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                                        <script>
+                                            $('.deleteTax').click(function (e) {
+
+                                                if (confirm('Are you sure ?')) {
+                                                    var id = $(this).data("id");
+                                                    $.ajax({
+                                                        cache: false,
+                                                        type: 'POST',
+                                                        url: '/rates/DeleteTax',
+                                                        data: { id: id },
+                                                        dataType: 'json',
+                                                        success: function (data) {
+                                                            alert(data);
+                                                            location.href = '/rates/ListTaxes/1';
+                                                        },
+                                                        error: function (xhr, ajaxOptions, thrownError) {
+                                                            alert('Failed to update');
+                                                        }
+                                                    });
+                                                }
+                                            });
 
 
 
-</script>
-    }
+                                        </script>
+                                    }

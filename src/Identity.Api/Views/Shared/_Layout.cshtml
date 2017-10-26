@@ -23,7 +23,7 @@
         <div class="container">
             <div class="row descktop-menu">
                 <div class="col-xs-2">
-                    <a href="@ViewBag.returnUrl"><img src="~/images/logo.png"></a>
+                    <a href="@ViewData["ReturnHomeUrl"]"><img src="~/images/logo.png"></a>
                 </div>
                 <div class="col-xs-8 pull-right ">
                     <nav>
@@ -45,7 +45,7 @@
             </div>
             <div class="mobile-menu">
                 <span style="font-size:30px;cursor:pointer" onclick="openNav()"> <img src="~/images/mobile-nav.png"></span>
-                <a href="index.html"><img src="~/images/logo.png"></a>
+                <a href="@ViewData["ReturnHomeUrl"]"><img src="~/images/logo.png"></a>
             </div>
 
         </div>

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = Model.Id, Option = "result" };
 }
 
 
@@ -11,7 +12,7 @@
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("CustomerNavigation", Model.Id)
+                @await Html.PartialAsync("CustomerNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">
@@ -79,7 +80,8 @@
                                                 <input asp-for="CustomerStatus" hidden />
                                                 <input asp-for="PersonalPhotoUri" hidden />
 
-                                                <div class="form-group">
+                                                <div class="fieldset">
+
 
                                                     <div class="title">
                                                         <strong>My Personal Information Details</strong>
@@ -87,67 +89,79 @@
 
                                                     <div asp-validation-summary="ModelOnly" class="result"></div>
 
-                                                     
+
                                                     <div class="form-fields">
-                                                        <div class="form-field">
-                                                            <label for="CustomerStatus"><span>Status </span>@Model.CustomerStatus</label>
-                                                           
+
+                                                        <div class="form-horizontal">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label for="CustomerStatus"><span>Status </span>@Model.CustomerStatus</label>
+
+                                                                </div>
+                                                                </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+    <label for="FirstName">First Name</label>
+
+    <input asp-for="FirstName" placeholder="First name" class="form-control" />
+    <span class="required">*</span>
+
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+
+</div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label for="LastName">Last Name</label>
+                                                                    <input asp-for="LastName" placeholder="Last name" class="form-control" />
+                                                                    <span class="required">*</span>
+                                                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label for="LastName">Email address</label>
+                                                                    <input asp-for="Email" placeholder="Email" class="form-control" />
+                                                                    <span class="required">*</span>
+                                                                    <span asp-validation-for="Email " class="text-danger"></span>
+                                                                </div>
                                                         </div>
-                                                        <div class="form-field">
-                                                            <label for="FirstName">First Name</label>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    @Html.LabelFor(m => m.PrimaryPhone)
+                                                                    @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+                                                                    <span class="required">*</span>
+                                                                    @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
-                                                            <input asp-for="FirstName" placeholder="First name" />
-                                                            <span class="required">*</span>
-
-                                                            <span asp-validation-for="FirstName" class="text-danger"></span>
-
-
-                                                        </div>
-                                                        <div class="form-field">
-                                                            <label for="LastName">Last Name</label>
-                                                            <input asp-for="LastName" placeholder="Last name" />
-                                                            <span class="required">*</span>
-                                                            <span asp-validation-for="LastName" class="text-danger"></span>
-                                                        </div>
-                                                        <div class="form-field">
-                                                            <label for="LastName">Email address</label>
-                                                            <input asp-for="Email" placeholder="Email" />
-                                                            <span class="required">*</span>
-                                                            <span asp-validation-for="Email " class="text-danger"></span>
-                                                        </div>
-                                                        
-                                                        <div class="form-field">
-                                                            @Html.LabelFor(m => m.PrimaryPhone)
-                                                            @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                                            <span class="required">*</span>
-                                                            @Html.ValidationMessageFor(m => m.PrimaryPhone)
+                                                                </div>
+                                                                </div>
+                                                            <div class="form-group"><div class="col-lg-12">
+    @Html.LabelFor(m => m.Phone)
+    @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+    <span class="required">*</span>
+    @Html.ValidationMessageFor(m => m.Phone)
 
 
-                                                         </div>
-                                                        <div class="form-field">
-                                                            @Html.LabelFor(m => m.Phone)
-                                                            @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
-                                                            <span class="required">*</span>
-                                                            @Html.ValidationMessageFor(m => m.Phone)
+
+</div>
+</div>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-12">
+                                                                    <label for="VerificationId">Verification ID</label>
+                                                                    <input asp-for="VerificationId" placeholder="Verification ID" class="form-control" />
+                                                                    <span class="required">*</span>
+                                                                    <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                                </div>
+                                                                </div>
 
 
-                                                             
-                                                        </div>
-                                                        <div class="form-field">
+                                                            <div class="post-gig">
+                                                                <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
+                                                            </div>
 
-                                                            <label for="VerificationId">Verification ID</label>
-                                                            <input asp-for="VerificationId" placeholder="Verification ID" />
-                                                            <span class="required">*</span>
-                                                            <span asp-validation-for="VerificationId" class="text-danger"></span>
-                                                        </div>
-                                                     
-                                                         
+                                                            <div class="center-block bg-primary text-center" id="bar-notification">
 
-                                                        <div class="post-gig">
-                                                            <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
-                                                        </div>
-
-                                                        <div class="center-block bg-primary text-center" id="bar-notification">
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -161,6 +175,7 @@
                                     </div>
                                 </div>
                                     </div>
+                            <div class="clearfix"></div>
                                 </div>
                     </div>
                 </div>
@@ -225,109 +240,13 @@
                 readURL(this);
             });
 
-
-    @*var theDiv = document.getElementById("newShipmentTr");
-    var button = document.getElementById("button");
-
-    function removeRed() {
-
-        var classContent = theDiv.className;
-
-        theDiv.className = classContent.replace("sr-only", "").trim();
-    }
-
-    //button.addEventListener("click", removeRed, false);
-
-                     jQuery('#PickupZipCode').on('input propertychange paste', function () {
-                         UpdateRate()
-                     });
-                     jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
-                         UpdateRate()
-                     });
-                     jQuery('#Quantity').on('input propertychange paste', function () {
-                         UpdateRate()
-                     });
-                     jQuery('#Amount').on('input propertychange paste', function () {
-                         UpdateRate()
-                     });
-
-                     $("#TransportTypeId").change(function () {
-                         UpdateRate()
-                     });
-
-                     $("#PriorityTypeId").change(function () {
-                         UpdateRate()
-                       });
-
-                     $("#PromoCode").change(function () {
-                         UpdateRate()
-                     });
-
-                     function UpdateRate( ) {
-
-
-                        // var myLength = $("#PickupZipCode").val().length;
-                         var delLength = $("#DeliveryZipCode").val().length;
-                         var delZip = $("#DeliveryZipCode").val();
-                         if (delLength < 5)
-                             return;
-
-                         var pickupLength = $("#PickupZipCode").val().length;
-                         var  pickupZip = $("#PickupZipCode").val();
-                         if (pickupLength < 5)
-                             return;
-
-
-
-                         var weight = $("#Weight").val();
-                         var quantity = $("#Quantity").val();
-                         var amount = $("#Amount").val();
-                         var transportTypeId = $("#TransportTypeId").val();
-                         if (transportTypeId == 'Prority')
-                             return;
-                         var priorityTypeId = $("#PriorityTypeId").val();
-                         if (priorityTypeId == 'Transport Type')
-                             return;
-
-
-                         var promoCode = $("#PromoCode").val();
-
-                         if (quantity != '' && amount != '' && transportTypeId != '' && priorityTypeId != '') {
-                            alert("weight "+weight+"quantity:" + quantity + "amount:" + amount + "transportTypeId:" + transportTypeId + "priorityTypeId:" + priorityTypeId);
-
-                             $.ajax({
-                                 url: '@Url.Action("CalculateAmount","rates")' , // to get the right path to controller from TableRoutes of Asp.Net MVC
-                               dataType: "json", //to work with json format
-                                 type: "POST", //to do a post request
-
-                             //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
-                                 cache: false, //avoid caching results
-                                 data: { zipFrom: pickupZip, zipTo: delZip, weight: weight, qty: quantity, priority: priorityTypeId, transportTypeId: transportTypeId, promoCode: promoCode}, // here you can pass arguments to your request if you need
-                                 success: function (data) {
-                                     // data is your result from controller
-                                     if (data) {
-
-                                         $("#subtotal").text(data.strSubTotal);
-                                         $("#TaxDiscount").text(data.strDiscount);
-                                         $("#totalTax").text(data.strTaxAmount);
-                                         $("#total").text(data.strAmountToCharge);
-
-                                     }
-
-                                 },
-                                 error: function (xhr, ajaxOptions, thrownError) {
-                                     alert(xhr.responseText);
-                                     //alert(xhr.status);
-                                     //alert(thrownError);
-
-                                 }
-                             });
-                         }
-                     }*@
+         
 
 
 
 
 
                                         </script>
+<script src="~/js/profile.js"></script>
+
                                     }

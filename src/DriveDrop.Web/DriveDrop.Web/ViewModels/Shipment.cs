@@ -88,5 +88,10 @@ namespace DriveDrop.Web.ViewModels
         public double? DeliverRadius { get; set; }
 
 
+        public string DropPictureUri { get;   set; }
+        public string DropComment { get;   set; }
+        public DateTime Dropby { get;   set; }
+
+
     }
 }

@@ -2,322 +2,332 @@
 
 @{
     ViewData["Title"] = "Add Address";
-     
+
     var customerTypeId = (int)ViewBag.CustomerType;
 }
- 
-
-    <div class="side-2">
-
-        @if (customerTypeId == 1)
-        {
-            @await Html.PartialAsync("AdminNavigation", (int)@ViewBag.Id)
-        }
-        else if (customerTypeId == 2)
-        {
-            @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
-        }
-        else if (customerTypeId == 3)
-        {
-            @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.Id)
-        }
 
 
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+                @if (customerTypeId == 1)
+                {
+                    @await Html.PartialAsync("AdminNavigation", (int)@ViewBag.Id)
+                }
+                else if (customerTypeId == 2)
+                {
+                    @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
+                }
+                else if (customerTypeId == 3)
+                {
+                    @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.Id)
+                }
 
 
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">My Addresses</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <form asp-controller="Common" asp-action="AddressAdd" data-ajax="true"
+                                          data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input asp-for="CustomerId" hidden />
+                                        <input asp-for="TypeAddress" hidden />
+
+                                        <input asp-for="Latitude" hidden />
+                                        <input asp-for="Longitude" hidden />
 
 
-    </div>
+                                        <div class="page account-page address-edit-page">
+                                            
+                                            <div class="page-body">
+                                                <h3>Add New Address</h3>
 
-    <div class="center-2">
-        <form asp-controller="Common" asp-action="AddressAdd" data-ajax="true" 
-              data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#bar-notification">
- 
-        @Html.AntiForgeryToken()
+                                                <div class="edit-address">
+                                                    <div class="form-group">
+                                                        <input id="autocomplete" class="form-control" placeholder="Enter Your Address" />
 
-            <input asp-for="CustomerId" hidden />
-            <input asp-for="TypeAddress" hidden />
+                                                    </div>
+                                                    <a class="btn btn-primary btn-lg" role="button" id="asPickup">Set as pickup </a>
+                                                    <a class="btn btn-primary btn-lg" role="button" id="asDrop">Set as dropoff</a>
 
-            <input asp-for="Latitude" hidden />
-            <input asp-for="Longitude" hidden />
+                                                </div>
 
+                                                <div class="edit-address">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input asp-for="Street" class="form-control" placeholder="Street" readonly />
 
-        <div class="page account-page address-edit-page">
-            <div class="page-title">
-                <h1> My Addresses</h1>
+                                                            <span asp-validation-for="Street" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group"><div class="col-md-12">
+    <input asp-for="City" class="form-control" placeholder="City" readonly />
+    <span asp-validation-for="City" class="text-danger"></span>
+</div>
+</div>
+                                                    <div class="form-group"><div class="col-md-12">
+    <input asp-for="State" class="form-control" placeholder="State" readonly />
+    <span asp-validation-for="State" class="text-danger"></span>
+</div>
+</div>
+                                                    <div class="form-group"><div class="col-md-12">
+    <input asp-for="ZipCode" class="form-control" placeholder="ZipCode" readonly />
+    <span asp-validation-for="ZipCode" class="text-danger"></span>
+</div>
+</div>
+                                                    <div class="form-group"><div class="col-md-12">
+    <input asp-for="Country" class="form-control" placeholder="Country" readonly />
+    <span asp-validation-for="Country" class="text-danger"></span>
+</div>
+</div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
 
+    @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @disabled = "disabled", placeholder = "Phone", @class = "form-control" })
+    <span class="required">*</span>
+                                                            <span asp-validation-for="Phone" class="text-danger"></span>
+</div>
+    @*<input asp-for="Phone" class="form-control phone-number" placeholder="Phone" disabled />
+        <span class="required">*</span>
+        <span asp-validation-for="Street" class="text-danger"></span>*@
+</div>
+                                                    <div class="form-group"><div class="col-md-12">
+    @Html.TextBoxFor(m => m.Contact, new { @class = "form-control", @disabled = "disabled", placeholder = "Contact Person" })
+    <span class="required">*</span>
+    @Html.ValidationMessageFor(m => m.Contact)
 
-            </div>
-            <div class="page-body">
-                <h3>Add New</h3>
+</div>
 
-                <div class="edit-address">
-                    <div class="inputs">
-                        <input id="autocomplete" class="form-control" placeholder="Enter Your Address" />
-
-                    </div>
-                    <a class="btn btn-primary btn-lg" role="button" id="asPickup">Set as pickup </a>
-                    <a class="btn btn-primary btn-lg" role="button" id="asDrop">Set as dropoff</a>
-
-                </div>
-
-                <div class="edit-address">
-                    <div class="inputs">
-
-                        <input asp-for="Street" class="form-control" placeholder="Street" readonly />
-                     
-                        <span asp-validation-for="Street" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="inputs">
-                        <input asp-for="City" class="form-control" placeholder="City" readonly />
-                         <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-                    <div class="inputs">
-                        <input asp-for="State" class="form-control" placeholder="State" readonly />
-                          <span asp-validation-for="State" class="text-danger"></span>
-                    </div>
-                    <div class="inputs">
-                        <input asp-for="ZipCode" class="form-control" placeholder="ZipCode" readonly />
-                          <span asp-validation-for="ZipCode" class="text-danger"></span>
-                    </div>
-                    <div class="inputs">
-                        <input asp-for="Country" class="form-control" placeholder="Country" readonly />
-                           <span asp-validation-for="Country" class="text-danger"></span>
-                    </div>
-                    <div class="inputs">
-                         
-                        @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @disabled= "disabled", placeholder = "Phone" })
-                        <span class="required">*</span>
-                        @Html.ValidationMessageFor(m => m.Phone)
-
-                        @*<input asp-for="Phone" class="form-control phone-number" placeholder="Phone" disabled />
-                        <span class="required">*</span>
-                        <span asp-validation-for="Street" class="text-danger"></span>*@
-                    </div>
-                    <div class="inputs">
-                        @Html.TextBoxFor(m => m.Contact, new { @class = "form-control", @disabled = "disabled", placeholder = "Contact Person" })
-                        <span class="required">*</span>
-                        @Html.ValidationMessageFor(m => m.Contact)
+    @*<input asp-for="Contact" class="form-control" placeholder="Contact" disabled />
+        <span class="required">*</span>
+        <span asp-validation-for="Contact" class="text-danger"></span>*@
+</div>
+                                                    <div class="form-fields">
+                                                        <div class="buttons">
+                                                            <input type="submit" class="btn btn-primary btn-lg" id="btnSave" value="Save" />
 
 
-
-                        @*<input asp-for="Contact" class="form-control" placeholder="Contact" disabled />
-                        <span class="required">*</span>
-                        <span asp-validation-for="Contact" class="text-danger"></span>*@
-                    </div>
-                    <div class="form-fields">
-                        <div class="buttons">
-                            <input type="submit" class="button-1 save-address-button" id="btnSave" value="Save" />
+                                                        </div>
+                                                    </div>
+                                                </div>
 
 
+                                                <div class="center-block bg-primary text-center" id="bar-notification">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-
-               
-                <div class="center-block bg-primary text-center" id="bar-notification">
-
                 </div>
             </div>
         </div>
-    </form>
-</div> 
+    </div>
+</section>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-<script>
-    $(function () {
-        $('form').submit(function () { 
+    <script>
+        $(function () {
+            $('form').submit(function () {
 
-            if ($(this).valid()) {
-                $.ajax({
-                    url: this.action,
-                    type: this.method,
-                    data: $(this).serialize(),
-                    success: function (result) { 
-                        $('#bar-notification').html(result);
-                    },
-                    error: function (response) {
-                        alert("Error:"+response);
-                    }
-                });
-            }
-            return false;
-        });
-    });
-    $("#asPickup").click(function () {
-
-        // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace();
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-            var addressType = place.address_components[i].types[0];
-            if (componentForm[addressType]) {
-                var val = place.address_components[i][componentForm[addressType]];
-
-                if (addressType == 'street_number')
-                    $("#Street").val(place.address_components[i]['short_name']);
-
-                if (addressType == 'route')
-                    $("#Street").val($("#Street").val() + " " + place.address_components[i]['long_name']);
-
-                if (addressType == 'locality')
-                    $("#City").val(place.address_components[i]['long_name']);
-
-                if (addressType == 'administrative_area_level_1')
-                    $("#State").val(place.address_components[i]['short_name']);
-
-                if (addressType == 'country')
-                    $("#Country").val(place.address_components[i]['long_name']);
-
-                if (addressType == 'postal_code')
-                    $("#ZipCode").val(place.address_components[i]['short_name']);
-
-            }
-        }
-
-        //assign lat and lng
-        $("#Latitude").val(place.geometry.location.lat());
-        $("#Longitude").val(place.geometry.location.lng());
-
-        document.getElementById('Phone').disabled = false;
-        document.getElementById('Contact').disabled = false;
-
-        document.getElementById('btnSave').disabled = false;
-        document.getElementById('TypeAddress').value = 'Pickup';
-
-        document.getElementById('autocomplete').value = '';
-        
-
-        
-
-    });
-
-    $("#asDrop").click(function () {
-        // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace(); 
-
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-            var addressType = place.address_components[i].types[0];
-            if (componentForm[addressType]) {
-                var val = place.address_components[i][componentForm[addressType]];
-
-
-                if (addressType == 'street_number')
-                    $("#Street").val(place.address_components[i]['short_name']);
-
-                if (addressType == 'route')
-                    $("#Street").val($("#Street").val() + " " + place.address_components[i]['long_name']);
-
-                if (addressType == 'locality')
-                    $("#City").val(place.address_components[i]['long_name']);
-
-                if (addressType == 'administrative_area_level_1')
-                    $("#State").val(place.address_components[i]['short_name']);
-
-                if (addressType == 'country')
-                    $("#Country").val(place.address_components[i]['long_name']);
-
-                if (addressType == 'postal_code')
-                    $("#ZipCode").val(place.address_components[i]['short_name']);
-
-            }
-        }
-
-        //assign lat and lng
-        $("#Latitude").val(place.geometry.location.lat());
-        $("#Longitude").val(place.geometry.location.lng());
-        
-        document.getElementById('Phone').disabled = false;
-        document.getElementById('Contact').disabled = false;
-
-        document.getElementById('btnSave').disabled = false;
-        document.getElementById('TypeAddress').value = 'Drop';
-
-        document.getElementById('autocomplete').value = '';
-        
-    });
-
-
-    // This example displays an address form, using the autocomplete feature
-    // of the Google Places API to help users fill in the information.
-
-    // This example requires the Places library. Include the libraries=places
-    // parameter when you first load the API. For example:
-    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-    var placeSearch, autocomplete;
-    var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        locality: 'long_name',
-        administrative_area_level_1: 'short_name',
-        country: 'long_name',
-        postal_code: 'short_name'
-    };
-
-    function initAutocomplete() {
-        // Create the autocomplete object, restricting the search to geographical
-        // location types.
-        autocomplete = new google.maps.places.Autocomplete(
-            /** type {!HTMLInputElement} */(document.getElementById('autocomplete')),
-            { types: ['geocode'] });
-
-        // When the user selects an address from the dropdown, populate the address
-        // fields in the form.
-        // autocomplete.addListener('place_changed', fillInAddress);
-
-
-    }
-
-    function fillInAddress() {
-        // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace();
-
-        for (var component in componentForm) {
-
-            document.getElementById(component).value = '';
-            document.getElementById(component).disabled = false;
-        }
-
-      
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-            var addressType = place.address_components[i].types[0];
-            if (componentForm[addressType]) {
-                var val = place.address_components[i][componentForm[addressType]];
-
-                document.getElementById(addressType).value = '';
-                document.getElementById(addressType).disabled = false;
-                document.getElementById(addressType).value = val;
-            }
-        }
-    }
-
-    // Bias the autocomplete object to the user's geographical location,
-    // as supplied by the browser's 'navigator.geolocation' object.
-    function geolocate() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var geolocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                var circle = new google.maps.Circle({
-                    center: geolocation,
-                    radius: position.coords.accuracy
-                });
-                autocomplete.setBounds(circle.getBounds());
+                if ($(this).valid()) {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            $('#bar-notification').html(result);
+                        },
+                        error: function (response) {
+                            alert("Error:" + response);
+                        }
+                    });
+                }
+                return false;
             });
+        });
+        $("#asPickup").click(function () {
+
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+            // Get each component of the address from the place details
+            // and fill the corresponding field on the form.
+            for (var i = 0; i < place.address_components.length; i++) {
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                    var val = place.address_components[i][componentForm[addressType]];
+
+                    if (addressType == 'street_number')
+                        $("#Street").val(place.address_components[i]['short_name']);
+
+                    if (addressType == 'route')
+                        $("#Street").val($("#Street").val() + " " + place.address_components[i]['long_name']);
+
+                    if (addressType == 'locality')
+                        $("#City").val(place.address_components[i]['long_name']);
+
+                    if (addressType == 'administrative_area_level_1')
+                        $("#State").val(place.address_components[i]['short_name']);
+
+                    if (addressType == 'country')
+                        $("#Country").val(place.address_components[i]['long_name']);
+
+                    if (addressType == 'postal_code')
+                        $("#ZipCode").val(place.address_components[i]['short_name']);
+
+                }
+            }
+
+            //assign lat and lng
+            $("#Latitude").val(place.geometry.location.lat());
+            $("#Longitude").val(place.geometry.location.lng());
+
+            document.getElementById('Phone').disabled = false;
+            document.getElementById('Contact').disabled = false;
+
+            document.getElementById('btnSave').disabled = false;
+            document.getElementById('TypeAddress').value = 'Pickup';
+
+            document.getElementById('autocomplete').value = '';
+
+
+
+
+        });
+
+        $("#asDrop").click(function () {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+
+            // Get each component of the address from the place details
+            // and fill the corresponding field on the form.
+            for (var i = 0; i < place.address_components.length; i++) {
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                    var val = place.address_components[i][componentForm[addressType]];
+
+
+                    if (addressType == 'street_number')
+                        $("#Street").val(place.address_components[i]['short_name']);
+
+                    if (addressType == 'route')
+                        $("#Street").val($("#Street").val() + " " + place.address_components[i]['long_name']);
+
+                    if (addressType == 'locality')
+                        $("#City").val(place.address_components[i]['long_name']);
+
+                    if (addressType == 'administrative_area_level_1')
+                        $("#State").val(place.address_components[i]['short_name']);
+
+                    if (addressType == 'country')
+                        $("#Country").val(place.address_components[i]['long_name']);
+
+                    if (addressType == 'postal_code')
+                        $("#ZipCode").val(place.address_components[i]['short_name']);
+
+                }
+            }
+
+            //assign lat and lng
+            $("#Latitude").val(place.geometry.location.lat());
+            $("#Longitude").val(place.geometry.location.lng());
+
+            document.getElementById('Phone').disabled = false;
+            document.getElementById('Contact').disabled = false;
+
+            document.getElementById('btnSave').disabled = false;
+            document.getElementById('TypeAddress').value = 'Drop';
+
+            document.getElementById('autocomplete').value = '';
+
+        });
+
+
+        // This example displays an address form, using the autocomplete feature
+        // of the Google Places API to help users fill in the information.
+
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+        var placeSearch, autocomplete;
+        var componentForm = {
+            street_number: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+        };
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+            /** type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+                { types: ['geocode'] });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            // autocomplete.addListener('place_changed', fillInAddress);
+
+
         }
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
-        async defer></script>
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+
+            for (var component in componentForm) {
+
+                document.getElementById(component).value = '';
+                document.getElementById(component).disabled = false;
+            }
+
+
+            // Get each component of the address from the place details
+            // and fill the corresponding field on the form.
+            for (var i = 0; i < place.address_components.length; i++) {
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                    var val = place.address_components[i][componentForm[addressType]];
+
+                    document.getElementById(addressType).value = '';
+                    document.getElementById(addressType).disabled = false;
+                    document.getElementById(addressType).value = val;
+                }
+            }
+        }
+
+        // Bias the autocomplete object to the user's geographical location,
+        // as supplied by the browser's 'navigator.geolocation' object.
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var geolocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    var circle = new google.maps.Circle({
+                        center: geolocation,
+                        radius: position.coords.accuracy
+                    });
+                    autocomplete.setBounds(circle.getBounds());
+                });
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+            async defer></script>
 }

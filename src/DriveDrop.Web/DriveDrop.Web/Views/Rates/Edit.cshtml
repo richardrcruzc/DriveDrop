@@ -2,98 +2,116 @@
 
 @{
     ViewData["Title"] = "Edit";
+ 
+     var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "rates" };
 }
 
- 
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
 
- <div class="side-2">
+                @await Html.PartialAsync("AdminNavigation", option)
 
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Edit Rate</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="side-2">
+                                    <div class="page-body">
+                                        <div class="page account-page customer-info-page">
+                                            <div class="page-title">
+                                                <h1>Edit Rate</h1>
+                                            </div>
+                                            <div class="page-body">
 
-    @await Html.PartialAsync("AdminNavigation", 1)
+                                                <form asp-action="Edit">
+                                                    @Html.AntiForgeryToken()
 
+                                                    <div class="fieldset">
+                                                        <div class="title">
+                                                            <label>Size</label><strong> @Model.PackageSize.Name</strong>
+                                                        </div>
 
-</div> 
-<div class="center-2">
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h1>Edit Rate</h1>
-        </div>
-        <div class="page-body">
-            
-            <form asp-action="Edit">
-                @Html.AntiForgeryToken() 
-
-                    <div class="fieldset">
-                        <div class="title">
-                            <label>Size</label><strong> @Model.PackageSize.Name</strong> 
-                        </div>
-                         
-                        <div class="form-fields"> 
-
-
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="Id" />
-                            <input type="hidden" asp-for="PackageSize" /> 
-
-                            <div class="inputs">
-                              
-                                <label for="OverHead" class="pull-left">Minimum Initial Charge</label>
-                                <div class="pull-left"></div>
-                                <div class="pull-right"></div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input asp-for="OverHead" placeholder="Initial Charge" data-inputmask="'alias':'decimal'" style="max-width: 150px" />
-
-                                    <span class="required">*</span>
-
-                                    <span asp-validation-for="OverHead" class="text-danger"></span>
+                                                        <div class="form-fields">
 
 
+                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <input type="hidden" asp-for="PackageSize" />
+
+                                                            <div class="inputs">
+
+                                                                <label for="OverHead" class="pull-left">Minimum Initial Charge</label>
+                                                                <div class="pull-left"></div>
+                                                                <div class="pull-right"></div>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">$</span>
+                                                                    <input asp-for="OverHead" placeholder="Initial Charge" data-inputmask="'alias':'decimal'" style="max-width: 150px" />
+
+                                                                    <span class="required">*</span>
+
+                                                                    <span asp-validation-for="OverHead" class="text-danger"></span>
+
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="inputs">
+                                                                <hr />
+                                                                <h3><label> </label></h3>
+                                                            </div>
+
+                                                            <div id="priority" class="inputs">
+
+                                                                <br />
+
+                                                                <div class="row">
+                                                                    <div class="col-md-3"><label class="control-label"></label></div>
+                                                                    <div class="col-md-2"><label class="control-label">Rates Charge</label></div>
+
+                                                                </div>
+
+                                                                <div class="row">
+
+                                                                    @Html.EditorFor(m => m.RatePriorities)
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-fields">
+                                                            <div class="buttons">
+                                                                <input type="submit" value="Save" class="button-1 save-customer-info-button" />
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="inputs">
-                                <hr />
-                                <h3><label> </label></h3>
-</div>
-
-                            <div id="priority" class="inputs">
-                                
-                                <br />
-
-                                <div class="row">
-                                    <div class="col-md-3"><label class="control-label"></label></div>
-                                    <div class="col-md-2"><label class="control-label">Rates Charge</label></div>
-                                    
-                                </div>
-
-                                <div class="row">
-
-                                    @Html.EditorFor(m => m.RatePriorities)
-                                </div>
-
-                            </div>
-                        
-                        </div>
-
-                        <div class="form-fields">
-                            <div class="buttons">
-                                <input type="submit" value="Save" class="button-1 save-customer-info-button" />
-
-
-                            </div>
-
                         </div>
                     </div>
-
-
-                </form>
+                </div>
             </div>
+        </div>
     </div>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-}
+</section>
+
+
+                                        
+                                        @section Scripts {
+                                            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+                                        }
 
 

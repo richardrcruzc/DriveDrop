@@ -1,103 +1,125 @@
 @model DriveDrop.Web.ViewModels.WeightAndDistance
 @{
     ViewData["Title"] = "DistanceAndWeight";
+
+     var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = 1, Option = "DistanceAndWeight" };
 }
- 
 
-<div class="side-2">
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Edit Distance and Weight</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="side-2">
+                                    <div class="page-body">
+                                        <div class="page account-page customer-info-page">
+                                            <div class="page-title">
+                                                <h1>Edit Rate</h1>
+                                            </div>
+                                            <div class="page-body">
+
+                                                <form asp-action="DistanceAndWeight">
+
+                                                    <div class="fieldset">
+                                                        <div class="page-title">
+                                                            <h1>Edit Distance and Weight</h1>
+                                                        </div>
+                                                        <div class="form-fields">
+                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                                            <ul class="nav nav-tabs" id="myTab">
+                                                                <li class="active"><a data-toggle="tab" href="#distance">Distance</a></li>
+                                                                <li><a data-toggle="tab" href="#Weight">Weight</a></li>
+
+                                                            </ul>
+
+                                                            <div class="tab-content">
+
+                                                                <div id="distance" class="tab-pane fade in active">
+                                                                    <h3>Rates</h3>
+                                                                    <p>Edit Rate Charge per Miles</p>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">From</div>
+                                                                        <div class="col-md-2">To</div>
+                                                                        <div class="col-md-2">Charge</div>
+                                                                        <div class="col-md-2"></div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        @Html.EditorFor(m => m.RateDistanceModel)
+                                                                    </div>
+                                                                </div>
+                                                                <div id="Weight" class="tab-pane fade">
+                                                                    <h3>Edit Rate per Pound</h3>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">From</div>
+                                                                        <div class="col-md-2">To</div>
+                                                                        <div class="col-md-2">Charge</div>
+                                                                        <div class="col-md-2"></div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        @Html.EditorFor(m => m.RateWeightSizeModel)
+                                                                    </div>
+                                                                </div>
 
 
-    @await Html.PartialAsync("AdminNavigation", 1)
+                                                            </div>
 
 
-</div>
-<div class="center-2">
-    <div class="page account-page customer-info-page">
-        <div class="page-title">
-            <h1>Edit Rate</h1>
-        </div>
-        <div class="page-body">
-           
-            <form asp-action="DistanceAndWeight"> 
-              
-                <div class="fieldset">
-                    <div class="page-title">
-                        <h1>Edit Distance and Weight</h1>
-                    </div>
-                    <div class="form-fields">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <ul class="nav nav-tabs" id="myTab">
-                            <li class="active"><a data-toggle="tab" href="#distance">Distance</a></li>
-                            <li><a data-toggle="tab" href="#Weight">Weight</a></li>
+                                                        </div>
+                                                        <div class="form-fields">
+                                                            <div class="buttons">
 
-                        </ul>
+                                                                <input type="submit" value="Save" class="button-1 save-customer-info-button" />
 
-                        <div class="tab-content">
-                           
-                            <div id="distance" class="tab-pane fade in active">
-                                <h3>Rates</h3>
-                                <p>Edit Rate Charge per Miles</p>
+                                                            </div>
 
-                                <div class="row">
-                                    <div class="col-md-2">From</div>
-                                    <div class="col-md-2">To</div>
-                                    <div class="col-md-2">Charge</div>
-                                    <div class="col-md-2"></div>
-                                </div>
-                                <div class="row">
-                                    @Html.EditorFor(m => m.RateDistanceModel)
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="Weight" class="tab-pane fade">
-                                <h3>Edit Rate per Pound</h3>
-
-                                <div class="row">
-                                    <div class="col-md-2">From</div>
-                                    <div class="col-md-2">To</div>
-                                    <div class="col-md-2">Charge</div>
-                                    <div class="col-md-2"></div>
-                                </div>
-                                <div class="row">
-                                    @Html.EditorFor(m => m.RateWeightSizeModel)
-                                </div>
-                            </div>
-
-
                         </div>
-                        
-                     
-                         
-                    </div>
-                    <div class="form-fields">
-                        <div class="buttons">
-
-                            <input type="submit" value="Save" class="button-1 save-customer-info-button" />
-
-                        </div>
-
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $('#myTab a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
+    </section>
+                                           
 
-        // store the currently selected tab in the hash value
-        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
-            var id = $(e.target).attr("href").substr(1);
-            window.location.hash = id;
-        });
 
-        // on load of the page: switch to the currently selected tab
-        var hash = window.location.hash;
-        $('#myTab a[href="' + hash + '"]').tab('show');
-    </script>
-}
+
+
+                                               
+                                                @section Scripts {
+                                                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                                                    <script>
+                                                        $('#myTab a').click(function (e) {
+                                                            e.preventDefault();
+                                                            $(this).tab('show');
+                                                        });
+
+                                                        // store the currently selected tab in the hash value
+                                                        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+                                                            var id = $(e.target).attr("href").substr(1);
+                                                            window.location.hash = id;
+                                                        });
+
+                                                        // on load of the page: switch to the currently selected tab
+                                                        var hash = window.location.hash;
+                                                        $('#myTab a[href="' + hash + '"]').tab('show');
+                                                    </script>
+                                                }

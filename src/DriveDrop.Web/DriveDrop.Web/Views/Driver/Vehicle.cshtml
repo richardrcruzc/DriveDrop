@@ -2,14 +2,16 @@
 
 @{
     ViewData["Title"] = "Details";
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = Model.Id, Option = "Vehicle" };
 }
+
 
 <section class="sender-desh">
     <div class="container">
         <div class="main-cont">
             <div class="row">
 
-                @await Html.PartialAsync("DriverNavigation", Model.Id)
+                @await Html.PartialAsync("DriverNavigation", option)
 
                 <div id="content" class="col-sm-9">
                     <div id="gig-information" class="sender-form">
