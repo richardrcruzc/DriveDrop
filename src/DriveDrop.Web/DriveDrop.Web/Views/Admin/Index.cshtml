@@ -33,21 +33,21 @@
                                                         <div class="form-fields">
                                                             <form asp-action="Index" asp-controller="Admin" method="post">
                                                                 <label class="esh-catalog-label" data-title="Type">
-                                                                    <select asp-for="TypeFilterApplied" asp-items="@Model.CustomerType" class="esh-catalog-filter"></select>
+                                                                    <select asp-for="TypeFilterApplied" asp-items="@Model.CustomerType" class="form-control"></select>
                                                                 </label>
                                                                 <label class="esh-catalog-label" data-title="Status">
-                                                                    <select asp-for="StatusFilterApplied" asp-items="@Model.CustomerStatus" class="esh-catalog-filter"></select>
+                                                                    <select asp-for="StatusFilterApplied" asp-items="@Model.CustomerStatus" class="form-control"></select>
                                                                 </label>
                                                                 <label class="esh-catalog-label" data-title="Vehicle Types">
-                                                                    <select asp-for="TransportFilterApplied" asp-items="@Model.TransportType" class="esh-catalog-filter"></select>
+                                                                    <select asp-for="TransportFilterApplied" asp-items="@Model.TransportType" class="form-control"></select>
                                                                 </label>
 
                                                                 <label class="esh-catalog-label" data-title="Last Name">
-                                                                    <input asp-for="LastName" placeholder="Last Name" class="form-control esh-catalog-filter" />
+                                                                    <input asp-for="LastName" placeholder="Last Name" class="form-control form-control" />
                                                                 </label>
 
 
-                                                                <input type="submit" value="Search" name="save-info-button" class="button-1 save-customer-info-button" />
+                                                                <input type="submit" value="Search" name="save-info-button" class="bttn" />
                                                             </form>
                                                         </div>
                                                     </div>
@@ -78,7 +78,7 @@
                                                                             Full Name
                                                                         </th>
                                                                         <th>
-                                                                            Login User
+                                                                            Email Address
                                                                         </th>
                                                                         <th>
                                                                             Status

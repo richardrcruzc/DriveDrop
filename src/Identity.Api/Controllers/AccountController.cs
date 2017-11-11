@@ -71,7 +71,7 @@ namespace IdentityServer4.Quickstart.UI.Controllers
         [HttpGet]
         [AllowAnonymous] 
         public async Task<IActionResult> RegisterUser(string userName, string password)
-        {
+        { 
             string callbackUrl = string.Empty;
 
 
@@ -84,7 +84,8 @@ namespace IdentityServer4.Quickstart.UI.Controllers
                 // set this so UI rendering sees an anonymous user
                 HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
-
+                //userName = System.Net.WebUtility.UrlDecode(userName);
+               // password = System.Net.WebUtility.UrlDecode(password);
                 var user = new ApplicationUser
                 {
                     UserName = userName,

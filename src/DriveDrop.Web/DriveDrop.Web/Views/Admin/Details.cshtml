@@ -57,7 +57,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="inputs">
-                                                            <label>Login User</label>
+                                                            <label>Email Address</label>
 
                                                             <div class="gender">
                                                                 <span>
@@ -75,7 +75,7 @@
                                                                     <div class="inputs">
                                                                         <label>Verification ID</label>
                                                                         @*<input name="ImpersonateCode" id="ImpersonateCode" />*@
-                                                                        @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode" })
+                                                                        @Html.TextBox("ImpersonateCode", null, new { @id = "ImpersonateCode", @class= "form-control" })
                                                                     </div>
                                                                 </div>
 
@@ -87,7 +87,7 @@
 
                                                             <button class="btn btn-primary text-center" id="DeleteCustomer" style="text-align: right;">Delete User</button>
                                                             @if (!Model.IsAdmin)
-                                                            {
+                                                                                {
 
 
                                                                 <input type="button" class="btn btn-danger" id="impersonateBtn" value="Impersonate" />
@@ -111,13 +111,13 @@
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(m => m.LastName)
-                                                            @Html.TextBoxFor(m => m.LastName)
+                                                            @Html.TextBoxFor(m => m.LastName , new { @class = "form-control" })
                                                             <span class="required">*</span>
                                                             @Html.ValidationMessageFor(m => m.LastName)
                                                         </div>
                                                         <div class="inputs">
                                                             @Html.LabelFor(m => m.FirstName)
-                                                            @Html.TextBoxFor(m => m.FirstName)
+                                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
                                                             <span class="required">*</span>
                                                             @Html.ValidationMessageFor(m => m.FirstName)
 
@@ -127,7 +127,7 @@
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(m => m.PrimaryPhone)
-                                                            @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                                            @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
                                                             <span class="required">*</span>
                                                             @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
@@ -137,18 +137,18 @@
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(m => m.Phone)
-                                                            @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'" })
+                                                            @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
                                                             <span class="required">*</span>
                                                             @Html.ValidationMessageFor(m => m.Phone)
 
 
                                                         </div>
                                                         @if (Model.CustomerType.ToLower() == "driver")
-                                                        {
+                                                                        {
                                                             <div class="inputs">
 
                                                                 @Html.LabelFor(m => m.Commission)
-                                                                @Html.TextBoxFor(m => m.Commission)
+                                                                @Html.TextBoxFor(m => m.Commission, new { @class = "form-control" })
                                                                 <span class="required">*</span>
                                                                 @Html.ValidationMessageFor(m => m.Commission)
 
@@ -170,7 +170,7 @@
                                                         @*@if (Model.CustomerType.ToLower() == "administrator")
                             {*@
                                                         <div class="buttons">
-                                                            <input type="submit" value="Save" name="save-info-button" class="button-1 save-customer-info-button" />
+                                                            <input type="submit" value="Save" name="save-info-button" class="bttn" />
 
                                                         </div>
 
@@ -192,25 +192,25 @@
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(model => model.VehicleMake)
-                                                            @Html.EditorFor(model => model.VehicleMake)
+                                                            @Html.EditorFor(model => model.VehicleMake,new { @class = "form-control" })
 
                                                         </div>
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(model => model.VehicleModel)
-                                                            @Html.EditorFor(model => model.VehicleModel)
+                                                            @Html.EditorFor(model => model.VehicleModel, new { @class = "form-control" })
 
                                                         </div>
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(model => model.VehicleColor)
-                                                            @Html.EditorFor(model => model.VehicleColor)
+                                                            @Html.EditorFor(model => model.VehicleColor, new { @class = "form-control" })
 
                                                         </div>
                                                         <div class="inputs">
 
                                                             @Html.LabelFor(model => model.VehicleYear)
-                                                            @Html.EditorFor(model => model.VehicleYear)
+                                                            @Html.EditorFor(model => model.VehicleYear, new { @class = "form-control" })
 
                                                         </div>
 

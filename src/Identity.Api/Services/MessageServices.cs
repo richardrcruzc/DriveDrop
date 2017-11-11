@@ -45,12 +45,27 @@ namespace Identity.Api.Services
                 using (var client = new SmtpClient())
                 {
 
-                    client.LocalDomain = "smtp.sendgrid.net";
+                    client.LocalDomain = _settings.Value.EmailLocalDomain;
 
-                    await client.ConnectAsync(_settings.Value.EmailLocalDomain,_settings.Value.EmailLocalPort, SecureSocketOptions.None).ConfigureAwait(false);
-                    await client.AuthenticateAsync(_settings.Value.EmailUser,_settings.Value.EmailPassword);
+                    await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
+                    await client.AuthenticateAsync(_settings.Value.EmailUser, _settings.Value.EmailPassword);
                     await client.SendAsync(emailMessage).ConfigureAwait(false);
                     await client.DisconnectAsync(true).ConfigureAwait(false);
+
+                    //toSend.SentOnUtc = DateTime.Now;
+                    //toSend.SentTries++;
+                    //_context.Update(toSend);
+                   // await _context.SaveChangesAsync();
+
+
+
+
+                    //client.LocalDomain = "smtp.sendgrid.net";
+
+                    //await client.ConnectAsync(_settings.Value.EmailLocalDomain,_settings.Value.EmailLocalPort, SecureSocketOptions.None).ConfigureAwait(false);
+                    //await client.AuthenticateAsync(_settings.Value.EmailUser,_settings.Value.EmailPassword);
+                    //await client.SendAsync(emailMessage).ConfigureAwait(false);
+                    //await client.DisconnectAsync(true).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

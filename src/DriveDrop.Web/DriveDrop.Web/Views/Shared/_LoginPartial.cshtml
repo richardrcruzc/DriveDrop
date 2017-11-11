@@ -25,19 +25,18 @@
                                     @*<span>Hi <br>@await Component.InvokeAsync("UserInfo")</span>
                                     <figure><img src="~/images/profile.jpg"></figure>*@
                                 </a>
-
-
+                                <br />
+                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                    <span class="glyphicon glyphicon-log-out"></span><span>log Out</span>
+                                </a>
+                                
                             </div>
 
 
                         </div>
-                        <div class="login-profile">
-                            <br />
-                            <a href="javascript:document.getElementById('logoutForm').submit()">
-                                <span class="glyphicon glyphicon-log-out"></span><span>log Out</span>
-                            </a>
-                        </div>
+                        
                     </form>
+                    <br />
                         </div>
                     </div>
 
@@ -60,16 +59,16 @@ else
                         <ul class="main-menu">
 
                             <li>
-                                <a asp-area="" asp-controller="sender" asp-action="NewSender" class="ico-register">Sign Up Senders <i class="fa fa-angle-down"></i></a>
+                                <a asp-area="" asp-controller="sender" asp-action="NewSender" class="ico-register">Senders <i class="fa fa-angle-down"></i></a>
 
                             </li>
                             <li>
-                                <a asp-area="" asp-controller="driver" asp-action="newDriver" class="ico-register">Sign Up Drivers <i class="fa fa-angle-down"></i></a>
+                                <a asp-area="" asp-controller="driver" asp-action="newDriver" class="ico-register">Drivers <i class="fa fa-angle-down"></i></a>
                             </li>
                             <div class="clearfix"></div>
                         </ul>
 
-                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="bttn">Sign-In</a>
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="bttn">Sign In</a>
                     </nav>
                 </div>
             </div>

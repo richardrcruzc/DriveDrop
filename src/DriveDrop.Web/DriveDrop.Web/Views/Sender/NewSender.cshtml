@@ -94,12 +94,12 @@
     <div class="container">
 
         <div class="headline width-40 ">
-            <h3>SENDER SIGN UP</h3>
-            <p class="mb-90">New Sender Information</p>
+            <h3>SIGN UP AN <span>ACCOUNT</span></h3>
+            <p class="mb-90"><h4>Sender Information</h4></p>
         </div>
 
 
-        @if (User.FindFirst(x => x.Type == "preferred_username") != null)
+        @*@if (User.FindFirst(x => x.Type == "preferred_username") != null)
         {
 
             <div class="side-2">
@@ -109,7 +109,7 @@
 
 
             </div>
-        }
+        }*@
         
 
             <div class="login-form sign-up">
@@ -129,10 +129,7 @@
                         <div class="fieldset">
 
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                            <div class="title">
-                                <strong>Sender Information</strong>
-                            </div>
+ 
 
                             <div class="form-fields">
                                 <div class="form-horizontal">
@@ -175,8 +172,8 @@
                                 </div>
                             </div>
 
-                            <div class="title">
-                                <h3>Profile Photo</h3>
+                            <div class="title"><br />
+                                <h4>Profile Photo</h4>
                             </div>
                             <div class="form-fields">
                                 <div class="form-horizontal">
@@ -185,9 +182,10 @@
                                     <div class="image-placeholder">
                                         <div class="form-horizontal">
                                             <div class="form-group">
-                                                <div class="col-md-12">
-                                                    <input name="ImgeFoto" type='file' id="imgFoto" />
+                                                <div class="col-md-12"><br />
+                                                    <input asp-for="ImgeFoto"  type='file'  class="ImgeFotoCls" /><br />
                                                     <img id="blah" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                                    <span asp-validation-for="ImgeFoto" class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,8 +194,8 @@
                                 </div>
 
                             </div>
-                            <div class="title">
-                                <h3>Address for Future Pickup and Dropoff</h3>
+                            <div class="title"><br />
+                                <h4>Address for Future Pickup and Dropoff</h4><br />
                             </div>
 
 
@@ -207,14 +205,11 @@
                                     <div class="form-group">
 
                                         <div class="col-md-12">
-                                            <input id="autocomplete" class="form-control" placeholder="Enter Your Address" /><br />
-                                            <a class="btn btn-primary btn-lg" role="button" id="asPickup">Set as Pickup Address</a>
+                                            <input id="autocomplete" class="form-control" placeholder="Enter Your Address" /><br /> 
                                         </div>
                                     </div>
                                 </div>
-
-                                <h3>Default Address</h3>
-                                <hr />
+                                  
                                 <div class="form-horizontal">
 
 
@@ -251,25 +246,13 @@
                                             <span asp-validation-for="PickupCountry" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    @*<div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Contact phone"   />
-                                <span asp-validation-for="PickupPhone" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input asp-for="PickupContact" class="form-control" placeholder="Contact person"   />
-                                <span asp-validation-for="PickupContact" class="text-danger"></span>
-                            </div>
-                        </div>*@
-
+                                    
 
                                 </div>
 
                             </div>
-                            <div class="title">
-                                <h3>Login Infomation</h3>
+                            <div class="title"><br />
+                                <h4>Login Infomation</h4><br />
                             </div>
 
                             <div class="form-fields">
@@ -300,13 +283,14 @@
 
 
 
+                                <div class="form-fields">
+                                    <div class="form-horizontal">
+                                        <input type="submit" value="Submit" class="login-bttn" />
+                                        <div class="clearfix"></div>
 
-                            </div><div class="form-fields">
-                                <div class="buttons">
-                                    <input type="submit" value="Submit" name="save-info-button" class="btn btn-primary" />
-
+                                    </div>
                                 </div>
-                            </div>
+                            </div> 
                         </div>
 
                     </form>
@@ -324,45 +308,7 @@
 
                         <script>
 
-    //    $('input#submitButton').click(function () {
-
-    //        $.ajax({
-    //            url: '/driver/NewDriver',
-    //            type: 'post',
-    //           // dataType: 'json',
-    //            data: $('form#myForm').serialize(),
-    //            success: function (data) {
-    //                alert("good");
-    //                 }
-    //    });
-    //});
-
-
-
-    //jQuery('#PickupZipCode').on('input propertychange paste', function () {
-    //    UpdateRate()
-    //});
-    //jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
-    //    UpdateRate()
-    //});
-    //jQuery('#Quantity').on('input propertychange paste', function () {
-    //    UpdateRate()
-    //});
-    //jQuery('#Amount').on('input propertychange paste', function () {
-    //    UpdateRate()
-    //});
-
-    //$("#TransportTypeId").change(function () {
-    //    UpdateRate()
-    //});
-
-    //$("#PriorityTypeId").change(function () {
-    //    UpdateRate()
-    //});
-
-    //$("#PromoCode").change(function () {
-    //    UpdateRate()
-    //});
+    
 
       $('#calcTotal').click(function (event) {
                     //alert(1);
@@ -467,11 +413,13 @@
                          }
                      }
 
-                     $("#imgFoto").change(function () {
+                            $(".ImgeFotoCls").change(function () {
+                               
                          readURL(this);
                      });
 
-                     $("#asPickup").click(function () {
+                           $("#asPickup").click(function () {
+                           
 
                          // Get the place details from the autocomplete object.
                          var place = autocomplete.getPlace();
@@ -574,7 +522,7 @@
 
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
-       // autocomplete.addListener('place_changed', fillInAddress);
+        autocomplete.addListener('place_changed', fillInAddress);
 
 
       }
@@ -583,11 +531,11 @@
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
 
-        for (var component in componentForm) {
+        //for (var component in componentForm) {
 
-          document.getElementById(component).value = '';
-          document.getElementById(component).disabled = false;
-        }
+        //  document.getElementById(component).value = '';
+        //  document.getElementById(component).disabled = false;
+        //}
 
         // Get each component of the address from the place details
         // and fill the corresponding field on the form.
@@ -596,11 +544,36 @@
           if (componentForm[addressType]) {
               var val = place.address_components[i][componentForm[addressType]];
 
-              document.getElementById(addressType).value = '';
-              document.getElementById(addressType).disabled = false;
-           document.getElementById(addressType).value = val;
+              //document.getElementById(addressType).value = '';
+              //document.getElementById(addressType).disabled = false;
+              //              document.getElementById(addressType).value = val;
+
+                            if (addressType == 'street_number')
+                                $("#PickupStreet").val(place.address_components[i]['short_name']);
+
+                            if (addressType == 'route')
+                                $("#PickupStreet").val($("#PickupStreet").val() + " " + place.address_components[i]['long_name']);
+
+                            if (addressType == 'locality')
+                                $("#PickupCity").val(place.address_components[i]['long_name']);
+
+                            if (addressType == 'administrative_area_level_1')
+                                $("#PickupState").val(place.address_components[i]['short_name']);
+
+                            if (addressType == 'country')
+                                $("#PickupCountry").val(place.address_components[i]['long_name']);
+
+                            if (addressType == 'postal_code')
+                                $("#PickupZipCode").val(place.address_components[i]['short_name']);
           }
-        }
+                            }
+                            
+                            //assign lat and lng
+                            $("#PickupLatitude").val(place.geometry.location.lat());
+                            $("#PickupLongitude").val(place.geometry.location.lng());
+
+                            document.getElementById('autocomplete').value = '';
+                          
       }
 
       // Bias the autocomplete object to the user's geographical location,

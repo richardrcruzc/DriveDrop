@@ -41,22 +41,24 @@
                                                             <input type="hidden" asp-for="Id" />
                                                             <input type="hidden" asp-for="PackageSize" />
 
-                                                            <div class="inputs">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="inputs"> 
+                                                                        <label asp-for="OverHead" class="control-label">Minimum Initial Charge</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">$</span>
+                                                                        <input asp-for="OverHead" placeholder="Initial Charge" data-inputmask="'alias':'decimal'" class="form-control" />
 
-                                                                <label for="OverHead" class="pull-left">Minimum Initial Charge</label>
-                                                                <div class="pull-left"></div>
-                                                                <div class="pull-right"></div>
-                                                                <div class="input-group">
-                                                                    <span class="input-group-addon">$</span>
-                                                                    <input asp-for="OverHead" placeholder="Initial Charge" data-inputmask="'alias':'decimal'" style="max-width: 150px" />
+                                                                        @*<span class="required">*</span>*@
 
-                                                                    <span class="required">*</span>
-
-                                                                    <span asp-validation-for="OverHead" class="text-danger"></span>
-
+                                                                        <span asp-validation-for="OverHead" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
 
                                                                 </div>
-                                                            </div>
 
                                                             <div class="inputs">
                                                                 <hr />
@@ -84,7 +86,7 @@
 
                                                         <div class="form-fields">
                                                             <div class="buttons">
-                                                                <input type="submit" value="Save" class="button-1 save-customer-info-button" />
+                                                                <input type="submit" value="Save" class="bttn" />
 
 
                                                             </div>

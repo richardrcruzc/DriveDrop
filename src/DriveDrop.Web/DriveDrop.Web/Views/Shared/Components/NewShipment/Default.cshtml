@@ -144,7 +144,7 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <div class="col-md-12">
-                                @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
+                                @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="form-control"></select>*@
                                 @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new {@data_inputmask = "'mask': '(999) 999-9999'" })
                                 <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
                             </div>
@@ -152,7 +152,7 @@
                         
                         <div class="form-group">
                             <div class="col-md-12">
-                                @*<select asp-for="@Model.TransportTypeList" asp-items="@Model.TransportTypeId" class="esh-catalog-filter"></select>*@
+                                @*<select asp-for="@Model.TransportTypeList" asp-items="@Model.TransportTypeId" class="form-control"></select>*@
                                 @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList,   new {@data_inputmask = "'mask': '(999) 999-9999'" })
                                 <span asp-validation-for="TransportTypeId" class="text-danger"></span>
                             </div>

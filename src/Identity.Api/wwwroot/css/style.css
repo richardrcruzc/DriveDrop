@@ -20,10 +20,26 @@ input:focus {
     outline: inherit !important;
 }
 /*=========== Globals ============*/
-body {
+html, body {
     font-family: 'Open Sans', sans-serif;
     background-color: #fff;
+    height: 100%;
 }
+
+body {
+    display: table;
+    width: 100%;
+}
+
+.page-row {
+    display: table-row;
+    height: 1px;
+}
+
+.page-row-expanded {
+    height: 100%;
+}
+
 
 .no-padding {
     padding: 0;
@@ -38,7 +54,7 @@ body {
     background: #43b249;
     line-height: 48px;
     padding: 0 50px;
-    border-radius: 30px;
+    border-radius: 0px;
     font-size: 18px;
     font-weight: 600;
     color: #fff;
@@ -152,7 +168,7 @@ header {
         }
 
 .form-block {
-    background: rgba(33, 53, 104, 0.9);
+    /*background: rgba(33, 53, 104, 0.9);*/
     padding: 40px 0;
     text-align: center;
     margin-top: -193px;
@@ -182,8 +198,8 @@ header {
             background: #181e2c;
             width: 100%;
             line-height: 40px;
-            border: solid 2px #fff;
-            border-radius: 30px;
+            /*border: solid 2px #fff;*/
+            border-radius: 3px;
             text-align: left;
         }
 
@@ -571,6 +587,8 @@ header {
     padding-bottom: 98px;
 }
 
+
+
 footer {
     background: #21356a;
 }
@@ -588,7 +606,7 @@ footer {
             content: "";
             position: absolute;
             width: 10000px;
-            height: 100%;
+            height: 120%;
             display: block;
             left: -10000px;
             background: #45b048;
@@ -596,7 +614,7 @@ footer {
         }
 
     footer .footer-menu {
-        margin-top: 90px;
+        margin-top: 10px;
         float: left;
     }
 
@@ -612,7 +630,7 @@ footer {
             }
 
     footer .social-media {
-        margin-top: 90px;
+        margin-top: -20px;
         float: right;
     }
 
@@ -875,7 +893,7 @@ footer {
         }
 /*=========== Login page ============*/
 .login-page {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
 }
 
     .login-page header {
@@ -1019,7 +1037,7 @@ footer {
 }
 
 .sender-desh {
-    margin-top: 160px;
+    margin-top: 70px;
 }
 
     .sender-desh .side-fixed-menu li a {
@@ -2880,7 +2898,7 @@ ul.side-fixed-menu {
 }
 
 .pt-220 {
-    padding-top: 220px;
+    padding-top: 120px;
 }
 
 .width-40 {

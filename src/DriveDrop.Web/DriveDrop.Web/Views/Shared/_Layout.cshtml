@@ -10,7 +10,8 @@
 
     <!-- Bootstrap -->
 
-    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.css" />    
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/owl.carousel.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet">     
     <link href="~/css/responsive.css" rel="stylesheet">
@@ -20,21 +21,27 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
+    <header class="page-row">
+        @await Html.PartialAsync("_LoginPartial")
+    </header>
 
-
-    @await Html.PartialAsync("_LoginPartial")
-
+    <main class="page-row page-row-expanded">
     @await Component.InvokeAsync("UserStatus")
-        
-
-            @RenderBody()
 
 
-            <footer>
+    @RenderBody()
+
+    
+    </main>
+  
+
+    
+
+            <footer class="page-row">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-3 footer-logo">
-                            <figure><img src="~/images/footer-logo.png"> </figure>
+                            <figure><img src="~/images/logo.png"> </figure>
                         </div>
                         <div class="col-xs-9 footer-links">
                             <ul class="footer-menu">

@@ -39,7 +39,8 @@ namespace DriveDrop.Api.Services
             {
                 Body = message,
                 From = _settings.Value.EmailSenderEmail,
-                Subject = message,
+                FromName = _settings.Value.EmailSenderName,
+                Subject = subject,
                 To = email,
                 ToName= customer.FullName,
                 PriorityId= 1,
@@ -52,7 +53,15 @@ namespace DriveDrop.Api.Services
             await _context.SaveChangesAsync();
 
 
-            BackgroundJob.Enqueue(() => SendEmailFromQueueAsync(q.Id));
+            RecurringJob.AddOrUpdate(() => SendBatchEmailFromQueueAsync(), Cron.Minutely);
+
+
+            var jobId = BackgroundJob.Enqueue(() => SendEmailFromQueueAsync(q.Id));
+
+
+
+
+           // var succeeded = BackgroundJob.Requeue(jobId);
 
         }
         public async Task SendEmailFromQueueAsync(int id)
@@ -75,10 +84,10 @@ namespace DriveDrop.Api.Services
                 {
                     using (var client = new SmtpClient())
                     {
-
+                    
                         client.LocalDomain = _settings.Value.EmailLocalDomain;
 
-                        await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.None).ConfigureAwait(false);
+                        await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
                         await client.AuthenticateAsync(_settings.Value.EmailUser, _settings.Value.EmailPassword);
                         await client.SendAsync(emailMessage).ConfigureAwait(false);
                         await client.DisconnectAsync(true).ConfigureAwait(false);
@@ -92,10 +101,62 @@ namespace DriveDrop.Api.Services
                 }
                 catch (Exception ex)
                 {
-
-                    var m = ex.Message;
+                toSend.AttachmentFileName = ex.Message;
+                toSend.SentTries++;
+                _context.Update(toSend);
+                await _context.SaveChangesAsync();
+                var m = ex.Message;
                 }
              
+            // return Task.FromResult(0);
+        }
+        public async Task SendBatchEmailFromQueueAsync()
+        {
+            var maxTries = 3;
+            var toSends = _context.QueuedEmails.Where(x => x.SentTries < maxTries && !x.SentOnUtc.HasValue);
+
+            foreach (var toSend in toSends)
+            {
+                // email = "richardrcruzc@gmail.com";
+                var emailMessage = new MimeMessage();
+
+                emailMessage.From.Add(new MailboxAddress(toSend.FromName, toSend.From));
+                emailMessage.To.Add(new MailboxAddress(toSend.ToName, toSend.To));
+                emailMessage.Subject = toSend.Subject;
+                // emailMessage.Body = new TextPart("plain") { Text = message };
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = toSend.Body;
+                emailMessage.Body = bodyBuilder.ToMessageBody();
+
+                try
+                {
+                    using (var client = new SmtpClient())
+                    {
+
+                        client.LocalDomain = _settings.Value.EmailLocalDomain;
+
+                        await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
+                        await client.AuthenticateAsync(_settings.Value.EmailUser, _settings.Value.EmailPassword);
+                        await client.SendAsync(emailMessage).ConfigureAwait(false);
+                        await client.DisconnectAsync(true).ConfigureAwait(false);
+
+                        toSend.SentOnUtc = DateTime.Now;
+                        toSend.SentTries++;
+                        _context.Update(toSend);
+                        await _context.SaveChangesAsync();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    toSend.AttachmentFileName = ex.Message;
+                    toSend.SentTries++;
+                    _context.Update(toSend);
+                    await _context.SaveChangesAsync();
+                    var m = ex.Message;
+                }
+            }
+
             // return Task.FromResult(0);
         }
 

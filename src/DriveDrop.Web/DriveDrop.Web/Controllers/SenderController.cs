@@ -469,7 +469,7 @@ namespace DriveDrop.Web.Controllers
                 {
                     var tt = state.Errors.ToString();
                 }
-                if (c.ImgeFoto.Length <= 0)
+                if (c.ImgeFoto==null || c.ImgeFoto.Length <= 0)
                 {
                     ModelState.AddModelError("", "Upload profile photo");
                     return View(c);
@@ -478,38 +478,36 @@ namespace DriveDrop.Web.Controllers
                 {
                     ModelState.AddModelError("", "profile photo file exceeds the file maximum size: 1MB");
                     return View(c);
-                }
-              
+                }              
 
                 if (ModelState.IsValid)
                 {
                     var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
 
-
                     //try register new user
 
-                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, c.UserEmail, c.Password);
+                    var registerModel = new RegisterUserViewModel{userName = c.UserEmail , Password = c.Password };
+
+                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, System.Net.WebUtility.UrlEncode(c.UserEmail), System.Net.WebUtility.UrlEncode(c.Password));
 
                     var dataString = await _apiClient.GetStringAsync(addNewUserUri, token);
 
+
                     //var userStatus = JsonConvert.DeserializeObject<object>((dataString));
 
-                    if (dataString == null)
+                    if (string.IsNullOrWhiteSpace(dataString) || string.IsNullOrEmpty(dataString))
                     {
-                        ModelState.AddModelError("", "Unable to register sender user: "+ c.UserEmail ); 
+                        ModelState.AddModelError("", "Unable to register Login infomation user: " + c.UserEmail);
                         return View(c);
                     }
-
-
-
                     if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
                     {
 
-                        ModelState.AddModelError("", "Unable to register Login infomation user: "+ c.UserEmail); 
+                        ModelState.AddModelError("", "Unable to register Login infomation user: " + c.UserEmail);
                         return View(c);
                     }
-                     
+
                     var ppersonalUri = await SaveFile(c.ImgeFoto, "Sender");
                      
                     c.PersonalPhotoUri = ppersonalUri;
@@ -532,11 +530,12 @@ namespace DriveDrop.Web.Controllers
 
                     var callbackUrl = string.Empty;
                     var modfyMsg = string.Empty;
-                    if (dataString.Contains("IsAuthenticated"))
+                    if (dataString.Contains("IsAuthenticated") || dataString.Contains("IsNotAuthenticated"))
                     {
+
                         dataString = dataString.Replace("IsAuthenticated", "");
-                          callbackUrl = string.Format("{0}/{1}", _settings.Value.IdentityUrl.Trim(), dataString.Trim());
-                        modfyMsg = string.Format("Hi {0} ! You have been sent this email because you created an account on our website. Please click on <a href =\"{1}\">this link</a> to confirm your email address is correct. ",c.UserEmail, callbackUrl);
+                        callbackUrl = string.Format("{0}/{1}", _settings.Value.IdentityUrl.Trim(), dataString.Trim());
+                        modfyMsg = string.Format("Hi {0} ! You have been sent this email because you created an account on our website. Please click on <a href =\"{1}\">this link</a> to confirm your email address is correct. ", c.FirstName, callbackUrl);
 
 
 

@@ -24,6 +24,7 @@ using System.Data.SqlClient;
 using DriveDrop.Api.Services;
 using Newtonsoft.Json;
 using Hangfire;
+using DriveDrop.Api.Filters;
 
 namespace DriveDrop.Api
 {
@@ -127,17 +128,23 @@ namespace DriveDrop.Api
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IHostingEnvironment _env, IRateService rate, IDistanceService distance)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, 
+            IHostingEnvironment _env, IRateService rate, IDistanceService distance, IApplicationLifetime appLifetime)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            
             app.UseDeveloperExceptionPage();
                app.UseBrowserLink();
 
             app.UseHangfireServer();
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions()
+            {
+                Authorization = new[] { new CustomAuthorizeFilter() }
+            });
 
+         //   appLifetime.ApplicationStarted.Register(RecurringJob.AddOrUpdate(() => DriveDrop.Api.Services.Auth SendBatchEmailFromQueueAsync(), Cron.Minutely));
 
             // Use frameworks
             app.UseCors("CorsPolicy");

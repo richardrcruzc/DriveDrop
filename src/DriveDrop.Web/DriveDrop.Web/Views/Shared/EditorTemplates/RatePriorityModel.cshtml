@@ -18,10 +18,10 @@
                 @Html.ValidationMessageFor(modelItem => modelItem.PriorityId, "", new { @class = "text-danger" })*@
         </div>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-6">
         <div class="input-group">
             <span class="input-group-addon">$</span>
-            @Html.TextBoxFor(model => model.Charge, htmlAttributes: new { @class = "form-control text-box single-line", @data_inputmask = "'alias':'decimal'" , @style = "max-width: 100px" })
+            @Html.TextBoxFor(model => model.Charge, htmlAttributes: new { @class = "form-control", @data_inputmask = "'alias':'decimal'"  })
             @Html.ValidationMessageFor(modelItem => modelItem.Charge, "", new { @class = "text-danger" })
 
         </div>

@@ -872,7 +872,7 @@ footer {
         }
 /*=========== Login page ============*/
 .login-page {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
 }
 
     .login-page header {
@@ -2877,7 +2877,7 @@ ul.side-fixed-menu {
 }
 
 .pt-220 {
-    padding-top: 220px;
+    padding-top: 120px;
 }
 
 .width-40 {

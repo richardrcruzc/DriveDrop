@@ -150,7 +150,7 @@ header {
         }
 
 .form-block {
-    background: rgba(33, 53, 104, 0.9);
+    /*background: rgba(33, 53, 104, 0.9);*/
     padding: 40px 0;
     text-align: center;
     margin-top: -193px;
@@ -872,7 +872,7 @@ footer {
         }
 /*=========== Login page ============*/
 .login-page {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
 }
 
     .login-page header {
@@ -2877,7 +2877,7 @@ ul.side-fixed-menu {
 }
 
 .pt-220 {
-    padding-top: 220px;
+    padding-top: 120px;
 }
 
 .width-40 {

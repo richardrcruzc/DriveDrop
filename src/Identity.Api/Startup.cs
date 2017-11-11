@@ -54,6 +54,10 @@ namespace Identity.Api
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddIdentity<Models.ApplicationUser, IdentityRole>(
                 options =>
                 {
@@ -64,7 +68,7 @@ namespace Identity.Api
                     options.Password.RequireNonAlphanumeric = true;
                     options.Password.RequireUppercase = true;
                     options.Password.RequireLowercase = true;
-                    
+
 
                     // Lockout settings
                     options.Lockout.DefaultLockoutTimeSpan = System.TimeSpan.FromMinutes(30);

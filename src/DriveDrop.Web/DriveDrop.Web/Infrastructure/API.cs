@@ -14,6 +14,10 @@ namespace DriveDrop.Web.Infrastructure
             { 
                 return $"{baseUri}RegisterUser?userName={userName}&password={password}";
             }
+            public static string RegisterUserPost(string baseUri )
+            {
+                return $"{baseUri}RegisterUser";
+            }
 
             public static string ChangePassword(string baseUri, string Email, string OldPassword, string NewPassword, string ConfirmPassword)
             {

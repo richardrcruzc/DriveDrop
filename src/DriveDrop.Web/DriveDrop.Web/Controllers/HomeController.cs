@@ -187,7 +187,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllPriorityTypes(_remoteServiceCommonUrl);
             dataString = await _apiClient.GetStringAsync(getUri);
             var priorityType = new List<SelectListItem>();
-            priorityType.Add(new SelectListItem() { Value = null, Text = "Select priority ...", Selected = true });
+            priorityType.Add(new SelectListItem() { Value = null, Text = "Select Priority ...", Selected = true });
 
             gets = JArray.Parse(dataString);
 

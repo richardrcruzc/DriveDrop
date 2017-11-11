@@ -400,9 +400,7 @@ namespace DriveDrop.Web.Controllers
         public async Task<IActionResult> NewDriver(DriverModel c) //, List<IFormFile> personalfiles, List<IFormFile> licensefiles, List<IFormFile> Vehiclefiles, List<IFormFile> insurancefiles
         {
             try
-            {
-
-                
+            {                
 
                 c.Email = c.UserEmail;
 
@@ -418,7 +416,7 @@ namespace DriveDrop.Web.Controllers
 
                     //try register new user
 
-                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, c.UserEmail, c.Password);
+                    var addNewUserUri = API.Identity.RegisterUser(_remoteServiceIdentityUrl, System.Net.WebUtility.UrlEncode(c.UserEmail), System.Net.WebUtility.UrlEncode(c.Password));
 
                     var dataString = await _apiClient.GetStringAsync(addNewUserUri);
 
@@ -625,8 +623,7 @@ namespace DriveDrop.Web.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-
+                { 
                     //var fileName = await SaveFile(photoUrl, "driver");
 
                     //if (!string.IsNullOrWhiteSpace(fileName))

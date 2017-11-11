@@ -3,8 +3,7 @@
 
 @if (!string.IsNullOrWhiteSpace(Model.Status) || !string.IsNullOrWhiteSpace(Model.Impersonated) || (!string.IsNullOrWhiteSpace(Model.CustomerType) && Model.CustomerType.ToLower() == "driver"))
 {
-<section class="sender-desh">
-    <div class="container">
+ 
      @*   <div id="content" class="col-sm-9">
     <div id="gig-information" class="sender-form">*@
 
@@ -12,11 +11,49 @@
 
                 @if (!string.IsNullOrWhiteSpace(Model.Status))
                 {
-                    <div class="alert alert-danger">
-                        <label>   User Status: <strong>@Model.Status</strong> </label><br />
-                        <label>   <strong>Your Access to DriveDrop is limited</strong> </label><br />
-                        <label>   <strong>Please contact customer service </strong> </label>
+                     <!-- The Modal -->
+                    <div id="myModalStatus" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="alert alert-danger">
+                                <label>   User Status: <strong>@Model.Status</strong> </label><br />
+                                <label>   <strong>Your Access to DriveDrop is limited</strong> </label><br />
+                                <label>   <strong>Please contact customer service </strong> </label>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <script>
+                        // Get the modal
+                        var modal = document.getElementById('myModalStatus');
+
+                        // Get the button that opens the modal
+                        // var btn = document.getElementById("myBtn");
+
+                        // Get the <span> element that closes the modal
+                        var span = document.getElementsByClassName("close")[0];
+
+                        // When the user clicks the button, open the modal
+                        //btn.onclick = function () {
+                        modal.style.display = "block";
+                        //}
+
+                        // When the user clicks on <span> (x), close the modal
+                        span.onclick = function () {
+                            modal.style.display = "none";
+                        }
+
+                        // When the user clicks anywhere outside of the modal, close it
+                        window.onclick = function (event) {
+                            if (event.target == modal) {
+                                modal.style.display = "none";
+                            }
+                        }
+                    </script>
+
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Impersonated))
                 {
@@ -31,17 +68,55 @@
                 @if (!string.IsNullOrWhiteSpace(Model.CustomerType) && Model.CustomerType.ToLower() == "driver")
                 {
 
-                    <div id="You-Got-Packages" class="alert alert-info hidden">
+                    @*<div id="You-Got-Packages" class="alert alert-info hidden">
                         <div><strong>Info!</strong> You Got Package !</div>
 
-                        @*<div id="DriverNotificationWS"></div>*@
-                    </div>
+                     
+                    </div>*@
+                    @*<div id="DriverNotificationWS"></div>*@
+                     <!-- The Modal -->
+                    @*<div id="myModalPackage" class="modal">
+
+                         Modal content 
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="alert alert-info hidden">
+                                <div><strong>Info!</strong> You Got Package !</div>
+                            </div>
+                        </div>
+
+                    </div>*@
+
+                    @*<script>
+                        // Get the modal
+                        var modal1 = document.getElementById('myModalPackage');
+
+                        // Get the button that opens the modal
+                        // var btn = document.getElementById("myBtn");
+
+                        // Get the <span> element that closes the modal
+                        var span1 = document.getElementsByClassName("close")[0];
+
+                        // When the user clicks the button, open the modal
+                        //btn.onclick = function () {
+                        modal1.style.display = "block";
+                        //}
+
+                        // When the user clicks on <span> (x), close the modal
+                        span1.onclick = function () {
+                            modal1.style.display = "none";
+                        }
+
+                        // When the user clicks anywhere outside of the modal, close it
+                        window.onclick = function (event) {
+                            if (event.target == modal1) {
+                                modal1.style.display = "none";
+                            }
+                        }
+                    </script>*@
 
                 }
 
                  
-           </div>
-       @* </div>
-    </div>*@
-    </section>
+           
 }

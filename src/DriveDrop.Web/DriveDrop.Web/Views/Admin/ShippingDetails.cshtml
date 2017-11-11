@@ -37,7 +37,7 @@
                                                             <li>
                                                                 <label>Status:</label> <span class="order-status pending">
 
-                                                                    <select asp-for="ShippingStatusId" asp-items="Model.ShippingStatusList" class="esh-catalog-filter" onchange="changshippingstatus(this,@(Model.Id))"></select>
+                                                                    <select asp-for="ShippingStatusId" asp-items="Model.ShippingStatusList" class="form-control" onchange="changshippingstatus(this,@(Model.Id))"></select>
                                                                 </span>
                                                             </li>
                                                             <li><label>Priority:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PriorityType.Name)</span></li>

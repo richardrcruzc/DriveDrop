@@ -95,6 +95,7 @@ namespace DriveDrop.Api.Services
                 .ThenInclude(ps => ps.Driver)
                 .Include(x => x.ShipmentSenders)
                 .ThenInclude(ps => ps.PackageStatusHistories)
+                .ThenInclude(ps => ps.ShippingStatus)
                 .Where(x => x.UserName == user && x.Isdeleted==false)
                 .FirstOrDefaultAsync();
             if (c == null )

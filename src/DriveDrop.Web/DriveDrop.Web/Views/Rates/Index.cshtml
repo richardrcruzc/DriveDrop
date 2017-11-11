@@ -21,22 +21,35 @@
                                 <div class="side-2">
                                     <div class="page-body">
 
-                                        <div class="address-list">
-                                            @foreach (var item in Model)
-                                            {
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Package Size</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                               
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
 
-                                                <ol class="opc">
-                                                    <li class="tab-section allow active">
-                                                        <div class="step-title">
-                                                            <h4 class="title">@item.PackageSize.Name</h4>
-                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Details</h4></a>
-                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h4 class="title">Edit</h4></a>
+                                                    <tr>
+                                                        <td>
 
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            }
-                                        </div>
+                                                            <h5 class="title">@item.PackageSize.Name</h5>
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h5 class="title">Details</h5></a>
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h5 class="title">Edit</h5></a>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
 
 
                                     </div>

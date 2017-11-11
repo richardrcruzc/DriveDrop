@@ -11,12 +11,12 @@
     <div class="container">
 
         <div class="headline width-40 ">
-            <h3>DRIVERS SIGN UP</h3>
+            <h3>SIGN UP TO BE A <span>DRIVER</span></h3>
             <p class="mb-90">New Driver Information</p>
         </div>
 
 
-        @if (User.FindFirst(x => x.Type == "preferred_username") != null)
+        @*@if (User.FindFirst(x => x.Type == "preferred_username") != null)
         {
 
             <div class="side-2">
@@ -26,7 +26,7 @@
 
 
             </div>
-        }
+        }*@
         <div class="center-2">
 
             <div class="login-form sign-up">
@@ -41,11 +41,7 @@
                         <div class="fieldset">
 
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                            <div class="title">
-                                <h3>Driver Information</h3>
-                            </div>
-
+ 
                             <div class="form-fields">
                                 <div class="form-horizontal">
 
@@ -95,8 +91,8 @@
                             </div>
 
 
-                            <div class="title">
-                                <h3>Default Address</h3>
+                            <div class="title"><br />
+                                <h4>Default Address</h4><br />
                             </div>
                             <div class="form-fields">
                                 <div class="form-horizontal">
@@ -153,8 +149,8 @@
                                 </div>
                             </div>
 
-                            <div class="title">
-                                <h3>Driver Package and Drive Information  </h3>
+                            <div class="title"><br />
+                                <h4>Driver Package and Drive Information  </h4><br />
                             </div>
                             <div class="form-fields">
                                 <div class="form-horizontal">
@@ -228,8 +224,8 @@
                                 </div>
                             </div>
 
-                            <div class="title">
-                                <h3>Profile Photo </h3>
+                            <div class="title"><br />
+                                <h4>Profile Photo </h4><br />
                             </div>
 
                             <div class="form-fields">
@@ -238,7 +234,7 @@
                                         <div class="form-horizontal">
 
 
-                                            <input type='file' id="my-file-selector-Personal" name="personalfiles" />
+                                            <input type='file' id="my-file-selector-Personal" name="personalfiles" /><br />
                                             <img id="Personal-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
 
                                             <div>
@@ -249,8 +245,8 @@
                                 </div>
                             </div>
 
-                            <div class="title">
-                                <h3>Driver License Photo </h3>
+                            <div class="title"><br />
+                                <h4>Driver License Photo </h4><br />
                             </div>
 
                             <div class="form-fields">
@@ -259,7 +255,7 @@
                                         <div class="form-horizontal">
 
 
-                                            <input type='file' id="my-file-selector-license" name="licensefiles" />
+                                            <input type='file' id="my-file-selector-license" name="licensefiles" /><br />
                                             <img id="license-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
                                         </div>
                                     </div>
@@ -269,8 +265,8 @@
 
 
 
-                            <div class="title">
-                                <h3>Vehicle Photo </h3>
+                            <div class="title"><br />
+                                <h4>Vehicle Photo </h4><br />
                             </div>
 
                             <div class="form-fields">
@@ -279,7 +275,7 @@
                                         <div class="form-horizontal">
 
 
-                                            <input type='file' id="my-file-selector-Vehicle" name="Vehiclefiles" />
+                                            <input type='file' id="my-file-selector-Vehicle" name="Vehiclefiles" /><br />
                                             <img id="Vehicle-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
                                         </div>
                                     </div>
@@ -288,8 +284,8 @@
                             </div>
 
 
-                            <div class="title">
-                                <h3>Proof of Insurance </h3>
+                            <div class="title"><br />
+                                <h4>Proof of Insurance </h4><br />
                             </div>
 
                             <div class="form-fields">
@@ -300,7 +296,7 @@
                                         <div class="form-horizontal">
 
 
-                                            <input type='file' id="my-file-selector-insurance" name="insurancefiles" />
+                                            <input type='file' id="my-file-selector-insurance" name="insurancefiles" /><br />
                                             <img id="insurance-image" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
                                         </div>
                                     </div>
@@ -311,8 +307,8 @@
 
                             @*<a href="#" class="fb-bttn ">Log in with Facebook </a>
             <div class="border"><span><spam>&amp;</spam></span></div>*@
-                            <div class="title">
-                                <h3>  Login Information</h3>
+                            <div class="title"><br />
+                                <h4>  Login Information</h4><br />
                             </div>
                             <div class="form-fields">
                                 <div class="form-horizontal">
@@ -348,7 +344,7 @@
 
                             <div class="form-fields">
                                 <div class="form-horizontal">
-                                    <input type="submit" value="Register" class="login-bttn"  />
+                                    <input type="submit" value="Submit" class="login-bttn"   />
                                     <div class="clearfix"></div>
 
                                 </div>
@@ -518,6 +514,8 @@
                     //document.getElementById(addressType).value = val;
                 }
             }
+            document.getElementById('autocomplete').value = '';
+            
         }
 
         // Bias the autocomplete object to the user's geographical location,

@@ -4,6 +4,7 @@
     ViewData["Title"] = "Add Address";
 
     var customerTypeId = (int)ViewBag.CustomerType;
+    var option = new DriveDrop.Web.ViewModels.TwoParameterModel { Id = (int)ViewBag.Id, Option = "Addresses" };
 }
 
 
@@ -13,15 +14,15 @@
             <div class="row">
                 @if (customerTypeId == 1)
                 {
-                    @await Html.PartialAsync("AdminNavigation", (int)@ViewBag.Id)
+                    @await Html.PartialAsync("AdminNavigation", option)
                 }
                 else if (customerTypeId == 2)
                 {
-                    @await Html.PartialAsync("CustomerNavigation", (int)@ViewBag.Id)
+                    @await Html.PartialAsync("CustomerNavigation", option)
                 }
                 else if (customerTypeId == 3)
                 {
-                    @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.Id)
+                    @await Html.PartialAsync("DriverNavigation", option)
                 }
 
 

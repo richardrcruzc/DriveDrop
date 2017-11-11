@@ -22,66 +22,77 @@
     </div>
 </section>
 <section class="form-block">
-    <div class="container">
-        <h3>Get Estimated</h3>
+    <div class="row">
+        <h3>Get Estimate</h3>
 
 
         <div class="form-group">
-            
-            <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="Form:Atlanta, GA" id="start" class="autocomplete"><button><img src="~/images/icon-send.png"> </button></span>
-               
-            </div>
-            <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="To : Phoenix, AZ" id="end" class="autocomplete"><button><img src="~/images/icon-send.png"> </button></span>
+             
 
-                
+            <div class="col-lg-2"> 
+            <div class="form-field">
+                <span class="text-danger"><input type="text" placeholder="From Address" id="start" class="autocomplete"><button><img src="~/images/icon-send.png"> </button></span>
 
             </div>
-            <div class="form-field select-field">
-                 
+        </div>  
+            <div class="col-lg-2"> 
+            <div class="form-field">
+                <span class="text-danger"><input type="text" placeholder="To Address" id="end" class="autocomplete"><button><img src="~/images/icon-send.png"> </button></span>
+
+
+
+            </div>
+        </div>  
+            <div class="col-lg-2"> 
+            <div class="form-field select-field" style = "width: 200px;" >
+
 
                 <span asp-validation-for="PackageSizeId" class="text-danger">
                     <label class="dropdown">
                         @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
+
                     </label>
+
                 </span>
 
             </div>
-
-            <div class="form-field select-field">
-                <span asp-validation-for="PriorityTypeId" class="text-danger">
-                    <label class="dropdown">
-                        @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
+        </div>  
+            <div class="col-lg-2">
+                <div class="form-field select-field"  style = "width: 190px;" >
+                    <span  >
+                        <label class="dropdown">
+                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
                         </label>
-</span>
-</div>
-
-            <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="weight"  id="weight" ></span> 
-                
-
-            </div>
-             
-
-            <button class="bttn" id="calcTotal">Submit</button>
-            <div class="clearfix"></div>
-           
-            <div class="row">
-                <div class="center text-center">
-                    <br /><br /><h3>
-                        <label id="AmountEstimated"></label>
-                    </h3>
+                    </span>
                 </div>
-                <br /><br />
-                <br /><br />
-            </div>
+            </div>  
+            <div class="col-lg-1">
+                <div class="form-field"  style = "width: 100px;" >
+                    <span class="text-danger"><input type="text" placeholder="Weight" id="weight"></span>
 
-        </div>
+
+                </div>
+            </div>  
+            <div class="col-lg-1">
+                <button class="bttn" id="calcTotal">Submit</button>
+                <div class="clearfix"></div>
+                </div>
+              
+
+            </div>
 
 
        
          
+    </div>
+    <div class="row">
+        <div class="center text-center">
+            <br /><br /><h3>
+                <label id="AmountEstimated"></label>
+            </h3>
+        </div>
+        <br /><br />
+        <br /><br />
     </div>
 </section>
 
@@ -89,7 +100,7 @@
     <div class="container">
         <div class="row">
             <div class="headline">
-                <span>HOW IT WORKS</span>
+               
                 <h3>How to Ship with <span>DriveDrop</span></h3>
             </div>
 
@@ -244,7 +255,7 @@
     <div class="container">
         <div class="row">
             <div class="headline">
-                <span>MORE SERVICES</span>
+                
                 <h3>DriveDrop <span>Delivers</span> More</h3>
             </div>
             <div class="col-md-3">
@@ -283,7 +294,7 @@
     <div class="container">
         <div class="row">
             <div class="headline">
-                <span>TESTIMONIALS</span>
+                
                 <h3>What <span>Our Customers</span> Are Saying</h3>
                 <span class="border"></span>
             </div>

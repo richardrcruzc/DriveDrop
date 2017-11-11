@@ -10,6 +10,7 @@
     <!-- Bootstrap -->
 
     <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/owl.carousel.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet">
     <link href="~/css/responsive.css" rel="stylesheet">
@@ -18,48 +19,56 @@
 
    </head>
 <body>
-     
-    <header class="blue-bg">
-        <div class="container">
-            <div class="row descktop-menu">
-                <div class="col-xs-2">
+    <div class="page-row">
+        <header class="blue-bg">
+            <div class="container">
+                <div class="row descktop-menu">
+                    <div class="col-xs-2">
+                        <a href="@ViewData["ReturnHomeUrl"]"><img src="~/images/logo.png"></a>
+                    </div>
+                    <div class="col-xs-8 pull-right ">
+                        <nav>
+                            <ul class="main-menu">
+
+                                <li>
+                                    <a href="@ViewData["ReturnHomeUrl"]/sender/NewSender" class="ico-register">Senders <i class="fa fa-angle-down"></i></a>
+
+                                </li>
+                                <li>
+                                    <a href="@ViewData["ReturnHomeUrl"]/Driver/NewDriver" class="ico-register">Drivers <i class="fa fa-angle-down"></i></a>
+                                </li>
+                                <div class="clearfix"></div>
+                            </ul>
+
+
+                        </nav>
+                    </div>
+                </div>
+                <div class="mobile-menu">
+                    <span style="font-size:30px;cursor:pointer" onclick="openNav()"> <img src="~/images/mobile-nav.png"></span>
                     <a href="@ViewData["ReturnHomeUrl"]"><img src="~/images/logo.png"></a>
                 </div>
-                <div class="col-xs-8 pull-right ">
-                    <nav>
-                        <ul class="main-menu">
 
-                            <li>
-                                <a href="@ViewData["ReturnHomeUrl"]/sender/NewSender"  class="ico-register">Sign Up Senders <i class="fa fa-angle-down"></i></a>
-
-                            </li>
-                            <li>
-                                <a  href="@ViewData["ReturnHomeUrl"]/Driver/NewDriver"  class="ico-register">Sign Up Drivers <i class="fa fa-angle-down"></i></a>
-                            </li>
-                            <div class="clearfix"></div>
-                        </ul>
-
-                       
-                    </nav>
-                </div>
             </div>
-            <div class="mobile-menu">
-                <span style="font-size:30px;cursor:pointer" onclick="openNav()"> <img src="~/images/mobile-nav.png"></span>
-                <a href="@ViewData["ReturnHomeUrl"]"><img src="~/images/logo.png"></a>
-            </div>
-
-        </div>
-    </header>
+        </header>
+    </div>
+    <main class="page-row page-row-expanded">
 
 
 
-    @RenderBody()
+        @RenderBody()
 
-    <footer>
+
+    </main>
+
+
+
+
+    <footer class="page-row">
         <div class="container">
             <div class="row">
                 <div class="col-xs-3 footer-logo">
-                    <figure><img src="~/images/footer-logo.png"> </figure>
+                    <figure><img src="~/images/logo.png"> </figure>
                 </div>
                 <div class="col-xs-9 footer-links">
                     <ul class="footer-menu">

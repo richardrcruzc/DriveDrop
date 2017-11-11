@@ -13,7 +13,7 @@
 </td>
 <td>
    @*@Model.CustomerStatus.Name*@
-    <select asp-for="@Model.CustomerStatusId" asp-items="@ViewBag.CustomerStatus" class="esh-catalog-filter"  onchange="changstatus(this,@(Model.Id))" ></select>
+    <select asp-for="@Model.CustomerStatusId" asp-items="@ViewBag.CustomerStatus" class="form-control"  onchange="changstatus(this,@(Model.Id))" ></select>
 </td>
 <td>
     @if (Model.TransportType != null)

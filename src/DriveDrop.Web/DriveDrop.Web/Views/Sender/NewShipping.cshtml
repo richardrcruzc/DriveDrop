@@ -168,13 +168,13 @@
                                                     </div>
                                                     <div class="edit-address">
                                                         <div class="form-group">
-                                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
+                                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="form-control"></select>*@
                                                             @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
                                                             <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
 
                                                         </div>
                                                         <div class="form-group">
-                                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="esh-catalog-filter"></select>*@
+                                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="form-control"></select>*@
                                                             @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
                                                             <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
 
@@ -184,14 +184,14 @@
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">$</span>
 
-                                                                <input asp-for="Amount" class="form-control" placeholder="Estimate Shipping Value" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                                                <input asp-for="Amount" class="form-control" placeholder="Estimate Shipping Value" data-inputmask="'alias':'decimal'"  />
                                                                 <span asp-validation-for="Amount" class="text-danger"></span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">#</span>
-                                                                <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                                                <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'"  />
                                                                 <span asp-validation-for="ShippingWeight" class="text-danger"></span>
                                                             </div>
                                                         </div>
@@ -208,7 +208,7 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">$</span>
-                                                                <input asp-for="ExtraCharge" class="form-control" placeholder="Extra Charge" data-inputmask="'alias':'decimal'" style="max-width: 365px" />
+                                                                <input asp-for="ExtraCharge" class="form-control" placeholder="Extra Charge" data-inputmask="'alias':'decimal'" />
                                                                 <span asp-validation-for="ExtraCharge" class="text-danger"></span>
                                                             </div>
                                                         </div>
@@ -367,7 +367,7 @@
                                                         </div>
                                                         <div class="edit-address">
                                                             <div class="buttons">
-                                                                <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="button-1 save-customer-info-button" />
+                                                                <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="bttn" />
 
                                                             </div>
                                                         </div>
