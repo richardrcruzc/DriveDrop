@@ -43,7 +43,7 @@ header nav .main-menu li .sub-menu {left: 0;}
 
 /*=============== sender  ==============*/
 
-.form-block {background: rgba(33, 53, 104, 0.9); padding: 29px 0;}
+/*.form-block {background: rgba(33, 53, 104, 0.9); padding: 29px 0;}*/
 .sender-page .banner .carousel .carousel-caption h2 {font-size: 29px;}
 .sender-page .banner .carousel .carousel-caption h3 {font-size: 37px;}
     
@@ -69,7 +69,7 @@ header nav .main-menu li .sub-menu {left: 0;}
 .form-block .form-group .select-field {   width: 30%;}
 .form-block .form-group .form-field span label.dropdown {position: relative; margin: 0; padding: 0;}
 .how-it-work .block .arrow-right::after {height: 183px;}
-footer .footer-menu { margin-top: 46px;  float: left;}
+footer .footer-menu { margin-top: 10px;  float: left;}
 footer .social-media {margin: 17px 17px;}
 
 header nav .main-menu li {font-size: 19px;  line-height: 51px;}
@@ -174,7 +174,7 @@ footer .social-media {margin: 21px 17px;}
 .sender-page .banner .carousel .carousel-caption {top:25%}    
 .sender-page .banner .carousel .carousel-caption h3 {font-size: 33px;}    
 .form-block h3 {font-size: 30px;}  
-footer .social-media {margin: 50px 17px;}    
+footer .social-media {margin: 10px 0px;}    
 .headline span {font-size: 16px;}
 .headline h3 {font-size: 33px;}
 

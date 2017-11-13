@@ -29,26 +29,26 @@
         <div class="form-group">
              
 
-            <div class="col-lg-2"> 
+            <div class="col-md-2"> 
             <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="From Address" id="start" class="autocomplete"><button><img src="~/images/icon-send.png"> </button></span>
+                <span class="text-danger"><input type="text" placeholder="From Address" id="start" class="autocomplete"> </span>
 
             </div>
         </div>  
-            <div class="col-lg-2"> 
+            <div class="col-mds-2"> 
             <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="To Address" id="end" class="autocomplete"><button><img src="~/images/icon-send.png"> </button></span>
+                <span class="text-danger"><input type="text" placeholder="To Address" id="end" class="autocomplete"> </span>
 
 
 
             </div>
         </div>  
-            <div class="col-lg-2"> 
-            <div class="form-field select-field" style = "width: 200px;" >
+            <div class="col-md-2"> 
+            <div class="form-field select-field" >
 
 
-                <span asp-validation-for="PackageSizeId" class="text-danger">
-                    <label class="dropdown">
+                <span >
+                    <label class="dropdown"  style = "width: 175px;" >
                         @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
 
                     </label>
@@ -57,24 +57,24 @@
 
             </div>
         </div>  
-            <div class="col-lg-2">
-                <div class="form-field select-field"  style = "width: 190px;" >
+            <div class="col-md-2">
+                <div class="form-field select-field" >
                     <span  >
-                        <label class="dropdown">
+                        <label class="dropdown" >
                             @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
                         </label>
                     </span>
                 </div>
             </div>  
-            <div class="col-lg-1">
-                <div class="form-field"  style = "width: 100px;" >
-                    <span class="text-danger"><input type="text" placeholder="Weight" id="weight"></span>
+            <div class="col-md-1">
+                <div class="form-field" >
+                    <span class="text-danger"><input type="text" placeholder="Weight" id="weight"  style = "width: 60px;"></span>
 
 
                 </div>
             </div>  
-            <div class="col-lg-1">
-                <button class="bttn" id="calcTotal">Submit</button>
+            <div class="col-md-2">
+                <button class="bttn" id="calcTotal"  >Submit</button>
                 <div class="clearfix"></div>
                 </div>
               
@@ -96,7 +96,7 @@
     </div>
 </section>
 
-<section class="how-it-work mt-95">
+<section class="how-it-work mt-100">
     <div class="container">
         <div class="row">
             <div class="headline">

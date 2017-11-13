@@ -68,109 +68,105 @@
                                     </div>
                                    
                                     <div class="col-sm-9">
-                                        <div class="row">
-                                            <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data"
-                                                  data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+                                        <div class="driver-form">
+                                            <div class="row">
+                                                <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data"
+                                                      data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
 
-                                                @Html.AntiForgeryToken()
+                                                    @Html.AntiForgeryToken()
 
 
-                                                <input asp-for="Id" hidden />
-                                                <input asp-for="CustomerStatusId" hidden />
-                                                <input asp-for="CustomerStatus" hidden />
-                                                <input asp-for="PersonalPhotoUri" hidden />
-
-                                                <div class="fieldset">
-
+                                                    <input asp-for="Id" hidden />
+                                                    <input asp-for="CustomerStatusId" hidden />
+                                                    <input asp-for="CustomerStatus" hidden />
+                                                    <input asp-for="PersonalPhotoUri" hidden />
 
                                                     <div class="title">
                                                         <strong>My Personal Information Details</strong>
                                                     </div>
+ 
+                                                    <div class="form-horizontal">
+                                                        <div class="form-field">
+                                                            <div class="col-lg-10">
+                                                                <label for="CustomerStatus"><span>Status </span>@Model.CustomerStatus</label>
 
-                                                    <div asp-validation-summary="ModelOnly" class="result"></div>
-
-
-                                                    <div class="form-fields">
-
-                                                        <div class="form-horizontal">
-                                                            <div class="form-group">
-                                                                <div class="col-lg-12">
-                                                                    <label for="CustomerStatus"><span>Status </span>@Model.CustomerStatus</label>
-
-                                                                </div>
-                                                                </div>
-                                                            <div class="form-group">
-                                                                <div class="col-lg-12">
-    <label for="FirstName">First Name</label>
-
-    <input asp-for="FirstName" placeholder="First name" class="form-control" />
-    <span class="required">*</span>
-
-    <span asp-validation-for="FirstName" class="text-danger"></span>
-
-</div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <div class="col-lg-12">
-                                                                    <label for="LastName">Last Name</label>
-                                                                    <input asp-for="LastName" placeholder="Last name" class="form-control" />
-                                                                    <span class="required">*</span>
-                                                                    <span asp-validation-for="LastName" class="text-danger"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="col-lg-12">
-                                                                    <label for="LastName">Email address</label>
-                                                                    <input asp-for="Email" placeholder="Email" class="form-control" />
-                                                                    <span class="required">*</span>
-                                                                    <span asp-validation-for="Email " class="text-danger"></span>
-                                                                </div>
                                                         </div>
-                                                            <div class="form-group">
-                                                                <div class="col-lg-12">
-                                                                    @Html.LabelFor(m => m.PrimaryPhone)
-                                                                    @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
-                                                                    <span class="required">*</span>
-                                                                    @Html.ValidationMessageFor(m => m.PrimaryPhone)
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="FirstName">First Name</label>
 
-                                                                </div>
-                                                                </div>
-                                                            <div class="form-group"><div class="col-lg-12">
-    @Html.LabelFor(m => m.Phone)
-    @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
-    <span class="required">*</span>
-    @Html.ValidationMessageFor(m => m.Phone)
+                                                                <input asp-for="FirstName" placeholder="First name" class="form-control" />
 
 
-
-</div>
-</div>
-                                                            <div class="form-group">
-                                                                <div class="col-lg-12">
-                                                                    <label for="VerificationId">Verification ID</label>
-                                                                    <input asp-for="VerificationId" placeholder="Verification ID" class="form-control" />
-                                                                    <span class="required">*</span>
-                                                                    <span asp-validation-for="VerificationId" class="text-danger"></span>
-                                                                </div>
-                                                                </div>
-
-
-                                                            <div class="post-gig">
-                                                                <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
-                                                            </div>
-
-                                                            <div class="center-block bg-primary text-center" id="bar-notification">
+                                                                <span asp-validation-for="FirstName" class="text-danger"></span>
 
                                                             </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="LastName">Last Name</label>
+                                                                <input asp-for="LastName" placeholder="Last name" class="form-control" />
+
+                                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="LastName">Email address</label>
+                                                                <input asp-for="Email" placeholder="Email" class="form-control" />
+
+                                                                <span asp-validation-for="Email " class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                @Html.LabelFor(m => m.PrimaryPhone)
+                                                                @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+
+
+                                                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                @Html.LabelFor(m => m.Phone)
+                                                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+
+                                                                
+                                                                <span asp-validation-for="Phone" class="text-danger"></span>
+
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="VerificationId">Verification ID</label>
+                                                                <input asp-for="VerificationId" placeholder="Verification ID" class="form-control" />
+
+                                                                <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="post-gig">
+                                                            <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
+                                                        </div>
+
+                                                        <div class="center-block bg-primary text-center" id="bar-notification">
 
                                                         </div>
+
                                                     </div>
 
-                                                </div>
 
-                                            </form>
+                                                </form>
 
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

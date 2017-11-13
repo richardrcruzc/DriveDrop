@@ -4,16 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Drivedrop</title>
 
     <!-- Bootstrap -->
 
-    <link rel="stylesheet" href="~/css/bootstrap.css" />    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/owl.carousel.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet">     
+    <link href="~/css/style.css" rel="stylesheet">
     <link href="~/css/responsive.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet">
@@ -26,57 +26,61 @@
     </header>
 
     <main class="page-row page-row-expanded">
-    @await Component.InvokeAsync("UserStatus")
+        @await Component.InvokeAsync("UserStatus")
 
 
-    @RenderBody()
+        @RenderBody()
 
-    
+
     </main>
-  
 
-    
 
-            <footer class="page-row">
+
+
+    <footer class="page-row">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2 footer-logo">
+                     <img src="~/images/logo.png" class="img-responsive">
+                </div>
+                <div class="col-sm-7">
+                    <ul class="footer-menu">
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">About us</a></li> 
+                        <li><a href="#">Press</a></li> 
+                        <li><a href="#">Carrier</a></li> 
+                        <li><a href="#">Contact us</a></li>  
+                        
+                    </ul> 
+                </div>
+           
+                <div class="col-sm-3">
+                    <ul class="social-media">
+                        <li><a href="#" class="fa fa-facebook"></a> </li>
+                        <li><a href="#" class="fa fa-google-plus"></a> </li>
+                        <li><a href="#" class="fa fa-twitter"></a> </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="copy-right">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-xs-3 footer-logo">
-                            <figure><img src="~/images/logo.png"> </figure>
-                        </div>
-                        <div class="col-xs-9 footer-links">
-                            <ul class="footer-menu">
-                                <li><a href="#">Help</a></li>
-                                <li><a href="#">FAQs</a></li>
-                                <li><a href="#">Testimonials</a></li>
-                                <li><a href="#">About us</a></li>
-                                <li><a href="#">Press</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Contact us</a></li>
-                                <li><a href="#">Become An Agent</a></li>
-                                <div class="clearfix"></div>
-                            </ul>
-                            <div class="clearfix"></div>
-                            <ul class="social-media footer-con">
-                                <li><a href="#" class="fa fa-facebook"></a> </li>
-                                <li><a href="#" class="fa fa-google-plus"></a> </li>
-                                <li><a href="#" class="fa fa-twitter"></a> </li>
-                                <div class="clearfix"></div>
-                            </ul>
-                        </div>
-                    </div>
+                    <p>Copyright 2017 | ALL RIGHTS RESERVED</p>
                 </div>
-                <div class="copy-right">
-                    <div class="container">
-                        <p>Copyright 2017 | ALL RIGHTS RESERVED</p>
-                    </div>
-                </div>
-            </footer>
-           <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            </div>
+        </div>
+</footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
-  <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/custom.js"></script>
     <script src="~/js/sticky-sidebar.js"></script>
- 
+
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "100%";
@@ -92,8 +96,8 @@
     <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone.js"))"></script>
     <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone-be.js"))"></script>
     <script src="@(Url.Content("~/lib/Inputmask/dist/inputmask/phone-codes/phone-ru.js"))"></script>
- 
-            @RenderSection("scripts", required: false)
+
+    @RenderSection("scripts", required: false)
 
 
 </body>

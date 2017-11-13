@@ -27,23 +27,19 @@
 
                                         <input asp-for="Id" hidden />
 
-                                        <div class="form-group">
-
+                                      
                                             <div class="title">
                                                 <strong>My Vehicle Infomation Details</strong>
                                             </div>
-
-                                            <div asp-validation-summary="ModelOnly" class="result"></div>
-
-                                            <div class="form-group">
+ 
+                                            <div class="form-field">
 
                                                 <div class="form-field">
                                                     <label for="TransportTypeId">Vehicle Type</label>
 
 
                                                     @Html.DropDownListFor(m => m.TransportTypeId, Model.TransportTypeList, new  {@class= "form-control" })
-
-                                                    <span class="required">*</span>
+                                                     
 
                                                     <span asp-validation-for="TransportTypeId" class="text-danger"></span>
 
@@ -52,31 +48,30 @@
                                                 <div class="form-field">
                                                     <label for="VehicleMake">Vehicle Make</label>
 
-                                                    <input asp-for="VehicleMake" placeholder="Vehicle Make" />
-                                                    <span class="required">*</span>
-
+                                                    <input asp-for="VehicleMake" placeholder="Vehicle Make" class= "form-control"/>
+                                                  
                                                     <span asp-validation-for="VehicleMake" class="text-danger"></span>
 
 
                                                 </div>
                                                 <div class="form-field">
                                                     <label for="VehicleModel">Vehicle Model</label>
-                                                    <input asp-for="VehicleModel" placeholder="VehicleModel" />
-                                                    <span class="required">*</span>
+                                                    <input asp-for="VehicleModel" placeholder="VehicleModel" class= "form-control" />
+                                                   
                                                     <span asp-validation-for="VehicleModel" class="text-danger"></span>
                                                 </div>
 
                                                 <div class="form-field">
                                                     <label for="VehicleColor">Vehicle Color</label>
-                                                    <input asp-for="VehicleColor" placeholder="VehicleColor" />
-                                                    <span class="required">*</span>
+                                                    <input asp-for="VehicleColor" placeholder="VehicleColor" class= "form-control" />
+                                                   
                                                     <span asp-validation-for="VehicleColor" class="text-danger"></span>
                                                 </div>
                                                 <div class="form-field">
 
                                                     <label for="VehicleYear">Vehicle Year</label>
-                                                    <input asp-for="VehicleYear" placeholder="VehicleYear" />
-                                                    <span class="required">*</span>
+                                                    <input asp-for="VehicleYear" placeholder="VehicleYear"  class= "form-control"/>
+                                                   
                                                     <span asp-validation-for="VehicleYear" class="text-danger"></span>
                                                 </div>
 
@@ -87,7 +82,7 @@
                                                     </div>
                                                     <div class="avatar-page">
 
-                                                        <input type='file' id="my-file-selector-license" name="DriverLincensePictureUri" />
+                                                        <input type='file' id="my-file-selector-license" name="DriverLincensePictureUri"  class= "form-control"/>
                                                         <img id="license-image" src="@Model.DriverLincensePictureUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
 
                                                     </div>
@@ -99,7 +94,7 @@
                                                         <strong>Vehicle photo</strong>
                                                     </div>
                                                     <div class="avatar-page">
-                                                        <input type='file' id="my-file-selector-insurance" name="VehiclePhotoUri" />
+                                                        <input type='file' id="my-file-selector-insurance" name="VehiclePhotoUri" class= "form-control" />
                                                         <img id="insurance-image" src="@Model.vehiclePhotoUri" class="img-thumbnail img-responsive imgSum" width="150" height="150" />
                                                     </div>
 
@@ -112,7 +107,7 @@
                                                     </div>
                                                     <div class="avatar-page">
 
-                                                        <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri" />
+                                                        <input type='file' id="my-file-selector-insurance" name="InsurancePhotoUri"  class= "form-control"/>
                                                         @*<img id="insurance-image" src="@Model.insurancePhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />*@
                                                         <iframe src="@(Model.insurancePhotoUri)" class="iframeClass" style="width:700px; height:300px;"> </iframe>
 
@@ -127,8 +122,7 @@
                                                 <div class="center-block bg-primary text-center" id="bar-notification">
 
                                                 </div>
-                                            </div>
-
+                                          
                                         </div>
 
                                     </form>

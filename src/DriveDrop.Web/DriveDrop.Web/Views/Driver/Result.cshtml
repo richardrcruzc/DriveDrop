@@ -83,86 +83,85 @@
                                                     <div class="title">
                                                         <strong>My Personal Information Details</strong>
                                                     </div>
-
-                                                    <div asp-validation-summary="ModelOnly" class="result"></div>
+                                                 
 
                                                     <div class="form-fields">
                                                         <div class="form-horizontal">
 
 
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label for="CustomerStatus"><span>Status:</span> @Model.CustomerStatus</label>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group">
+                                                            <div class="form-field">
 
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="FirstName"></label>
                                                                     <input asp-for="FirstName" class="form-control" placeholder="First name" />
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     <span asp-validation-for="FirstName" class="text-danger"></span>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="LastName"></label>
                                                                     <input asp-for="LastName" class="form-control" placeholder="Last name" />
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     <span asp-validation-for="LastName" class="text-danger"></span>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="Email"></label>
                                                                     @Html.TextBoxFor(model => model.Email, new { @class = "email form-control" })
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     @Html.ValidationMessageFor(model => model.Email)
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="PrimaryPhone"></label>
                                                                     @Html.TextBoxFor(model => model.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     @Html.ValidationMessageFor(model => model.PrimaryPhone)
 
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="Phone"></label>
                                                                     @Html.TextBoxFor(model => model.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     @Html.ValidationMessageFor(model => model.Phone)
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="PickupRadius"></label>
                                                                     @Html.TextBoxFor(model => model.PickupRadius, new { @class = "form-control" })
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     @Html.ValidationMessageFor(model => model.PickupRadius)
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="DeliverRadius"></label>
                                                                     @Html.TextBoxFor(model => model.DeliverRadius, new { @class = "form-control" })
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     @Html.ValidationMessageFor(model => model.DeliverRadius)
 
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group">
+                                                            <div class="form-field">
                                                                 <div class="col-lg-12">
                                                                     <label asp-for="VerificationId"></label>
                                                                     <input asp-for="VerificationId" class="form-control" placeholder="Verification Id" />
-                                                                    <span class="required">*</span>
+                                                                   
                                                                     <span asp-validation-for="VerificationId" class="text-danger"></span>
                                                                 </div>
                                                             </div>
