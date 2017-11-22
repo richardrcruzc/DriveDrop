@@ -168,7 +168,7 @@ namespace DriveDrop.Web.Controllers
             getUri = API.Common.GetAllPackageSizes(_remoteServiceCommonUrl);
               dataString = await _apiClient.GetStringAsync(getUri);
             var packageSize = new List<SelectListItem>();
-            packageSize.Add(new SelectListItem() { Value = null, Text = "Select package Size", Selected = true });
+            packageSize.Add(new SelectListItem() { Value = null, Text = "Select Size", Selected = true });
 
               gets = JArray.Parse(dataString);
 

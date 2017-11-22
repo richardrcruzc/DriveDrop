@@ -21,355 +21,453 @@
         </div>
     </div>
 </section>
+
 <section class="form-block">
-    <div class="row">
+    <div class="container">
         <h3>Get Estimate</h3>
-
-
         <div class="form-group">
-             
+            <div class="row">
 
-            <div class="col-md-2"> 
-            <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="From Address" id="start" class="autocomplete"> </span>
+                <div class="col-xs-12 col-md-3">
+                    <div class="form-field">
 
-            </div>
-        </div>  
-            <div class="col-mds-2"> 
-            <div class="form-field">
-                <span class="text-danger"><input type="text" placeholder="To Address" id="end" class="autocomplete"> </span>
+                        <span class="text-danger">
 
+                            <input type="text" placeholder="From Address" id="start" class="autocomplete">
+
+                        </span>
 
 
-            </div>
-        </div>  
-            <div class="col-md-2"> 
-            <div class="form-field select-field" >
-
-
-                <span >
-                    <label class="dropdown"  style = "width: 175px;" >
-                        @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
-
-                    </label>
-
-                </span>
-
-            </div>
-        </div>  
-            <div class="col-md-2">
-                <div class="form-field select-field" >
-                    <span  >
-                        <label class="dropdown" >
-                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
-                        </label>
-                    </span>
+                    </div>
                 </div>
-            </div>  
-            <div class="col-md-1">
-                <div class="form-field" >
-                    <span class="text-danger"><input type="text" placeholder="Weight" id="weight"  style = "width: 60px;"></span>
+                <div class="col-xs-12 col-md-3">
+                    <div class="form-field">
+                        <span class="text-danger">
+                            <input type="text" placeholder="To Address" id="end" class="autocomplete">
+
+                        </span>
 
 
+                    </div>
                 </div>
-            </div>  
-            <div class="col-md-2">
-                <button class="bttn" id="calcTotal"  >Submit</button>
-                <div class="clearfix"></div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="form-field select-field">
+
+
+                        <span>
+                            <label class="dropdown">
+                                @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
+
+                            </label>
+
+                        </span>
+
+                    </div>
                 </div>
-              
+                <div class="col-xs-12 col-md-2"> 
+                        <div class="form-field select-field">
+                            <span>
+                                <label class="dropdown">
+                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
+                                </label>
+                            </span>
+                        </div> 
+                </div>
+                <div class="col-xs-12 col-md-1">
+                    <div class="form-field select-field">
+                     
+                            <span class="text-danger"><input type="text" placeholder="Weight" id="weight" style="width:50px"></span>
+                         
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-1">
+
+                    <button class="bttnEstimate" id="calcTotal">Submit</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <br /><br />
+                    <h3>
+                        <label id="AmountEstimated"></label>
+                    </h3> 
+
+                </div>
+            </div>
+</div>
+                @*<div class="table-responsive">
+
+                    <table  class="table">
+
+                        <thead>
+                            <tr>
+                                <th colspan="6" style="text-align: center;">
+                                    <h3>Get Estimate</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <span class="text-danger">
+                                                <input type="text" placeholder="From Address" id="start" class="autocomplete">
+                                                <button><img src="images/icon-send.png"> </button>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <span class="text-danger">
+                                                <input type="text" placeholder="To Address" id="end" class="autocomplete">
+                                                <button><img src="images/icon-send.png"> </button>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field select-field">
+
+
+                                            <span>
+                                                <label class="dropdown">
+                                                    @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
+
+                                                </label>
+
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field select-field">
+                                            <span>
+                                                <label class="dropdown">
+                                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field">
+
+                                            <span class="text-danger"><input type="text" placeholder="Weight" id="weight" style="width:70px"></span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="bttn" id="calcTotal">Submit</button>
+                                    <div class="clearfix"></div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="text-align: center;">
+                                    <br /><br /><h3>
+                                        <label id="AmountEstimated"></label>
+                                    </h3>
+                                    <br /><br />
+                                    <br /><br />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>*@
 
             </div>
 
 
-       
-         
-    </div>
-    <div class="row">
-        <div class="center text-center">
-            <br /><br /><h3>
-                <label id="AmountEstimated"></label>
-            </h3>
-        </div>
-        <br /><br />
-        <br /><br />
-    </div>
 </section>
 
-<section class="how-it-work mt-100">
-    <div class="container">
-        <div class="row">
-            <div class="headline">
-               
-                <h3>How to Ship with <span>DriveDrop</span></h3>
-            </div>
+    <section class="how-it-work mt-40">
+        <div class="container">
+            <div class="row">
+                <div class="headline">
 
-            <div class="block">
-
-                <div class="clearfix"></div>
-                <div class="desktop">
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Delivery Right<br>
-                            when You Need it
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-01.png"> </figure>
-                    </div>
-                </div>
-                <div class="mobile">
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Delivery Right<br>
-                            when You Need it
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-01.png"> </figure>
-                    </div>
+                    <h3>How to Ship with <span>DriveDrop</span></h3>
                 </div>
 
-            </div>
-
-
-            <div class="block">
-                <div class="clearfix"></div>
-
-                <div class="desktop">
-
-                    <div class="col-xs-6 content">
-                        <figure class="arrow-right"> <img src="~/images/how-to-ship-with-drivedrop-img-02.png"> </figure>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Know the About<br>
-                            Available Gigs
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-
-                </div>
-
-                <div class="mobile">
-
-
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Know the About<br>
-                            Available Gigs
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <figure class="arrow-right"> <img src="~/images/how-to-ship-with-drivedrop-img-02.png"> </figure>
-                    </div>
-                </div>
-
-            </div>
-
-
-
-
-            <div class="block ">
-
-                <div class="clearfix"></div>
-
-                <div class="desktop">
-
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Choose a Perfect<br>
-                            Driver for You Gigs
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-03.png"> </figure>
-                    </div>
-                </div>
-
-                <div class="mobile">
-
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Choose a Perfect<br>
-                            Driver for You Gigs
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-03.png"> </figure>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="block">
-
-                <div class="clearfix"></div>
-                <div class="desktop">
-                    <div class="col-xs-6 content">
-                        <figure> <img src="~/images/how-to-ship-with-drivedrop-img-04.png"> </figure>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Track Your Stuff<br>
-                            in Real-Time
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                </div>
-
-                <div class="mobile">
-
-                    <div class="col-xs-6 content">
-                        <h4>
-                            Track Your Stuff<br>
-                            in Real-Time
-                        </h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
-                        <a href="#" class="bttn">Send Something</a>
-                    </div>
-                    <div class="col-xs-6 content">
-                        <figure> <img src="~/images/how-to-ship-with-drivedrop-img-04.png"> </figure>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-</section>
-<section class="services">
-    <div class="container">
-        <div class="row">
-            <div class="headline">
-                
-                <h3>DriveDrop <span>Delivers</span> More</h3>
-            </div>
-            <div class="col-md-3">
                 <div class="block">
-                    <figure><img src="~/images/service-icon-01.png"></figure>
-                    <h5>Lorem Ipsum text</h5>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="block">
-                    <figure><img src="~/images/service-icon-02.png"></figure>
-                    <h5>Lorem Ipsum text</h5>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="block">
-                    <figure><img src="~/images/service-icon-03.png"></figure>
-                    <h5>Lorem Ipsum text</h5>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="block">
-                    <figure><img src="~/images/service-icon-04.png"></figure>
-                    <h5>Lorem Ipsum text</h5>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<section class="testimonials">
-    <div class="container">
-        <div class="row">
-            <div class="headline">
-                
-                <h3>What <span>Our Customers</span> Are Saying</h3>
-                <span class="border"></span>
-            </div>
-            <div class="owl-testi owl-carousel mt-40">
-                <div class="block">
-                    <div class="gray-bg">
-                        <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
-                        <div class="stars">
-                            <a href="#">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </a>
+                    <div class="clearfix"></div>
+                    <div class="desktop">
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Delivery Right<br>
+                                when You Need it
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-01.png"> </figure>
                         </div>
                     </div>
-                    <div class="profile">
-                        <figure><img src="~/images/profile.jpg"> <i class="fa fa-facebook"></i></figure>
-                        <div class="details">
-                            <h5>Jannatul Fa.</h5>
-                            <span>Photographer CreativeGigs</span>
+                    <div class="mobile">
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Delivery Right<br>
+                                when You Need it
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-01.png"> </figure>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="block">
+                    <div class="clearfix"></div>
+
+                    <div class="desktop">
+
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-right"> <img src="~/images/how-to-ship-with-drivedrop-img-02.png"> </figure>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Know the About<br>
+                                Available Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+
+                    </div>
+
+                    <div class="mobile">
+
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Know the About<br>
+                                Available Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-right"> <img src="~/images/how-to-ship-with-drivedrop-img-02.png"> </figure>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="block ">
+
+                    <div class="clearfix"></div>
+
+                    <div class="desktop">
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Choose a Perfect<br>
+                                Driver for You Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-03.png"> </figure>
+                        </div>
+                    </div>
+
+                    <div class="mobile">
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Choose a Perfect<br>
+                                Driver for You Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-03.png"> </figure>
                         </div>
                     </div>
                 </div>
 
-                <div class="block">
-                    <div class="gray-bg">
-                        <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
-                        <div class="stars">
-                            <a href="#">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="profile">
-                        <figure><img src="~/images/profile.jpg"> <i class="fa fa-twitter"></i></figure>
-                        <div class="details">
-                            <h5>Jannatul Fa.</h5>
-                            <span>Photographer CreativeGigs</span>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div class="block">
-                    <div class="gray-bg">
-                        <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
-                        <div class="stars">
-                            <a href="#">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </a>
+
+                    <div class="clearfix"></div>
+                    <div class="desktop">
+                        <div class="col-xs-6 content">
+                            <figure> <img src="~/images/how-to-ship-with-drivedrop-img-04.png"> </figure>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Track Your Stuff<br>
+                                in Real-Time
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
                         </div>
                     </div>
-                    <div class="profile">
-                        <figure><img src="~/images/profile.jpg"> <i class="fa fa-pinterest-p"></i></figure>
-                        <div class="details">
-                            <h5>Jannatul Fa.</h5>
-                            <span>Photographer CreativeGigs</span>
+
+                    <div class="mobile">
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Track Your Stuff<br>
+                                in Real-Time
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure> <img src="~/images/how-to-ship-with-drivedrop-img-04.png"> </figure>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
-    </div>
-</section>
- 
- 
+    </section>
+    <section class="services">
+        <div class="container">
+            <div class="row">
+                <div class="headline">
+
+                    <h3>DriveDrop <span>Delivers</span> More</h3>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-01.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-02.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-03.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-04.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="row">
+                <div class="headline">
+
+                    <h3>What <span>Our Customers</span> Are Saying</h3>
+                    <span class="border"></span>
+                </div>
+                <div class="owl-testi owl-carousel mt-40">
+                    <div class="block">
+                        <div class="gray-bg">
+                            <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
+                            <div class="stars">
+                                <a href="#">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile">
+                            <figure><img src="~/images/profile.jpg"> <i class="fa fa-facebook"></i></figure>
+                            <div class="details">
+                                <h5>Jannatul Fa.</h5>
+                                <span>Photographer CreativeGigs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block">
+                        <div class="gray-bg">
+                            <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
+                            <div class="stars">
+                                <a href="#">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile">
+                            <figure><img src="~/images/profile.jpg"> <i class="fa fa-twitter"></i></figure>
+                            <div class="details">
+                                <h5>Jannatul Fa.</h5>
+                                <span>Photographer CreativeGigs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block">
+                        <div class="gray-bg">
+                            <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
+                            <div class="stars">
+                                <a href="#">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile">
+                            <figure><img src="~/images/profile.jpg"> <i class="fa fa-pinterest-p"></i></figure>
+                            <div class="details">
+                                <h5>Jannatul Fa.</h5>
+                                <span>Photographer CreativeGigs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 
 
     @section Scripts {
@@ -473,8 +571,12 @@
                             var transportTypeId = $("#TransportTypeId").val();
                             var priorityTypeId = $("#PriorityTypeId").val();
                             var promoCode = $("#PromoCode").val();
-                            var weight = $("#weight").val();
 
+                            var packageSizeId = $("#PackageSizeId").val(); 
+                            
+
+                            var weight = $("#weight").val();
+                            
                             $.ajax({
                                 url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
                                 dataType: "json", //to work with json format
@@ -482,7 +584,7 @@
 
                                 //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
                                 cache: false, //avoid caching results
-                                data: { distance: km, weight: weight, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                data: { distance: km, weight: weight, priority: priorityTypeId, packageSizeId: packageSizeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
                                 success: function (data) {
                                     // data is your result from controller
                                     if (data) {

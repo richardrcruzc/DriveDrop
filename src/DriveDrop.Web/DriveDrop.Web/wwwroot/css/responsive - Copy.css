@@ -1,0 +1,1877 @@
+/*1599 to 1440 */
+@media (min-width: 1599px) {
+header nav .main-menu li .sub-menu {left: 0;}
+.headline {padding: 0 0 136px0;}
+.banner .carousel .carousel-caption {top: 41%;}
+.banner .carousel .carousel-caption h2 {font-size: 66px;}
+.delivery-package-plam-mobile-page ul img {width: 50px;}
+.pickup-pickage-3 .number-steps ul {width: 100%;}
+.driver-license .number-steps ul li {width: 25%;}
+
+/*=========drive===========*/
+    
+.driver-page .mobile-banner img {width: 82%;}
+.driver-page .banner .carousel .carousel-caption h2 {margin-top: 66px;}    
+   
+    
+}
+
+@media (max-width: 1599px) {
+header nav .main-menu li .sub-menu {left: 0;}
+.how-it-work .block .arrow-left::after {bottom: -111px;}
+.how-it-work .block .arrow-right::after{right: -131px;}
+.headline {padding: 0 0 136px0;}
+#mySidenav .form-block{padding: 41px 0;}    
+.delivery-package-plam-mobile-page ul img {width: 50px;}
+.driver-license .number-steps ul li {width: 25%; }   
+
+}
+
+/*1439 to 1360 */
+@media (max-width: 1439px) {
+.banner .carousel .carousel-caption h2 {font-size: 66px; font-weight: 800;}
+.banner .carousel .carousel-caption { top: 30%;    z-index: 1;}	
+.how-it-work .block h4 {font-size: 35px;}
+
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 38px;}
+.headline span {font-size: 17px;}
+.headline h3 {font-size: 36px;}
+
+header nav .main-menu li .sub-menu {left: 0;}
+.how-it-work .block .arrow-left::after {bottom: -111px;}
+.headline {padding: 0 0 136px0;}
+    .form-block{margin-top: -169px;}
+
+/*=============== sender  ==============*/
+
+/*.form-block {background: rgba(33, 53, 104, 0.9); padding: 29px 0;}*/
+.sender-page .banner .carousel .carousel-caption h2 {font-size: 29px;}
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 37px;}
+    
+ .delivery-package-plam-mobile-page ul img {width: 50px;}   
+    
+/*=============== pickup-pickage-5  ==============*/    
+
+.deshbord-nav ul {width: 51%;}    
+    
+}
+
+/*1359 to 1280 */
+@media (max-width: 1359px) {
+    
+.banner .carousel .carousel-caption {top: 32%;  z-index: 1;}	
+.form-block {padding: 27px 0;  margin-top: -166px;}
+.mt-95 {margin-top: 99px;}
+.headline {text-align: center; padding: 0 0 103px 0;}
+.mt-40 {margin-top: -63px;}
+.services .headline {padding: 99px 0 86px 0;}
+.banner .carousel .carousel-caption h2 {font-size: 66px; font-weight: 800;}
+.form-block .form-group .form-field {width: 23%;}
+.form-block .form-group .select-field {   width: 30%;}
+.form-block .form-group .form-field span label.dropdown {position: relative; margin: 0; padding: 0;}
+.how-it-work .block .arrow-right::after {height: 183px;}
+footer .footer-menu { margin-top: 10px;  float: left;}
+footer .social-media {margin: 17px 17px;}
+
+header nav .main-menu li {font-size: 19px;  line-height: 51px;}
+.bttn {line-height: 46px; font-size: 17px;}
+.driver-page .banner .carousel .carousel-caption h2 {margin-top: 76px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 60px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 34px;}
+.headline h3 {font-size: 35px;}
+.services .block h5 {font-size: 19px;}
+.services .block p {margin-top: 30px;}	
+.driver-page .how-we-work h3 {font-size: 37px;}
+.driver-page .how-we-work ul li {font-size: 17px;}	
+.driver-page .pet-driver h3 {font-size: 38px;}
+.question-block h3 {font-size: 34px;}
+footer .social-media {margin: 44px 17px;}
+header nav .main-menu li .sub-menu {left: 0;}
+/*.driver-page .banner .carousel .carousel-caption {margin-top: 150px;}*/
+.driver-page .banner .carousel .carousel-caption{margin-top: 175px}
+.form-block h3 {margin-bottom: 30px;}
+.how-it-work .block .arrow-right::after {right: -114px;}
+.headline {padding: 0 0 136px0;}
+.form-block .form-group .select-field {   width: 27%;}
+.banner .carousel .carousel-caption h2 {font-size: 60px; font-weight: 800;}  
+.banner .carousel .carousel-caption {top: 38%;  z-index: 1;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 34px;}
+ /*=============== sender  ==============*/ 
+    
+.sender-page .banner .carousel .carousel-caption h2 {font-size: 27px;}
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 36px;}
+.sender-page .banner .carousel .carousel-caption span {font-size: 12px;}    
+.form-block h3 {margin-bottom: 32px;}
+.form-block h3 {font-size: 32px;}    
+.subscribe-block p{font-size: 15px;}
+.question-block h3{font-size: 32px;}    
+.pets-block h3 {font-size: 42px;}
+.pets-block p {font-size: 19px}
+
+
+    
+    
+/*=============== sign in  ==============*/    
+
+.login-page .headline{padding: 0 0 24px 0;}    
+.login-page .headline p {font-size: 17px}    
+
+/*=============== pickup-pickage-4  ==============*/
+
+.pickup-pickage-4 .number-steps {margin: 0 0 0 0;}
+.pickup-pickage-4 .number-steps ul {width: 67%;}    
+.driver-license .number-steps ul li {width: 32%;}
+.flat-screen-tv-con p {font-size: 18px;}
+.flat-screen-tv-con h3 {font-size: 27px;}
+.delivery-package-plam-mobile-page ul img {width: 50px;}    
+    
+/*=============== pickup-pickage-5  ==============*/  
+
+.pickup-pickage-5 .number-steps {margin:0;}
+.pickup-pickage-5 .number-steps ul {width: 69%;}    
+    
+/*=============== driver-license  ==============*/    
+
+.driver-license .number-steps.driv-license-nub ul {width: 69%;}    
+.driver-license .number-steps.driv-license-nub ul li {width: 25%;}
+.deshbord-nav.driving-license ul {width: 57%;}
+
+/*=============== driver-license-2  ==============*/ 
+    
+    
+}
+
+
+/*1279 to 1152 */
+@media (max-width: 1279px) {
+.banner .carousel .carousel-caption {top: 30%;    z-index: 1;}
+.banner .carousel .carousel-caption h2 {font-size: 58px;    font-weight: 800;}
+.how-it-work .block h4 {font-size: 32px;}
+.how-it-work .block p {font-size: 17px;}
+
+
+header nav .main-menu li .sub-menu {left: 0;}
+header nav .main-menu li {font-size: 19px; line-height: 46px;}
+.bttn {line-height: 42px; font-size: 15px;}
+/*.driver-page .banner .carousel .carousel-caption {margin-top: 150px;}*/
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 24px;}
+.driver-page .banner .carousel .carousel-caption h3 {  font-size: 32px;}
+.driver-page .banner .carousel .carousel-caption{margin-top: 175px}
+.form-block .form-group .select-field {   width: 27%;}
+.headline {padding: 0 0 136px0;}
+
+/*============= driver-license  =============  */
+
+.driver-license {margin-top: 288px;}
+.driver-form h3 {font-size: 22px;}
+.driver-form p {font-size: 14px;}	
+.headline {padding: 0 0 67px 0;}
+.banner .carousel .carousel-caption {top: 42%;  z-index: 1;}
+.banner .carousel .carousel-caption h2 {font-size: 58px; font-weight: 800;} 
+footer .social-media {margin: 21px 17px;}
+
+/*=============== sender  ==============*/ 
+    
+.sender-page .banner .carousel .carousel-caption {top:25%}    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 33px;}    
+.form-block h3 {font-size: 30px;}  
+footer .social-media {margin: 10px 0px;}    
+.headline span {font-size: 16px;}
+.headline h3 {font-size: 33px;}
+
+/*=============== pickup-pickage-1  ==============*/    
+
+.deshbord-head .deshbord-nav li a{padding: 0 36px;}
+.map-point img {width: 705px;} 
+.deshbord-nav.pickup-dashboard ul {width: 50%;}
+    
+/*=============== pickup-pickage-2  ==============*/    
+
+.pickup-pickage .delivery h3 {font-size: 27px;}    
+.driver-form h3 {font-size: 20px;}
+.delivery-tools ul li a {font-size: 17px; font-weight: 700;}
+.delivery-tools .pricing-block {padding: 37px 61px 0 0;} 
+    
+/*=============== pickup-pickage-4  ==============*/
+
+.map-point.delivery-package-plam-mobile-page ul img {width: 45px;}
+    
+/*=============== driver-license  ==============*/    
+    
+.deshbord-nav.driving-license ul {width: 50%;}    
+.deshbord-nav.driving-license ul {width: 60%;}    
+
+/*=============== driver-license-2  ==============*/
+.deshbord-nav.driving-license ul {width: 50%;}
+.license-form-block {width: 100%;}     
+.deshbord-nav.driving-license ul {width: 60%;}    
+
+.driver-page .banner.inner-banner .carousel-item{    height: 38vh;}    
+    
+}
+
+/*1151 to 1024 */
+@media (max-width: 1151px) {
+.banner .carousel .carousel-caption h2 {font-size: 54px; font-weight: 800;}
+.form-block .form-group .form-field {width: 191px;    float: left;}
+.form-block .form-group .select-field {width: 241px;}
+.form-block .form-group .form-field span label.dropdown {position: relative;    padding: 0;    margin: 0;}
+.form-block .bttn {line-height: 43px;}
+.form-block {padding: 28px 0;}	
+header nav .main-menu li .sub-menu {left: 0;}
+footer .footer-menu { margin-top: 46px;  float: left;}
+footer .social-media {margin: 17px 17px;}
+header nav .main-menu li{margin-left: 50px;}
+.banner .carousel .carousel-caption h2 {font-size: 44px;}
+.form-block h3 {font-size: 32px;}
+.form-block {padding: 31px 0;}
+.headline h3 {font-size: 34px;}
+.headline h3 span {font-size: 34px;}
+.services .block h5 {font-size: 19px;}
+.services .block p {font-size: 12px;}
+.testimonials .block p {font-size: 15px;}
+.how-it-work .block p {font-size: 15px;}
+.mt-95 { margin-top: 66px;}
+
+.driver-page .banner .carousel .carousel-caption {margin-top: 199px;}
+.driver-page .banner .carousel .carousel-caption h2 {margin-top: 34px;}
+.services .headline {padding: 99px 0 67px 0;}
+.driver-page .how-we-work h3 {font-size: 35px;}
+.driver-page .pet-driver h3 {   font-size: 36px;}
+.driver-page .pet-driver p {width: 74%; font-size: 16px;}
+.question-block h3 {font-size: 33px;}
+.headline {padding: 0 0 136px0;}
+.how-it-work .block .arrow-right::after {right: -80px;}
+.how-it-work .block .arrow-right::after {width: 295px;} 
+.headline {padding: 0 0 70px 0;}
+.banner .carousel .carousel-caption {top: 34%; z-index: 1;}
+
+/*============= driver-license  =============  */
+
+.deshbord-head .deshbord-nav ul {margin: 0 auto; width: 60%;}
+.driver-form h3 {font-size: 20px;}
+.driver-form h3 {padding: 35px 0 17px 0;}
+.driver-form p {font-size: 14px; padding-bottom: 46px; width: 90%;}
+.license-form-block {margin: 0 auto; width: 755px;}
+.driver-form .box {margin-bottom: 55px;}
+.license-form-block .login-bttn {width: 273px;}
+.license-form-block .next-bttn {width: 273px;}
+.how-it-work .block .arrow-left::after {height: 224px; left: -181px;}
+.form-block {padding: 28px 0;}  
+
+  
+/*=============== pickup-pickage-4  ==============*/
+
+.pickup-pickage-4 .number-steps ul {width: 75%;}
+
+
+    
+    
+    
+/*=============== sender  ==============*/    
+
+.sender-page .banner .carousel .carousel-caption h2 {font-size: 25px;}    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 31px;}    
+.form-block h3 {font-size: 30px;}    
+.pets-block h3 {font-size: 39px;}
+.pets-block p {font-size: 18px;}
+.question-block h3 {font-size: 31px;}
+    
+/*=============== sign in  ==============*/
+    
+.login-page .headline p {font-size: 17px;}    
+
+/*=============== verification  ==============*/    
+    
+.play-store p {width: 100%;}
+    
+/*=============== sender-dashboard  ==============*/        
+
+.sender-desh .side-fixed-menu li a {font-size: 16px;}    
+.credits p {font-size: 19px;}
+.sender-desh .sub-form ul li label input{width: 89%;}  
+.profile-form .photo__frame {width: 100%; height:131px;}
+.sender-desh .form-body .profile-form .help{right: 6px;}
+.sender-desh .icon-bttn a {width: 100%;     height: 137px;}
+    
+
+/*=============== pickup-pickage-1  ==============*/    
+
+.deshbord-head .deshbord-nav li a{padding: 0 36px;}
+.map-point img {width: 705px;}
+    
+/*=============== pickup-pickage-2  ==============*/
+
+.driver-form {width: 100%; }    
+
+/*=============== pickup-pickage-4  ==============*/
+    
+.driver-license .number-steps ul li span {width: 125px; line-height: 126px; font-size: 38px;}
+.driver-license .number-steps ul li p {font-size: 14px;}
+.flat-screen-tv-delivery li {font-size: 17px;}
+    
+/*=============== pickup-pickage-5  ==============*/    
+
+.pickup-pickage-5 .number-steps ul {width: 91%;}
+    
+
+}
+
+/*1023 to 992 */
+@media (max-width: 1023px) {
+header nav .main-menu li {margin-left: 35px;}
+header nav .main-menu li {float: left; font-size: 16px; color: #fff;   margin-left: 35px;   font-weight: 600;  position: relative; line-height: 45px;}
+.bttn {display: inline-block; background: #43b249; line-height: 39px; padding: 0 33px; border-radius: 5px; font-size: 14px; font-weight: 600; color: #fff;}
+.form-block h3 {font-size: 28px;}
+.form-block h3 {font-size: 35px; font-weight: 800; color: #fff; margin-bottom: 16px;}
+.form-block .form-group .form-field { width: 50%; padding: 0 10px;}
+.form-block .form-group .form-field + .form-field {margin-left: 0;}
+.form-block .form-group .select-field {width: 50%; margin-top: 10px;}
+.form-block .bttn {border: none; margin-left: 10px; width: 46%; margin-top: 10px;}
+.form-block {padding: 15px 0;}
+.form-block h3 {font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px;}
+.form-block .bttn {font-size: 16px;}
+.banner .carousel .carousel-caption h2 {font-size: 34px;}
+.banner .carousel .carousel-caption {top: 28%;}
+body {font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 12px;}
+.headline {padding: 0 0 80px 0;}
+.headline span {font-size: 14px; color: #c3c3c3;}
+.headline h3 {font-size: 29px;}
+.how-it-work .block h4 {font-size: 26px;}
+.how-it-work .block p {font-size: 13px;}
+.how-it-work .block .arrow-left::afte{width: 308px; height: 188px; left: -157px; bottom: -95px;}
+.how-it-work .block .arrow-right::after{width: 308px; right: -58px; bottom: -159px; height: 168px;}
+.how-it-work .block .arrow-left::after {width: 308px; height: 163px; left: -157px; bottom: -95px;}
+.services .headline {padding: 99px 0 62px 0;}
+.headline span {font-size: 12px;}
+.headline h3 {font-size: 25px;}
+.headline h3 span {font-size: 31px;}
+.testimonials .profile .details h5 {font-size: 17px;}
+.testimonials .profile .details span {font-size: 12px;}
+footer .footer-menu li {float: left; margin-left: 14px;}
+footer .footer-menu li a {font-size: 12px;}
+footer .social-media {margin: 10px 17px;}
+footer .social-media li {margin-left: 18px;}
+footer .footer-menu {margin-top: 25px;}
+.copy-right {font-size: 13px;}
+.mt-95 { margin-top: 80px;}
+
+
+
+.driver-page .banner .carousel .carousel-caption {margin-top: 135px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 24px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 31px;}
+header nav .main-menu li {float: left; font-size: 18px;  color: #fff; margin-left: 61px; font-weight: 600; position: relative; line-height: 45px;}
+footer .social-media {margin: 10px 59px;}
+footer .footer-menu li {float: left; margin-left: 28px;}
+.question-block h3 {font-size: 31px;}
+.pets-block.desktop {text-align: center;}
+
+    
+/*============= driver-license  =============  */
+
+.deshbord-head .deshbord-nav ul {width: 66%;}
+.driver-license .number-steps.driv-license-nub ul li span {display: inline-block; width: 131px; line-height: 125px; font-size: 42px;}
+.driver-form .blue-head{font-size:19px;}
+.driver-form p {font-size: 14px; padding-bottom: 46px; width: 80%;}
+.license-form-block .form-field input{font-size:15px;}
+.license-form-block .login-bttn {width: 263px; line-height: 51px;}
+.license-form-block .next-bttn{width: 263px; line-height: 51px;width: 263px; line-height: 51px;}
+.driver-form p {font-size: 13px;}
+.driver-liccense-form .headline h3 {font-size: 23px;}
+footer .social-media {margin: 10px 7px; float: left;} 
+footer .footer-menu {margin-top: 10px; float: left;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 19px; line-height: 27px;}    
+
+
+/*=============== sender  ==============*/
+    
+.sender-page .banner .carousel .carousel-caption {top: 25%;}
+.form-block {margin-top:0;}
+.pets-block h3 {font-size: 38px;}
+.pets-block p {font-size: 16px;}
+question-block h3 {font-size: 30px;}    
+.question-block ul li {font-size: 17px;}    
+footer .footer-menu {margin-top: 30px;}
+footer .footer-menu li a {font-size: 15px;}
+.question-block.desktop {text-align: center;}
+.pets-block.desktop {text-align: center;}
+
+/*=============== sign in  ==============*/
+
+.login-page .headline p {font-size: 16px;}
+.login-page .headline {padding: 0 0 7px 0;}  
+    
+/*=============== verification  ==============*/ 
+    
+.play-store p {font-size: 15px;}
+ 
+/*=============== sender-dashboard  ==============*/  
+    
+.credits p {font-size: 17px;}
+.credits .price {font-size: 17px;}
+#sidebar h3 {font-size: 20px;}
+    
+/*=============== pickup-pickage-1  ==============*/
+    
+/*.deshbord-head .deshbord-nav ul {width: 55%;}    
+.driver-license .number-steps ul li p {font-size: 14px; }
+.driver-license .number-steps ul li span {font-size: 37px;} 
+.driver-form .blue-head {font-size: 17px;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {font-size: 18px;}    
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {font-size: 18px}
+.pickage p {font-size: 17px;}
+
+.pickage .map-point img {width: 731px;}    */
+
+.pickup-pickage-2 .number-steps {text-align: center; margin: 0;}    
+.pickup-pickage-2 .number-steps ul {width: 69%; margin: 0 auto; display: inline-block;} 
+.driver-license .number-steps ul li {width: 32%;}
+.deshbord-head .deshbord-nav ul {width: 78%;}
+.driver-license .number-steps ul li p {font-size: 14px;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn{margin: 37px 0 0 12px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn{margin: 37px 12px 0 0 ;}    
+    
+/*=============== pickup-pickage-2  ==============*/    
+
+.pickup-pickage .number-steps ul {width: 86%; margin: 0 auto;}
+.driver-license .number-steps ul li {width: 33%;}
+.pickup-pickage .number-steps {margin:0;}    
+
+/*=============== pickup-pickage-3  ==============*/    
+
+.driver-license .number-steps ul li { width: 33%;  }
+.pickup-pickage-3 .number-steps ul {width: 72%;}    
+.pickup-pickage-3 .number-steps {margin: 0 0 0 0;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {margin: 37px 19px 0 0;}
+.pickup-pickage-3 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 19PX;}
+    
+    
+/*=============== pickup-pickage-3  ==============*/    
+
+.deshbord-head .deshbord-nav ul {margin: 0 auto; width: 78%;}
+    
+/*=============== pickup-pickage-5  ==============*/    
+    
+.deshbord-head .deshbord-nav ul {width: 55%;}    
+.driver-license .number-steps ul li span {width: 118px;     line-height: 105px;    font-size: 33px;}    
+.deshbord-head .deshbord-nav ul {width: 78%;}
+.pickup-pickage-5 .track ul li + li span::before {width: 202px;}
+.pickup-pickage-5 .track ul li + li span::before {width: 199px;}
+    
+/*=============== driver-license  ==============*/ 
+
+.driver-license .number-steps.driv-license-nub ul {width: 70%;}
+.driver-license .number-steps.driv-license-nub ul li {width: 25%;} 
+.deshbord-nav.driving-license ul {width: 55%;}    
+.driver-license .number-steps.driv-license-nub ul {width: 85%;}
+.deshbord-nav.driving-license ul {width: 72%;}
+
+/*=============== driver-license-2  ==============*/
+
+.deshbord-nav.driving-license ul {width: 55%;}
+.deshbord-nav.driving-license ul {width: 72%;}
+.deshbord-nav.driving-license ul {width: 72%;}
+    
+    
+}
+    
+/*969 to 900 */
+@media (max-width: 969px) {
+.banner .carousel .carousel-caption h2 {font-size: 29px;}
+.form-block h3 {font-size: 23px;}
+.form-block {padding: 16px 0;}
+.mt-95 { margin-top: 66px;}
+.how-it-work .block h4 {font-size: 22px;}
+.headline h3 span {font-size: 26px;}
+.testimonials .block p {font-size: 14px;}
+.how-it-work .block .bttn {margin: 25px 0;}
+
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 19px;}
+.driver-page .banner .carousel .carousel-caption h2 {margin-top: 9px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 26px;}
+.driver-page .banner .carousel .carousel-caption h2 {line-height: 41px;}
+.driver-page .banner .carousel .carousel-caption span {font-size: 11px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top: 16px; padding: 0 45px; line-height: 40px;}
+header nav .main-menu li {margin-left: 47px; line-height: 42px; font-size: 17px;}
+.block.lorem{margin-top:35px;}
+footer .footer-menu li {margin-left: 15px;}
+footer .social-media {margin: 10px 0px;}
+.question-block h3 {font-size: 28px;}
+.question-block ul li {font-size: 17px;}
+.driver-page .pet-driver h3 {font-size: 31px;}
+.driver-page .pet-driver p {width: 89%; font-size: 15px;}
+.driver-page .how-we-work ul li {   font-size: 15px;}
+.driver-page .how-we-work h3 {   font-size: 32px;}
+.question-block h3 {font-size: 28px;}
+.form-block {padding: 33px 0;}
+.form-block .form-group {width: 100%;     margin: 0 auto;}
+.form-block .form-group .form-field {width: 189px; float: left;}
+.form-block .form-group .form-field + .form-field {margin-left: 6px;}    
+.form-block .form-group .select-field {width: 166px;}
+header nav .main-menu li {margin-left: 29px; line-height: 44px; font-size: 17px;}  
+.home-page-banner .img-bg {height: 60vh;}
+.home-page-banner .form-block {margin-top:0;}
+.form-block {padding: 27px 0; margin-top: 0;}
+.banner .carousel .carousel-caption h2 {font-size: 35px;}    
+.home-page-banner .img-bg {height: 82vh;}  
+.banner .carousel .carousel-caption {top: 49%; z-index: 1;}    
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 19px; line-height: 27px;}    
+.form-block .form-group .form-field {width: 49%;    padding: 0 10px;}
+block .bttn {border: none; margin-left: 10px; width: 46%;    margin-top: 10px;}
+.form-block .form-group .select-field {width: 49%; margin-top: 10px;}
+ .form-block .bttn {font-size: 16px; margin-left: 0;}
+.form-block .form-group .form-field + .form-field {margin-left: 0;}
+.sender-page .banner .carousel .carousel-caption h2 {font-size: 23px; line-height: 41px;}
+    
+/*=============== sender  ==============*/
+    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 27px;}
+.sender-page .banner .carousel .carousel-caption span {font-size: 12px;}    
+footer .footer-menu {margin-top: 19px;}
+footer .social-media {margin: 5px 0px;}    
+   
+/*=============== sign in  ==============*/
+    
+.login-page .headline h3 {font-size: 28px    }
+.login-page .headline {padding: 0 0 7px 0;}    
+.login-page .headline p {font-size: 15px;}    
+footer .footer-menu {margin-top: 16px;}
+.login-page.pt-220 .headline {width: 83%;}    
+    
+
+/*=============== sender-dashboard  ==============*/
+
+.profile-form .photo__frame {width: 37%; height: 131px;}
+.select-type ul li{width: 31%;}
+.select-type ul li label {padding-right: 28px;}    
+.sender-desh .side-fixed-menu li a{padding-left: 17px;}    
+.sender-desh .side-fixed-menu li a {font-size: 13px;    }
+.profile-form .photo__frame {width: 159%; height: 131px;}
+.sender-desh .icon-bttn a {width: 35%;}
+.sender-desh .sub-form ul li label input{margin-left: 9px;}
+.credits p {font-size: 16px;}
+.credits .price {font-size: 16px;}
+#sidebar h3 {font-size: 18px;}
+#insurance .profile-form h3 { font-size: 19px;}   
+    
+/*=============== picup-package  ==============*/
+    
+
+.deshbord-head .deshbord-nav li a {padding: 0 16px;}
+.driver-license .number-steps ul li span {font-size: 33px;}
+.driver-license .number-steps ul li p {font-size: 13px;}
+.driver-form {width: 100%;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 32px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {margin: 37px 32px 0 0;}
+.pickage .map-point img {width: 678px;}
+.pickup-pickage-2 .number-steps ul {width: 113%;}
+.pickup-pickage-2 .number-steps ul {width: 80%;}
+.driver-license .number-steps ul li {width: 33%;}   
+.deshbord-head .deshbord-nav ul {width: 55%;}    
+    
+/*=============== pickup-pickage-2  ==============*/  
+    
+.delivery-list {width: 100%;}    
+.pickup-pickage .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 17px;}    
+.pickup-pickage .pickup-pickage-block .right-side-bttn {margin: 37px 17px 0 0;}        
+ 
+    
+/*=============== pickup-pickage-3  ==============*/
+    
+.pickup-pickage-3 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 16px;}    
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {margin: 37px 16px 0 0;}
+.delivery-list {width: 95%;}    
+  
+/*=============== pickup-pickage-4  ==============*/  
+
+.deshbord-head .deshbord-nav ul {width: 62%;} 
+.driver-license .number-steps ul li span {width: 121px; line-height: 120px;}
+.flat-screen-tv-delivery li {font-size: 16px;}
+.map-point ul {font-size: 14px; }
+.map-profile .accept-bttn a {font-size: 14px;}
+.map-profile .accept-bttn {padding: 0 24px;}
+    
+/*=============== pickup-pickage-5  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 58%;}
+.driver-license .number-steps ul li span {width: 113px; line-height: 106px;}
+.driver-license .number-steps ul li p {font-size: 12px;}
+.driver-form .blue-head {font-size: 18px;}
+
+/*=============== driver-license  ==============*/
+    
+.driver-license .number-steps.driv-license-nub ul li span {width: 96px; line-height: 84px; font-size: 29px;}
+.driver-license .number-steps.driv-license-nub ul li {width: 25%;}
+.driver-form .blue-head {font-size: 16px;}
+.driver-form h3 {font-size: 19px;} 
+.license-form-block {width: 714px;}    
+
+}
+ 
+/*899 to 800 */
+@media (max-width: 899px) {
+header nav .main-menu li {float: left; font-size: 14px; color: #fff; margin-left: 51px; font-weight: 600; position: relative; line-height: 37px;}
+.bttn {display: inline-block; background: #43b249; line-height: 32px; padding: 0 32px; border-radius: 30px; font-size: 12px; font-weight: 600; color: #fff;}
+.banner .carousel .carousel-caption h2 {font-size: 32px;}	
+.form-block h3 {font-size: 20px;}
+.form-block {padding: 17px 0;}
+
+
+.question-block h3 {   font-size: 27px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 24px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 18px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top: 16px; padding: 0 45px; line-height: 35px;}
+.driver-page .subscribe-block h3 {font-size: 23px;}
+.driver-page .subscribe-block p {font-size: 15px;}
+.driver-page .how-we-work h3 {font-size: 30px;}
+.form-group .bttn {padding: 0 52px;}
+    
+    
+/*=============== sender  ==============*/    
+
+.sender-page .banner .carousel .carousel-caption h2 {line-height: 38px; font-size: 20px;}    
+.pets-block h3 {font-size: 35px;}    
+.question-block h3 {font-size: 24px;}    
+.question-block ul li {font-size: 16px;}
+.pets-block.desktop {text-align: center;}
+
+/*=============== sign in  ==============*/
+    
+.login-page .headline h3 {font-size: 26px;} 
+    
+/*=============== sender-dashboard  ==============*/    
+
+.credits p {font-size: 16px;}
+.credits .price {font-size: 15px;}    
+#sidebar h3 {font-size: 17px;}
+#insurance .profile-form h3 {font-size: 18px;}
+
+/*=============== pickup-pickage-1  ==============*/    
+ 
+.deshbord-head .deshbord-nav li a {padding: 0 16px;}
+.driver-license .number-steps ul li span {font-size: 33px;}
+.driver-license .number-steps ul li p {font-size: 13px;}
+.driver-form {width: 100%;} 
+
+/*=============== pickup-pickage-2  ==============*/    
+ 
+.delivery-list {width: 94%;}   
+    
+/*=============== pickup-pickage-3  ==============*/
+    
+.pickup-pickage-3 .number-steps ul {width: 82%;}
+    
+    
+}
+
+
+/*799 to 768 */
+@media (max-width: 799px) {
+.headline h3 {font-size: 23px;}
+.how-it-work .block h4 {font-size: 20px;}
+.headline h3 span {font-size: 24px;}
+.form-block {padding: 18px 0;}
+.form-block {padding: 17px 0; margin-top: 0;}
+
+
+.driver-page .pet-driver {padding: 89px 0;}
+.driver-page .banner .carousel .carousel-caption {margin-top: 119px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 17px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 22px;}
+.driver-page .banner .carousel .carousel-caption span {font-size: 9px;}
+.question-block {padding: 46px 0; background: #3fb8a7;}
+.question-block ul li {font-size: 16px;}
+.driver-page .pet-driver {padding: 81px 0;}
+.driver-page .banner.inner-banner .carousel-item{height: 39vh;}
+.form-block .form-group .form-field + .form-field {margin-left: 6px; width: 100%; float: left; margin: 9px 0;}
+.driver-page .banner.inner-banner .carousel-item {height: 36vh;}
+
+/*=============== sender  ==============*/    
+
+.form-block .form-group .form-field {width: 49%; padding: 9px 10px;}
+.form-block .form-group .form-field + .form-field {width: 49%; margin: 0;}
+    
+/*=============== sender-dashboard  ==============*/    
+
+.credits p {font-size: 15px;}    
+.credits .price {font-size: 13px;}
+#sidebar h3 {font-size: 17px;}
+#insurance .profile-form h3 {font-size: 17px;}    
+    
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 56%;}    
+
+/*=============== pickup-pickage-2  ==============*/
+    
+.pickup-pickage .delivery h3 {font-size: 25px;}
+.pickup-pickage .pickup-pickage-block .left-side-bttn{font-size: 18px;}    
+.pickup-pickage .pickup-pickage-block .right-side-bttn{font-size: 18px;}        
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn{font-size: 18px;}
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn{font-size: 18px;}
+.delivery-list {width: 94%;}
+.delivery-tools ul li a {font-size: 16px;}
+
+/*=============== pickup-pickage-4  ==============*/ 
+    
+.deshbord-head .deshbord-nav ul {width: 62%;}    
+.pickup-pickage-4 .number-steps ul {width: 86%;}
+.driver-form .blue-head {font-size: 18px;}     
+.driver-form p {font-size: 13px;}
+.deshbord-head .deshbord-nav ul {width: 61%;}
+.map-point ul{width: 701px;}
+.deshbord-head .deshbord-nav ul {width: 62%;}    
+
+/*=============== driver-license  ==============*/
+    
+.deshbord-nav.driving-license ul {width: 55%;}    
+.driver-license .driver-form .inputfile-4 + label {width: 184px; padding:15px;}
+.driver-license .driver-form .box.grey .inputfile-4 + label {width: 184px; padding: 15px;}    
+.license-form-block .login-bttn {width: 243px;}    
+.license-form-block .next-bttn {width: 243px;}
+.driver-license .number-steps.driv-license-nub ul {width: 76%;}    
+ 
+ .driver-page .banner .carousel img {width: 72%;}    
+    
+    }
+
+/*767 to 736 */
+@media (max-width: 767px) {
+.how-it-work .block .arrow-left::after {width: 308px; height: 187px; left: -116px; bottom: -130px;}
+.how-it-work .block p { font-size: 12px;}	
+footer .footer-menu li a {font-size: 12px;}
+footer .social-media {margin: 10px 4px;}
+.form-block {padding: 27px 0; margin-top: 0;}
+.banner .carousel .carousel-caption {top: 48%;}
+.testimonials {padding-bottom: 67px;}
+
+.descktop-menu{ display:none;}
+.mobile-menu{ display:block;}
+
+
+
+.driver-page .banner .carousel .carousel-caption {margin-top: 95px;}
+.driver-page .banner .carousel .carousel-caption h2 {line-height: 38px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 16px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 21px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top: 16px; padding: 0 41px; line-height: 34px;}
+.driver-page .banner .carousel .carousel-caption span {font-size: 11px;}
+.services .block p {font-size: 14px;}
+.question-block { padding: 46px 0;  background: #3fb8a7;  text-align: center;}
+footer .social-media { margin: 10px 15px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 15px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 16px;}
+#mySidenav .bttn {/*width: 27%;*/ width: 193px;  margin: 0 auto; text-align: center;  padding: 0 36px; color: #fff; line-height: 41px;}
+.driver-page .banner .carousel .carousel-caption h2 {line-height: 32px;}
+.form-block .form-group .form-field span input {text-align: left;} 
+.form-block .form-group .form-field + .form-field {  width: 100%; } 
+.form-block .form-group .form-field span label.dropdown select {text-align: left;} 
+.form-group .bttn {padding: 0 52px; width: 99%;}    
+.form-block .form-group .form-field span input {text-align: left;}
+.form-block .form-group .form-field {width: 189px; float: left; width: 100%;}
+.form-block .form-group .form-field span button {float: right; padding-right: 20px;}
+.form-block .bttn{font-size:17px; }  
+.banner .carousel .carousel-caption h2 {font-size: 35px;}
+    
+/*=============== sender  ==============*/   
+    
+.sender-page .banner .carousel .carousel-caption h2 {    line-height: 34px;    font-size: 18px;}    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 25px;}
+services .block h5 {font-size: 18px;}
+.services .block p {font-size: 13px;}
+.subscribe-block h3 {font-size: 22px;}
+.subscribe-block p {font-size: 14px;}    
+.pets-block h3 {font-size: 31px;}
+.pets-block p {font-size: 15px;}    
+
+/*=============== sign in  ==============*/
+    
+footer .social-media {margin: 10px -9px;}
+.play-store {width: 48%;}   
+    
+/*=============== sender-dashboard  ==============*/    
+
+.sidebar-desktop{display: none;}    
+.sidebar-mobile{display: block;}
+.sidebar-mobile .credits {position: relative; margin: 0 22px;}
+.sidebar-mobile .credits p {font-size: 18px;}
+.sidebar-mobile .credits .price {font-size: 15px;}
+.sidebar-mobile h3{font-size: 22px; margin-left: 24px;}
+.sender-desh .blue-head{font-size: 19px;}
+.profile-form .photo__frame {width: 24%; height: 126px;}
+.select-type ul li .check{left: 77px;}
+.sender-desh .icon-bttn a {width: 26%;}
+.profile-form .icon-bttn {text-align: center;}
+    
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 57%;}      
+
+/*=============== pickup-pickage-3  ==============*/
+    
+.pickup-pickage-3 .number-steps ul {width: 91%;}
+    
+/*=============== pickup-pickage-4  ==============*/ 
+    
+.deshbord-head .deshbord-nav ul {width: 60%;}    
+
+/*=============== driver-license  ==============*/
+
+.deshbord-nav.driving-license ul {width: 54%;}    
+.driver-form .blue-head {font-size: 17px;}
+.deshbord-nav.driving-license ul {width: 56%;}
+    
+/*=============== driver==============*/    
+
+.driver-page .banner .carousel img {width: 100%;}    
+}
+
+/*735 to 667 */
+@media (max-width: 735px) {
+.headline {padding: 0 0 0  0;}
+.headline span {font-size: 12px;}
+.headline h3 {font-size: 23px;  text-align: center;  margin: 0 auto;}
+.how-it-work .block {padding: 33px 0; text-align: center;}
+.banner .carousel .carousel-caption {top: 51%;}
+.form-block{background: rgba(33, 53, 104, 1);}
+.form-block {padding: 27px 0; margin-top: 0;}
+.how-it-work .block .arrow-right::after {width: 308px; right: -82px;   bottom: -148px;}
+.headline h3 {line-height: 31px;}
+.headline {padding: 0 0 77px 0;}
+.how-it-work .block h4 {font-size: 19px;}
+.how-it-work .block .arrow-right::after {right: -58px; bottom: -172px;}
+.how-it-work .block .arrow-right::after {right: -82px; bottom: -151px;}
+footer .footer-menu li {float: left; margin-left: 16px;}
+.form-block .form-group .form-field span input {text-align: left;}
+.form-block .form-group .form-field span label.dropdown select {text-align: left;}
+footer .social-media {margin: 10px 33px;}
+footer .footer-menu li a {font-size: 11px;}
+.question-block h3 {font-size: 25px;}
+.driver-page .pet-driver h3 {font-size: 27px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 14px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 19px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top: 13px; padding: 0 33px; line-height: 30px;}
+footer .footer-menu {margin-top: 10px; float: left;}
+footer .footer-menu li {line-height: 23px;}
+footer .social-media {margin: 6px -6px;}
+    
+
+/*=============== sender  ==============*/
+    
+.sender-page .banner .carousel .carousel-caption h2 {line-height: 30px; font-size: 17px;}
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 22px;}    
+.login-page.pt-220 .headline {width: 78%;}
+
+/*=============== verification  ==============*/
+    
+.play-store {width: 60%;}    
+
+/*=============== sender-dashboard  ==============*/    
+
+.credits p {margin-top: 18px;}  
+.select-type ul li .check {left: 72px;}    
+.insurance .post-gig p{font-size: 17px;}    
+    
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-head .deshbord-nav li a {padding: 0 15px;}
+.driver-license .number-steps ul li span {width: 117px; line-height: 115px; }   
+.deshbord-head .login-profile span {float: left;}    
+.pickage .map-point img {width: 622px;}    
+.deshbord-head .deshbord-nav ul {width: 61%;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {width: 215px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {width: 215px;}
+    
+    
+/*=============== pickup-pickage-2  ==============*/    
+.delivery-tools ul li a {font-size: 15px;}
+
+/*=============== pickup-pickage-4  ==============*/ 
+
+.deshbord-head .deshbord-nav ul {width: 62%;}
+.map-point ul {font-size: 13px;}
+.map-profile .accept-bttn a {font-size: 13px;}    
+footer .social-media {margin: 6px 14px;}    
+.pickup-pickage-4 .flat-screen-tv {width: 93%;}
+.flat-screen-tv-con {border-bottom: solid 2px #dddddd; width: 700px;}
+.flat-screen-tv-delivery ul {border-bottom: solid 2px #dddddd; width: 704px;}
+.flat-screen-tv-con {width: 100%;}
+.flat-screen-tv-delivery ul {width: 100%;}
+.map-point ul {width: 100%;}
+.deshbord-head .deshbord-nav ul {width: 64%;}     
+.deshbord-head .deshbord-nav ul {width: 67%;}    
+
+/*=============== pickup-pickage-5  ==============*/ 
+    
+.driver-license .number-steps ul li span {width: 97px; line-height: 107px;}
+.deshbord-head .deshbord-nav ul {width: 65%;}    
+
+/*=============== driver-license  ==============*/
+    
+.deshbord-head .deshbord-nav.driving-license ul {width: 56%;}    
+.license-form-block .login-bttn {font-size: 18px; width: 226px; line-height: 47px;}
+.license-form-block .next-bttn {width: 226px; line-height: 47px;}
+.license-form-block .next-bttn{font-size: 18px;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 60%;}    
+    .license-form-block{width: 100%;}
+
+/*=============== driver-license-2  ==============*/
+
+.deshbord-head .deshbord-nav.driving-license ul {width: 56%;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 61%;}    
+}
+
+
+/*666 to 600 */
+@media (max-width: 666px) {
+header nav .main-menu li {margin-left: 38px;}
+.how-it-work .block figure img {width: 84%;}	
+.how-it-work .block .arrow-left::after {left: -104px; bottom: -181px;}
+.how-it-work .block .arrow-right::after {right: -91px;  bottom: -198px;}
+.how-it-work .block .arrow-left::after {left: -98px; bottom: -183px;}
+.headline h3 span {font-size: 22px;}
+.headline h3 {font-size: 22px;}
+.testimonials .block p {font-size: 13px;}
+.testimonials .profile figure i {font-size: 14px; top: -15px; right: 13px;}
+.testimonials .profile img { width: 54px;}
+.testimonials .profile .details h5 {font-size: 14px;}
+.testimonials .profile .details span {font-size: 9px;}
+.testimonials {padding-bottom: 62px;}
+footer .social-media li a{line-height: 28px; }
+footer .footer-menu li a {font-size: 11px;}
+footer .footer-menu li {margin-left: 11px;}
+footer .social-media {margin: 10px 16px;}
+.copy-right {font-size: 12px;}
+.form-block .form-group .form-field span input {text-align: left;}
+.form-block .form-group .form-field span label.dropdown select {text-align: left;}
+.testimonials .block p {line-height: 31px;}
+
+
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 18px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top: 13px; padding: 0 33px; line-height: 30px;}
+#mySidenav .bttn {/*width: 32%;*/ width: 199px;}
+.headline h3 {font-size: 23px;}
+.headline h3 span {font-size: 24px;}    
+footer .social-media {margin: 10px -5px;}
+footer .footer-menu li {line-height: 16px;}
+
+/*=============== sender  ==============*/
+    
+.form-block .form-group {width: 85%; }
+.form-group .bttn {width: 96%;}
+.form-block .bttn {font-size: 22px;}
+.pets-block p {font-size: 15px; width: 100%; text-align: center; margin: 0 auto;}    
+.question-block h3 {font-size: 23px;}
+
+/*=============== verification  ==============*/    
+    
+page.registration .headline h3 {font-size: 28px;}
+.login-page .headline p {font-size: 13px;}
+    
+/*=============== sender-dashboard  ==============*/
+    
+.sidebar-mobile .credits p {font-size: 17px;}    
+.sidebar-mobile h3 {font-size: 21px;}    
+.select-type ul li .check {left: 64px;}
+.sender-desh .sub-form h3 {font-size: 16px; margin-top: 35px;}    
+    
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-nav li {font-size: 12px;}
+.pickup-pickage-2 .number-steps ul {width: 86%;}    
+.pickup-pickage-2 .number-steps {margin: 0 0 0 0;}
+.driver-license .number-steps ul li {width: 24%;}
+.driver-license .number-steps ul li span {width: 113px; line-height: 106px;}
+.driver-form {width: 95%;}
+.driver-form .blue-head {font-size: 16px;}
+.driver-form .license-btn {font-size: 12px;}    
+.deshbord-head .deshbord-nav ul {width: 73%;} 
+.deshbord-head .deshbord-nav {width: 100%;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 10px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {margin: 37px 10px 0 0;}
+.pickage .map-point img {width: 546px;}
+.deshbord-head .login-profile span {font-size: 17px}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {font-size: 18px;} 
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {font-size: 18px;}
+
+/*=============== pickup-pickage-2  ==============*/
+    
+.pickup-pickage .number-steps ul {width: 87%; margin: 0 auto;}
+.driver-license .number-steps ul li {width: 33%;}
+.driver-form h3 {font-size: 18px;}
+.pickup-pickage .pickup-pickage-block .left-side-bttn{width: 229px;}
+.pickup-pickage .pickup-pickage-block .right-side-bttn{width: 229px;}    
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn {font-size: 16px;}
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn{font-size: 16px;} 
+.driver-form h3 {font-size: 17px;}    
+.delivery-tools ul li a {font-size: 14px;}
+.delivery-tools ul li a {font-size: 13px;}
+.delivery-tools img {padding: 0 4px 0 0;}    
+.delivery-package-mobile-page img {width: 77px;}
+.delivery-package-plam-mobile-page ul img {width: 26px;}    
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn {float: left; width: 200px;}
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn  {float: left; width: 200px;}    
+
+/*=============== pickup-pickage-3  ==============*/    
+    
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {width: 195px; font-size: 18px}    
+.pickup-pickage-3 .left-side-bttn {width: 195px; font-size:18px; }
+
+/*=============== pickup-pickage-3  ==============*/     
+.flat-screen-tv-con {border-bottom: solid 2px #dddddd; width: 611px;}
+.flat-screen-tv-delivery ul {border-bottom: solid 2px #dddddd; width: 610px;}
+.map-profile .accept-bttn {padding: 0 18px;}
+.map-point ul {width: 584px;}
+.flat-screen-tv-delivery ul {width: 576px;}
+.flat-screen-tv-con {border-bottom: solid 2px #dddddd; width: 585px;}
+
+.flat-screen-tv-con {width: 556px;}
+.flat-screen-tv-delivery ul {width: 556px;}
+.map-point ul {width: 554px;}
+
+/*=============== driver-license  ==============*/    
+    
+.driver-license .number-steps.driv-license-nub ul li span {width: 100px; line-height: 91px; font-size: 25px;}    
+.driver-license .number-steps.driv-license-nub ul li {width: 25%;}    
+.license-form-block {width: 610px;}
+.deshbord-head .deshbord-nav.driving-license ul {width: 67%;}
+.license-form-block {width:100%;}    
+.pickup-pickage-5 .track ul li + li span::before {width: 149px;}
+
+.how-it-work .block .arrow-left::after {left: -93px; bottom: -210px;}    
+    
+}
+
+/*599 to 568 */
+@media (max-width: 599px) {
+header nav .main-menu li {margin-left: 31px;}
+.banner .carousel .carousel-caption h2 {font-size: 29px;}
+.how-it-work .block .arrow-left::after {left: -77px; bottom: -217px;}
+.testimonials .block p {font-size: 12px;}
+footer .footer-menu {margin-top: 13px;}
+footer .footer-menu li {margin-left: 6px;}
+footer .footer-menu li a {font-size: 11px;}
+/*header nav .bttn {display: none;}*/
+.banner .carousel .carousel-caption {top: 43%;}
+.banner .carousel .carousel-caption h2 {font-size: 25px;}
+.testimonials .block p {line-height: 26px;}
+.col-xs-6.content {width: 100%;}
+.mobile {display: block;}
+.desktop {display: none;}
+.how-it-work .block .arrow-left::after {display: none;}
+.how-it-work .block .arrow-right::after {display: none;}
+.headline {padding: 0 0 18px 0;}
+.mobile {display: block; width: 80%; margin: 0 auto;}
+.how-it-work .block .bttn {margin: 25px 0 41px 0;}
+.how-it-work .block p {font-size: 13px;}
+.headline {padding: 0 0 64px 0;}
+
+.driver-page .banner .carousel .carousel-caption {margin-top: 84px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 13px;}
+.driver-page .banner .carousel .carousel-caption h2 {    line-height: 24px; font-size: 12px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 17px;}
+.driver-page .banner .carousel .carousel-caption span {font-size: 10px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top:1px; padding: 0 24px; line-height: 30px;}
+.bttn {display: inline-block;  background: #43b249; line-height: 33px; padding: 0 24px;  border-radius: 30px;  font-size: 12px;  font-weight: 600; color: #fff;}
+footer .footer-logo {background: #45b048; position: relative; width: 100%;}
+footer .footer-menu {margin-top: 25px; text-align: center; width: 100%;}
+footer .footer-menu li {margin-left: 18px; width: 100%; text-align: left;}
+footer .footer-menu li a {font-size: 13px;}
+footer .footer-logo img {width: 36%;}
+footer .social-media {margin: 10px 0; text-align: left; width: 100%;}
+.banner .carousel .carousel-caption {    top: 50%;}
+.banner .carousel .carousel-caption h2 {font-size: 33px;}
+footer {text-align: center;}    
+footer .footer-menu{text-align: center;}  
+footer .footer-menu li {width: 50%;}
+footer .footer-menu li {margin-left:0; text-align:center; }
+footer .footer-menu li a {     font-size: 18px;}
+.headline h3 {font-size: 23px;}
+.headline h3 span {font-size: 24px;}    
+footer .footer-menu li a {line-height: 30px;}    
+footer .footer-links{width: 100%; text-align: center;}  
+footer .social-media { width: 144px;    margin: 14px auto; float: none;}
+    
+/*=============== sender  ==============*/
+
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 20px;}    
+.carousel-caption h2 {line-height: 26px; font-size: 17px;}
+.col-md-3.col-sm-6.col-xs-6.mobile-page {width: 100%;}
+.pets-block, .deskto{display: block;}   
+.question-block, .mobile{display: block;}      
+
+/*=============== sign in  ==============*/
+    
+    
+.footer-con {margin: 0 auto; text-align: center; width: 100%;}    
+.social-media.footer-con {margin: 15px 0 0 196px;} 
+    
+/*=============== verification  ==============*/  
+    
+.play-store {width: 60%;}
+
+/*=============== sender-dashboard  ==============*/
+    
+.sidebar-mobile .credits p {font-size: 16px;}    
+.credits .help{font-size: 16px; width: 32px; line-height: 26px;}
+.sidebar-mobile h3 {font-size: 19px; margin-left: 21px;}
+.select-type ul li .check {left: 51px;}
+.sender-desh .sub-form h3 {font-size: 15px;}    
+.profile-form .photo__frame {width: 31%; height: 127px;}    
+.sender-desh .icon-bttn a {width: 33%;}
+
+/*=============== pickup-pickage-1  ==============*/    
+    
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {width: 192px}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {width: 192px;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {font-size: 16px;}    
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {font-size: 16px;}  
+.pickup-pickage-2 .pickage p {font-size: 17px;}    
+.pickage .map-point img {width: 479px;}
+.deshbord-head .deshbord-nav {width: 100%;}
+.deshbord-head .deshbord-nav ul {width: 69%;}
+.deshbord-head .deshbord-nav ul {width: 78%;}    
+    
+/*=============== pickup-pickage-2  ==============*/
+    
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn {width: 184px;}    
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn{width: 184px;}
+.pickup-pickage .delivery h3 {font-size: 23px;}
+.delivery-package-mobile-page img {width: 88px;}
+.delivery-package-plam-mobile-page ul img {width: 18%;}
+.delivery-tools ul li a {font-size: 12px;}
+.delivery-tools img {padding: 0 4px 0 0;}    
+.delivery-package-mobile-page img {width: 75px;}
+.delivery-tools ul li a {font-size: 11px;}
+
+/*=============== pickup-pickage-4  ==============*/    
+    
+.flat-screen-tv figure img {width: 59%;}
+.flat-screen-tv-con {border-bottom: solid 2px #dddddd; width: 548px;}    
+.driver-form h3 {font-size: 17px;}
+.flat-screen-tv-delivery ul {border-bottom: solid 2px #dddddd; width: 547px;}    
+.flat-screen-tv-delivery li {font-size: 14px;}    
+.map-point ul {border-bottom: solid 2px #dddddd; width: 549px;}
+.flat-screen-tv-con {width: 472px;}
+.flat-screen-tv-delivery ul {width: 471px;}
+.map-point ul {width: 473px;}
+    
+/*=============== pickup-pickage-5  ==============*/ 
+    
+.driver-license .number-steps ul li span {width: 99px; line-height: 90px; font-size: 24px;}
+.driver-form .blue-head {font-size: 15px;}    
+.map-point ul {width: 559px;}    
+.pickup-pickage-5 .bottom-foot ul li figure img {width: 81px;}
+.map-point ul {width: 542px;}
+.driver-license .number-steps ul li p {font-size: 12px;}    
+
+/*=============== driver-license  ==============*/ 
+    
+.deshbord-head .deshbord-nav.driving-license ul {width: 70%;}    
+.driver-license .number-steps.driv-license-nub ul {width: 87%;} 
+.driver-form .blue-head {font-size: 14px;}
+.license-form-block {width:100%;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 78% !important;}
+    .license-form-block {width:100% !important;}
+
+/*================ index ===========*/
+    
+.how-it-work .block .arrow-left { position: relative; }
+.how-it-work .block .arrow-left:after {content: ""; display: inline-block; position: absolute; width: 124px; height: 612px; left: 342px; background: url(../images/mobile-arrow-first-step.png) no-repeat; background-size: auto auto; background-size: cover; bottom: -442px;  z-index: 1;}
+.how-it-work .block figure img { width: 90%; }
+.how-it-work .block .arrow-right { position: relative; }
+.how-it-work .block .arrow-right:after {content: ""; display: inline-block; position: absolute; width: 124px; height: 612px; left: -30px; background: url(../images/mobile-arrow-second-step.png) no-repeat;  background-size: auto auto; background-size: cover; bottom: -442px;  z-index: 1;}    
+    
+    
+}
+
+
+/*567 to 480  */
+@media (max-width : 567px) {
+.banner .carousel .carousel-caption h2 {font-size: 27px;}
+header nav .main-menu li {margin-left: 23px;} 
+.form-block .form-group .form-field {width: 100%;  padding: 0 10px;}
+
+.form-block .bttn {    border: none; margin-left: 10px; width: 96%; margin-top: 10px;}
+.form-block .form-group .form-field + .form-field { margin-top: 11px;}
+
+footer .footer-menu {margin-top: 7px;}
+footer .footer-menu li a {font-size: 10px;}
+.services .block h5 {font-size: 17px;}
+.how-it-work .block .arrow-left::after {left: -77px;  bottom: -229px;}
+.how-it-work .block .arrow-right::after {right: -81px;  bottom: -246px;}
+.testimonials .block p {line-height: 16px;}
+.col-xs-6.content {width: 100%;}
+.how-it-work .block {padding: 33px 0;  text-align: center; width: 80%;    margin: 0 auto;}
+.how-it-work .block figure img {width: 84%;  margin-top: 40px;}
+.how-it-work .block {padding: 0 0 0 0;}
+.headline h3 {font-size: 22px;  width: 261px;}
+.headline h3 span {font-size: 28px;}
+.headline h3 {font-size: 26px;}
+.how-it-work .block p {font-size: 15px;}
+footer .footer-menu li a {font-size: 13px;}
+.how-we-work-mobile img {width: 70%;}
+.banner .carousel .carousel-caption h2 {font-size: 33px; line-height: 41px;}
+
+/*=============== sender  ==============*/    
+ .sender-page .banner .carousel .carousel-caption h2 {line-height: 21px; font-size: 15px;}    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 16px;}    
+.form-block .form-group {width: 89%;}
+pets-block h3 {font-size: 32px;}
+.pets-block p {font-size: 15px;}    
+.question-block h3 {font-size: 21px;}
+.question-block ul li {font-size: 14px;}
+footer .social-media {width: 144px; margin: 15px 0 0 147px}    
+footer .footer-menu {margin-top: 7px;}
+footer .social-media {margin: 15px 0 0 147px;} 
+    
+ /*=============== sign in  ==============*/
+    
+.social-media.footer-con {margin: 15px 0 0 153px;}
+    
+/*=============== verification  ==============*/
+    
+section.login-page.registration .headline h3{font-size: 27px;}    
+.login-page .headline p {font-size: 12px;}    
+
+/*=============== sender-dashboard  ==============*/
+    
+#insurance .profile-form h3 {font-size: 15px;}
+.sender-desh .sub-form h3 {font-size: 14px;}
+.select-type ul li .check {left: 44px;}
+.sender-desh .blue-head {font-size: 17px;}    
+.sidebar-mobile h3 {font-size: 18px; margin-left: 20px;}
+.select-type ul li label {padding-right: 0px;}
+.select-type ul li {width: 33%; text-align: center; margin: 0 auto;}    
+.select-type ul li .check {left: 67px;}
+.sender-desh .form-body .profile-form .form-group .form-field input{text-align: center;}
+
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 74%;}
+.driver-license .number-steps ul li p {font-size: 11px;}
+.driver-license .number-steps ul li span {width: 99px; line-height: 90px;}
+.driver-license .number-steps ul li span {font-size: 27px;}    
+.driver-form .blue-head {font-size: 15px;}
+.driver-form .license-btn {font-size: 11px;}
+.pickage .map-point img {width: 446px;}
+.social-media.footer-con {margin: 15px 0 0 141px;}
+.deshbord-head .deshbord-nav ul { width: 86%;}    
+
+/*=============== pickup-pickage-2  ==============*/
+    
+.delivery-list {width: 96%;}    
+.pickup-pickage .pickup-pickage-block .left-side-bttn {width: 169px; line-height: 45px;}    
+.pickup-pickage .pickup-pickage-block .right-side-bttn {width: 169px; line-height: 45px;}      
+
+/*=============== pickup-pickage-3  ==============*/
+
+.pickup-pickage-3 .left-side-bttn {width: 163px; font-size: 16px; line-height: 41px;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {width: 163px; font-size: 16px; line-height: 41px;}
+
+/*=============== pickup-pickage-4  ==============*/
+    
+.flat-screen-tv-con {border-bottom: solid 2px #dddddd; width: 100%;} 
+.flat-screen-tv-delivery ul {border-bottom: solid 2px #dddddd; width: 100%;}    
+.map-point ul {border-bottom: solid 2px #dddddd; width: 100%;}
+.map-profile .accept-bttn a {font-size: 12px;}
+
+/*=============== pickup-pickage-5  ==============*/ 
+.map-point ul {width:100%;}    
+.pickage-mobile {width: 100%} 
+    
+/*=============== driver-license  ==============*/
+    
+.deshbord-head .deshbord-nav.driving-license ul {width: 73%;}
+.driver-license .number-steps.driv-license-nub ul {width: 91%;}    
+.driver-license .driver-form .inputfile + label span {font-size: 14px;}    
+.driving-license-upload-license .box img {width: 50%;}
+.driver-license .driver-form .box.grey .inputfile-4 + label {width: 155px; padding: 15px;}
+.driver-license .driver-form .inputfile-4 + label {width: 155px; padding: 15px;}
+.driver-liccense-form .headline h3 {font-size: 21px;}
+.license-form-block {width: 518px;} 
+.license-form-block .login-bttn {font-size: 18px; width: 189px;  line-height: 47px;}
+.license-form-block .next-bttn {width: 189px; line-height: 47px;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 82% !important;} 
+.deshbord-head .deshbord-nav.driving-license ul {width: 86% !important;}
+.deshbord-head .deshbord-nav ul {width: 91%;}    
+.pickup-pickage-5 .track ul li + li span::before {left: -50%; top: 26%;}    
+.pickup-pickage-5 .track ul li + li span::before {left: -43%; top: 23%; width: 145px;}
+.delivery-tools li ul li + li {margin-left: 25px;}
+.delivery-tools li ul li + li {margin-left: 8px;}    
+
+/*================ index ===========*/    
+    
+.how-it-work .block .arrow-left { position: relative; }
+.how-it-work .block .arrow-left:after {content: ""; display: inline-block; position: absolute; width: 124px; height: 667px; left: 223px; background: url(../images/mobile-arrow-first-step.png) no-repeat; background-size: auto auto; background-size: cover; bottom: -526px; z-index: 1;}
+.how-it-work .block figure img { width: 90%; }
+.how-it-work .block .arrow-right { position: relative; }
+.how-it-work .block .arrow-right:after {content: ""; display: inline-block; position: absolute; width: 124px; height: 627px; left: -49px; background: url(../images/mobile-arrow-second-step.png) no-repeat;  background-size: auto auto; background-size: cover; bottom: -542px;  z-index: 1;}    
+    
+    
+}
+
+
+/*479 to 414  */
+@media (max-width : 479px) {
+.form-block .form-group { width: 100%;  margin: 0 auto;}
+.form-block .form-group .form-field {  width: 100%;  padding: 0 10px;}
+header nav .bttn { display: none;}
+.banner .carousel .carousel-caption h2 {font-size: 25px;}
+.banner .carousel .carousel-caption { top: 43%;}
+.testimonials .block p {line-height: 18px;}
+.col-xs-6.content {width: 100%;}
+.how-it-work .block p {font-size: 15px;}
+.how-it-work .block p {font-size: 14px;}
+.testimonials .block p {line-height: 12px;}	
+.headline h3 {font-size: 23px;}
+
+.headline h3 span {font-size: 25px;}
+.driver-page .banner .carousel .carousel-caption {margin-top: 75px;}
+.driver-page .banner .carousel .carousel-caption h2 {line-height: 17px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 12px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 15px;}
+.driver-page .banner .carousel .carousel-caption span {font-size: 9px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin-top: 4px; padding: 0 18px; line-height: 27px;}
+.bttn{font-size: 11px;}
+.driver-page .subscribe-block h3 {font-size: 21px;}
+.driver-page .subscribe-block p {font-size: 13px;}
+.driver-page .how-we-work h3 {font-size: 28px;}
+.driver-page .how-we-work ul li span {margin-left: 11px;}
+.driver-page .how-we-work ul li {font-size: 13px;}
+.driver-page .pet-driver h3 {font-size: 25px;}
+.driver-page .pet-driver h3{margin-bottom: 4px;}
+.driver-page .pet-driver p {font-size: 13px;}
+.question-block h3 {font-size: 22px;}
+.question-block h3{margin-bottom: 14px;}
+.question-block ul li {font-size: 15px;}
+.sidenav a {font-size: 22px;}
+#mySidenav .bttn {/*width: 44%;*/ width: 199px;}
+.how-we-work-mobile img {width: 70%;}
+.home-page-banner .carousel-item {background: url(../images/slider_img.jpg) no-repeat center;  background-size: auto auto; height: 350px; background-size: cover;}
+.driver-page .bannercontent.inner-contant.col-xs-8.mobile-banner {width: 100%; text-align: center;}
+.driver-page figure.col-xs-3.mobile-banner img {width: 23%;  margin: 0 auto; margin-top: 19px;}
+.driver-page .banner.inner-banner .carousel-item {height: 54vh;}    
+.driver-page figure.col-xs-3.mobile-banner {width: 100%; text-align: center;}
+    
+.banner .carousel .carousel-caption { top: 53%;}
+.banner .carousel .carousel-caption h2 { font-size: 28px;}
+.home-page-banner .img-bg {height:0;}   
+/*=============== sender  ==============*/  
+.sender-page .banner .carousel .carousel-caption h2 {line-height: 19px; font-size: 16px;}    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 14px;}    
+.sender-page .banner .carousel .carousel-caption h3 {font-size: 17px;}
+.social-media.footer-con {margin: 15px 0 0 136px;}
+    
+/*=============== verification  ==============*/
+    
+.play-store {width: 69%;}    
+    
+/*=============== sender-dashboard  ==============*/
+
+.sidebar-mobile h3 {font-size: 17px; margin-left: 22px;}
+.sender-desh .side-fixed-menu li a {font-size: 14px;}
+.sender-desh .form-body .profile-form .help {right: -22px;}    
+.sender-desh .form-body .profile-form {position: relative; text-align: center;}
+.sender-desh .sub-form ul li label {width: 95%;}
+.select-type ul li {width: 47%;}
+.select-type ul li .check {left: 63px;}
+.profile-form .photo__frame {width: 39%; height: 128px;}
+.sender-desh .icon-bttn a {width: 44%;} 
+.sender-desh .sub-form h3 {font-size: 13px;}
+
+/*=============== pickup-pickage-1  ==============*/
+    
+
+.deshbord-head .deshbord-nav {width: 100%;}
+.deshbord-head .deshbord-nav ul {width: 89%;}
+.pickup-pickage-2 .number-steps {margin: 0 0 0 0;}
+.pickup-pickage-2 .number-steps ul {width: 91%;}
+.driver-license .number-steps ul li {width: 32%;}    
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {width: 156px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {width: 156px;}    
+.pickage .map-point img {width: 369px;}    
+.deshbord-head .deshbord-nav ul { width: 106%;}
+
+/*=============== pickup-pickage-2  ==============*/
+    
+.pickup-pickage .pickup-pickage-block .left-side-bttn {width: 152px; font-size: 16px;}
+.pickup-pickage .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 6px;}
+.pickup-pickage .pickup-pickage-block .right-side-bttn {width: 152px; font-size: 16px;}    
+.pickup-pickage .pickup-pickage-block .right-side-bttn {margin: 37px 6px 0 0;}    
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn {width: 158px; font-size: 13px;}
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn{width: 158px; font-size: 13px;}    
+.delivery-package-mobile-page img {width: 62px;}
+.delivery-tools li ul li + li {margin-left: -2px;}    
+ 
+/*=============== pickup-pickage-3  ==============*/
+
+.pickup-pickage-3 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 9px;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {margin: 37px 9px 0 0;}    
+.pickup-pickage-3 .left-side-bttn {width: 140px; font-size: 15px;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {width: 142px; font-size: 15px;}
+.delivery-list .delivery h3 {font-size: 24px;}    
+
+
+/*=============== pickup-pickage-4  ==============*/
+    
+.driver-license .number-steps ul li p {font-size: 11px;}
+.flat-screen-tv-con {border-bottom: solid 2px #dddddd; width: 429px;}
+.flat-screen-tv-delivery ul {border-bottom: solid 2px #dddddd; width: 431px;}
+.driver-license .number-steps ul li {width: 33%;}
+.deshbord-head .deshbord-nav ul {width: 100%;}
+.deshbord-head .deshbord-nav ul {width: 86%;}
+.pickup-pickage-4 .number-steps ul {width: 92%;}
+.pickup-pickage-4 .flat-screen-tv {width: 81%;}    
+.map-point ul {border-bottom: solid 2px #dddddd; width: 432px;}
+.flat-screen-tv-con {width: 382px;}
+.flat-screen-tv-delivery ul{width: 376px;}    
+.map-point ul {width: 381px;}
+.deshbord-head .deshbord-nav ul {width: 98%;}    
+.deshbord-head .deshbord-nav ul {width: 109%;}
+    
+/*=============== pickup-pickage-5  ==============*/
+    
+.driver-license .number-steps ul li span {width: 88px; line-height: 82px;}
+.driver-license .number-steps ul li span {font-size: 23px;}
+.driver-license .number-steps ul li p {font-size: 10px;}    
+.pickup-pickage-5 .bottom-foot ul li figure img {width: 66px;}
+.pickage-mobile {width: 100%} 
+.pickup-pickage-5 .track ul li p {width:70%;}
+    
+    
+/*=============== driver-license  ==============*/
+    
+.deshbord-head .deshbord-nav.driving-license ul {width: 87%;}
+.driver-license .number-steps.driv-license-nub ul li span {width: 77px; line-height: 74px;}
+.driver-license .number-steps.driv-license-nub ul li {width: 25%;}    
+.license-form-block {width: 435px;} 
+.license-form-block .login-bttn {font-size: 17px; width: 167px; line-height: 44px;}    
+.license-form-block .next-bttn {width: 167px; line-height: 44px; font-size: 17px;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 100% !important;}
+.license-form-block .form-field input {font-size: 13px;}
+
+/*=============== driver-license-2  ==============*/
+    
+.deshbord-head .deshbord-nav.driving-license ul {width: 89% !important;}
+.deshbord-head .deshbord-nav.driving-license ul {width: 97% !important;}
+    
+/*================ index ===========*/    
+    
+.how-it-work .block .arrow-left { position: relative; }
+.how-it-work .block .arrow-left:after {content: ""; display: inline-block; position: absolute; width: 124px; height: 653px; left: 182px; background: url(../images/mobile-arrow-first-step.png) no-repeat; background-size: auto auto; background-size: cover; bottom: -526px; z-index: 1;}
+.how-it-work .block figure img { width: 90%; }
+.how-it-work .block .arrow-right { position: relative; }
+.how-it-work .block .arrow-right:after {content: ""; display: inline-block; position: absolute; width: 124px; height: 627px; left: -49px; background: url(../images/mobile-arrow-second-step.png) no-repeat;  background-size: auto auto; background-size: cover; bottom: -542px;  z-index: 1;}    
+    
+    
+}
+
+
+@media screen and (max-height: 450px) {
+.sidenav {padding-top: 15px;}
+.sidenav a {font-size: 18px;}
+
+    
+}
+/*413 to 375*/
+@media (max-width : 413px) {
+.how-it-work .block p {font-size: 14px;}
+.testimonials .block p {line-height: 12px;}	
+.driver-page .banner .carousel .carousel-caption {margin-top: 60px;}
+.bannercontent.inner-contant.col-xs-8.mobile-banner {width: 100%;}
+
+.col-xs-3.mobile-banner {width: 57%; height: 76px; }
+.driver-page .how-we-work {background: #41b24a; padding: 60px 0; text-align: center;}
+.col-sm-6.how-we {padding: 474px 0 0 0;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin: 4px 0; padding: 0 18px; line-height: 27px;}
+.col-xs-3.mobile-banner {width: 34%;}
+.mobile-size img {min-height: 357px;}
+.driver-page .banner .carousel .carousel-caption {margin-top: 47px;}
+.col-xs-3.mobile-banner {width: 32%;}
+#mySidenav .bttn {/*width: 44%;*/ width: 199px;}
+.mobile {display: block;  width: 100%;}
+.driver-page figure.col-xs-3.mobile-banner{ height: inherit;  }
+.mobile-drive-logo {width: 40%;float: right;}    
+.sender-page .banner .carousel .carousel-caption h2 {line-height: 15px; font-size: 13px;}
+.home-page-banner .img-bg {height:0;}   
+/*=============== sign in  ==============*/
+
+.login-page .login-form {width: 100%;}
+.social-media .footer-con {margin: 15px 0 0 105px;}    
+
+/*=============== verification  ==============*/    
+    
+.play-store {width: 73%;}
+
+/*=============== sender-dashboard  ==============*/
+    
+.sender-desh .side-fixed-menu li a {font-size: 13px;}    
+.sidebar-mobile .credits p {font-size: 14px;}
+.sidebar-mobile h3 {font-size: 15px; margin-left: 21px;}
+.profile-form .photo__frame {width: 49%; height: 108px;}    
+.sender-desh .form-body .profile-form .form-group .form-field input{text-align: center; font-size: 19px;}
+.select-type ul li {width: 100%;}
+.select-type ul li .check {left: 135px;}
+.sender-desh .sub-form ul li label input {margin-left: 3px;}
+.sender-desh .form-body .profile-form .form-group .form-field input {text-align: center; font-size: 18px;}    
+.mobile-header img {width: 150px;}
+.select-type ul li {width: 50%;}
+.select-type ul li .check {left: 64px;}
+    
+/*=============== pickup-pickage-1  ==============*/
+
+.deshbord-head .deshbord-nav ul {width: 100%;}
+.deshbord-nav li {font-size: 9px;}
+.driver-license .number-steps ul li p {font-size: 9px;}
+.driver-form .blue-head {font-size: 14px;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {width: 134px;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn{font-size: 15px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {width: 140px; font-size: 14px;}
+.pickup-pickage-2 .pickage p {font-size: 15px;}
+.pickage .map-point img {width: 314px;}    
+.driver-license .number-steps ul li span {font-size: 23px;}
+.driver-license .number-steps ul li {width: 33%;}
+.deshbord-head .login-profile span {font-size: 15px; margin-right: 8px;}    
+.deshbord-head .login-profile figure img{width: 44px;}
+.deshbord-head .login-profile figure {margin-left:0;}    
+.deshbord-head .deshbord-nav ul { width: 106%;}
+.number-steps .pickup-pickage-number ul li {width: 33%;}    
+
+    
+/*=============== pickup-pickage-2  ==============*/
+    
+.delivery-tools .pricing-block{font-size: 17px;}    
+.delivery-package-mobile-page img {width: 62px;}     
+.driver-form h3 {font-size: 15px;}
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn {width: 139px; font-size: 13px;}    
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn{width: 139px; font-size: 13px;}
+.pickup-pickage .pickup-pickage-block .left-side-bttn {width: 160px;}    
+.pickup-pickage .pickup-pickage-block .left-side-bttn {width: 160px;}        
+.pickup-pickage .number-steps ul {width: 94%;}
+.social-media.footer-con {margin: 15px 0 0 104px}
+.delivery-tools li ul li + li {margin-left: -1px;}    
+.delivery-tools .pricing-block {padding: 50px 61px 0 0;} 
+
+    
+    
+/*=============== pickup-pickage-3  ==============*/
+    
+.driver-license .number-steps ul li span {width: 88px; line-height: 79px;}
+.pickup-pickage-3 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 8px; line-height: 37px;}    
+.pickup-pickage-3 .left-side-bttn {width: 133px; font-size:15px;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {margin: 37px 8px 0 0; line-height: 39px;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {width: 142px; font-size: 15px;}    
+    
+/*=============== pickup-pickage-4  ==============*/
+    
+.flat-screen-tv-con {width: 100%;}
+.flat-screen-tv-delivery ul {width: 100%;}
+.map-point ul {border-bottom: solid 2px #dddddd; width: 100%;} 
+.map-point ul {font-size: 11px;}
+.map-profile .accept-bttn a {font-size: 11px;}    
+.flat-screen-tv-paid p span {font-size: 17px; padding: 0 0 0 5px;}
+    
+    
+/*=============== pickup-pickage-5  ==============*/    
+.pickup-pickage-5 .number-steps ul {width: 92%;}    
+.pickage-mobile {width: 100%}
+    
+/*=============== driver-license  ==============*/
+
+.deshbord-head .deshbord-nav.driving-license ul {    width: 96%;}    
+.driver-license .number-steps.driv-license-nub ul li span {width: 67px; line-height: 67px;}
+.driver-license .number-steps.driv-license-nub ul {width: 100%;}
+.driver-license .number-steps.driv-license-nub ul li {width: 24%;}    
+.driving-license-upload-license .box img {width: 56%;}
+.driver-license .driver-form .inputfile + label span {font-size: 14px;}
+.mobile-driving-license {width: 100%;}
+.license-form-block {width: 100%;} 
+.license-form-block .login-bttn {font-size: 16px; width: 149px; line-height: 44px;}
+.license-form-block .next-bttn {width: 149px; line-height: 44px; font-size: 16px;}  
+.deshbord-head .deshbord-nav ul {width: 106%;}
+.pickup-pickage-5 .track ul li + li span::before {left: -38%; top: 20%; width: 100px;}
+
+/*================ index ===========*/    
+
+.how-it-work .block .arrow-left::after {left: 216px;}
+.driver-license {margin-top: 210px;}    
+    
+}
+
+
+/*374 to 320*/
+@media (max-width : 374px) {
+.mobile {display: block; width:100%; margin: 0 auto;}
+.how-it-work .block p {font-size: 13px;}
+.form-block .bttn {width: 93%;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin: 4px 0; padding: 0 18px; line-height: 27px;}
+.col-xs-3.mobile-banner {width: 34%;}
+.mobile-size img {min-height: 357px;}
+.mobile {display: block; width: 100%;}
+.driver-page figure.col-xs-3.mobile-banner img{width: 33%;}
+header .mobile-menu img {width: 125px; float: right;}
+.form-block .bttn {   font-size: 20px;}    
+.banner .carousel .carousel-caption h2 {font-size: 28px;     line-height: 37px;}   
+.form-block .form-group .form-field + .form-field {margin: 11px 0;}    
+.banner .carousel img {width: 140%;}
+.mobile-drive-logo {width: 40%;float: right;}    
+.pets-block p {font-size: 13px; width: 100%;}
+.pets-block p{padding-right: 0;} 
+.home-page-banner .img-bg {height: 0;}
+.banner .carousel .carousel-caption {top: 42%;}
+.banner .carousel .carousel-caption h2 {font-size: 26px;}
+/*=============== sign in  ==============*/    
+.login-page.pt-220 .headline {width: 100%;}
+.login-page .headline {padding: 0 0 0 0;}
+.social-media.footer-con {margin: 15px 0 0 90px;}   
+
+/*=============== verification  ==============*/
+    
+.play-store {width: 82%;}
+section.login-page.registration .headline h3 {font-size: 24px;}
+.social-media.footer-con {margin: 15px 0 0 84px;}
+    
+/*=============== sender-dashboard  ==============*/
+
+.sidebar-mobile h3 {font-size: 14px;}    
+.select-type ul li .check {left: 117px;}
+.sender-desh .sub-comment {font-size: 18px;}    
+.sender-desh .icon-bttn a {width: 67%;}
+.sender-desh .form-body .profile-form .form-group .form-field input {text-align: center; font-size: 15px;}
+.sender-desh textarea {height: 143px;     width: 109%;}
+.sender-desh .sub-form ul li label {width: 100%;}
+.sender-desh .sub-form ul li label input {margin-left: 1px;}
+.sender-desh .blue-head {font-size: 15px;}    
+.sender-desh .sub-form h3 {font-size: 12px;}
+#insurance .profile-form h3 {font-size: 13px;}
+.insurance .post-gig p {font-size: 15px;}    
+.select-type ul li .check {left: 59px !important;}
+
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 98%;}
+.deshbord-head .deshbord-nav li a {padding: 0 10px;}    
+.driver-license .number-steps ul li span {width: 81px;  line-height: 80px;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {margin: 36px 0 0 5px;}
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {margin: 36px 5px 0 0;}
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {width: 144px; font-size: 13px;}  
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {width: 144px; font-size: 13px;}
+.pickage .map-point img {width: 275px;}
+.deshbord-head .login-profile span {font-size: 15px; margin-right: 8px;}    
+.deshbord-head .login-profile figure img{width: 44px;}
+.deshbord-head .login-profile figure {margin-left:0;}    
+.number-steps.pickup-pickage-number ul li {width: 31%;}
+    
+/*=============== pickup-pickage-2  ==============*/
+    
+.driver-license .number-steps ul li span {width: 85px; line-height: 81px;}
+.pickup-pickage .number-steps ul {width: 100%;}
+.pickup-pickage .pickup-pickage-block .left-side-bttn {width: 139px; font-size: 14px;}    
+.pickup-pickage .pickup-pickage-block .right-side-bttn {width: 139px; font-size: 14px;}        
+.social-media.footer-con {margin: 15px 0 0 94px !important; }
+    
+/*=============== pickup-pickage-3  ==============*/
+
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {width: 141px; font-size: 13px;}
+.pickup-pickage-3 .left-side-bttn {width: 141px; font-size: 13px;}
+.pickup-pickage-3 .delivery-list .delivery h3 {font-size: 23px;}
+
+    
+/*=============== pickup-pickage-4  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 88%;}
+.flat-screen-tv-con {width: 332px;}
+.flat-screen-tv-delivery ul {width: 327px;}
+.map-point ul {width: 332px;}
+.map-profile span {font-size: 15px;}
+.map-profile h2 {font-size: 17px;}
+.map-profile .accept-bttn{line-height: 41px;}    
+    
+/*=============== pickup-pickage-5  ==============*/ 
+    
+.driver-form .bttn {font-size: 12px; padding: 0 13px;}
+.pickup-pickage-5 .track ul li span{width: 58px; height: 54px;} 
+.pickup-pickage-5 .track ul li span img {width: 75%; }
+.pickup-pickage-5 .driver-form p {font-size: 9px;}
+.pickup-pickage-5 .bottom-foot ul li figure img {width: 60px;}
+    
+ /*=============== driver-license  ==============*/
+    
+.deshbord-head .deshbord-nav.driving-license ul {width: 89%;}    
+.driver-license .driver-form .inputfile + label span {font-size: 12px;}
+.license-form-block .login-bttn {font-size: 15px; width: 129px; line-height: 40px;}
+.license-form-block .next-bttn {width: 129px; line-height: 40px; font-size: 15px;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 89%;}
+.mobile-bttn-license-page .license-form-block .next-bttn {font-size: 12px; width: 122px; line-height: 40px;}    
+.driver-form {width: 95%;}    
+    
+/*================ index ===========*/    
+    
+.how-it-work .block .arrow-left::after {left: 173px !important;}
+.driver-license {margin-top: 210px;}
+    footer .footer-logo img {
+        width: 36%;
+    }
+}
+
+
+/*320 to 320*/
+@media (max-width : 374px) {
+.driver-page .banner .carousel .carousel-caption {margin-top: 91px;}
+.driver-page .banner .carousel .carousel-caption h2 {font-size: 11px;}
+.driver-page .banner .carousel .carousel-caption h3 {font-size: 13px;}
+.driver-page .banner .carousel .carousel-caption .bttn {margin: 6px 0; padding: 0 12px; line-height: 23px;}
+.bttn {font-size: 10px;}
+.driver-page .subscribe-block h3 {font-size: 18px;}
+.driver-page .subscribe-block p {font-size: 11px;}
+.driver-page .subscribe-block .bttn {padding: 0 43px; margin-top: 2px;}
+.driver-page .pet-driver h3 {margin-bottom: -2px;}
+.driver-page .pet-driver p {font-size: 11px;}
+.driver-page .pet-driver h3 {font-size: 22px;}
+.question-block h3 {margin-bottom: 16px;}
+.question-block h3 {font-size: 17px;}
+.question-block ul li {font-size: 14px;}
+
+#mySidenav .bttn {/*width: 60%;*/ width: 199px;}
+.how-we-work-mobile img {width: 50%;}
+.mobile {display: block;  width: 100%;}
+.banner .carousel .carousel-caption {top: 50%;}
+.banner .carousel .carousel-caption h2 {font-size: 25px;}
+.driver-page .banner.inner-banner .carousel-item {height: 68vh;}
+.form-block .form-group .form-field + .form-field  + .form-field{ margin-top: 0; margin-bottom: 0;}
+.form-block .bttn{ width: 96%;}
+.headline h3 {font-size: 30px;}
+.how-it-work .headline{ padding-bottom: 0;}
+.how-it-work .block h4{ margin-top: 20px}
+.bttn{font-size: 12px; }
+.how-it-work .block figure img{ margin-top: 0;}
+.testimonials .headline h3 span{ display: block;}
+header .mobile-menu img{ width: 200px;  }
+header .mobile-menu span img{ width: 25px;}
+#mySidenav a{ padding-left: 0;}
+banner .carousel img {height: 269px;}
+header .mobile-menu img {width: 125px; float: right;}
+.carousel-caption h2 {line-height: 10px;}
+.form-field + .form-field {margin-top: 11px; margin-bottom: 0;}
+.form-block .bttn {   font-size: 20px;}    
+.pets-block h3 {font-size: 27px;} 
+.question-block ul li {font-size: 13px;}
+.form-block .form-group .form-field + .form-field {margin: 11px 0;}
+.sender-page .banner .carousel .carousel-caption h2 {line-height: 16px; font-size: 13px;}
+.form-block .form-group .form-field span input {width: 67%;}
+/*=============== sign in  ==============*/
+
+.login-page .headline p {font-size: 14px;}    
+.social-media.footer-con {margin: 15px 0 0 80px;}    
+  
+/*=============== verification  ==============*/
+    
+.play-store {width: 94%;}    
+section.login-page.registration .headline h3 {font-size: 21px;}
+.login-page .headline p {font-size: 13px;}
+ 
+/*=============== sender-dashboard  ==============*/
+    
+.profile-form .photo__frame {width: 70%; height: 111px;}    
+.select-type ul li .check {left: 91px;}
+.sender-desh .form-body .profile-form .help {right: -28px;}    
+.sender-desh .sub-comment {font-size: 17px;}
+.sender-desh .icon-bttn a {width: 75%; line-height: 20px;}
+.sender-desh .icon-bttn a {width: 66%; height: 127px;}
+.mobile-form-sec  .form-group .form-field input {width: 108%;}    
+.sender-desh .form-body .profile-form .form-group .form-field input {font-size: 12px;}
+#insurance .profile-form h3 {font-size: 12px;}    
+.insurance .post-gig p {font-size: 14px;}
+.sender-desh .sub-form ul li label input {margin-left: -3px;}    
+.sender-desh .sub-form ul li label input {font-size: 21px; }
+.sender-desh .sub-form ul li label input { padding: 0 0 0 9px;}    
+.select-type ul li .check {left: 42px !important;}
+.sender-desh textarea {height: 119px;}    
+.social-media.footer-con {margin: 15px 0 0 62px;}    
+    
+ 
+/*=============== pickup-pickage-1  ==============*/
+    
+.deshbord-head .deshbord-nav ul {width: 105%;} 
+.deshbord-head .deshbord-nav li a {padding: 0 9px;}
+.mobile-header-logo img {width: 130px; margin-top: 11px;}    
+.deshbord-head .login-profile span {font-size: 15px; margin-right: 8px;}    
+.deshbord-head .login-profile figure img{width: 44px;}
+.deshbord-head .login-profile figure {margin-left:0;}    
+.pickup-pickage-2 .number-steps ul {width: 100%;}
+.driver-license .number-steps ul li p {font-size: 8px;} 
+.driver-form .blue-head {font-size: 13px;}
+.driver-form .license-btn {font-size: 10px;} 
+.pickup-pickage-2 .pickup-pickage-block .left-side-bttn {width: 111px; font-size: 12px; line-height: 42px;}    
+.pickup-pickage-2 .pickup-pickage-block .right-side-bttn {width: 118px; font-size: 12px; line-height: 42px;}        
+.pickup-pickage-2 .pickage p {font-size: 12px;}
+.pickage .map-point img {width: 233px;}
+.number-steps.pickup-pickage-number ul li {width: 33%;}
+    
+    
+/*=============== pickup-pickage-2  ==============*/    
+    
+.pickup-pickage .pickup-pickage-block .left-side-bttn {width: 123px; font-size: 14px; line-height: 46px;}
+.pickup-pickage .pickup-pickage-block .right-side-bttn {width: 123px; font-size: 14px; line-height: 46px;}    
+.pickup-pickage .pickup-pickage-block-1 .left-side-bttn .current-bttn {width: 132px; font-size: 12px;}
+.pickup-pickage .pickup-pickage-block-1 .right-side-bttn .archived-bttn {width: 132px; font-size: 12px;}    
+.delivery-package-plam-mobile-page ul img {width: 16%; }
+.delivery-tools img {padding: 0 8px 0 0;}
+.driver-form h3 {padding: 27px 0 6px 0;} 
+.delivery-package-mobile-page img {width: 55px;}
+.pickup-pickage .delivery h3 {font-size: 20px;}
+.social-media.footer-con {margin: 15px 0 0 67px !important;}    
+.driver-license .number-steps ul li span {width: 54px; line-height: 54px; font-size: 16px;}
+    
+/*=============== pickup-pickage-3  ==============*/
+    
+.driver-license .number-steps ul li span {width: 72px; line-height: 70px;}
+.driver-license .number-steps ul li span {font-size: 20px;}
+.pickup-pickage-3 .pickup-pickage-block .left-side-bttn {margin: 37px 0 0 12px;}
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {margin: 37px 12px 0 0;}
+.pickup-pickage-3 .left-side-bttn {width: 114px; font-size: 13px; line-height: 37px;}    
+.pickup-pickage-3 .pickup-pickage-block .right-side-bttn {width: 120px; font-size: 12px; line-height: 37px;}
+.delivery-tools .pricing-block {padding: 32px 30px 0 0;}
+.pickup-pickage-3 .delivery-list .delivery h3 {font-size: 19px;}
+.driver-form p {font-size: 11px;}
+
+/*=============== pickup-pickage-4  ==============*/
+    
+.flat-screen-tv-con {width: 275px;}
+.flat-screen-tv-delivery ul {width: 279px;}
+.map-point ul {width: 278px;} 
+.map-point ul {font-size: 9px;}
+.map-point.delivery-package-plam-mobile-page ul img {width: 39px;}    
+
+/*=============== pickup-pickage-4  ==============*/
+.pickup-pickage-5 .track .bttn {width: 100%; margin: 9px 0;}
+.pickup-pickage-5 .number-steps ul {width: 100%;}
+    
+/*=============== driver-license  ==============*/
+
+.deshbord-head .deshbord-nav.driving-license ul {width: 105%;}
+.driver-license .number-steps ul li span {width: 60px; line-height: 64px; font-size: 16px;}
+.driver-form .blue-head {font-size: 12px;}
+.driving-license-upload-license {width: 100%;}    
+.deshbord-head .deshbord-nav.driving-license ul {width: 105% !important;}    
+.license-form-block .login-bttn {font-size: 13px; width: 105px; line-height: 40px;}
+.license-form-block .next-bttn {font-size: 12px; width: 105px; line-height: 40px;}
+.deshbord-head .deshbord-nav ul {width: 113% !important;}
+.driver-license .number-steps.driv-license-nub ul li span {width: 54px; line-height: 54px; font-size: 16px;}
+.driver-license .number-steps.driv-license-nub ul li span {width: 54px; line-height: 54px; font-size: 16px;}
+.driver-license .number-steps.driv-license-nub ul li span {width: 54px; line-height: 54px; font-size: 16px;}    
+    
+/*================ index ===========*/ 
+    
+.how-it-work .block .arrow-right::after {left: -33px;}
+.how-it-work .block .arrow-left::after {left: 133px !important;}    
+.pickup-pickage-4 .number-steps ul {width: 96%;}
+.pickup-pickage-3 .number-steps ul {width: 96%;}
+
+
+    footer .footer-logo img {
+        width: 36%;
+    }
+}
