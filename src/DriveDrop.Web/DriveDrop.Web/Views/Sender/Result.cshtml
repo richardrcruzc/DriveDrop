@@ -34,8 +34,7 @@
 
                                                                 @*<img src="~/images/profile-icon.png">*@
                                                                 
-
-                                                                Recommended
+                                                                 
                                                             </p>
                                                             <p class="message--mobile">Tap here to select your picture.</p>
                                                         </div>
@@ -56,11 +55,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                               
                                                 <div class="photo__options hide">
                                                     <div class="photo__zoom">
                                                         <input type="range" class="zoom-handler">
                                                     </div><a href="javascript:;" class="remove"><i class="fa fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="form-field">
+                                                <div class="col-xs-12">
+    <label for="CustomerStatus" style="font-size:large; background:#43b249;color:#fff"> <span>  Status:  @Model.CustomerStatus</span> </label>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -82,16 +87,11 @@
                                                     <input asp-for="PersonalPhotoUri" hidden />
 
                                                     <div class="title">
-                                                        <strong>My Personal Information Details</strong>
+                                                        <strong>My Personal Information Details</strong><br /><br />
                                                     </div>
  
                                                     <div class="form-horizontal">
-                                                        <div class="form-field">
-                                                            <div class="col-lg-10">
-                                                                <label for="CustomerStatus"><span>Status </span>@Model.CustomerStatus</label>
-
-                                                            </div>
-                                                        </div>
+                                                       
                                                         <div class="form-field">
                                                             <div class="col-lg-12">
                                                                 <label for="FirstName">First Name</label>
@@ -150,9 +150,13 @@
                                                                 <span asp-validation-for="VerificationId" class="text-danger"></span>
                                                             </div>
                                                         </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                 <br />
+                                                            </div>
+                                                        </div>
 
-
-                                                        <div class="post-gig">
+                                                        <div class="post-gig"> 
                                                             <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
                                                         </div>
 
