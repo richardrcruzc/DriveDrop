@@ -100,24 +100,24 @@ namespace DriveDrop.Api.Controllers
         [Route("[action]/type/{customertype}/status/{statusId}/transporType/{transporTypeId}/LastName/{LastName}")]
         public async Task<IActionResult> Items(int? customertype, int? statusId, int? transporTypeId, string LastName, [FromQuery]int pageIndex = 0, [FromQuery]int pageSize = 10)
         {
-            var root = (IQueryable<Customer>)_context.Customers.Where(x=>x.Isdeleted==false);
+            var root = (IQueryable<Customer>)_context.Customers.OrderBy(i=>i.Id).Where(x=>x.Isdeleted==false);
 
             if (customertype.HasValue)
             {
-                root = root.Where(ci => ci.CustomerTypeId == customertype);
+                root = root.OrderBy(t=>t.CustomerTypeId).Where(ci => ci.CustomerTypeId == customertype);
             }
             if (statusId.HasValue)
             {
-                root = root.Where(ci => ci.CustomerStatus.Id == statusId);
+                root = root.OrderBy(c=>c.CustomerStatusId).Where(ci => ci.CustomerStatus.Id == statusId);
             }
 
             if (transporTypeId.HasValue)
             {
-                root = root.Where(ci => ci.TransportType.Id == transporTypeId);
+                root = root.OrderBy(t=>t.TransportTypeId).Where(ci => ci.TransportType.Id == transporTypeId);
             }
             if (LastName!="null")
             {
-                root = root.Where(l => l.LastName.Contains(LastName));
+                root = root.OrderBy(n=>n.LastName).Where(l => l.LastName.Contains(LastName));
                 //root = root.Where(l => l.FirstName.Contains(LastName));
             }
 

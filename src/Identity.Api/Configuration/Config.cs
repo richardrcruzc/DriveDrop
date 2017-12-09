@@ -11,7 +11,8 @@ namespace Identity.Api.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource("drivedrop", "drivedrop Service") 
+                new ApiResource("drivedrop", "drivedrop Service") ,
+                new ApiResource("locations", "Locations Service")
             };
         }
 
@@ -48,7 +49,7 @@ namespace Identity.Api.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "drivedrop",
-                        "basket"
+                        "locations"
                     }
                 },
                 new Client
@@ -64,14 +65,13 @@ namespace Identity.Api.Configuration
                     RedirectUris = { clientsUrl["Xamarin"] },
                     RequireConsent = false,
                     PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
-                    AllowedCorsOrigins = { "http://eshopxamarin" },
+                    AllowedCorsOrigins = { "http://drivedropxamarin" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "drivedrop",
-                        "basket",
+                        "drivedrop", 
                         "locations"
                     },
                     //Allow requesting refresh tokens for long lived API access

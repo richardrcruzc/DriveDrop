@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿ 
 namespace Identity.Api
 {
     public class AppSettings
@@ -15,6 +11,7 @@ namespace Identity.Api
         public string EmailUser { get; set; }
         public string EmailPassword { get; set; }
         public string DriveDropApi { get; set; }
-        
+
+        public bool UseCustomizationData { get; set; }
     }
 }

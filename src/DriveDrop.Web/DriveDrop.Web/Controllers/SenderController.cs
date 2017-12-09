@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static DriveDrop.Web.Services.PasswordAdvisor;
 
 namespace DriveDrop.Web.Controllers
 {
@@ -445,7 +446,7 @@ namespace DriveDrop.Web.Controllers
         {
             var context = _httpContextAccesor.HttpContext;
 
-            return await context.Authentication.GetTokenAsync("access_token");
+             return await context.GetTokenAsync("access_token");
         }
         [AllowAnonymous]
         public IActionResult NewSender()
@@ -669,15 +670,8 @@ namespace DriveDrop.Web.Controllers
             return View("NewSenderResults",user);
         }
 
-        [AllowAnonymous]
-        public async Task<JsonResult> ValidateUserName(string UserEmail)
-        {
-            var validateUri = API.Common.ValidateUserName(_remoteServiceCommonUrl, UserEmail);
-
-            var response = await _apiClient.GetStringAsync(validateUri); 
-
-            return Json(!response.Equals("duplicate"));
-        }
+        
+ 
 
         private ActionResult Json(bool v, object allowGet)
         {

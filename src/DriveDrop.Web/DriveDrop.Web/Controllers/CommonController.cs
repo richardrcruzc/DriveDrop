@@ -23,7 +23,7 @@ namespace DriveDrop.Web.Controllers
     public class CommonController : Controller
     {
 
-        private readonly IRatingRepository _redisRepository;
+       // private readonly IRatingRepository _redisRepository;
 
         private IHttpClient _apiClient;
         private readonly string _remoteServiceCommonUrl; 
@@ -36,11 +36,11 @@ namespace DriveDrop.Web.Controllers
         private readonly IHostingEnvironment _env;
         private IMemoryCache _cache;
 
-        public CommonController(IRatingRepository redisRepository, IMemoryCache memoryCache, IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
+        public CommonController(  IMemoryCache memoryCache, IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser,
             IHostingEnvironment env)
         {
-            _redisRepository = redisRepository;
+//_redisRepository = redisRepository;
             _cache = memoryCache;
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/"; 
             _remoteServiceRatingUrl = $"{settings.Value.DriveDropUrl}/api/v1/review/";
@@ -488,7 +488,7 @@ namespace DriveDrop.Web.Controllers
         {
             var context = _httpContextAccesor.HttpContext;
 
-            return await context.Authentication.GetTokenAsync("access_token");
+             return await context.GetTokenAsync("access_token");
         }
     }
 }

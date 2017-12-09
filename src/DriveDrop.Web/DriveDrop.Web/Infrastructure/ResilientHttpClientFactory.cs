@@ -1,20 +1,31 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Logging;
 using Polly;
 using System;
 using System.Net.Http;
+
 
 namespace DriveDrop.Web.Infrastructure
 {
     public class ResilientHttpClientFactory : IResilientHttpClientFactory
     {
         private readonly ILogger<ResilientHttpClient> _logger;
+        private readonly int _retryCount;
+        private readonly int _exceptionsAllowedBeforeBreaking;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ResilientHttpClientFactory(ILogger<ResilientHttpClient> logger)
-            => _logger = logger;
+        public ResilientHttpClientFactory(ILogger<ResilientHttpClient> logger, IHttpContextAccessor httpContextAccessor, int exceptionsAllowedBeforeBreaking = 5, int retryCount = 6)
+        {
+            _logger = logger;
+            _exceptionsAllowedBeforeBreaking = exceptionsAllowedBeforeBreaking;
+            _retryCount = retryCount;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
 
         public ResilientHttpClient CreateResilientHttpClient()
-            => new ResilientHttpClient((origin) => CreatePolicies(), _logger);
+            => new ResilientHttpClient((origin) => CreatePolicies(), _logger, _httpContextAccessor);
 
         private Policy[] CreatePolicies()
             => new Policy[]
@@ -22,7 +33,7 @@ namespace DriveDrop.Web.Infrastructure
                 Policy.Handle<HttpRequestException>()
                 .WaitAndRetryAsync(
                     // number of retries
-                    6,
+                    _retryCount,
                     // exponential backofff
                     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                     // on retry
@@ -36,9 +47,9 @@ namespace DriveDrop.Web.Infrastructure
                         _logger.LogDebug(msg);
                     }),
                 Policy.Handle<HttpRequestException>()
-                .CircuitBreakerAsync(
+                .CircuitBreakerAsync( 
                    // number of exceptions before breaking circuit
-                   5,
+                   _exceptionsAllowedBeforeBreaking,
                    // time circuit opened before retry
                    TimeSpan.FromMinutes(1),
                    (exception, duration) =>

@@ -44,14 +44,14 @@ namespace DriveDrop.Web.ViewModels
         [Required]
         [EmailAddress]
         [Display(Name = "Email Address")]
-        [Remote("ValidateUserName", "Common" )]
+        [Remote("ValidateUserName", "Common")]
         public string UserEmail { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
-        [Remote("ValidatePassword", "Common")]
+        [Remote(action: "ValidatePassword", controller: "Common")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
@@ -145,7 +145,7 @@ namespace DriveDrop.Web.ViewModels
         [Required]
         [EmailAddress]
         [Display(Name = "Email Address")]
-        [Remote("ValidateUserName", "Sender", ErrorMessage = "Username is not available.")]
+        [Remote("ValidateUserName", "Common", ErrorMessage = "Username is not available.")]
         public string UserEmail { get; set; }
 
         [Required]

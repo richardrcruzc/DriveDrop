@@ -82,7 +82,10 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public string PaymentReceived { get; private set; }
         public string PaymentReceivedDate { get; private set; }
         public string PaymentNotes { get; private set; }
-        
+
+        public void SetAwaitingValidationStatus()
+        {
+        }
 
         public List<PackageStatusHistory> PackageStatusHistories { get; private set; }
         public Shipment AddStatusHistory(PackageStatusHistory history)

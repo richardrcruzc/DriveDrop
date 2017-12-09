@@ -16,7 +16,7 @@ namespace ApplicationCore.Entities.ClientAgregate
         Task<Customer> FindAsync(string UserIdentityGuid);
 
         Task<Customer> GetCustomerByUser(string user);
-
+        Task<Customer> GetAsync(int orderId);
 
     }
      

@@ -56,6 +56,7 @@ namespace DriveDrop.Api.Controllers
             {
                 var customer = await _context.Customers
                     .Include(s=>s.ShipmentSenders)
+                    .OrderBy(u=>u.UserName)
                     .Where(x => x.UserName == userEmail).FirstOrDefaultAsync();
                 if (customer != null)
                     return BadRequest("customerNotFound");
@@ -125,6 +126,7 @@ namespace DriveDrop.Api.Controllers
                 
                 var root =await  _context.Shipments
               .Where(x => x.Id == id)
+              .OrderBy(i=>i.Id)
               .Include(d => d.DeliveryAddress)
               .Include(d => d.PickupAddress)
               .Include(d => d.ShippingStatus)
@@ -158,7 +160,7 @@ namespace DriveDrop.Api.Controllers
                 var shipping = await _context.Shipments.FindAsync(id);
                 if (shipping != null)
                 {
-                    var driver = _context.Customers.Where(c => c.Id == driverId).FirstOrDefault();
+                    var driver = _context.Customers.OrderBy(i=>i.Id).Where(c => c.Id == driverId).FirstOrDefault();
                     if (driver != null)
                     { 
                         shipping.SetDriver(driver);
@@ -244,7 +246,7 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var shipping = await _context.Shipments.Where(x=>x.Id == shippingId).FirstOrDefaultAsync();
+                var shipping = await _context.Shipments.OrderBy(i=>i.Id).Where(x=>x.Id == shippingId).FirstOrDefaultAsync();
                 if (shipping != null)
                 {
                     shipping.ChangeStatus(shippingStatusId);
@@ -291,7 +293,7 @@ namespace DriveDrop.Api.Controllers
 
 
                 var root = _context.Shipments
-              .Where(x => x.DriverId == id)
+              .Where(x => x.DriverId == id).OrderBy(x=>x.DriverId)
               .Include(d => d.DeliveryAddress)
               .Include(d => d.PickupAddress)
               .Include(d => d.ShippingStatus)
@@ -341,6 +343,7 @@ namespace DriveDrop.Api.Controllers
 
 
                 var root = _context.Shipments
+                  .OrderBy(d=>d.DriverId)
               .Where(x => x.DriverId == id && statusId.Contains( x.ShippingStatusId))
               .Include(d => d.DeliveryAddress)
               .Include(d => d.PickupAddress)
@@ -382,6 +385,7 @@ namespace DriveDrop.Api.Controllers
             try
             {
                 var model = await _context.Shipments
+                    .OrderBy(s=>s.SenderId)
                .Where(x => x.SenderId == id)
                .Include(d => d.DeliveryAddress)
                .Include(d => d.PickupAddress)
@@ -499,6 +503,7 @@ namespace DriveDrop.Api.Controllers
             {
                 var driver = _context
                     .Customers
+                    .OrderBy(i=>i.Id)
                     .Include(x=>x.DefaultAddress)
                     .Where(x => x.Id == driverId && x.CustomerType.Id==3).FirstOrDefault();
                 if (driver == null)
@@ -517,6 +522,7 @@ namespace DriveDrop.Api.Controllers
 
 
                 var root = await _context.Shipments
+                    .OrderBy(d=>d.DriverId)
                .Where(x => x.ShippingStatusId == ShippingStatus.NoDriverAssigned.Id 
                 && x.DriverId == null && x.Distance<= driverDelivertDistance)
                .Include(d => d.DeliveryAddress)
@@ -622,6 +628,7 @@ namespace DriveDrop.Api.Controllers
             try
             {
                 var root = _context.Shipments
+                    .OrderBy(d=>d.DriverId)
                .Where(x => x.ShippingStatusId == ShippingStatus.PendingPickUp.Id && x.DriverId == null)
                .Include(d => d.DeliveryAddress)
                .Include(d => d.PickupAddress)

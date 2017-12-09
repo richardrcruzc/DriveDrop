@@ -8,8 +8,7 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using DriveDrop.Api.Infrastructure;
-using ApplicationCore.Entities.Helpers;
-using Hangfire;
+using ApplicationCore.Entities.Helpers; 
 
 namespace DriveDrop.Api.Services
 {
@@ -18,16 +17,17 @@ namespace DriveDrop.Api.Services
     // For more details see this link http://go.microsoft.com/fwlink/?LinkID=532713
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
-        private readonly IOptionsSnapshot<AppSettings> _settings;
+        //private readonly IOptionsSnapshot<AppSettings> _settings;
+        private readonly AppSettings _settings;
 
         private readonly IHostingEnvironment _env;
 
         private readonly DriveDropContext _context; 
-        public AuthMessageSender(DriveDropContext context, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
+        public AuthMessageSender(DriveDropContext context, IHostingEnvironment env, IOptions<AppSettings> settings)
         {
             _context = context;
             _env = env;
-            _settings = settings;
+            _settings = settings.Value;
         }
 
         
@@ -38,8 +38,8 @@ namespace DriveDrop.Api.Services
             var q = new QueuedEmail
             {
                 Body = message,
-                From = _settings.Value.EmailSenderEmail,
-                FromName = _settings.Value.EmailSenderName,
+                From = _settings.EmailSenderEmail,
+                FromName = _settings.EmailSenderName,
                 Subject = subject,
                 To = email,
                 ToName= customer.FullName,
@@ -49,19 +49,13 @@ namespace DriveDrop.Api.Services
                  
             };
 
-            _context.Add(q);
+            _context.Add(q);            
             await _context.SaveChangesAsync();
+           await  SendBatchEmailFromQueueAsync();
 
-
-            RecurringJob.AddOrUpdate(() => SendBatchEmailFromQueueAsync(), Cron.Minutely);
-
-
-            var jobId = BackgroundJob.Enqueue(() => SendEmailFromQueueAsync(q.Id));
-
-
-
-
-           // var succeeded = BackgroundJob.Requeue(jobId);
+            //RecurringJob.AddOrUpdate(() => SendBatchEmailFromQueueAsync(), Cron.Minutely);
+            //var jobId = BackgroundJob.Enqueue(() => SendEmailFromQueueAsync(q.Id));
+            //var succeeded = BackgroundJob.Requeue(jobId);
 
         }
         public async Task SendEmailFromQueueAsync(int id)
@@ -85,10 +79,10 @@ namespace DriveDrop.Api.Services
                     using (var client = new SmtpClient())
                     {
                     
-                        client.LocalDomain = _settings.Value.EmailLocalDomain;
+                        client.LocalDomain = _settings.EmailLocalDomain;
 
-                        await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
-                        await client.AuthenticateAsync(_settings.Value.EmailUser, _settings.Value.EmailPassword);
+                        await client.ConnectAsync(_settings.EmailLocalDomain, _settings.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
+                        await client.AuthenticateAsync(_settings.EmailUser, _settings.EmailPassword);
                         await client.SendAsync(emailMessage).ConfigureAwait(false);
                         await client.DisconnectAsync(true).ConfigureAwait(false);
 
@@ -133,10 +127,10 @@ namespace DriveDrop.Api.Services
                     using (var client = new SmtpClient())
                     {
 
-                        client.LocalDomain = _settings.Value.EmailLocalDomain;
+                        client.LocalDomain = _settings.EmailLocalDomain;
 
-                        await client.ConnectAsync(_settings.Value.EmailLocalDomain, _settings.Value.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
-                        await client.AuthenticateAsync(_settings.Value.EmailUser, _settings.Value.EmailPassword);
+                        await client.ConnectAsync(_settings.EmailLocalDomain, _settings.EmailLocalPort, SecureSocketOptions.Auto).ConfigureAwait(false);
+                        await client.AuthenticateAsync(_settings.EmailUser, _settings.EmailPassword);
                         await client.SendAsync(emailMessage).ConfigureAwait(false);
                         await client.DisconnectAsync(true).ConfigureAwait(false);
 

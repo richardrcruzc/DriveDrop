@@ -80,7 +80,7 @@ namespace DriveDrop.Web.ViewComponents
         {
             var context = _httpContextAccesor.HttpContext;
 
-            return await context.Authentication.GetTokenAsync("access_token");
+             return await context.GetTokenAsync("access_token");
         }
 
     }

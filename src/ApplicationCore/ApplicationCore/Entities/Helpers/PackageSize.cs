@@ -36,7 +36,7 @@ namespace ApplicationCore.Entities.Helpers
 
             if (state == null)
             {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
+                throw new ArgumentException($"Possible values for PackageSize: {String.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;
@@ -48,7 +48,7 @@ namespace ApplicationCore.Entities.Helpers
 
             if (state == null)
             {
-                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
+                throw new ArgumentException($"Possible values for PackageSize: {String.Join(",", List().Select(s => s.Name))}");
             }
 
             return state;

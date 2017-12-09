@@ -33,7 +33,7 @@
                                                                 <img id="Personal-image" src="@Model.PersonalPhotoUri"  />
 
                                                                 @*<img src="~/images/profile-icon.png">*@
-                                                                Recommended
+                                                                @*<label for="CustomerStatus" style="font-size:large; background:#43b249;color:#fff"> <span>  Status:  @Model.CustomerStatus</span> </label>*@
                                                             </p>
                                                             <p class="message--mobile">Tap here to select your picture.</p>
                                                         </div>
@@ -59,6 +59,13 @@
                                                     <div class="photo__zoom">
                                                         <input type="range" class="zoom-handler">
                                                     </div><a href="javascript:;" class="remove"><i class="fa fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="form-field">
+                                                <div class="col-xs-12">
+                                                    <label for="CustomerStatus" style="font-size:medium; background:#43b249;color:#fff"> <span>Status:</span> </label>
+                                                    <label for="CustomerStatus" style="font-size:medium; background:#43b249;color:#fff"> <span>@Model.CustomerStatus</span> </label>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -90,9 +97,10 @@
 
 
                                                             <div class="form-field">
-                                                                <div class="col-lg-12">
+                                                                @*<div class="col-lg-12">
                                                                     <label for="CustomerStatus"><span>Status:</span> @Model.CustomerStatus</label>
-                                                                </div>
+                                                                </div>*@
+                                                                <br />
                                                             </div>
 
                                                             <div class="form-field">
@@ -163,6 +171,11 @@
                                                                     <input asp-for="VerificationId" class="form-control" placeholder="Verification Id" />
                                                                    
                                                                     <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-field">
+                                                                <div class="col-lg-12">
+                                                                    <br /> 
                                                                 </div>
                                                             </div>
 

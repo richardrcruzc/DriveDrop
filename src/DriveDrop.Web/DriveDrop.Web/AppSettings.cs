@@ -23,7 +23,9 @@ namespace DriveDrop.Web
 
         public string RediConnectionString { get; set; }
 
-}
+        public bool UseCustomizationData { get; set; }
+
+    }
 
     public class Connectionstrings
     {

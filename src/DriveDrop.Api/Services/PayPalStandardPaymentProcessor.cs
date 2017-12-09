@@ -12,7 +12,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using static IdentityModel.OidcConstants;
 
 namespace DriveDrop.Api.Services
 {

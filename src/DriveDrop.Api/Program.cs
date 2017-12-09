@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using DriveDrop.Api.Infrastructure;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF; 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.IO;
+
 
 namespace DriveDrop.Api
 {
@@ -12,15 +15,38 @@ namespace DriveDrop.Api
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder() 
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            BuildWebHost(args)
+                .MigrateDbContext<DriveDropContext>((context, services) =>
+                {
+                    var env = services.GetService<IHostingEnvironment>();
+                    var settings = services.GetService<IOptions<DriveDropSettings>>();
+                    var logger = services.GetService<ILogger<DriveDropContextSeed>>();
+
+                    new DriveDropContextSeed()
+                        .SeedAsync(context, env, settings, logger)
+                        .Wait();
+                })
+.MigrateDbContext<IntegrationEventLogContext>((_, __) => { })
+                .Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args) 
                 .UseStartup<Startup>()
+                .UseHealthChecks("/hc")
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddJsonFile("appsettings.json");
+                    config.AddEnvironmentVariables();
+                })
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                    builder.AddDebug();
+                })
                 .UseApplicationInsights()
                 .Build();
-
-            host.Run();
-        }
     }
 }

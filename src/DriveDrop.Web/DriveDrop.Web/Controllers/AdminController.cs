@@ -19,6 +19,9 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
+ 
+
+
 namespace DriveDrop.Web.Controllers
 {
     [Authorize]
@@ -688,7 +691,7 @@ public async Task<IActionResult> DriverDetails(int? id)
         {
             var context = _httpContextAccesor.HttpContext;
 
-            return await context.Authentication.GetTokenAsync("access_token");
+             return await context.GetTokenAsync("access_token");
         }
 
         private void HandleBrokenCircuitException()

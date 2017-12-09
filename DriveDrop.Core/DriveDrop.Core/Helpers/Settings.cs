@@ -30,7 +30,7 @@ namespace DriveDrop.Core.Helpers
         private const string IdAllowGpsLocation = "allow_gps_location";
         private static readonly string AccessTokenDefault = string.Empty;
         private static readonly string IdTokenDefault = string.Empty;
-		private static readonly bool UseMocksDefault = true;
+		private static readonly bool UseMocksDefault = false;
         private static readonly bool UseFakeLocationDefault = false;
         private static readonly bool AllowGpsLocationDefault = false;
         private static readonly double FakeLatitudeDefault = 47.604610d;

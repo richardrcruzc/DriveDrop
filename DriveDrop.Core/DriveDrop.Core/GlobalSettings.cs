@@ -4,7 +4,7 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-        public const string DefaultEndpoint = "http://13.88.8.119";
+        public const string DefaultEndpoint = "http://10.0.0.51"; //http://identityapi20170717040137.azurewebsites.net
 
         private string _baseEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
@@ -62,16 +62,16 @@
 
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = $"{baseEndpoint}:5105/Account/Register";
+            RegisterWebsite = $"{baseEndpoint}:58652/Account/Register";
             CatalogEndpoint = $"{baseEndpoint}:5101";
             OrdersEndpoint = $"{baseEndpoint}:5102";
             BasketEndpoint = $"{baseEndpoint}:5103";
-            IdentityEndpoint = $"{baseEndpoint}:5105/connect/authorize";
-            UserInfoEndpoint = $"{baseEndpoint}:5105/connect/userinfo";
-            TokenEndpoint = $"{baseEndpoint}:5105/connect/token";
-            LogoutEndpoint = $"{baseEndpoint}:5105/connect/endsession";
-            IdentityCallback = $"{baseEndpoint}:5105/xamarincallback";
-            LogoutCallback = $"{baseEndpoint}:5105/Account/Redirecting";
+            IdentityEndpoint = $"{baseEndpoint}:58652/connect/authorize";
+            UserInfoEndpoint = $"{baseEndpoint}:58652/connect/userinfo";
+            TokenEndpoint = $"{baseEndpoint}:58652/connect/token";
+            LogoutEndpoint = $"{baseEndpoint}:58652/connect/endsession";
+            IdentityCallback = $"{baseEndpoint}:58652/xamarincallback";
+            LogoutCallback = $"{baseEndpoint}:58652/Account/Redirecting";
             LocationEndpoint = $"{baseEndpoint}:5109";
             MarketingEndpoint = $"{baseEndpoint}:5110";
         }

@@ -3,13 +3,13 @@
 @using DriveDrop.Web.Services
 
 @inject IIdentityParser<ApplicationUser> UserManager
-@*@if (Context.User.Identity.IsAuthenticated)*@
+
+@*@if (SignInManager.IsSignedIn(User))*@
 
 
-@if (User.FindFirst(x => x.Type == "preferred_username") != null)
+@*@if (User.FindFirst(x => x.Type == "preferred_username") != null)*@
+ @if (User.Identity.IsAuthenticated)
 {
-
-
     <header class="blue-bg deshbord-head sub-nav-hed">
         <div class="container">
             <div class="row">
@@ -72,7 +72,7 @@ else
                             <div class="clearfix"></div>
                         </ul>
 
-                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="bttn">Sign In</a>
+                        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="bttn">Sign In @UserManager.Parse(User)</a>
                     </nav>
                 </div>
             </div>

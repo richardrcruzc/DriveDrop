@@ -121,40 +121,40 @@ $(function () {
 
 
 
-//if ($("#DriverNotificationWS").length) {
-    var socket;
-   // var sendButton = document.getElementById("sendButton");
-    var sendMessage = document.getElementById("sendMessage");
-   // var commsLog = document.getElementById("DriverNotificationWS");
-    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
-    var port = document.location.port ? (":" + document.location.port) : "";
-    var connectionUrl  = scheme + "://" + document.location.hostname + port + "/ws";
+////if ($("#DriverNotificationWS").length) {
+//    var socket;
+//   // var sendButton = document.getElementById("sendButton");
+//    var sendMessage = document.getElementById("sendMessage");
+//   // var commsLog = document.getElementById("DriverNotificationWS");
+//    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
+//    var port = document.location.port ? (":" + document.location.port) : "";
+//    var connectionUrl  = scheme + "://" + document.location.hostname + port + "/ws";
 
-    socket = new WebSocket(connectionUrl); 
+//    socket = new WebSocket(connectionUrl); 
      
-    socket.onopen = function (event) {
+//    socket.onopen = function (event) {
        
-       // updateState();
-        //if ($("#DriverNotificationWS").length) {
-        //    commsLog.innerHTML += 'Connection opened <br />';
-        //}
-    };
-    socket.onclose = function (event) {
+//       // updateState();
+//        //if ($("#DriverNotificationWS").length) {
+//        //    commsLog.innerHTML += 'Connection opened <br />';
+//        //}
+//    };
+//    socket.onclose = function (event) {
        
-        //updateState();
-        //if ($("#DriverNotificationWS").length) {
-        //    commsLog.innerHTML += 'Connection closed. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + " <br />";
-        //}
-    };
-    //socket.onerror = updateState;
-    socket.onmessage = function (event) {
+//        //updateState();
+//        //if ($("#DriverNotificationWS").length) {
+//        //    commsLog.innerHTML += 'Connection closed. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + " <br />";
+//        //}
+//    };
+//    //socket.onerror = updateState;
+//    socket.onmessage = function (event) {
         
-        if ($("#You-Got-Packages").length) { 
-            $('#You-Got-Packages').removeClass('hidden');
-        //    commsLog.innerHTML += htmlEscape(event.data) + " <br />";
-        }
+//        if ($("#You-Got-Packages").length) { 
+//            $('#You-Got-Packages').removeClass('hidden');
+//        //    commsLog.innerHTML += htmlEscape(event.data) + " <br />";
+//        }
         
-    };
+//    };
 
  
     //sendButton.onclick = function () {

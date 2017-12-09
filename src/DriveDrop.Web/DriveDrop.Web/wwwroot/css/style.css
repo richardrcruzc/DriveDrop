@@ -554,7 +554,7 @@ header {
         .testimonials .block .gray-bg {
             background: #f9f9f9;
             padding: 20px 0;
-            border: solid 1px #f6f6f6;
+            border: solid 1px;  /*#f6f6f6;*/
             border-radius: 5px;
             position: relative;
             box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .1);
@@ -907,7 +907,7 @@ footer {
         }
 /*=========== Login page ============*/
 .login-page {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
 }
 
     .login-page header {
@@ -1055,11 +1055,11 @@ footer {
 }
 
     .sender-desh .side-fixed-menu li a {
-        line-height: 60px;
-        font-size: 18px;
+        line-height: 40px;
+        /*/*font-size: 18px;*/*/
         font-weight: 700;
         text-transform: uppercase;
-        border-left: solid 3px #f6f6f6;
+        border-left: solid 3px; /*#f6f6f6;*/
         padding-left: 30px;
         color: #9e9e9e;
         display: block;
@@ -1112,7 +1112,7 @@ footer {
 
 ul.side-fixed-menu {
     margin: 0 15px;
-    background: #f6f6f6;
+    /*/*background: #f6f6f6;*/*/
 }
 
 #sidebar h3 {
@@ -2359,7 +2359,7 @@ ul.side-fixed-menu {
     }
 
 .driver-form {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
 }
 
 .driver-license-2 .login-page .headline h3 {
@@ -2954,7 +2954,7 @@ ul.side-fixed-menu {
 }
 
 #gig-information, #pickup-location, #delivery-location, #delevery-deadline, #additional-details {
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
 }
 
 #pickup-location, #delivery-location, #delevery-deadline, #additional-details, .insurance {
@@ -2972,7 +2972,7 @@ ul.side-fixed-menu {
 }
 
     #insurance .form-body .gray-bg {
-        background: #f6f6f6;
+        /*background: #f6f6f6;*/
         padding: 45px;
     }
 
@@ -2984,7 +2984,7 @@ ul.side-fixed-menu {
 .insurance .post-gig {
     margin-top: 50px;
     padding: 50px 0;
-    background: #f6f6f6;
+    /*background: #f6f6f6;*/
     margin-bottom: 50px;
 }
 
@@ -3018,7 +3018,7 @@ section.login-page.registration {
     }
 
 li.delivery-time {
-    background: #f6f6f6;
+    /*/*background: #f6f6f6;*/*/
 }
 
 .mt-20 {
@@ -3125,3 +3125,9 @@ ul.delivery-tools.urgency {
     }
 
 
+fixed-bottom {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+}

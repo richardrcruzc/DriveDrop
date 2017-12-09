@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Polly;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,23 +21,26 @@ using System.Threading.Tasks;
 namespace DriveDrop.Api.Infrastructure
 {
 
-    public class DriveDropSeed
+    public class DriveDropContextSeed
     {
+        public async Task SeedAsync(DriveDropContext context, IHostingEnvironment env, IOptions<DriveDropSettings> settings, ILogger<DriveDropContextSeed> logger)
+  {
+            var policy = CreatePolicy(logger, nameof(DriveDropContextSeed));
+             
 
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory, IHostingEnvironment _env, IRateService rate, IDistanceService distance, int? retry = 0)
-        {
-            int retryForAvailability = retry.Value;
-            try
+            await policy.ExecuteAsync(async () =>
             {
-                var context = (DriveDropContext)applicationBuilder
-                .ApplicationServices.GetService(typeof(DriveDropContext));
+
+                var useCustomizationData = settings.Value
+                .UseCustomizationData;
+
+               // var contentRootPath = env.ContentRootPath;
 
                 if (!context.TaxRates.Any())
                 {
-                    context.TaxRates.Add(new Tax("WA","Pierce", "Tacoma", 12.5M, true));
+                    context.TaxRates.Add(new Tax("WA", "Pierce", "Tacoma", 12.5M, true));
                     context.TaxRates.Add(new Tax("WA", "King", "Seattle", 14.5M, false));
                 }
-
 
                 if (!context.CustomerStatuses.Any())
                 {
@@ -104,7 +110,7 @@ namespace DriveDrop.Api.Infrastructure
                     context.PackageSizes.Add(PackageSize.Envelopes);
                     context.PackageSizes.Add(PackageSize.SmallPackages);
                     context.PackageSizes.Add(PackageSize.MidiunPackages);
-                    context.PackageSizes.Add(PackageSize.LargePackages);                    
+                    context.PackageSizes.Add(PackageSize.LargePackages);
                     await context.SaveChangesAsync();
                 }
 
@@ -126,7 +132,7 @@ namespace DriveDrop.Api.Infrastructure
                 if (!context.Reviews.Any())
                 {
                     var shiping = context.Shipments
-                        .Include(x=>x.Driver)
+                        .Include(x => x.Driver)
                         .Include(x => x.Sender)
                         .FirstOrDefault();
 
@@ -147,7 +153,7 @@ namespace DriveDrop.Api.Infrastructure
                         var questionForSender = context.ReviewQuestions.Where(r => r.Group == "driver").ToList();
 
                         var senderReview = new Review(shiping, shiping.Sender, shiping.Driver, "driver", "Very well!", true);
-                          x = 1;
+                        x = 1;
                         foreach (var q in questionForDriver)
                         {
                             var detail = new ReviewDetail(driverReview, q, x++);
@@ -162,9 +168,9 @@ namespace DriveDrop.Api.Infrastructure
                     }
                 }
 
-                    if (!context.Rates.Any())
+                if (!context.Rates.Any())
                 {
-                    var e =context.PackageSizes.Find(1);
+                    var e = context.PackageSizes.Find(1);
                     var s = context.PackageSizes.Find(2);
                     var m = context.PackageSizes.Find(3);
                     var l = context.PackageSizes.Find(4);
@@ -207,24 +213,24 @@ namespace DriveDrop.Api.Infrastructure
 
                 if (!context.RateDetails.Any())
                 {
-                    
-                        context.RateDetails.Add(new RateDetail( "weight", "lbs", 0, 10, 0.55M));
-                        context.RateDetails.Add(new RateDetail( "weight", "lbs", 10, 15, 0.65M));
-                        context.RateDetails.Add(new RateDetail( "weight", "lbs", 15, 20, 0.75M));
-                        context.RateDetails.Add(new RateDetail( "weight", "lbs", 20, 25, 0.85M));
-                        context.RateDetails.Add(new RateDetail( "weight", "lbs", 25, 30, 0.95M));
-                        context.RateDetails.Add(new RateDetail( "weight", "lbs", 30, 35, 1M));
 
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 0, 20, 0.07M));
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 20, 40, 0.06M));
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 40, 60, 0.05M));
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 60, 80, 0.04M));
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 80, 100, 0.03M));
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 100, 120, 0.02M));
-                        context.RateDetails.Add(new RateDetail( "distance", "miles", 120, 140, 0.01M));
+                    context.RateDetails.Add(new RateDetail("weight", "lbs", 0, 10, 0.55M));
+                    context.RateDetails.Add(new RateDetail("weight", "lbs", 10, 15, 0.65M));
+                    context.RateDetails.Add(new RateDetail("weight", "lbs", 15, 20, 0.75M));
+                    context.RateDetails.Add(new RateDetail("weight", "lbs", 20, 25, 0.85M));
+                    context.RateDetails.Add(new RateDetail("weight", "lbs", 25, 30, 0.95M));
+                    context.RateDetails.Add(new RateDetail("weight", "lbs", 30, 35, 1M));
 
-                        await context.SaveChangesAsync();
-                    
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 0, 20, 0.07M));
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 20, 40, 0.06M));
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 40, 60, 0.05M));
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 60, 80, 0.04M));
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 80, 100, 0.03M));
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 100, 120, 0.02M));
+                    context.RateDetails.Add(new RateDetail("distance", "miles", 120, 140, 0.01M));
+
+                    await context.SaveChangesAsync();
+
 
                 }
 
@@ -248,7 +254,7 @@ namespace DriveDrop.Api.Infrastructure
                 //    await context.SaveChangesAsync();
                 //}
 
-                 
+
 
                 if (!context.Coupons.Any())
                 {
@@ -260,7 +266,7 @@ namespace DriveDrop.Api.Infrastructure
                 if (!context.Customers.Any())
                 {
 
-                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan2.Id, CustomerStatus.Active.Id, "admin@driveDrop.com", "1234567890",1,0,0,0,0, "admin@driveDrop.com", "1234567890","","","","","", "", "", "" ));
+                    context.Customers.Add(new Customer("Admin1", "Admin", "Admin", TransportType.Sedan2.Id, CustomerStatus.Active.Id, "admin@driveDrop.com", "1234567890", 1, 0, 0, 0, 0, "admin@driveDrop.com", "1234567890", "", "", "", "", "", "", "", ""));
 
                     //context.Customers.Add(new Customer("Sender1", "First", "Sender", TransportType.Sedan4.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",   "", "", "", "", "", "", "", "", ""));
                     //context.Customers.Add(new Customer("Sender2", "Second", "Sender", TransportType.PickUp.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 2, 0, 0, 0, 0, "W@S.com",  "", "", "", "", "", "", "", "", ""));
@@ -272,7 +278,7 @@ namespace DriveDrop.Api.Infrastructure
                     //context.Customers.Add(new Customer("Driver 5", "Fisrt 5", "Driver", TransportType.Sedan2.Id, CustomerStatus.WaitingApproval.Id, "123213123", "W@S.com", 3,2,5,5,0,"", "", "", "", "", "","", "", "", ""));
                     //context.Customers.Add(new Customer("Driver 10", "Last 10", "Driver", TransportType.Sedan4.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3,2,10,10,15, "", "", "", "", "", "", "", "", "", ""));
                     //context.Customers.Add(new Customer("Driver 15", "Last 15", "Driver", TransportType.Sedan2.Id, CustomerStatus.Active.Id, "123213123", "W@S.com", 3, 2, 15, 15, 15, "", "", "", "", "", "", "", "", "", ""));
-                                     
+
 
                     await context.SaveChangesAsync();
 
@@ -346,7 +352,7 @@ namespace DriveDrop.Api.Infrastructure
                 //    context.Shipments.Add(new Shipment(addressPickup1, addressDelivery1, serder, 20, 2, 5, PriorityType.FourHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
 
                 //    context.Shipments.Add(new Shipment(addressPickup2, addressDelivery2, serder1, 20, 2, 10, PriorityType.Asap.Id,   TransportType.Van.Id, "ring the bell", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
-                    
+
                 //    context.Shipments.Add(new Shipment(addressPickup3, addressDelivery3, serder2, 20, 2, 2, PriorityType.SixHours.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/download2.jpg", "/Uploads/Img/Shipment/download2.jpg", 4, 234, "", 12, 1));
 
                 //    context.Shipments.Add(new Shipment(addressPickup4, addressDelivery4, serder3, 20, 2, 7, PriorityType.EODNextDay.Id,   TransportType.Van.Id, "package left behain door", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", "/Uploads/Img/Shipment/5c71877b-46fd-48f1-8abb-0721ed6fb71b.jpg", 4, 234, "", 12, 1));
@@ -358,13 +364,13 @@ namespace DriveDrop.Api.Infrastructure
                 //}
 
 
-               
+
 
                 //    if (!context.ZipCodeStates.Any())
                 //{
 
                 //    /*
-                     
+
                 //    "zip_code","latitude","longitude","city","state","county"
                 //    "00501",40.922326,-72.637078,"Holtsville","NY","Suffolk"
                 //    "00544",40.922326,-72.637078,"Holtsville","NY","Suffolk"
@@ -374,12 +380,12 @@ namespace DriveDrop.Api.Infrastructure
                 //    var uploads = Path.Combine(_env.WebRootPath, "uploads\\SeedData");
                 //    var filePath = string.Format("{0}/zip_codes_states.csv", uploads);
 
-                    
+
                 //    using(FileStream fileStream = new FileStream(filePath, FileMode.Open))
                 //    //var lines = File.ReadAllLines(filePath).Select(a => a.Split(';'));
                 //    //var csv = from line in lines
                 //    //          select (line.Split(',')).ToArray();
-                    
+
 
                 //    using (StreamReader reader = new StreamReader(fileStream))
                 //    {
@@ -462,55 +468,57 @@ namespace DriveDrop.Api.Infrastructure
                 //        context.Shipments.Update(shiping);
 
                 //    }
-                   // await context.SaveChangesAsync();
+                // await context.SaveChangesAsync();
 
-            //    }
-
-
+                //    }
 
 
 
 
 
 
-            //            //if (!context.ShipmentCustomers.Any())
-            //            //{
-
-            //            //    var addressPickup = new Address("5215 90th st E", "WA", "Tacoma", "USA", "98446","1234567890","Contact one", 0, 0);
-            //            //    var addressDelivery = new Address("5215 25th ave se", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two", 0, 0);
-
-            //            //    var customer = context.Customers.Where(x => x.FirstName == "First" && x.CustomerTypeId == 2).FirstOrDefault();
-            //            //    var shipment = context.Shipments.Where(c => c.Note == "This is closed gate community").FirstOrDefault();
-
-            //            //    context.ShipmentCustomers.Add(new ShipmentCustomer { CustomerId = customer.Id, CustomerTypeId = CustomerType.Sender.Id, ShipmentId = shipment.Id });
-            //            //    await context.SaveChangesAsync();
-            //            //    customer = context.Customers.Where(x => x.FirstName == "Last" && x.CustomerTypeId == 3).FirstOrDefault();
-
-            //            //    context.ShipmentCustomers.Add(new ShipmentCustomer { CustomerId = customer.Id, CustomerTypeId = CustomerType.Driver.Id, ShipmentId = shipment.Id });
-            //            //    await context.SaveChangesAsync();
-
-            //            //    context.ShipmentAddresses.Add(new ShipmentAddress { AddressTypeId = AddressType.Pickup.Id, Address = addressPickup, ShipmentId = shipment.Id });
-            //            //    context.ShipmentAddresses.Add(new ShipmentAddress { AddressTypeId = AddressType.Delivery.Id, Address = addressDelivery, ShipmentId = shipment.Id });
-
-            //            //    await context.SaveChangesAsync();
-
-            //            //}
 
 
+                //            //if (!context.ShipmentCustomers.Any())
+                //            //{
+
+                //            //    var addressPickup = new Address("5215 90th st E", "WA", "Tacoma", "USA", "98446","1234567890","Contact one", 0, 0);
+                //            //    var addressDelivery = new Address("5215 25th ave se", "WA", "Lacey", "USA", "98503", "1234567890", "Contact two", 0, 0);
+
+                //            //    var customer = context.Customers.Where(x => x.FirstName == "First" && x.CustomerTypeId == 2).FirstOrDefault();
+                //            //    var shipment = context.Shipments.Where(c => c.Note == "This is closed gate community").FirstOrDefault();
+
+                //            //    context.ShipmentCustomers.Add(new ShipmentCustomer { CustomerId = customer.Id, CustomerTypeId = CustomerType.Sender.Id, ShipmentId = shipment.Id });
+                //            //    await context.SaveChangesAsync();
+                //            //    customer = context.Customers.Where(x => x.FirstName == "Last" && x.CustomerTypeId == 3).FirstOrDefault();
+
+                //            //    context.ShipmentCustomers.Add(new ShipmentCustomer { CustomerId = customer.Id, CustomerTypeId = CustomerType.Driver.Id, ShipmentId = shipment.Id });
+                //            //    await context.SaveChangesAsync();
+
+                //            //    context.ShipmentAddresses.Add(new ShipmentAddress { AddressTypeId = AddressType.Pickup.Id, Address = addressPickup, ShipmentId = shipment.Id });
+                //            //    context.ShipmentAddresses.Add(new ShipmentAddress { AddressTypeId = AddressType.Delivery.Id, Address = addressDelivery, ShipmentId = shipment.Id });
+
+                //            //    await context.SaveChangesAsync();
+
+                //            //}
 
 
-                        await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                if (retryForAvailability < 10)
-                {
-                    retryForAvailability++;
-                    var log = loggerFactory.CreateLogger("drivedrop seed");
-                    log.LogError(ex.Message);
-                    await SeedAsync(applicationBuilder, loggerFactory, _env, rate, distance, retryForAvailability);
-                }
-            }
+                await context.SaveChangesAsync();
+
+            });
+        }
+            
+        private Policy CreatePolicy(ILogger<DriveDropContextSeed> logger, string prefix, int retries = 3)
+        {
+            return Policy.Handle<SqlException>().
+                WaitAndRetryAsync(
+                    retryCount: retries,
+                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                    onRetry: (exception, timeSpan, retry, ctx) =>
+                    {
+                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                    }
+                );
         }
     }
 }
