@@ -41,28 +41,27 @@
 
 
 
-                                                <div class="fieldset">
+                                                <div class="fieldset"><br />
                                                     <h3>@Model.CustomerType: User Details</h3>
-
+                                                <br />
 
                                                     <div class="form-fields">
 
                                                         <div class="inputs">
-                                                            <label>Customer Status</label>
+                                                            
                                                             <div class="gender">
                                                                 <span>
 
-                                                                    <label class="male">@Model.CustomerStatus</label>
+                                                                    <label class="male"><span>Customer Status: </span> @Model.CustomerStatus</label>
                                                                 </span>
+                                                                <br />
                                                             </div>
                                                         </div>
-                                                        <div class="inputs">
-                                                            <label>Email Address</label>
-
+                                                        <div class="inputs"> 
                                                             <div class="gender">
                                                                 <span>
 
-                                                                    <label class="male">@Model.UserName</label>
+                                                                    <label class="male"><span>Email Address: </span>@Model.UserName</label>
                                                                 </span>
                                                             </div>
 
@@ -96,29 +95,27 @@
 
                                                         </div>
 
-                                                        <div class="inputs">
-                                                            <label>Customer Type</label>
-
+                                                        <div class="inputs"><br />
                                                             <div class="gender">
                                                                 <span>
 
-                                                                    <label class="male">@Model.CustomerType</label>
+                                                                    <label class="male"><span>Customer Type: </span>@Model.CustomerType</label>
                                                                 </span>
+                                                                <br /><br />
                                                             </div>
                                                         </div>
 
 
-                                                        <div class="inputs">
-
+                                                        <div class="form-field"> 
                                                             @Html.LabelFor(m => m.LastName)
                                                             @Html.TextBoxFor(m => m.LastName , new { @class = "form-control" })
-                                                            <span class="required">*</span>
+                                                            
                                                             @Html.ValidationMessageFor(m => m.LastName)
                                                         </div>
                                                         <div class="inputs">
                                                             @Html.LabelFor(m => m.FirstName)
                                                             @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-                                                            <span class="required">*</span>
+                                                            
                                                             @Html.ValidationMessageFor(m => m.FirstName)
 
 
@@ -128,7 +125,7 @@
 
                                                             @Html.LabelFor(m => m.PrimaryPhone)
                                                             @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
-                                                            <span class="required">*</span>
+                                                           
                                                             @Html.ValidationMessageFor(m => m.PrimaryPhone)
 
 
@@ -138,7 +135,7 @@
 
                                                             @Html.LabelFor(m => m.Phone)
                                                             @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
-                                                            <span class="required">*</span>
+                                                           
                                                             @Html.ValidationMessageFor(m => m.Phone)
 
 
@@ -149,7 +146,7 @@
 
                                                                 @Html.LabelFor(m => m.Commission)
                                                                 @Html.TextBoxFor(m => m.Commission, new { @class = "form-control" })
-                                                                <span class="required">*</span>
+                                                               
                                                                 @Html.ValidationMessageFor(m => m.Commission)
 
 
@@ -169,7 +166,8 @@
 
                                                         @*@if (Model.CustomerType.ToLower() == "administrator")
                             {*@
-                                                        <div class="buttons">
+
+                                                        <div class="buttons"><br /><br />
                                                             <input type="submit" value="Save" name="save-info-button" class="bttn" />
 
                                                         </div>
@@ -273,7 +271,7 @@
                                             <div class="address-list">
                                                 <ol class="opc">
                                                     <li class="tab-section allow active">
-                                                        <div class="step-title">
+                                                        <div class="step-title"><br />
                                                             <h4 class="title">Default Address</h4>
                                                         </div>
                                                     </li>
@@ -326,7 +324,7 @@
 
                                                     <ol class="opc">
                                                         <li class="tab-section allow active">
-                                                            <div class="step-title">
+                                                            <div class="step-title"><br />
                                                                 <h4 class="title">Pickup Address</h4>
                                                             </div>
                                                         </li>
@@ -360,7 +358,7 @@
                                                 <div class="address-list">
                                                     <ol class="opc">
                                                         <li class="tab-section allow active">
-                                                            <div class="step-title">
+                                                            <div class="step-title"><br />
                                                                 <h4 class="title">Dropoff Address</h4>
                                                             </div>
                                                         </li>

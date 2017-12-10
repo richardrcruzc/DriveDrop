@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 
 namespace DriveDrop.Api.Controllers
 {
-     //[Authorize]
+    [Authorize]
     [Route("api/v1/[controller]")]
     public class CommonController : Controller
     {
@@ -531,7 +531,20 @@ namespace DriveDrop.Api.Controllers
         {
             try
             {
-                var types = await _context.PackageSizes.Select(x => new { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
+
+              //  var rate = await _context.Rates
+              //.Include(x => x.PackageSize)
+              //.OrderBy(x => x.Id)
+              //.Select(x => new { Id = x.PackageSize.Id.ToString(), Name = x.PackageSize.Name, OverHead = x.OverHead })
+              //.ToListAsync();
+
+
+                var types = await (from p in _context.PackageSizes
+                                  join r in _context.Rates on p.Id equals r.PackageSize.Id
+                                  orderby p.Name
+                                  select new { Id = p.Id.ToString(), Name = p.Name + " - $"+r.OverHead.ToString() }).ToListAsync();
+
+                    //.OrderBy(x => x.Name).Select(x => new { Id = x.Id.ToString(), Name = x.Name }).ToListAsync();
 
                 return Ok(types);
             }

@@ -29,7 +29,9 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging; 
+    using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
@@ -60,8 +62,12 @@
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
-                                            //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+            }).AddControllersAsServices()  //Injecting Controllers themselves thru DI
+                                           //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+.AddJsonOptions(options => {
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 
             // Configure GracePeriodManager Hosted Service
             //services.AddSingleton<IHostedService, GracePeriodManagerService>();

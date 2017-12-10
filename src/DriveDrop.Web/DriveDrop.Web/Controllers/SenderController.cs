@@ -962,7 +962,7 @@ namespace DriveDrop.Web.Controllers
                 packageSize.Add(new SelectListItem()
                 {
                     Value = brand.Value<string>("id"),
-                    Text = brand.Value<string>("name")
+                    Text = brand.Value<string>("name") 
                 });
             }
             model.PackageSizeList = packageSize;

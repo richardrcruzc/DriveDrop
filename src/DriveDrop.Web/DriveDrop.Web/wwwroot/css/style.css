@@ -1051,7 +1051,7 @@ footer {
 }
 
 .sender-desh {
-    margin-top: 160px;
+    margin-top: 130px;
 }
 
     .sender-desh .side-fixed-menu li a {
@@ -1899,7 +1899,7 @@ ul.side-fixed-menu {
 .deshbord-head .deshbord-nav {
     background: #54b95b;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
     .deshbord-head .deshbord-nav ul {
@@ -3130,4 +3130,8 @@ fixed-bottom {
     height: 100px;
     bottom: 0;
     width: 100%;
+}
+
+.marginbottom10{
+    margin-bottom:10px;
 }

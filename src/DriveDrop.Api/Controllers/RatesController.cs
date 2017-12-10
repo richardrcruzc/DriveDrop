@@ -147,8 +147,9 @@ namespace DriveDrop.Api.Controllers
 
             var rate = await _context.Rates
                 .Include(x => x.PackageSize)
-                .Include("RatePriorities.PriorityType")
-                .OrderBy(x => x.RatePriorities.OrderBy(o => o.PriorityTypeId))
+                .Include(x => x.RatePriorities).ThenInclude(x=>x.PriorityType)
+                // .OrderBy(x => x.RatePriorities.OrderBy(o => o.PriorityTypeId))
+                .OrderBy(x => x.Id)
                 .Where(x => x.Id == id)
                  .FirstOrDefaultAsync();
 
@@ -166,7 +167,7 @@ namespace DriveDrop.Api.Controllers
 
             var rateToUpdate = await _context.Rates
                 .Include(x => x.PackageSize)
-                .Include("RatePriorities.PriorityType")
+                 .Include(x => x.RatePriorities).ThenInclude(x => x.PriorityType)
                 .OrderBy(x => x.RatePriorities.OrderBy(o => o.PriorityTypeId))
                 .Where(x => x.Id == m.Id)
                  .FirstOrDefaultAsync();
