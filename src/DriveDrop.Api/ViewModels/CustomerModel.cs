@@ -307,6 +307,7 @@ namespace DriveDrop.Api.ViewModels
         public IEnumerable<SelectListItem> CustomerStatusList { get; set; }
         public IEnumerable<SelectListItem> PriorityTypeList { get; set; }
 
+        public bool NeedaVanOrPickup { get;   set; }
         public int Quantity { get; set; }
         public int CustomerId { get; set; }
         public double Distance { get; set; }

@@ -37,6 +37,34 @@ namespace DriveDrop.Web.ViewModels
 
         public bool Valid { get; set; }
 
+        
+        public string AmountSizePriority
+        {
+            get
+            {
+                return string.Format("{0:0.00}", PriorityAmount + AmountPerSize);
+            }
+        }
+        
+        public string DistanceWeight
+        {
+            get
+            {
+                return string.Format("{0:0.00}", DistanceAmount + WeightAmount);
+            }
+        }
+
+        public string DistanceWeightDetails
+        {
+            get
+            {
+                return string.Format("{0} + {1}", DistanceAmountDetails, WeightAmountDetails);
+            }
+        }
+
+
+
+
         public string StrExtraCharge
         {
             get

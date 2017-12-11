@@ -339,6 +339,9 @@ namespace DriveDrop.Web.ViewModels
             PackageSizeList = new List<SelectListItem>();
 
         }
+
+        [Display(Name = "Do you need a Van or Pick-Up Truck ?")]
+        public bool NeedVanOrPickUp { get; private set; }
         public int PickupAddressId { get; set; }
         public int DropAddressId { get; set; } 
 

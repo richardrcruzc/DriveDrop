@@ -1,25 +1,26 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DriveDrop.Api.Migrations
 {
-    public partial class pickupDate : Migration
+    public partial class needaVanOrPickup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "ShippingPickupDate",
+            migrationBuilder.AddColumn<bool>(
+                name: "NeedaVanOrPickup",
                 schema: "shippings",
                 table: "shipment",
+                type: "bit",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ShippingPickupDate",
+                name: "NeedaVanOrPickup",
                 schema: "shippings",
                 table: "shipment");
         }

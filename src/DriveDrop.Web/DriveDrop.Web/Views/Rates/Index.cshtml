@@ -25,8 +25,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>Package Size</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th><input id="packageSize" placeholder="New Size Name" /> </th>
+                                                    <th><button id="addPacakeSize" >Add </button></th>
                                                 </tr>
                                                
                                             </thead>
@@ -61,5 +61,56 @@
                 </div>
             </div>
         </div>
+        </div>
 </section>
- 
+ @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script>
+    $(function () {
+        $('#addPacakeSize').click(function (event) {
+            if (confirm('Are You Sure? Delete UserName ')) {
+                var packageSize = $('#packageSize').val();
+
+                  $.ajax({
+                cache: false,
+                type: "GET",
+                url: "/rates/AddSize",
+                data: { id: packageSize },
+                success: function (data) {
+                    $('#packageSize').val('');
+
+                    //ddlpriorityType.html('');
+                    //$.each(data, function (id, option) {
+                        //alert(option.text);
+                        //var option = $('<option />');
+                        //option.attr('value', this.value).text(this.Text);
+                        //ddlpriorityType.append(option);
+                       // ddlpriorityType.append($('<option></option>').val(option.value).html(option.text));
+                    //});
+                    statesProgress.toggle();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve packageSize.');
+                    statesProgress.toggle();
+                }
+            });
+
+
+            }
+            else
+            { alert(2)}
+
+
+
+
+
+
+          
+
+
+    });
+    });
+</script>
+     }

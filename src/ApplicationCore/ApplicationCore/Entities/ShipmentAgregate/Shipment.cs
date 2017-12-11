@@ -10,7 +10,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
     public class Shipment
          : Entity, IAggregateRoot
     {
-
+        public bool NeedaVanOrPickup { get; private set; }
         public int Quantity { get; private set; }
         public string IdentityCode { get; private set; }
         public string SecurityCode { get; private set; }
@@ -129,9 +129,10 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
         public Shipment(Address pickup, Address delivery, Customer sender, decimal amount, decimal discount, decimal shippingWeight, int priorityTypeId ,
                             int transportTypeId, string note, string pickupPictureUri, string deliveredPictureUri,
                             double distance, decimal chargeAmount,  string promoCode, decimal tax, int packageSizeId ,
-                            decimal extraCharge, string extraChargeNote
+                            decimal extraCharge, string extraChargeNote, bool needaVanOrPickup
                             ) : this()
         {
+            NeedaVanOrPickup = needaVanOrPickup;
             ShippingStatusId = ShippingStatus.NoDriverAssigned.Id;
             ShippingCreateDate = DateTime.Now;
             ShippingUpdateDate = DateTime.Now;

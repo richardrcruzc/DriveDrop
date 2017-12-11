@@ -51,6 +51,14 @@ namespace DriveDrop.Web.Infrastructure
         }
             public static class Rate
         {
+            public static string GetRateByPackageSizeId(string baseUri, int id)
+            {
+                var idQs = id.ToString();
+                var filterQs = $"{idQs}";
+                return $"{baseUri}GetRateByPackageSize/{filterQs}";
+            }
+
+
             public static string Amount(string baseUri, decimal distance, decimal weight,   int priority,int packageSizeId,  string promoCode, decimal extraCharge, string extraChargeNote, string pickupState, string pickupCity)
             {
                 var packageSizeIdQs = packageSizeId.ToString();
@@ -72,10 +80,13 @@ namespace DriveDrop.Web.Infrastructure
                 var filterQs = $"{idQs}";
                 return $"{baseUri}get/{filterQs}";
             }
-
             public static string SaveRate(string baseUri)
             {
                 return $"{baseUri}Save";
+            }
+            public static string AddSize(string baseUri)
+            {
+                return $"{baseUri}AddSize";
             }
             public static string NewRate(string baseUri)
             {

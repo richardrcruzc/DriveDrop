@@ -48,7 +48,7 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceBaseUrl = $"{settings.Value.DriveDropUrl}/api/v1/sender";
             _remoteServiceShippingsUrl = $"{settings.Value.DriveDropUrl}/api/v1/shippings";
             _remoteServiceRatesUrl = $"{settings.Value.DriveDropUrl}/api/v1/rates/";
-            _remoteServiceIdentityUrl= $"{settings.Value.IdentityUrl}/account/";
+            _remoteServiceIdentityUrl = $"{settings.Value.IdentityUrl}/account/";
 
             _settings = settings;
             _httpContextAccesor = httpContextAccesor;
@@ -57,7 +57,7 @@ namespace DriveDrop.Web.Controllers
 
             _env = env;
 
-        
+
 
         }
 
@@ -66,8 +66,8 @@ namespace DriveDrop.Web.Controllers
             return View();
         }
 
-        
-            public async Task<IActionResult> InitializeReview(int id)
+
+        public async Task<IActionResult> InitializeReview(int id)
         {
 
             var user = _appUserParser.Parse(HttpContext.User);
@@ -85,15 +85,15 @@ namespace DriveDrop.Web.Controllers
             {
                 return NotFound();
             }
-            
 
 
-                 var iUri = API.Rating.InitializeReview(_remoteServiceBaseUrl,id);
+
+            var iUri = API.Rating.InitializeReview(_remoteServiceBaseUrl, id);
             var iString = await _apiClient.GetStringAsync(currenUserUri, token);
             var review = JsonConvert.DeserializeObject<ReviewModel>((iString));
 
 
-            return RedirectToAction("ShippingDetails", new { id = package.Id }) ;
+            return RedirectToAction("ShippingDetails", new { id = package.Id });
         }
 
 
@@ -110,7 +110,7 @@ namespace DriveDrop.Web.Controllers
             {
                 return NotFound();
             }
-            var shipping = currentUser.ShipmentSenders.Where(x=>x.Id==id).FirstOrDefault();
+            var shipping = currentUser.ShipmentSenders.Where(x => x.Id == id).FirstOrDefault();
 
             //var allnotassignedshipings = API.Shipping.GetById(_remoteServiceShippingsUrl, id);
 
@@ -139,29 +139,29 @@ namespace DriveDrop.Web.Controllers
             }
             ViewBag.Id = currentUser.Id;
             var shippings = currentUser.ShipmentSenders;
-            
+
             return View(shippings);
-            
+
         }
 
-     
+
 
         public async Task<IActionResult> Result(int? id)
         {
 
             var user = _appUserParser.Parse(HttpContext.User);
             var token = await GetUserTokenAsync();
-             
-            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email );
+
+            var currenUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
             var currentUserString = await _apiClient.GetStringAsync(currenUserUri, token);
-            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString)); 
+            var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentUserString));
 
             if (currentUser == null)
             {
                 return NotFound();
             }
 
-              
+
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
                 currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
 
@@ -169,8 +169,8 @@ namespace DriveDrop.Web.Controllers
             currentUser.CustomerStatus = currentUser.CustomerStatus.ToTitleCase();
             return View(currentUser);
         }
- 
-        
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -182,15 +182,15 @@ namespace DriveDrop.Web.Controllers
                 try
                 {
 
-                var fileName = await SaveFile(photoUrl, "sender");
+                    var fileName = await SaveFile(photoUrl, "sender");
 
                     if (!string.IsNullOrWhiteSpace(fileName))
                         model.PhotoUrl = fileName;
                     else
                         model.PhotoUrl = model.PersonalPhotoUri;
 
-                var user = _appUserParser.Parse(HttpContext.User);
-                var token = await GetUserTokenAsync();
+                    var user = _appUserParser.Parse(HttpContext.User);
+                    var token = await GetUserTokenAsync();
                     var getUserUri = API.Sender.GetByUserName(_remoteServiceBaseUrl, user.Email);
                     var userString = await _apiClient.GetStringAsync(getUserUri, token);
                     var customer = JsonConvert.DeserializeObject<CurrentCustomerModel>(userString);
@@ -218,7 +218,7 @@ namespace DriveDrop.Web.Controllers
                         "see your system administrator. {0}", ex.Message);
 
                     ModelState.AddModelError("", error);
-                      result = error;
+                    result = error;
                 }
             }
 
@@ -226,8 +226,8 @@ namespace DriveDrop.Web.Controllers
         }
 
         public async Task<IActionResult> NewShipping(int id)
-        {  
-           
+        {
+
 
             var model = new NewShipment();
             await PrepareCustomerModel(model);
@@ -250,23 +250,23 @@ namespace DriveDrop.Web.Controllers
             try
             {
                 ModelState.Clear();
-              
+
                 //foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
                 //{
                 //    var tt = state.Errors.ToString();
                 //    ModelState.AddModelError("", state.Errors[0].ErrorMessage);
                 //}
                 if (c.PickupAddressId == 0)
-                {                  
-                    if(string.IsNullOrEmpty(c.PickupStreet))
+                {
+                    if (string.IsNullOrEmpty(c.PickupStreet))
                         ModelState.AddModelError("", "Select a Pickup Address");
                     if (string.IsNullOrEmpty(c.PickupPhone))
                         ModelState.AddModelError("", "Select a Pickup Phone");
                     if (string.IsNullOrEmpty(c.PickupContact))
                         ModelState.AddModelError("", "Select a Pickup Contact");
-                     
+
                 }
-                 
+
                 if (c.DropAddressId == 0)
                 {
 
@@ -276,7 +276,7 @@ namespace DriveDrop.Web.Controllers
                         ModelState.AddModelError("", "Select a Drop Phone");
                     if (string.IsNullOrEmpty(c.DeliveryContact))
                         ModelState.AddModelError("", "Select a Drop Contact");
-                     
+
                 }
 
                 //if (photoUrl.Count() == 0)
@@ -290,7 +290,7 @@ namespace DriveDrop.Web.Controllers
 
                 if (c.PriorityTypeId == 0)
                 { ModelState.AddModelError("", "Select Package Priority"); }
-                 
+
                 if (c.Amount == 0)
                 {
                     ModelState.AddModelError("", "Select package value");
@@ -311,7 +311,7 @@ namespace DriveDrop.Web.Controllers
                     var addNewShippingUri = API.Sender.SaveNewShipment(_remoteServiceShippingsUrl);
 
                     var response = await _apiClient.PostAsync(addNewShippingUri, c, token);
-                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError || response.StatusCode==System.Net.HttpStatusCode.Unauthorized)
+                    if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
                         //throw new Exception("Error creating Shipping, try later.");
                         await PrepareCustomerModel(c);
@@ -321,16 +321,16 @@ namespace DriveDrop.Web.Controllers
                     }
 
                     // try to process payment with  paypal
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK) 
-                     return RedirectToAction("PostToPayPalAsync", new { item = "Charge per Shipping Service", amount =c.TotalCharge, customerId = c.CustomerId });
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        return RedirectToAction("PostToPayPalAsync", new { item = "Charge per Shipping Service", amount = c.TotalCharge, customerId = c.CustomerId });
                     else
                         ModelState.AddModelError("", "Error creating Shipping, try later.");
                 }
-                    // response.EnsureSuccessStatusCode();
-                    //return RedirectToAction("result", new { id = c.CustomerId });
-                    // return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
+                // response.EnsureSuccessStatusCode();
+                //return RedirectToAction("result", new { id = c.CustomerId });
+                // return CreatedAtAction(nameof(Result), new { id = c.CustomerId }, null);
 
-                }
+            }
             catch (DbUpdateException ex)
             {
                 //Log the error (uncomment ex variable name and write a log.
@@ -348,9 +348,31 @@ namespace DriveDrop.Web.Controllers
             return View(c);
 
         }
+        [HttpGet]
+        public async Task<IActionResult> GetRateByPackageSizeId(int  id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+
+            var ratesUri = API.Rate.GetRateByPackageSizeId(_remoteServiceRatesUrl, id);
+
+            var ratesString = await _apiClient.GetStringAsync(ratesUri);
+
+            var ratesResponse = JsonConvert.DeserializeObject<RateModel>(ratesString);
+
+            var query = ratesResponse.RatePriorities.OrderBy(x => x.PriorityType.Name).ToList();
 
 
-        [HttpPost]
+            var model = query.Select(x => new SelectListItem { Text=x.PriorityType.Name+" - " +x.Charge.ToString("C"), Value = x.PriorityType.Id.ToString() });
+
+            //var model = new RateModel { Id = ratesResponse.Id, OverHead = ratesResponse.OverHead, PackageSize = ratesResponse.PackageSize, RatePriorities = query };
+
+             
+
+            return Json(model);
+        }
+            
+[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveNewShipment(NewShipment c, List<IFormFile> files)
         {

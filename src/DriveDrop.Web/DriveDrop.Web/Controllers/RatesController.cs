@@ -427,10 +427,28 @@ namespace DriveDrop.Web.Controllers
 
             return View(model);
         }
-       
 
+        // GET: Rates/Edit/5
+        public async Task<IActionResult> AddSize(string id)
+        {
+            var user = _appUserParser.Parse(HttpContext.User);
+            var token = await GetUserTokenAsync();
+            var isAdminUri = API.Common.IsAdmin(_remoteServiceCommonUrl, user.Email);
+            var isAdminString = await _apiClient.GetStringAsync(isAdminUri, token);
+            var isAdminResponse = JsonConvert.DeserializeObject<bool>(isAdminString);
 
-        async Task<string> GetUserTokenAsync()
+            if (!isAdminResponse)
+                return NotFound("Invalid entry");
+
+            var allRatesUri = API.Rate.AddSize(_remoteServiceRatessUrl);
+
+            var response = await _apiClient.PostAsync(allRatesUri, id, token);
+
+            return Json(response);
+
+        }
+
+            async Task<string> GetUserTokenAsync()
         {
             var context = _httpContextAccesor.HttpContext;
 

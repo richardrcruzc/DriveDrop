@@ -98,9 +98,11 @@ namespace DriveDrop.Api.Services
             var priorityName = _context.PriorityTypes.Where(x => x.Id == priority).FirstOrDefault();
 
             var taxAmountDetails = string.Format("Tax Rate:{0}", taxRates);
-            var distanceAmountDetails = string.Format("{0} Miles Range From: {1} To:{2}", milesDecimal, rateDistance.From, rateDistance.To);
+            //var distanceAmountDetails = string.Format("{0} Miles Range From: {1} To:{2}", milesDecimal, rateDistance.From, rateDistance.To);
+            var distanceAmountDetails = string.Format("{0} Miles", distance);
             var priorityAmountDetail = string.Format("{0}", priorityName.Name);
-            var weightAmountDetails = string.Format("{0} Lbs Weight Range From: {1} To:{2}", weight, rateWeight.From, rateWeight.To);
+            //var weightAmountDetails = string.Format("{0} Lbs Weight Range From: {1} To:{2}", weight, rateWeight.From, rateWeight.To);
+            var weightAmountDetails = string.Format("{0} Lbs", weight);
             var amountPerSizeDetails = string.Format("{0}", myRate.PackageSize.Name);
             var extraChargeDetail = string.Format("{0} {1}",extraNote, extraCharge);
 

@@ -2,6 +2,7 @@
 using DriveDrop.Api.Infrastructure;
 using DriveDrop.Api.Services;
 using DriveDrop.Api.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,12 +31,69 @@ namespace DriveDrop.Api.Controllers
 
         }
 
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> AddSize([FromBody]string m)
+        {
+            if (string.IsNullOrEmpty(m))
+                return NotFound();
+            try
+            {
+                var sql = string.Format("declare @id int;" +
+                            "select top 1 @id = id from[shippings].[packageSizes] order by id desc;" +
+                            "insert [shippings].[packageSizes] values( @id+1,'{0}');", m);
+
+                var results = await _context.Database.ExecuteSqlCommandAsync(sql);
+
+                var lastSizeId = _context.PackageSizes.AsNoTracking().OrderByDescending(x => x.Id).FirstOrDefault().Id;
+                var priorities =  _context.PriorityTypes.AsNoTracking().OrderBy(x => x.Name).ToList();
+                 
+               var ps = _context.PackageSizes.Find(lastSizeId);
+                var rate = new Rate(1m, ps);
+                var y = 0;
+                foreach (var p in priorities)
+                {
+                    //var rp = new RatePriority(priorityTypeId:p.Id, charge:0, percentage:false);
+                    rate.AddPriority(++y, p.Id);
+                }
+                _context.Rates.Add(rate); 
+                await _context.SaveChangesAsync();
+
+                return Ok(sql);
+            }
+            catch (Exception e) {
+                return Ok(e);
+            }
+
+            
+
+           // await _context.SaveChangesAsync();
+
+           
+        }
+        [HttpGet]
+        [Route("[action]/{id:int}")]
+        public async Task<IActionResult> GetRateByPackageSize(int id)
+        {
+            var tax = await _context.Rates
+                .Include(x=>x.RatePriorities).ThenInclude(x=>x.PriorityType)
+                .OrderBy(x => x.PackageSize.Id)
+                .Where(x => x.PackageSize.Id == id)
+                .FirstOrDefaultAsync();
+
+            return Ok(tax);
+
+        }
+
+
         [HttpDelete]
         [Route("[action]/{id:int}")]
         public async Task<IActionResult> DeleteTax(int id)
         {
 
             var tax = await _context.TaxRates
+                .OrderBy(x => x.Id)
                 .Where(x => x.Id == id).FirstOrDefaultAsync();
 
             if (tax==null)

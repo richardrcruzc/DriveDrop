@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -336,9 +338,12 @@ namespace DriveDrop.Api.Infrastructure
        // public static string connectionString { get; set; }
         public DriveDropContext CreateDbContext(string[] args)
         {
-             
-        var connectionString = "Server=(localdb)\\ProjectsV13;Integrated Security=true;Initial Catalog=DriveDropDbNew;";
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
 
+             var connectionString = configuration.GetConnectionString("ConnectionString");
 
             var optionsBuilder = new DbContextOptionsBuilder<DriveDropContext>()
                 .UseSqlServer(connectionString);

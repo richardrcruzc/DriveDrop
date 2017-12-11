@@ -19,6 +19,8 @@ namespace DriveDrop.Api.ViewModels
 
     public class ShipmentModel
     {
+
+        public bool NeedaVanOrPickup { get; set; }
         public int Id { get; set; }
         public string IdentityCode { get; set; }
         public string SecurityCode { get; set; }

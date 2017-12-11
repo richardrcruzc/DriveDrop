@@ -1721,7 +1721,7 @@ ul.side-fixed-menu {
     }
 
 .sender-desh textarea {
-    height: 168px;
+    /*height: 168px;*/
     border-radius: 10px;
     background: #c0c0c0;
     width: 100%;
@@ -3134,4 +3134,29 @@ fixed-bottom {
 
 .marginbottom10{
     margin-bottom:10px;
+}
+
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+
+    to {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin2 {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
