@@ -85,7 +85,7 @@ namespace Identity.Api.Configuration
                     {
                         new Secret("secret".Sha256())
                     },
-                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
+                    ClientUri = $"{clientsUrl["Mvc"]}",         // public uri of the client
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,

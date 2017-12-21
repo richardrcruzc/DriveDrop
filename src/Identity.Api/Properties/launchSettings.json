@@ -14,7 +14,8 @@
       "launchUrl": "http://localhost:58652",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:58652"
     },
     "Identity.Api (Development)": {
       "commandName": "Project",
@@ -28,20 +29,20 @@
     "Identity.Api (Staging)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://identityapi20170717040137.azurewebsites.net/",
+      "launchUrl": "http://identity.godrivedrop.com/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging"
       },
-      "applicationUrl": "http://identityapi20170717040137.azurewebsites.net/"
+      "applicationUrl": "http://identity.godrivedrop.com/"
     },
     "Identity.Api (Production)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://identityapi20170717040137.azurewebsites.net/",
+      "launchUrl": "http://identity.godrivedrop.com/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "http://identityapi20170717040137.azurewebsites.net/"
+      "applicationUrl": "http://identity.godrivedrop.com/"
     }
   }
 }

@@ -48,7 +48,7 @@ namespace Identity.Api
                 .UseStartup<Startup>()
                .ConfigureAppConfiguration((builderContext, config) =>
                {
-                   config.AddJsonFile("appsettings.json");
+                  // config.AddJsonFile("appsettings.json");
                    config.AddEnvironmentVariables();
                })
                 .ConfigureLogging((hostingContext, builder) =>

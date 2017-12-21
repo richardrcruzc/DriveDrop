@@ -44,14 +44,14 @@ namespace DriveDrop.Web
             // services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
-            {
-                services.AddDataProtection(opts =>
-                {
-                    opts.ApplicationDiscriminator = "drivedrop.webmvc";
-                })
-                .PersistKeysToRedis(Configuration["DPConnectionString"]);
-            }
+            //if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
+            //{
+            //    services.AddDataProtection(opts =>
+            //    {
+            //        opts.ApplicationDiscriminator = "drivedrop.webmvc";
+            //    })
+            //    .PersistKeysToRedis(Configuration["DPConnectionString"]);
+            //}
 
             services.Configure<AppSettings>(Configuration);
 

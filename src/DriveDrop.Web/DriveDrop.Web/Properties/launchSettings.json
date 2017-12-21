@@ -28,20 +28,20 @@
     "DriveDrop.Web (Staging)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://drivedropweb20170717041204.azurewebsites.net",
+      "launchUrl": "http://godrivedrop.com",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging"
       },
-      "applicationUrl": "http://drivedropweb20170717041204.azurewebsites.net"
+      "applicationUrl": "http://godrivedrop.com"
     },
     "DriveDrop.Web (Production)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://drivedropweb20170717041204.azurewebsites.net",
+      "launchUrl": "http://godrivedrop.com",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "http://drivedropweb20170717041204.azurewebsites.net"
+      "applicationUrl": "http://godrivedrop.com"
     }
   }
 }

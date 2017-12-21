@@ -27,7 +27,10 @@ namespace DriveDrop.Api
                         .SeedAsync(context, env, settings, logger)
                         .Wait();
                 })
-.MigrateDbContext<IntegrationEventLogContext>((_, __) => { })
+                .MigrateDbContext<IntegrationEventLogContext>((context, services ) => {
+                    var configuration = services.GetService<IConfiguration>();
+                     
+                })
                 .Run();
         }
 
@@ -38,7 +41,7 @@ namespace DriveDrop.Api
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
-                    config.AddJsonFile("appsettings.json");
+                   // config.AddJsonFile("appsettings.json");
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureLogging((hostingContext, builder) =>

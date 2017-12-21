@@ -1,6 +1,6 @@
-﻿using Identity.Api.Configuration;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers; 
+﻿using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
+using Identity.Api.Configuration;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;

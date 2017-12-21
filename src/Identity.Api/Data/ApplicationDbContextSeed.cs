@@ -46,10 +46,10 @@
                     await context.SaveChangesAsync();
                 }
 
-                if (useCustomizationData)
-                {
-                    GetPreconfiguredImages(contentRootPath, webroot, logger);
-                }
+                //if (useCustomizationData)
+                //{
+                //    GetPreconfiguredImages(contentRootPath, webroot, logger);
+                //}
             }
             catch (Exception ex)
             {
@@ -172,8 +172,10 @@
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
-            var users =new  List<ApplicationUser>();
-            users.Add(user);
+            var users = new List<ApplicationUser>
+            {
+                user
+            };
 
             return users;
         }

@@ -40,8 +40,8 @@ namespace Identity.Api
         {
             RegisterAppInsights(services);
 
-            var connectionString = Configuration.GetConnectionString("ConnectionString");
-
+            // var connectionString = Configuration.GetConnectionString("ConnectionString");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
