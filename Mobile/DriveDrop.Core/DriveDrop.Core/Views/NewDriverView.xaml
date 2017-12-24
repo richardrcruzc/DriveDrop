@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DriveDrop.Core.Views.NewDriverView"
+			 xmlns:viewModelBase="clr-namespace:DriveDrop.Core.ViewModels.Base;assembly=DriveDrop.Core"
+             xmlns:templates="clr-namespace:DriveDrop.Core.Views.Templates;assembly=DriveDrop.Core"  
+               xmlns:converters="clr-namespace:DriveDrop.Core.Converters;assembly=DriveDrop.Core"
+             xmlns:animations="clr-namespace:DriveDrop.Core.Animations;assembly=DriveDrop.Core"
+             xmlns:triggers="clr-namespace:DriveDrop.Core.Triggers;assembly=DriveDrop.Core"
+               xmlns:behaviors="clr-namespace:DriveDrop.Core.Behaviors;assembly=DriveDrop.Core"
+			 viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             Title="Sign Up to be a New Driver">
+    <!--<ContentPage.Title>
+        <OnPlatform x:TypeArguments="x:String">
+            <On Platform="iOS, UWP, WinRT, WinPhone" Value="DriverDrop" />
+        </OnPlatform>
+    </ContentPage.Title>-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+            <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
+            <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
+            
+            <Style x:Key="TitleLabelStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontAttributes"
+                    Value="Bold" />
+                <Setter Property="FontSize"
+                    Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Center" />
+                <Setter Property="Margin"
+                    Value="0, 12" />
+            </Style>
+            
+            <Style x:Key="HeaderLabelStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                    Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                    Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Start" />
+            </Style>
+            
+            <Style x:Key="CreateButtonStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                    Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Center" />
+                <Setter Property="VerticalOptions"
+                    Value="Center" />
+            </Style>
+
+            <Style x:Key="NewDriverPanelStyle"
+                TargetType="{x:Type Grid}">
+                <Setter Property="HeightRequest"
+                    Value="60" />
+                <Setter Property="BackgroundColor"
+                    Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="FillAndExpand" />
+                <Setter Property="VerticalOptions"
+                    Value="FillAndExpand" />
+            </Style>
+
+            <Style x:Key="DriverPanelStyle"
+                TargetType="{x:Type Grid}"
+                BasedOn="{StaticResource NewDriverPanelStyle}">
+                <Setter Property="BackgroundColor"
+                    Value="{StaticResource GreenColor}" />
+            </Style>
+
+            <Style x:Key="SettingsPanelStyle"
+                TargetType="{x:Type Grid}"
+                BasedOn="{StaticResource NewDriverPanelStyle}">
+                <Setter Property="BackgroundColor"
+                    Value="{StaticResource BlackColor}" />
+            </Style>
+
+            <Style x:Key="SettingsImageStyle"
+                TargetType="{x:Type Image}">
+                <Setter Property="Margin"
+                    Value="12" />
+            </Style>
+
+            <animations:StoryBoard
+              x:Key="NewDriverAnimation"
+              Target="{x:Reference NewDriverPanel}">
+                <animations:FadeInAnimation
+                    Direction="Up"
+                    Duration="1500" />
+            </animations:StoryBoard>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Triggers>
+        <EventTrigger
+            Event="Appearing">
+            <triggers:BeginAnimation
+                Animation="{StaticResource NewDriverAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
+    <Grid
+      BackgroundColor="{StaticResource BackgroundColor}">
+        <ScrollView>
+            <Grid
+            x:Name="NewDriverPanel"
+            IsVisible="true"
+            Padding="0"
+            ColumnSpacing="0"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+           
+                <!-- NEW DRIVER INFORMATION -->
+           
+                
+            <StackLayout   
+                Grid.Row="1"  Margin="24">
+                    <Label
+                  Text="NEW DRIVER INFORMATION"
+                    Style="{StaticResource TitleLabelStyle}" />
+                    <Label
+                  Text="First Name"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding FirstName.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                <Label 
+					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <Label
+                  Text="Last Name"
+                  Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry Text="{Binding LastName.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style">
+                            <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                            <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                        </OnPlatform>
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateLastNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding LastName.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding LastName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" /> 
+
+                <Label
+                  Text="Contact Primary Phone"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding PrimaryPhone.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePrimaryPhoneCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding PrimaryPhone.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding PrimaryPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                    <Label
+                  Text="Cell Phone"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding Phone.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style">
+                            <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                            <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                        </OnPlatform>
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePhoneCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Phone.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding Phone.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                    <!--Default Address-->
+
+                    <Label
+                  Text="DEFAUL ADDRESS"
+                   Style="{StaticResource TitleLabelStyle}" />
+                    <Label
+                  Text="Enter your Address"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding FirstName.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+                    <!--Driver Package and Drive Information-->
+                    <Label
+                  Text="Driver Package and Drive Information"
+                   Style="{StaticResource TitleLabelStyle}" />
+
+                    <Label
+                  Text="Maximum Package to Pickup"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding MaxPackage.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateMaxPackageCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding MaxPackage.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding MaxPackage.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                    <Label
+                  Text="Maximum Drive Pickup Radius in Miles"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding PickupRadius.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePickupRadiusCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding PickupRadius.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding PickupRadius.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <Label
+                  Text="Maximum Drive Deliver Package Radius  in Miles"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding DeliverRadius.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateDeliverRadiusCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding DeliverRadius.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding DeliverRadius.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                    <!--Login Information-->
+                    <Label
+                  Text="Login Information"
+                   Style="{StaticResource TitleLabelStyle}" />
+
+                    <Label
+                  Text="User Email"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding UserEmail.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateUserEmailCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding UserEmail.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding UserEmail.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <Label
+                  Text="Password"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding Password.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePasswordCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Password.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <Label
+                  Text="Confirm Password"
+                  Style="{StaticResource HeaderLabelStyle}" />
+                    <Entry Text="{Binding ConfirmPassword.Value, Mode=TwoWay}">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateConfirmPasswordCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding ConfirmPassword.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding ConfirmPassword.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+
+                </StackLayout> 
+
+                <!-- Submit BUTTON -->
+            <Grid
+                BackgroundColor="{StaticResource GreenColor}"
+                Grid.Row="3"
+                Padding="0"
+                ColumnSpacing="0"
+                RowSpacing="0">
+                <Label
+                  Text="[ Submit ]"
+                  Style="{StaticResource CreateButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding SubmitCommand}"
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+               
+            </Grid>
+        </Grid>
+        </ScrollView>
+        <!-- INDICATOR -->
+        <ActivityIndicator      
+          Color="{StaticResource LightGreenColor}"
+          IsRunning="{Binding IsBusy}"
+          IsVisible="{Binding IsBusy}"
+          VerticalOptions="Center"
+          HorizontalOptions="Center">
+            <ActivityIndicator.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double">
+                    <On Platform="iOS, Android" Value="100" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="400" />
+                </OnPlatform>
+            </ActivityIndicator.WidthRequest>
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

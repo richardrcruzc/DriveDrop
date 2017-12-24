@@ -8,5 +8,6 @@ namespace DriveDrop.Core.Services.Identity
         string CreateAuthorizationRequest();
         string CreateLogoutRequest(string token);
         Task<UserToken> GetTokenAsync(string code);
+        Task<UserToken> GetTokenAsync(string code, string userName, string password);
     }
 }

@@ -4,5 +4,5 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="DriveDrop.Droid"></application>
+	<application android:label="DriveDrop.Droid" android:icon="@drawable/icon"></application>
 </manifest>

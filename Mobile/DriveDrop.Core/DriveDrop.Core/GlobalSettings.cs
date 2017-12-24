@@ -4,20 +4,21 @@
     {
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-        public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
-       public const string CallBackEndpoint = "http://api.godrivedrop.com/";
+        // public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
+        //public const string CallBackEndpoint = "http://api.godrivedrop.com/api/v1/";
 
-        //public const string DefaultEndpoint = "http://10.0.0.51:58652/";
-        //public const string CallBackEndpoint = "http://api.godrivedrop.com/";
+        public const string DefaultEndpoint = "http://10.0.0.51:58652/";
+        public const string DriveDropEndpoint = "http://10.0.0.51:5205/api/v1/";
 
         private string _baseEndpoint;
+        private string _drivedrppEndpoint;
         private static readonly GlobalSetting _instance = new GlobalSetting();
 
         public GlobalSetting()
         {
             AuthToken = "INSERT AUTHENTICATION TOKEN";
             BaseEndpoint = DefaultEndpoint;
-            ApiEndpoint = CallBackEndpoint;
+            ApiEndpoint = DriveDropEndpoint;
         }
 
         public static GlobalSetting Instance
@@ -37,11 +38,11 @@
 
         public string ApiEndpoint
         {
-            get { return _baseEndpoint; }
+            get { return _drivedrppEndpoint; }
             set
             {
-                _baseEndpoint = value;
-                UpdateApiEndpoint(_baseEndpoint);
+                _drivedrppEndpoint = value;
+                UpdateApiEndpoint(_drivedrppEndpoint);
             }
         }
 
@@ -75,6 +76,17 @@
 
         public string LogoutCallback { get; set; }
 
+
+
+        public string DriverEndPoint { get; set; }
+
+        public string UserValidation { get; set; }
+
+
+        public string CustomerId { get; set; }
+
+
+
         private void UpdateEndpoint(string baseEndpoint)
         {
             RegisterWebsite = $"{baseEndpoint}Account/Register";
@@ -83,7 +95,9 @@
             LogoutEndpoint = $"{baseEndpoint}connect/endsession";
             IdentityCallback = $"{baseEndpoint}xamarincallback";
             LogoutCallback = $"{baseEndpoint}Account/Redirecting";
-            
+            UserInfoEndpoint = $"{baseEndpoint}connect/userinfo";
+
+            UserValidation = $"{baseEndpoint}Account/XamariLogin";
         }
         private void UpdateApiEndpoint(string baseEndpoint)
         {
@@ -93,6 +107,9 @@
          
             LocationEndpoint = $"{baseEndpoint}5109";
             MarketingEndpoint = $"{baseEndpoint}5110";
+
+            DriverEndPoint = $"{baseEndpoint}drivers";
+            
         }
     }
 }

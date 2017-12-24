@@ -263,6 +263,54 @@ namespace IdentityServer4.Quickstart.UI.Controllers
             ViewData["ReturnUrl"] = model.ReturnUrl;
             return View(vm);
         }
+        /// <summary>
+        /// Handle postback from username/password login
+        /// </summary>
+        [HttpPost]        
+       //  [Authorize]
+        public async Task<IActionResult> XamariLogin([FromBody]LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _loginService.FindByUsername(model.Email);
+
+                if (await _loginService.ValidateCredentials(user, model.Password))
+                {
+
+                    // Require the user to have a confirmed email before they can log on.
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        model.ReturnUrl = "You must have a confirmed email to log in.";
+                        // something went wrong, show form with error
+                        return Ok(model);
+                        
+                    }
+
+
+                    AuthenticationProperties props = null;
+                    if (model.RememberMe)
+                    {
+                        props = new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)
+                        };
+                    };
+
+                    await _loginService.SignIn(user);
+                    // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
+                    if (_interaction.IsValidReturnUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    model.ReturnUrl = "User Valid";
+                    return Ok(model);
+                } 
+            }
+            model.ReturnUrl = "Invalid username or password.";
+            // something went wrong, show form with error
+            return Ok(model);
+        }
 
         async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
         {

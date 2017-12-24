@@ -414,7 +414,6 @@
     <Content Include="Resources\drawable-xhdpi\banner.png" />
     <Content Include="Resources\drawable-xxhdpi\banner.png" />
     <Content Include="Resources\drawable-xxhdpi\background.png" />
-    <Content Include="Resources\drawable\background.png" />
     <Content Include="Resources\drawable\banner.png" />
     <AndroidResource Include="Resources\drawable\noimage.png" />
   </ItemGroup>

@@ -71,11 +71,13 @@ namespace Identity.Api.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
+                        IdentityServerConstants.StandardScopes.Email,
                         "drivedrop", 
                         "locations"
                     },
                     //Allow requesting refresh tokens for long lived API access
-                    AllowOfflineAccess = true                    
+                    AllowOfflineAccess = true ,
+                    AllowAccessTokensViaBrowser  = true
                 },
                 new Client
                 {

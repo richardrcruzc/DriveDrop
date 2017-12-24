@@ -33,7 +33,8 @@ namespace DriveDrop.Core.Services.Identity
             dic.Add("client_id", GlobalSetting.Instance.ClientId);
             dic.Add("client_secret", GlobalSetting.Instance.ClientSecret); 
             dic.Add("response_type", "code id_token");
-            dic.Add("scope", "openid profile drivedrop basket orders locations marketing offline_access");
+            //dic.Add("scope", "openid profile drivedrop basket orders locations marketing offline_access");
+            dic.Add("scope", "openid profile drivedrop");
             dic.Add("redirect_uri", GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
             dic.Add("code_challenge", CreateCodeChallenge());
@@ -66,6 +67,13 @@ namespace DriveDrop.Core.Services.Identity
 			var token = await _requestProvider.PostAsync<UserToken>(GlobalSetting.Instance.TokenEndpoint, data, GlobalSetting.Instance.ClientId, GlobalSetting.Instance.ClientSecret);
 			return token;
 		}
+        public async Task<UserToken> GetTokenAsync(string code, string userName, string password)
+        {
+            string data = string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}&code_verifier={2}&username=admin@driveDrop.com&password=Pass@word1", code, WebUtility.UrlEncode(GlobalSetting.Instance.IdentityCallback), _codeVerifier);
+            var token = await _requestProvider.PostAsync<UserToken>(GlobalSetting.Instance.TokenEndpoint, data, GlobalSetting.Instance.ClientId, GlobalSetting.Instance.ClientSecret);
+            return token;
+
+        }
 
         private string CreateCodeChallenge()
         {

@@ -130,29 +130,54 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <StackLayout  
+                <Grid
                   Grid.Column="0"
+                  HorizontalOptions="Center">
+                    <Label
+                        Text="REGISTER :"
+                        TextColor="Gray"/>
+                </Grid>
+                <StackLayout  
+                  Grid.Column="1"
                   Orientation="Horizontal"
                   HorizontalOptions="Center">
                     <Label     
                         Text="["
                         TextColor="{StaticResource LightGreenColor}"/>
                     <Label
-                        Text="LOGIN"
+                        Text="SENDER"
                         FontAttributes="Bold"/>
                     <Label
                         Text="]"
                         TextColor="{StaticResource LightGreenColor}"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding SenderCommand}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
                 </StackLayout>
-                <Grid
-                  Grid.Column="1"
-                  HorizontalOptions="Center">
-                    <Label
-                        Text="REGISTER"
-                        TextColor="Gray"/>
-                </Grid>
                 <StackLayout  
                   Grid.Column="2"
+                  Orientation="Horizontal"
+                  HorizontalOptions="Center">
+                    <Label     
+                        Text="["
+                        TextColor="{StaticResource LightGreenColor}"/>
+                    <Label
+                        Text="DRIVER"
+                        FontAttributes="Bold"/>
+                    <Label
+                        Text="]"
+                        TextColor="{StaticResource LightGreenColor}"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding DriverCommand}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+               
+                <StackLayout  
+                  Grid.Column="3"
                   Orientation="Horizontal"
                   HorizontalOptions="Center">
                     <Label
@@ -242,9 +267,10 @@
                   Style="{StaticResource LoginButtonStyle}"/>
                 <Grid.GestureRecognizers>
                     <TapGestureRecognizer
-                        Command="{Binding MockSignInCommand}"
+                        Command="{Binding SignInCommand}"
                         NumberOfTapsRequired="1" />
                 </Grid.GestureRecognizers>
+                 
             </Grid>
         </Grid>
         <!-- AUTH -->

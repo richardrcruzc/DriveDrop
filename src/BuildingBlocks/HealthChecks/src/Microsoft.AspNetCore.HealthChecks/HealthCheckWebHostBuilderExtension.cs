@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Hosting
             builder.ConfigureServices(services =>
             {
                 var existingUrl = builder.GetSetting(WebHostDefaults.ServerUrlsKey);
-                builder.UseSetting(WebHostDefaults.ServerUrlsKey, $"{existingUrl};http://localhost:{port}");
+                builder.UseSetting(WebHostDefaults.ServerUrlsKey, $"{existingUrl};http://10.0.0.51:{port}");
 
                 services.AddSingleton<IStartupFilter>(new HealthCheckStartupFilter(port, timeout));
             });

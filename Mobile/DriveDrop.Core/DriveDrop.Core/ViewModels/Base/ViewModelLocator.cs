@@ -13,6 +13,7 @@ using DriveDrop.Core.Services.User;
 using Xamarin.Forms;
 using DriveDrop.Core.Services.Location;
 using DriveDrop.Core.Services.Marketing;
+using DriveDrop.Core.Services.Driver;
 
 namespace DriveDrop.Core.ViewModels.Base
 {
@@ -50,6 +51,7 @@ namespace DriveDrop.Core.ViewModels.Base
 			builder.RegisterType<SettingsViewModel>();
 		    builder.RegisterType<CampaignViewModel>();
 		    builder.RegisterType<CampaignDetailsViewModel>();
+            builder.RegisterType<NewDriverViewModel>();
 
             // Services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
@@ -58,27 +60,28 @@ namespace DriveDrop.Core.ViewModels.Base
 			builder.RegisterType<IdentityService>().As<IIdentityService>();
 			builder.RegisterType<RequestProvider>().As<IRequestProvider>();
             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
+            builder.RegisterType<DriverService>().As<IDriverService>();
 
-            if (useMockServices)
-			{
-				builder.RegisterInstance(new CatalogMockService()).As<ICatalogService>();
-				builder.RegisterInstance(new BasketMockService()).As<IBasketService>();
-				builder.RegisterInstance(new OrderMockService()).As<IOrderService>();
-				builder.RegisterInstance(new UserMockService()).As<IUserService>();
-			    builder.RegisterInstance(new CampaignMockService()).As<ICampaignService>();
+            //         if (useMockServices)
+            //{
+            //	builder.RegisterInstance(new CatalogMockService()).As<ICatalogService>();
+            //	builder.RegisterInstance(new BasketMockService()).As<IBasketService>();
+            //	builder.RegisterInstance(new OrderMockService()).As<IOrderService>();
+            //	builder.RegisterInstance(new UserMockService()).As<IUserService>();
+            //    builder.RegisterInstance(new CampaignMockService()).As<ICampaignService>();
 
-                UseMockService = true;
-			}
-			else
-			{
-				builder.RegisterType<CatalogService>().As<ICatalogService>().SingleInstance();
+            //             UseMockService = true;
+            //}
+            //else
+            //{
+            builder.RegisterType<CatalogService>().As<ICatalogService>().SingleInstance();
 				builder.RegisterType<BasketService>().As<IBasketService>().SingleInstance();
 				builder.RegisterType<OrderService>().As<IOrderService>().SingleInstance();
 				builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
 			    builder.RegisterType<CampaignService>().As<ICampaignService>().SingleInstance();
 
                 UseMockService = false;
-			}
+			//}
 
 			if (_container != null)
 			{
