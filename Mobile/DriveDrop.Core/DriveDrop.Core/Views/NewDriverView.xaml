@@ -132,10 +132,8 @@
                     <Label
                   Text="NEW DRIVER INFORMATION"
                     Style="{StaticResource TitleLabelStyle}" />
-                    <Label
-                  Text="First Name"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}">
+                
+                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}" Placeholder="First Name">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -159,10 +157,8 @@
                 <Label 
 					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
-                    <Label
-                  Text="Last Name"
-                  Style="{StaticResource HeaderLabelStyle}"/>
-                <Entry Text="{Binding LastName.Value, Mode=TwoWay}">
+                   
+                    <Entry Text="{Binding LastName.Value, Mode=TwoWay}" Placeholder="Last Name">
                     <Entry.Style>
                         <OnPlatform x:TypeArguments="Style">
                             <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -187,10 +183,8 @@
 					Text="{Binding LastName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" /> 
 
-                <Label
-                  Text="Contact Primary Phone"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding PrimaryPhone.Value, Mode=TwoWay}">
+ 
+                    <Entry Text="{Binding PrimaryPhone.Value, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Contact Primary Phone">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -215,10 +209,8 @@
 					Text="{Binding PrimaryPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
-                    <Label
-                  Text="Cell Phone"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding Phone.Value, Mode=TwoWay}">
+                  
+                    <Entry Text="{Binding Phone.Value, Mode=TwoWay}" Placeholder="Cell Phone"  >
                     <Entry.Style>
                         <OnPlatform x:TypeArguments="Style">
                             <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -248,10 +240,15 @@
                     <Label
                   Text="DEFAUL ADDRESS"
                    Style="{StaticResource TitleLabelStyle}" />
-                    <Label
-                  Text="Enter your Address"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}">
+
+                    <SearchBar x:Name="SearchAddress"  Placeholder = "Enter your Address"
+                               SearchCommand="{Binding SearchCommand}" >
+
+                    </SearchBar>
+
+
+
+                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}" Placeholder="Enter your Address">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -282,20 +279,17 @@
                   Text="Driver Package and Drive Information"
                    Style="{StaticResource TitleLabelStyle}" />
 
-                    <Label
-                  Text="Maximum Package to Pickup"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding MaxPackage.Value, Mode=TwoWay}">
+                    <Entry Text="{Binding MaxPackage.Value, Mode=TwoWay}" Placeholder="Maximum Package to Pickup"  >
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
                                 <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
                             </OnPlatform>
                         </Entry.Style>
-                        <Entry.Behaviors>
+                         <Entry.Behaviors>                           
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
-							Command="{Binding ValidateMaxPackageCommand}" />
+							Command="{Binding ValidateMaxPackageCommand}"/>
                         </Entry.Behaviors>
                         <Entry.Triggers>
                             <DataTrigger 
@@ -310,10 +304,8 @@
 					Text="{Binding MaxPackage.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
-                    <Label
-                  Text="Maximum Drive Pickup Radius in Miles"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding PickupRadius.Value, Mode=TwoWay}">
+                  
+                    <Entry Text="{Binding PickupRadius.Value, Mode=TwoWay}" Placeholder="Maximum Drive Pickup Radius in Miles">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -337,10 +329,9 @@
                     <Label 
 					Text="{Binding PickupRadius.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
-                    <Label
-                  Text="Maximum Drive Deliver Package Radius  in Miles"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding DeliverRadius.Value, Mode=TwoWay}">
+                  
+                
+                    <Entry Text="{Binding DeliverRadius.Value, Mode=TwoWay}" Placeholder="Maximum Drive Deliver Package Radius  in Miles">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -365,15 +356,162 @@
 					Text="{Binding DeliverRadius.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
+                    
+                    <Entry Text="{Binding TransportTypeId.Value, Mode=TwoWay}" Placeholder="All Vehicle Types">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateTransportTypeIdCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding TransportTypeId.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding TransportTypeId.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+                    <Entry Text="{Binding VehicleMake.Value, Mode=TwoWay}" Placeholder="Vehicle Marke">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleMakeCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleMake.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding VehicleMake.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                    <Entry Text="{Binding VehicleModel.Value, Mode=TwoWay}" Placeholder="Vehicle Model">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleModelCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleModel.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding VehicleModel.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+                    <Entry Text="{Binding VehicleColor.Value, Mode=TwoWay}" Placeholder="Vehicle Color">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleColorCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleColor.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding VehicleColor.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+                    <Entry Text="{Binding VehicleYear.Value, Mode=TwoWay}" Placeholder="Vehicle Year">
+                        <Entry.Style>
+                            <OnPlatform x:TypeArguments="Style">
+                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                            </OnPlatform>
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleYearCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleYear.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label 
+					Text="{Binding VehicleYear.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+                    <!--ProfilePhoto-->
+                    
+                    <Button x:Name="takePhotoProfile" Text="Take Profile Photo"/>
+                    <Button x:Name="pickPhotoProfile" Text="Pick Profile Photo"/>
+                    <Image x:Name="profilePhotoImage"/>
+
+                    <Button x:Name="takePhotoLicense" Text="Take Driver License Photo"/>
+                    <Button x:Name="pickPhotoLicense" Text="Pick Driver License Photo"/>
+                    <Image x:Name="LicensePhotoImage"/>
+
+                    <Button x:Name="takePhotoVehicle" Text="Take Vehicle Photo"/>
+                    <Button x:Name="pickPhotoVehicle" Text="Pick Vehicle Photo"/>
+                    <Image x:Name="vehiclePhotoImage"/>
+
+                    <Button x:Name="takePhotoProof" Text="Take Proof of Insurance Photo"/>
+                    <Button x:Name="pickPhotoProof" Text="Pick Proof of Insurance Photo"/>
+                    <Image x:Name="ProofPhotoImage"/>
+                
+
                     <!--Login Information-->
                     <Label
                   Text="Login Information"
                    Style="{StaticResource TitleLabelStyle}" />
 
-                    <Label
-                  Text="User Email"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding UserEmail.Value, Mode=TwoWay}">
+                  
+                    <Entry Text="{Binding UserEmail.Value, Mode=TwoWay}" Placeholder="User Email">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -397,10 +535,10 @@
                     <Label 
 					Text="{Binding UserEmail.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
-                    <Label
-                  Text="Password"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding Password.Value, Mode=TwoWay}">
+
+                    <Entry 
+                         IsPassword="True"
+                        Text="{Binding Password.Value, Mode=TwoWay}" Placeholder="Password">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -424,10 +562,10 @@
                     <Label 
 					Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
-                    <Label
-                  Text="Confirm Password"
-                  Style="{StaticResource HeaderLabelStyle}" />
-                    <Entry Text="{Binding ConfirmPassword.Value, Mode=TwoWay}">
+
+                    <Entry  
+                        IsPassword="True"
+                            Text="{Binding ConfirmPassword.Value, Mode=TwoWay}" Placeholder="Confirm Password">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />

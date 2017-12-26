@@ -10,6 +10,7 @@ using Android.Runtime;
 using FFImageLoading;
 using System;
 using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace DriveDrop.Droid.Activities
 {
@@ -54,7 +55,7 @@ namespace DriveDrop.Droid.Activities
             base.OnTrimMemory(level);
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

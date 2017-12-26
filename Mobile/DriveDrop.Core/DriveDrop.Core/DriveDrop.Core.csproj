@@ -28,6 +28,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\NumericValidationBehavior.cs" />
     <Compile Include="Models\Commons\Generic.cs" />
     <Compile Include="Models\Commons\LoginModel.cs" />
     <Compile Include="Models\Drivers\NewDriver.cs" />

@@ -1,5 +1,5 @@
 ﻿
-
+using Plugin.Media;
 using DriveDrop.Core.Models.Drivers;
 using DriveDrop.Core.Services.Driver;
 using DriveDrop.Core.Services.User;
@@ -18,10 +18,10 @@ namespace DriveDrop.Core.ViewModels
         private ValidatableObject<string> _firstName;
         private ValidatableObject<string> _primaryPhone;
         private ValidatableObject<string> _phone;
-        private ValidatableObject<int> _transportTypeId;
-        private ValidatableObject<int> _maxPackage;
-        private ValidatableObject<int> _pickupRadius;
-        private ValidatableObject<int> _deliverRadius;
+        private ValidatableObject<int?> _transportTypeId;
+        private ValidatableObject<int?> _maxPackage;
+        private ValidatableObject<int?> _pickupRadius;
+        private ValidatableObject<int?> _deliverRadius;
         private ValidatableObject<string> _vehicleMake;
         private ValidatableObject<string> _vehicleModel;
         private ValidatableObject<string> _vehicleColor;
@@ -44,15 +44,18 @@ namespace DriveDrop.Core.ViewModels
             _userService = userService;
 
 
+            
+
+
             _lastName = new ValidatableObject<string>();
             _firstName = new ValidatableObject<string>();
 
             _primaryPhone = new ValidatableObject<string>();
             _phone = new ValidatableObject<string>();
-            _transportTypeId = new ValidatableObject<int>();
-            _maxPackage = new ValidatableObject<int>();
-            _pickupRadius = new ValidatableObject<int>();
-            _deliverRadius = new ValidatableObject<int>();
+            _transportTypeId = new ValidatableObject<int?>();
+            _maxPackage = new ValidatableObject<int?>();
+            _pickupRadius = new ValidatableObject<int?>();
+            _deliverRadius = new ValidatableObject<int?>();
             _vehicleMake = new ValidatableObject<string>();
             _vehicleModel = new ValidatableObject<string>();
             _vehicleColor = new ValidatableObject<string>();
@@ -132,7 +135,7 @@ namespace DriveDrop.Core.ViewModels
         public string DeliveryCountry { get; set; }
         public string DeliveryZipCode { get; set; }
          
-        public ValidatableObject<int> MaxPackage  
+        public ValidatableObject<int?> MaxPackage  
         {
             get { return _maxPackage; }
             set
@@ -142,7 +145,7 @@ namespace DriveDrop.Core.ViewModels
             }
         }
          
-        public ValidatableObject<int> PickupRadius
+        public ValidatableObject<int?> PickupRadius
         {
             get { return _pickupRadius; }
             set
@@ -152,7 +155,7 @@ namespace DriveDrop.Core.ViewModels
             }
         }
          
-        public ValidatableObject<int> DeliverRadius
+        public ValidatableObject<int?> DeliverRadius
         {
             get { return _deliverRadius; }
             set
@@ -161,7 +164,7 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => DeliverRadius);
             }
         } 
-        public ValidatableObject<int> TransportTypeId
+        public ValidatableObject<int?> TransportTypeId
         {
             get { return _transportTypeId; }
             set
@@ -252,16 +255,25 @@ namespace DriveDrop.Core.ViewModels
         public ICommand ValidateLastNameCommand => new Command(() => ValidateLastName());
         public ICommand ValidatePrimaryPhoneCommand => new Command(() => ValidatePrimaryPhone());
         public ICommand ValidatePhoneCommand => new Command(() => ValidatePhone());
+
         public ICommand ValidateMaxPackageCommand => new Command(() => ValidateMaxPackage());
         public ICommand ValidatePickupRadiusCommand => new Command(() => ValidatePickupRadius());
         public ICommand ValidateDeliverRadiusCommand => new Command(() => ValidateDeliverRadius());
+        public ICommand ValidateTransportTypeIdCommand => new Command(() => ValidateTransportTypeId());
+        public ICommand ValidateVehicleMakeCommand => new Command(() => ValidateVehicleMake());
+        
+
         public ICommand ValidateUserEmailCommand => new Command(() => ValidateUserEmail());
         public ICommand ValidatePasswordCommand => new Command(() => ValidatePassword());
         public ICommand ValidateConfirmPasswordCommand => new Command(() => ValidateConfirmPassword());
 
-        
+
         public ICommand SubmitCommand => new Command(async () => await SubmitAsync());
-        
+
+        public ICommand OnSearchTextChangedCommand => new Command(async () => await DialogService.ShowAlertAsync("Chamges", "Changes", "Ok"));
+
+        //public ICommand takePhotoCommand => new Command(async () => await DialogService.ShowAlertAsync("Phonto", "Phonto", "Ok"));
+
         public  async Task SubmitAsync()
         {
             await Task.Delay(100);
@@ -332,17 +344,21 @@ namespace DriveDrop.Core.ViewModels
 
         private bool ValidateMaxPackage()
         {
-            return _maxPackage.Validate();
+            return _maxPackage.Value > 0;  // _maxPackage.Validate();
         }
         private bool ValidatePickupRadius()
         {
-            return _pickupRadius.Validate();
+            return _pickupRadius.Value > 0; // _pickupRadius.Validate();
         }
         private bool ValidateDeliverRadius()
         {
-            return _deliverRadius.Validate();
-        }        
-
+            return _deliverRadius.Value > 0; // _deliverRadius.Validate();
+        }
+        private bool ValidateTransportTypeId()
+        {
+            return _transportTypeId.Value>0; // _transportTypeId.Validate();
+        }
+        
         private bool ValidateVehicleMake()
         {
             return _vehicleMake.Validate();
@@ -380,10 +396,10 @@ namespace DriveDrop.Core.ViewModels
 
             _primaryPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Contact Phone is required." });
             _phone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Cell Phone is required." });
-            _transportTypeId.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Transportation is required." });
-            _maxPackage.Validations.Add(new  IsNotNullOrEmptyRule<int> { ValidationMessage = "Maximum Package to Pickup is required." });
-            _pickupRadius.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Maximum Drive Pickup Radius in Miles is required." });
-            _deliverRadius.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Maximum Drive Deliver Package Radius  in Miles is required." });
+            _transportTypeId.Validations.Add(new IsNotNullOrEmptyRule<int?> { ValidationMessage = "Transportation is required." });
+            _maxPackage.Validations.Add(new  IsNotNullOrEmptyRule<int?> { ValidationMessage = "Maximum Package to Pickup is required." });
+            _pickupRadius.Validations.Add(new IsNotNullOrEmptyRule<int?> { ValidationMessage = "Maximum Drive Pickup Radius in Miles is required." });
+            _deliverRadius.Validations.Add(new IsNotNullOrEmptyRule<int?> { ValidationMessage = "Maximum Drive Deliver Package Radius  in Miles is required." });
             _vehicleMake.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Make is required." });
             _vehicleModel.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Model is required." });
             _vehicleColor.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Color is required." });
