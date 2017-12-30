@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace DriveDrop.Api.ViewModels
+namespace DriveDrop.Core.Models.Commons
 {
     public class GoogleGeoCodeResponse
     {
-      
+
         public string status { get; set; }
         public results[] results { get; set; }
-        public predictions[] predictions { get; set; }
 
     }
 
-    
- public class predictions
-    {
-        public string description { get; set; }
-        public string id { get; set; } 
-        public string[] types { get; set; }
-        
-    }
     public class results
     {
         public string formatted_address { get; set; }
@@ -36,7 +28,6 @@ namespace DriveDrop.Api.ViewModels
         public string location_type { get; set; }
         public location location { get; set; }
         public viewport viewport { get; set; }
-        public bool partial_match { get; set; }
     }
 
     public class location

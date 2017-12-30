@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DriveDrop.Core.Behaviors.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using Xamarin.Forms;
 
 namespace DriveDrop.Core.Behaviors
 {
-    public static class NumericValidationBehavior
+    public class NumericValidationBehavior : BindableBehavior<Entry>
     {
         public static readonly BindableProperty AttachBehaviorProperty =
             BindableProperty.CreateAttached("AttachBehavior", typeof(bool), typeof(NumericValidationBehavior), false, propertyChanged: OnAttachBehaviorChanged);

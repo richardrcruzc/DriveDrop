@@ -8,12 +8,32 @@ using DriveDrop.Core.ViewModels.Base;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Collections.ObjectModel;
+using DriveDrop.Core.Models.Commons;
+using System.Collections.Generic;
+using Xamarin.Forms.Maps;
+using DriveDrop.Core.Services.RequestProvider;
+using System;
+using DriveDrop.Core.Services.Common;
+using DriveDrop.Core.Helpers;
+//using Xamarin.Forms.Maps;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.IO;
+using PCLStorage;
 
 namespace DriveDrop.Core.ViewModels
 {
     public class NewDriverViewModel : ViewModelBase    
     {
+        const string emailRegex = @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+        @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$";
 
+        private readonly IRequestProvider _requestProvider;
+        //  private Geocoder geoCoder;
+
+        
+           
         private ValidatableObject<string> _lastName;
         private ValidatableObject<string> _firstName;
         private ValidatableObject<string> _primaryPhone;
@@ -26,27 +46,34 @@ namespace DriveDrop.Core.ViewModels
         private ValidatableObject<string> _vehicleModel;
         private ValidatableObject<string> _vehicleColor;
         private ValidatableObject<string> _vehicleYear;
-        private ValidatableObject<string> _userEmail;
+        private EmailRule<string> _userEmail;
         private ValidatableObject<string> _password;
         private ValidatableObject<string> _confirmPassword;
-
+                
         private bool _isValid;
 
         private IUserService _userService;
         private NewDriver _driver;
         private IDriverService _driverService;
+        private IGoogleAddress _googleAddress;
+        private ICommons _commons;
         
+
         public NewDriverViewModel(
+            ICommons commons,
+            IGoogleAddress googleAddress,
+            IRequestProvider requestProvider,
             IDriverService driverService,
             IUserService userService)
         {
+            _commons = commons;
+             _googleAddress = googleAddress;
             _driverService = driverService;
             _userService = userService;
 
+            _requestProvider = requestProvider;
 
             
-
-
             _lastName = new ValidatableObject<string>();
             _firstName = new ValidatableObject<string>();
 
@@ -60,12 +87,438 @@ namespace DriveDrop.Core.ViewModels
             _vehicleModel = new ValidatableObject<string>();
             _vehicleColor = new ValidatableObject<string>();
             _vehicleYear = new ValidatableObject<string>();
-            _userEmail = new ValidatableObject<string>();
+            _userEmail = new EmailRule<string>();
             _password = new ValidatableObject<string>();
             _confirmPassword = new ValidatableObject<string>(); 
 
             AddValidations();
+
+
+           
+
         }
+         
+        #region Pickers
+        private int selectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return selectedIndex;
+            }
+            set
+            {
+                selectedIndex = value;
+
+                RaisePropertyChanged(() => selectedIndex);
+            }
+        }
+        private IEnumerable<Generic> _vehicleTypes;
+        public IEnumerable<Generic> VehicleTypesList
+        {
+            get
+            {
+                return _vehicleTypes;
+            }
+            set
+            {
+                _vehicleTypes = value;
+
+                RaisePropertyChanged(() => VehicleTypesList);
+            }
+        }
+        #endregion
+
+        #region [profilePhotoImage profilePhotoImage profilePhotoImage]
+
+        #region [profilePhotoImage]
+        private Stream ProfilePhotoImageMS { set; get; }
+        private ImageSource _profilePhotoImage = "Assets/noimage.png";
+        public ImageSource ProfilePhotoImage
+        {
+            get
+            {
+                return _profilePhotoImage;
+            }
+            set
+            {
+                _profilePhotoImage = value;
+
+                RaisePropertyChanged(() => ProfilePhotoImage);
+            }
+        }
+        
+
+        public ICommand TakePhotoProfileCommand => new Command(async () => await TakePhotoProfileAsync());
+        private async Task TakePhotoProfileAsync()
+        {
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+                Directory = "godrivedrop",
+                Name = "profilePhotoImage.jpg"
+            });
+
+            if (file == null)
+            {
+                return;
+            }
+            ProfilePhotoImage = file.Path;
+
+            ProfilePhotoImageMS = file.GetStream();
+            file.Dispose();
+        }
+
+        public ICommand PickPhotoProfileCommand => new Command(async () => await PickPhotoProfileAsync());
+        private async Task PickPhotoProfileAsync()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium
+            });
+
+
+            if (file == null)
+                return;
+
+            ProfilePhotoImage = file.Path;
+
+            ProfilePhotoImageMS = file.GetStream();
+
+            file.Dispose();
+
+        }
+
+
+
+        #endregion
+
+        #region [LicensePhotoImage ]
+        private Stream LicensePhotoImageS { set; get; } 
+        private ImageSource _licensePhotoImage = "Assets/noimage.png";
+        public ImageSource LicensePhotoImage
+        {
+            get
+            {
+                return _licensePhotoImage;
+            }
+            set
+            {
+                _licensePhotoImage = value;
+
+                RaisePropertyChanged(() => LicensePhotoImage);
+            }
+        }
+        public ICommand TakePhotoLicenseCommand => new Command(async () => await TakePhotoLicenseAsync());
+        private async Task TakePhotoLicenseAsync()
+        {
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+                Directory = "godrivedrop",
+                Name = "LicensePhotoImage.jpg"
+            });
+
+            if (file == null)
+            {
+                return;
+            }
+            LicensePhotoImage = file.Path;
+            LicensePhotoImageS = file.GetStream();
+        file.Dispose();
+        }
+
+        public ICommand PickPhotoLicenseCommand => new Command(async () => await PickPhotoLicenseAsync());
+        private async Task PickPhotoLicenseAsync()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium
+            });
+
+
+            if (file == null)
+                return;
+
+            LicensePhotoImage = file.Path;
+            LicensePhotoImageS = file.GetStream();
+            file.Dispose();
+
+        }
+
+        #endregion
+
+        #region [VehiclePhotoImage]
+        private Stream VehiclePhotoImages { set; get; }
+        private ImageSource _vehiclePhotoImage = "Assets/noimage.png";
+        public ImageSource VehiclePhotoImage
+        {
+            get
+            {
+                return _vehiclePhotoImage;
+            }
+            set
+            {
+                _vehiclePhotoImage = value;
+
+                RaisePropertyChanged(() => VehiclePhotoImage);
+            }
+        }
+        public ICommand TakePhotoVehicleCommand => new Command(async () => await TakePhotoVehicleAsync());
+        private async Task TakePhotoVehicleAsync()
+        {
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+                Directory = "godrivedrop",
+                Name = "VehiclePhotoImage.jpg"
+            });
+
+            if (file == null)
+            {
+                return;
+            }
+            VehiclePhotoImage = file.Path;
+            VehiclePhotoImages = file.GetStream();
+            file.Dispose();
+        }
+
+        public ICommand PickPhotoVehicleCommand => new Command(async () => await PickPhotoVehicleAsync());
+        private async Task PickPhotoVehicleAsync()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium
+            });
+
+
+            if (file == null)
+                return;
+
+            VehiclePhotoImage = file.Path;
+            VehiclePhotoImages = file.GetStream();
+            file.Dispose();
+
+        }
+
+        #endregion
+
+        #region [VehiclePhotoImage]
+        private Stream ProofPhotoImages { set; get; }
+        private ImageSource _proofPhotoImage = "Assets/noimage.png";
+        public ImageSource ProofPhotoImage
+        {
+            get
+            {
+                return _proofPhotoImage;
+            }
+            set
+            {
+                _proofPhotoImage = value;
+
+                RaisePropertyChanged(() => ProofPhotoImage);
+            }
+        }
+        public ICommand TakePhotoProofCommand => new Command(async () => await TakePhotoProofAsync());
+        private async Task TakePhotoProofAsync()
+        {
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+                Directory = "godrivedrop",
+                Name = "ProofPhotoImage.jpg"
+            });
+
+            if (file == null)
+            {
+                return;
+            }
+            ProofPhotoImage = file.Path;
+            ProofPhotoImages = file.GetStream();
+            file.Dispose();
+        }
+
+        public ICommand PickPhotoProofCommand => new Command(async () => await PickPhotoProofAsync());
+        private async Task PickPhotoProofAsync()
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium
+            });
+
+
+            if (file == null)
+                return;
+
+            ProofPhotoImage = file.Path;
+            ProofPhotoImages = file.GetStream();
+            file.Dispose();
+
+        }
+
+        #endregion
+
+
+        #endregion
+
+        #region Command and associated methods for SearchCommand
+        private ObservableCollection<string> _list;
+        public ObservableCollection<string> Items
+        {
+            get
+            {
+                return _list;
+            }
+            set
+            {
+                _list = value;
+
+                RaisePropertyChanged(() => Items);
+            }
+        }
+
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value ?? string.Empty; 
+                      RaisePropertyChanged(() => SearchText);
+                    // Perform the search
+                    if (SearchCommand.CanExecute(null))
+                    {
+                        SearchCommand.Execute(null);
+                    }
+                }
+            }
+        }
+       
+       public ICommand SearchCommand => new Command(async () => await DoSearchCommandAsync()); 
+        private async Task DoSearchCommandAsync()
+        {
+            // Refresh the list, which will automatically apply the search text
+ 
+            string keyword = SearchText;
+           
+              if (keyword.Length >= 3){
+                var authToken = Settings.AuthAccessToken;
+                IEnumerable<String> predictions = await _googleAddress.AutoComplete(keyword, authToken);
+                Items = new ObservableCollection<string>(predictions);
+                if(Items.Count>0)
+                    IsListViewVisible = true;
+            }
+        }
+ 
+        private string _selectedItem;
+        public string SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                _selectedItem = value;
+
+                if (_selectedItem == null)
+                    return;
+                RaisePropertyChanged(() => SelectedItem);
+                //SomeCommand.Execute(_selectedItem);
+                DialogService.ShowAlertAsync(_selectedItem, "Changes", "Ok");
+                IsListViewVisible = false;
+                IsDefaultAddressVisible = true;
+                DefaultAddress = _selectedItem;
+            }
+        }
+        public bool isListViewVisible;
+        public bool IsListViewVisible
+        {
+            get
+            {
+                return isListViewVisible;
+            }
+            set
+            {
+                isListViewVisible = value;
+                RaisePropertyChanged(() => IsListViewVisible);
+            }
+        }
+
+        private string _defaultAddress; 
+        public string DefaultAddress
+        {
+            get
+            {
+                return _defaultAddress;
+            }
+            set
+            {
+                _defaultAddress = value;
+                RaisePropertyChanged(() => DefaultAddress);
+            }
+        }
+
+        public bool isDefaultAddressVisible;
+        public bool IsDefaultAddressVisible
+        {
+            get
+            {
+                return isDefaultAddressVisible;
+            }
+            set
+            {
+                isDefaultAddressVisible = value;
+                RaisePropertyChanged(() => IsDefaultAddressVisible);
+            }
+        }
+        #endregion
 
 
         public NewDriver NewDriver
@@ -82,7 +535,12 @@ namespace DriveDrop.Core.ViewModels
         public override async Task InitializeAsync(object navigationData)
         {
             IsBusy = false;
-            await Task.Delay(100);
+
+            var authToken = Settings.AuthAccessToken;
+            VehicleTypesList =await  _commons.VehicleTypes( token: authToken);
+
+
+
             IsBusy = false;
              await base.InitializeAsync(navigationData);
         }
@@ -209,12 +667,13 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => VehicleYear);
             }
         }
-        public ValidatableObject<string> UserEmail
+        private string _user;
+        public string UserEmail
         {
-            get { return _userEmail; }
+            get { return _user; }
             set
             {
-                _userEmail = value;
+                _user = value;
                 RaisePropertyChanged(() => UserEmail);
             }
         }
@@ -274,19 +733,107 @@ namespace DriveDrop.Core.ViewModels
 
         //public ICommand takePhotoCommand => new Command(async () => await DialogService.ShowAlertAsync("Phonto", "Phonto", "Ok"));
 
-        public  async Task SubmitAsync()
-        {
-            await Task.Delay(100);
-            //    await DialogService.ShowAlertAsync("Saving data", "Data save", "Ok");
-            IsBusy = false;
+
+
+      
+
+        public async Task SubmitAsync()
+        { 
+            
+            IsBusy = true; 
 
             bool isValid =   Validate();
             if (isValid)
             {
+                if(Password.Value != ConfirmPassword.Value)
+                    {
+                    await DialogService.ShowAlertAsync("Password and  Confirmation Password must be equal !", "User Name or Password Invalid!", "Ok");
+                    IsBusy = false;
+                    return;
+                }
+
+
+                bool isvalidpi = ProfilePhotoImageMS!=null?true:false;
+                bool isvalidlpi = LicensePhotoImageS != null ? true : false;
+                bool isvalidvpi = VehiclePhotoImages!= null ? true : false;
+                bool isvalidppi = ProofPhotoImages != null ? true : false;
+
+                if (!isvalidpi || !isvalidlpi || !isvalidvpi || !isvalidppi)
+                {
+                    await DialogService.ShowAlertAsync("Need a profile or driver license or vehicle or proof of insurance photo", "Saving data ProfilePhotoImage", "Ok");
+                    IsBusy = false;
+                    return;
+                }
+                
+                var vTypes = VehicleTypesList.ToList();
+
+                var authToken = Settings.AuthAccessToken;
+
+                var valid =await _commons.ValidateUserName(UserEmail, authToken);
+                if (valid.Contains("duplicate"))
+                {
+
+                    await DialogService.ShowAlertAsync("Invalid User Name or Password", "User Name Issue", "Ok");
+
+                    IsBusy = false;
+                    return;
+                }
+
+
+                var personalPhotoUri = await _commons.UploadImage(ProfilePhotoImageMS, "driver", authToken);
+                var vehiclePhotoUri = await _commons.UploadImage(VehiclePhotoImages, "driver", authToken);
+                var driverLincensePictureUri = await _commons.UploadImage(LicensePhotoImageS, "driver", authToken);
+                var insurancePhotoUri = await _commons.UploadImage(ProofPhotoImages, "driver", authToken);
+
+
+                if (string.IsNullOrWhiteSpace(personalPhotoUri) ||
+                    string.IsNullOrWhiteSpace(vehiclePhotoUri) ||
+                    string.IsNullOrWhiteSpace(driverLincensePictureUri) ||
+                    string.IsNullOrWhiteSpace(insurancePhotoUri))
+                {
+                    IsBusy = false;
+                    await DialogService.ShowAlertAsync("Unable to Save Photos !", "Verify Informations", "Ok");
+                    return;
+                }
+
+                var driver = new NewDriver
+                {
+                    FirstName =  FirstName.Value,
+                    LastName =LastName.Value,
+                    PrimaryPhone = PrimaryPhone.Value,
+                    Phone = Phone.Value,
+                    
+                    MaxPackage = MaxPackage.Value??0,
+                    DeliverRadius =DeliverRadius.Value??0,
+                    PickupRadius = PickupRadius.Value??0,
+                    TransportTypeId = vTypes[SelectedIndex].Id,
+                    VehicleMake = VehicleMake.Value,
+                    VehicleModel =  VehicleModel.Value,
+                    VehicleColor = VehicleColor.Value,
+                    VehicleYear = VehicleYear.Value,
+
+                    PersonalPhotoUri = personalPhotoUri,
+                    VehiclePhotoUri = vehiclePhotoUri,
+                    DriverLincensePictureUri = driverLincensePictureUri,
+                    InsurancePhotoUri = insurancePhotoUri,
+
+                    UserEmail = UserEmail,
+                    Password = Password.Value, 
+                };
+
+
+              var   response = await _driverService.CreateDriverAsync(driver, authToken);
+
+                await DialogService.ShowAlertAsync(" Shortly, you will receive an email with a link. Follow the link to verify your email address.", "Driver Account has Been Created", "Ok");
+
                 IsValid = true;
             }
             else
             {
+                await DialogService.ShowAlertAsync("Something Wrong !", "Verify Informations", "Ok");
+
+
+              
                 IsValid = false;
             }
             IsBusy = false;
@@ -308,7 +855,10 @@ namespace DriveDrop.Core.ViewModels
             bool isValiPass = ValidatePassword();
             bool isValiPC = ValidateConfirmPassword();
 
-
+            bool isvalidpi = ValidateProfilePhotoImage();
+            bool isvalidlpi = ValidatelicensePhotoImage();
+            bool isvalidvpi = ValidatevehiclePhotoImage();
+            bool isvalidppi = ValidateProofPhotoImage();
 
 
             return isValidFirstName &&
@@ -322,7 +872,35 @@ namespace DriveDrop.Core.ViewModels
                     isValiVY &&
                     isValiE &&
                     isValiPass &&
-                    isValiPC; 
+                    isValiPC &&
+                    isvalidpi &&
+                    isvalidlpi &&
+                    isvalidvpi &&
+                    isvalidppi; 
+        }
+        private bool ValidateProfilePhotoImage()
+        {
+            if (string.IsNullOrEmpty(ProfilePhotoImage.ToString()) || ProfilePhotoImage.ToString().Trim() == "Assets/noimage.png")
+                return false;
+            return true;
+        }
+        private bool ValidatelicensePhotoImage()
+        {
+            if (string.IsNullOrEmpty(LicensePhotoImage.ToString()) || LicensePhotoImage.ToString().Trim() == "Assets/noimage.png")
+                return false;
+            return true;
+        }
+        private bool ValidatevehiclePhotoImage()
+        {
+            if (string.IsNullOrEmpty(VehiclePhotoImage.ToString()) || VehiclePhotoImage.ToString().Trim() == "Assets/noimage.png")
+                return false;
+            return true;
+        }
+        private bool ValidateProofPhotoImage()
+        {
+            if (string.IsNullOrEmpty(ProofPhotoImage.ToString()) || ProofPhotoImage.ToString().Trim() == "Assets/noimage.png")
+                return false;
+            return true;
         }
         private bool ValidateFirstName()
         {
@@ -377,7 +955,9 @@ namespace DriveDrop.Core.ViewModels
         }
         private bool ValidateUserEmail()
         {
-            return _userEmail.Validate();
+            return true;
+
+          //  return _userEmail.Check(UserEmail);
         }
         private bool ValidatePassword()
         {
@@ -404,7 +984,7 @@ namespace DriveDrop.Core.ViewModels
             _vehicleModel.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Model is required." });
             _vehicleColor.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Color is required." });
             _vehicleYear.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Year is required." });
-            _userEmail.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "User Name is required." });
+            _userEmail.ValidationMessage= "User Name is required." ;
             _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password is required." });
             _confirmPassword.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Configrmation Password is required." });
 

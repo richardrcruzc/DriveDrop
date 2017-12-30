@@ -81,6 +81,9 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\Uploads\Img\Driver\" />
+    <Folder Include="wwwroot\Uploads\Img\Sender\" />
+    <Folder Include="wwwroot\Uploads\Img\Shipment\" />
   </ItemGroup>
 
 </Project>

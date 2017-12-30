@@ -166,6 +166,7 @@
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IPayPalStandardPaymentProcessor, PayPalStandardPaymentProcessor>();
             services.AddTransient<IGeolocationService, GeolocationService>();
+            services.AddTransient<IHttpClientAccessor, DefaultHttpClientAccessor>();
 
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))

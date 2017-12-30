@@ -61,7 +61,8 @@ namespace DriveDrop.Api.Controllers
                 if (customer != null)
                     return BadRequest("customerNotFound");
 
-                var shipping =  customer.ShipmentSenders.Where(x => x.Id == packageId).FirstOrDefault();
+                var shipping =  customer.ShipmentSenders.OrderBy(x=>x.Id)
+                    .Where(x => x.Id == packageId).FirstOrDefault();
                 if (shipping != null)
                     return BadRequest("ShipmentNotFound");
 

@@ -84,8 +84,8 @@
 
 
         public string CustomerId { get; set; }
-
-
+        public string CommonEndpoint { get; set; }
+        
 
         private void UpdateEndpoint(string baseEndpoint)
         {
@@ -101,6 +101,7 @@
         }
         private void UpdateApiEndpoint(string baseEndpoint)
         {
+         
             CatalogEndpoint = $"{baseEndpoint}5101";
             OrdersEndpoint = $"{baseEndpoint}5102";
             BasketEndpoint = $"{baseEndpoint}5103";
@@ -108,8 +109,9 @@
             LocationEndpoint = $"{baseEndpoint}5109";
             MarketingEndpoint = $"{baseEndpoint}5110";
 
-            DriverEndPoint = $"{baseEndpoint}drivers";
-            
+            DriverEndPoint = $"{ApiEndpoint}drivers";
+            CommonEndpoint = $"{ApiEndpoint}common";
+
         }
     }
 }

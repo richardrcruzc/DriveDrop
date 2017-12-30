@@ -10,7 +10,8 @@ namespace DriveDrop.Api.Services
     {
 
         Task<AddressModel> Get(string latitude, string longitude);
-        Task<AddressModel> Get(AddressModel model);
+        Task<AddressModel> GetCompleAddress(string address);
+        Task<List<string>> Autocomplete(string address);
 
     }
 }

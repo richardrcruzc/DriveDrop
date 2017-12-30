@@ -23,19 +23,46 @@ namespace DriveDrop.Api.Controllers
     public class CommonController : Controller
     {
         private readonly IOptionsSnapshot<AppSettings> _settings;
-
+        
+             private readonly IGeolocationService _google;
         private readonly IEmailSender _emailSender;
         private readonly ICustomerService _cService;
         private readonly DriveDropContext _context;
         private readonly IHostingEnvironment _env;
-        public CommonController(IOptionsSnapshot<AppSettings> settings, IEmailSender emailSender, ICustomerService cService, IHostingEnvironment env, DriveDropContext context)
+        public CommonController(
+            IGeolocationService google,
+        IOptionsSnapshot<AppSettings> settings, IEmailSender emailSender, 
+        ICustomerService cService,
+        IHostingEnvironment env, DriveDropContext context)
         {
             _settings = settings;
             _emailSender = emailSender;
             _context = context;
             _env = env;
             _cService = cService;
+            _google = google;
         }
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("[action]/addresspart/{initialPart}")]
+        public async Task<IActionResult> Autocomplete(string initialPart)
+        {
+            //var predictions = await _google.Get("", "");
+            var predictions = await _google.Autocomplete(initialPart);
+
+            return Ok(predictions);
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("[action]/address/{address}")]
+        public async Task<IActionResult> GetCompleAddress(string address)
+        {
+            //var predictions = await _google.Get("", "");
+            var complete = await _google.GetCompleAddress(address);
+
+            return Ok(complete);
+        }
+
         [HttpGet]
         [Route("[action]/id/{id:int}")]
         public async Task<IActionResult> DeleteCustomer(int id)

@@ -14,6 +14,7 @@ using Xamarin.Forms;
 using DriveDrop.Core.Services.Location;
 using DriveDrop.Core.Services.Marketing;
 using DriveDrop.Core.Services.Driver;
+using DriveDrop.Core.Services.Common;
 
 namespace DriveDrop.Core.ViewModels.Base
 {
@@ -79,8 +80,11 @@ namespace DriveDrop.Core.ViewModels.Base
 				builder.RegisterType<OrderService>().As<IOrderService>().SingleInstance();
 				builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
 			    builder.RegisterType<CampaignService>().As<ICampaignService>().SingleInstance();
+            builder.RegisterType<GoogleAddress>().As<IGoogleAddress>().SingleInstance();
+            builder.RegisterType<Commons>().As<ICommons>().SingleInstance();
 
-                UseMockService = false;
+
+            UseMockService = false;
 			//}
 
 			if (_container != null)

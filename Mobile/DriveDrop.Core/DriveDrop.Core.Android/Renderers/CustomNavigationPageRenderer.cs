@@ -1,5 +1,6 @@
 using Android.Widget;
 using DriveDrop.Droid.Renderers;
+using Android.Content;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android.AppCompat;
 
@@ -8,6 +9,12 @@ namespace DriveDrop.Droid.Renderers
 {
     public class CustomNavigationPageRenderer : NavigationPageRenderer
     {
+
+        public CustomNavigationPageRenderer(Context context) : base(context)
+        {
+            AutoPackage = false;
+        }
+
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             base.OnLayout(changed, l, t, r, b);

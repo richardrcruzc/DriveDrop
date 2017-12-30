@@ -10,7 +10,8 @@
     "Xam.Plugins.Settings": "2.6.0.12-beta",
     "Xamarin.FFImageLoading": "2.2.9",
     "Xamarin.FFImageLoading.Forms": "2.2.9",
-    "Xamarin.Forms": "2.5.0.91635"
+    "Xamarin.Forms": "2.5.0.91635",
+    "Xamarin.Forms.Maps": "2.5.0.121934"
   },
   "frameworks": {
     "uap10.0.10586": {}

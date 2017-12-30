@@ -35,7 +35,7 @@ namespace DriveDrop.Droid.Activities
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             UserDialogs.Init(this);
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(true);
             LoadApplication(new App());
 
             Window window = this.Window;

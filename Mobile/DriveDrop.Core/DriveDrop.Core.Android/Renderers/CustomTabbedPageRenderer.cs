@@ -7,11 +7,12 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using Xamarin.Forms.Platform.Android;
-using DriveDrop.Droid.Extensions;
-using DriveDrop.Core.Controls;
+using DriveDrop.Droid.Extensions; 
 using DriveDrop.Droid.Renderers;
 using Android.Support.V4.View;
 using Android.Graphics;
+using Android.Content;
+using DriveDrop.Core.Controls;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace DriveDrop.Droid.Renderers
@@ -25,6 +26,15 @@ namespace DriveDrop.Droid.Renderers
         private ViewPager _viewPager;
         private TabbedPage _tabbedPage;
         private bool _firstTime = true;
+
+
+
+
+        public CustomTabbedPageRenderer(Context context) : base(context)
+        {
+            AutoPackage = false;
+        }
+
 
         protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {

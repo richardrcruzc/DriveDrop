@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DriveDrop.Core.Views.NewDriverView"
-			 xmlns:viewModelBase="clr-namespace:DriveDrop.Core.ViewModels.Base;assembly=DriveDrop.Core"
+			 xmlns:viewModelBase="clr-namespace:DriveDrop.Core.ViewModels.Base;assembly=DriveDrop.Core" 
              xmlns:templates="clr-namespace:DriveDrop.Core.Views.Templates;assembly=DriveDrop.Core"  
                xmlns:converters="clr-namespace:DriveDrop.Core.Converters;assembly=DriveDrop.Core"
              xmlns:animations="clr-namespace:DriveDrop.Core.Animations;assembly=DriveDrop.Core"
@@ -184,7 +184,8 @@
 					Style="{StaticResource ValidationErrorLabelStyle}" /> 
 
  
-                    <Entry Text="{Binding PrimaryPhone.Value, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Contact Primary Phone">
+                    <Entry Text="{Binding PrimaryPhone.Value, Mode=TwoWay}" 
+                           Keyboard="Numeric" Placeholder="Contact Primary Phone" >
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -192,6 +193,8 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
+                            <behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePrimaryPhoneCommand}" />
@@ -218,7 +221,9 @@
                         </OnPlatform>
                     </Entry.Style>
                     <Entry.Behaviors>
-                        <behaviors:EventToCommandBehavior
+                            <behaviors:PhoneNumberMaskBehavior x:Name="PhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                            <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePhoneCommand}" />
                     </Entry.Behaviors>
@@ -241,14 +246,61 @@
                   Text="DEFAUL ADDRESS"
                    Style="{StaticResource TitleLabelStyle}" />
 
-                    <SearchBar x:Name="SearchAddress"  Placeholder = "Enter your Address"
-                               SearchCommand="{Binding SearchCommand}" >
+ 
+                   <SearchBar  x:Name="SearchFor" 
+                                Text="{Binding SearchText  }"
+                            SearchCommand="{Binding SearchCommand}"
+                                Placeholder="Enter your Address" 
+                                  HorizontalOptions="FillAndExpand"/>
 
-                    </SearchBar>
+                    <Label
+                  Text="{Binding DefaultAddress }"
+                        IsVisible="{Binding IsDefaultAddressVisible}"
+                   Style="{StaticResource TitleLabelStyle}" />
+                
+                    <ListView 
+                        IsVisible="{Binding IsListViewVisible}"
+                        ItemsSource="{Binding Items}" 
+                              VerticalOptions="FillAndExpand" 
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
 
+                    <!-- <ListView x:Name="SearchResultListView" VerticalOptions="FillAndExpand"
+                          IsPullToRefreshEnabled="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding ResultValue}"  TextColor="Black" Font="Bold,14"/>
+                                        --><!-- ... --><!--
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>-->
 
+                    <!--<SearchBar Text="{Binding SearchText, Mode=TwoWay}" 
+                               SearchCommand="{Binding SearchCommand}"
+                        Placeholder="Enter your Address" 
+                               HorizontalOptions="FillAndExpand"/>
 
-                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}" Placeholder="Enter your Address">
+                    <SearchBar x:Name="SearchFor"
+    			Placeholder="search for"
+				Text="{Binding Path=SearchText}"
+				TextChanged="OnValueChanged" 
+				SearchButtonPressed="OnSearch" />-->
+                
+                    <!--<SearchBar Text="{Binding SearchText}"
+Placeholder="Enter your Address"
+               SearchCommand="{Binding SearchCommand}"  
+                                HorizontalOptions="FillAndExpand"/>-->
+                
+
+                    <!--<ScrollView VerticalOptions="FillAndExpand">
+                        <StackLayout x:Name="resultsLayout">
+                        </StackLayout>
+                    </ScrollView>-->
+
+                        <!--<Entry Text="{Binding FirstName.Value, Mode=TwoWay}" Placeholder="Enter your Address">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -271,7 +323,7 @@
                     </Entry>
                     <Label 
 					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
-					Style="{StaticResource ValidationErrorLabelStyle}" />
+					Style="{StaticResource ValidationErrorLabelStyle}" />-->
 
 
                     <!--Driver Package and Drive Information-->
@@ -279,14 +331,16 @@
                   Text="Driver Package and Drive Information"
                    Style="{StaticResource TitleLabelStyle}" />
 
-                    <Entry Text="{Binding MaxPackage.Value, Mode=TwoWay}" Placeholder="Maximum Package to Pickup"  >
+                    <Entry Text="{Binding MaxPackage.Value, Mode=TwoWay}" 
+                           Placeholder="Maximum Package to Pickup"   Keyboard="Numeric" >
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
                                 <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
                             </OnPlatform>
                         </Entry.Style>
-                         <Entry.Behaviors>                           
+                         <Entry.Behaviors>
+                            <behaviors:EntryLengthValidatorBehavior MaxLength="3" />
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateMaxPackageCommand}"/>
@@ -305,7 +359,9 @@
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
                   
-                    <Entry Text="{Binding PickupRadius.Value, Mode=TwoWay}" Placeholder="Maximum Drive Pickup Radius in Miles">
+                    <Entry Text="{Binding PickupRadius.Value, Mode=TwoWay}"
+                             Keyboard="Numeric"
+                           Placeholder="Maximum Drive Pickup Radius in Miles">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -313,6 +369,7 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
+                            <behaviors:EntryLengthValidatorBehavior MaxLength="3" />
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePickupRadiusCommand}" />
@@ -331,7 +388,9 @@
 					Style="{StaticResource ValidationErrorLabelStyle}" />
                   
                 
-                    <Entry Text="{Binding DeliverRadius.Value, Mode=TwoWay}" Placeholder="Maximum Drive Deliver Package Radius  in Miles">
+                    <Entry Text="{Binding DeliverRadius.Value, Mode=TwoWay}" 
+                             Keyboard="Numeric"
+                           Placeholder="Maximum Drive Deliver Package Radius  in Miles">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -339,6 +398,7 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
+                            <behaviors:EntryLengthValidatorBehavior MaxLength="3" />
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateDeliverRadiusCommand}" />
@@ -356,33 +416,18 @@
 					Text="{Binding DeliverRadius.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
-                    
-                    <Entry Text="{Binding TransportTypeId.Value, Mode=TwoWay}" Placeholder="All Vehicle Types">
-                        <Entry.Style>
-                            <OnPlatform x:TypeArguments="Style">
-                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
-                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
-                            </OnPlatform>
-                        </Entry.Style>
-                        <Entry.Behaviors>
-                            <behaviors:EventToCommandBehavior
-							EventName="TextChanged"
-							Command="{Binding ValidateTransportTypeIdCommand}" />
-                        </Entry.Behaviors>
-                        <Entry.Triggers>
-                            <DataTrigger 
-							TargetType="Entry"
-							Binding="{Binding TransportTypeId.IsValid}"
-							Value="False">
-                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
-                    <Label 
-					Text="{Binding TransportTypeId.Errors, Converter={StaticResource FirstValidationErrorConverter}"
-					Style="{StaticResource ValidationErrorLabelStyle}" />
-
-
+                    <Picker Title="All Vehicle Types" ItemsSource="{Binding VehicleTypesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                            SelectedIndex="{Binding SelectedIndex , Mode=TwoWay}"
+                             SelectedItem="{Binding SelectedVehicle, Mode=OneWay}" 
+                            HorizontalOptions="FillAndExpand">
+                        <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                    </Picker>
+                   
+                
                     <Entry Text="{Binding VehicleMake.Value, Mode=TwoWay}" Placeholder="Vehicle Marke">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
@@ -487,22 +532,28 @@
 
 
                     <!--ProfilePhoto-->
+                   
+
+
+                    <Button x:Name="takePhotoProfile" Text="Take Profile Photo"  Command="{Binding TakePhotoProfileCommand}"/>
+                    <Button x:Name="pickPhotoProfile" Text="Pick Profile Photo" Command="{Binding PickPhotoProfileCommand}"/>
+                    <Label Text="{Binding pickPhotoProfileErrors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <Image x:Name="profilePhotoImage" WidthRequest = "70" HeightRequest = "70" Source="{Binding ProfilePhotoImage, Mode=OneWay}"/>
                     
-                    <Button x:Name="takePhotoProfile" Text="Take Profile Photo"/>
-                    <Button x:Name="pickPhotoProfile" Text="Pick Profile Photo"/>
-                    <Image x:Name="profilePhotoImage"/>
+                    <!--<Image Source="{Binding ProfilePhotoImage , Converter={StaticResource ImageConverter}"/>-->
 
-                    <Button x:Name="takePhotoLicense" Text="Take Driver License Photo"/>
-                    <Button x:Name="pickPhotoLicense" Text="Pick Driver License Photo"/>
-                    <Image x:Name="LicensePhotoImage"/>
+                    <Button x:Name="takePhotoLicense" Text="Take Driver License Photo"  Command="{Binding TakePhotoLicenseCommand}"/>
+                    <Button x:Name="pickPhotoLicense" Text="Pick Driver License Photo"   Command="{Binding PickPhotoLicenseCommand}"/>
+                    <Image x:Name="licensePhotoImage"  WidthRequest = "70" HeightRequest = "70" Source="{Binding LicensePhotoImage, Mode=OneWay}"/>
 
-                    <Button x:Name="takePhotoVehicle" Text="Take Vehicle Photo"/>
-                    <Button x:Name="pickPhotoVehicle" Text="Pick Vehicle Photo"/>
-                    <Image x:Name="vehiclePhotoImage"/>
+                    <Button x:Name="takePhotoVehicle" Text="Take Vehicle Photo"  Command="{Binding TakePhotoVehicleCommand}"/>
+                    <Button x:Name="pickPhotoVehicle" Text="Pick Vehicle Photo"  Command="{Binding PickPhotoVehicleCommand}"/>
+                    <Image x:Name="vehiclePhotoImage"  WidthRequest = "70" HeightRequest = "70" Source="{Binding VehiclePhotoImage, Mode=OneWay}"/>
 
-                    <Button x:Name="takePhotoProof" Text="Take Proof of Insurance Photo"/>
-                    <Button x:Name="pickPhotoProof" Text="Pick Proof of Insurance Photo"/>
-                    <Image x:Name="ProofPhotoImage"/>
+                    <Button x:Name="takePhotoProof" Text="Take Proof of Insurance Photo"  Command="{Binding TakePhotoProofCommand}"/>
+                    <Button x:Name="pickPhotoProof" Text="Pick Proof of Insurance Photo"  Command="{Binding PickPhotoProofCommand}"/>
+                    <Image x:Name="ProofPhotoImage"  WidthRequest = "70" HeightRequest = "70" Source="{Binding ProofPhotoImage, Mode=OneWay}"/>
                 
 
                     <!--Login Information-->
@@ -519,6 +570,7 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
+                            <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateUserEmailCommand}" />

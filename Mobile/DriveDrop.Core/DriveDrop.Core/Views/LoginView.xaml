@@ -201,7 +201,7 @@
                 <Label
                   Text="User name or email"
                   Style="{StaticResource HeaderLabelStyle}" />
-                <Entry Text="{Binding UserName.Value, Mode=TwoWay}">
+                <Entry Text="{Binding UserName.Value, Mode=TwoWay}" Keyboard="Email">
 					<Entry.Style>
                         <OnPlatform x:TypeArguments="Style">
                             <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -209,7 +209,8 @@
                         </OnPlatform>
                     </Entry.Style>
                     <Entry.Behaviors>
-						<behaviors:EventToCommandBehavior
+                        <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
+                        <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateUserNameCommand}" />
 					</Entry.Behaviors>

@@ -28,8 +28,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\EmailValidatorBehavior.cs" />
+    <Compile Include="Behaviors\EntryLengthValidatorBehavior.cs" />
     <Compile Include="Behaviors\NumericValidationBehavior.cs" />
+    <Compile Include="Behaviors\PhoneNumberMaskBehavior.cs" />
+    <Compile Include="Behaviors\StarBehavior.cs" />
+    <Compile Include="Controls\MaskedEntry.cs" />
+    <Compile Include="Library\Exts.cs" />
+    <Compile Include="Library\MaskRules.cs" />
+    <Compile Include="Library\SelectionPoint.cs" />
+    <Compile Include="Models\Commons\AddressModel.cs" />
     <Compile Include="Models\Commons\Generic.cs" />
+    <Compile Include="Models\Commons\GoogleGeoCodeResponse.cs" />
     <Compile Include="Models\Commons\LoginModel.cs" />
     <Compile Include="Models\Drivers\NewDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,8 +75,15 @@
     <Compile Include="Helpers\RandomNumberGenerator.cs" />
     <Compile Include="Helpers\ServicesHelper.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Services\Common\Commons.cs" />
+    <Compile Include="Services\Common\GoogleAddress.cs" />
+    <Compile Include="Services\Common\ICommons.cs" />
+    <Compile Include="Services\Common\IGoogleAddress.cs" />
+    <Compile Include="Services\Common\SearchCommand.cs" />
+    <Compile Include="Services\Common\Helps.cs" />
     <Compile Include="Services\Driver\DriverService.cs" />
     <Compile Include="Services\Driver\IDriverService.cs" />
+    <Compile Include="Validations\EmailRule.cs" />
     <Compile Include="ViewModels\NewDriverViewModel.cs" />
     <Compile Include="Views\NewDriverView.xaml.cs">
       <DependentUpon>NewDriverView.xaml</DependentUpon>
@@ -200,7 +217,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">
