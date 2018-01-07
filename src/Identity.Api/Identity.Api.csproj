@@ -23,10 +23,10 @@
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.4.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta1" />
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.0-beta1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.0.0" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
@@ -42,7 +42,7 @@
 
  
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="1.22.0" />    
+    <PackageReference Include="MailKit" Version="2.0.1" />    
     <PackageReference Include="Sendgrid" Version="9.9.0" />
   </ItemGroup>
   <ItemGroup>
@@ -50,7 +50,7 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.1" />
   </ItemGroup>
   
   <ItemGroup>

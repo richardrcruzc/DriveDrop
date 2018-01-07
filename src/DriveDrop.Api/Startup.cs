@@ -151,10 +151,10 @@
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityService, IdentityService>();
-            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                sp => (DbConnection c) => new IntegrationEventLogService(c));
+            //services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
+            //    sp => (DbConnection c) => new IntegrationEventLogService(c));
 
-            services.AddTransient<IShippingIntegrationEventService, ShippingIntegrationEventService>();
+            //services.AddTransient<IShippingIntegrationEventService, ShippingIntegrationEventService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
