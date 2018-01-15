@@ -10,7 +10,6 @@ using Android.Runtime;
 using FFImageLoading;
 using System;
 using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 
 namespace DriveDrop.Droid.Activities
 {
@@ -35,13 +34,13 @@ namespace DriveDrop.Droid.Activities
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             UserDialogs.Init(this);
-            CachedImageRenderer.Init(true);
+            CachedImageRenderer.Init();
             LoadApplication(new App());
 
-            Window window = this.Window;
-            window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-            window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-            window.SetStatusBarColor(Android.Graphics.Color.Rgb(0, 166, 156));
+            //Window window = this.Window;
+            //window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+            //window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+            //window.SetStatusBarColor(Android.Graphics.Color.Rgb(0, 166, 156));
         }
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace DriveDrop.Droid.Activities
             base.OnTrimMemory(level);
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

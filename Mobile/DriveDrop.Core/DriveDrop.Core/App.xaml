@@ -6,6 +6,7 @@
              x:Class="DriveDrop.App">
     <Application.Resources>
         <ResourceDictionary>
+
             <!-- COLORS -->
             <Color x:Key="WhiteColor">#ffffff</Color>
             <Color x:Key="BlackColor">#000000</Color>

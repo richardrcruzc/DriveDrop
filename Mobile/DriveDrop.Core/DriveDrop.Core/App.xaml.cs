@@ -10,7 +10,7 @@ using Plugin.Geolocator;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+//[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace DriveDrop
 {
     public partial class App : Application
@@ -75,7 +75,7 @@ namespace DriveDrop
 
             if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
             { 
-                //locator.AllowsBackgroundUpdates = true;
+                locator.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
                 var position = await locator.GetPositionAsync();

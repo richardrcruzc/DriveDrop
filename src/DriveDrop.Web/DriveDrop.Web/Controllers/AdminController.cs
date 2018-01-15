@@ -27,6 +27,8 @@ namespace DriveDrop.Web.Controllers
     [Authorize]
     public class AdminController : Controller
     {
+        
+            private readonly IPictureService _pictureService;
         private readonly IHostingEnvironment _env;
         private readonly string _remoteServiceShippingsUrl;
         private IHttpClient _apiClient;
@@ -38,9 +40,12 @@ namespace DriveDrop.Web.Controllers
 
         private readonly string _remoteServiceDriversUrl;
 
-        public AdminController(IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings, 
+        public AdminController(
+            IPictureService pictureService,
+            IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings, 
             IHttpContextAccessor httpContextAccesor, IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
         {
+            _pictureService = pictureService;
             _env = env;
 
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
@@ -384,22 +389,25 @@ public async Task<IActionResult> DriverDetails(int? id)
 
 
             if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
-                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.PersonalPhotoUri =   "profile-icon.png";
 
             if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
-                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.DriverLincensePictureUri =  "profile-icon.png";
 
             if (string.IsNullOrWhiteSpace(response.VehiclePhotoUri))
-                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.VehiclePhotoUri =  "profile-icon.png";
 
 
             if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
-                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.InsurancePhotoUri =  "profile-icon.png";
+
+            response.PersonalPhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.PersonalPhotoUri));
+            response.DriverLincensePictureUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.DriverLincensePictureUri));
+            response.VehiclePhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.VehiclePhotoUri));
+            response.InsurancePhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.InsurancePhotoUri));
 
             response.CustomerType = response.CustomerType.ToTitleCase();
             response.CustomerStatus = response.CustomerStatus.ToTitleCase();
-
-
 
             return View(response);
 
@@ -494,22 +502,30 @@ public async Task<IActionResult> DriverDetails(int? id)
 
 
             if (string.IsNullOrWhiteSpace(response.PersonalPhotoUri))
-                response.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.PersonalPhotoUri =  "profile-icon.png";
           
             if (string.IsNullOrWhiteSpace(response.DriverLincensePictureUri))
-                response.DriverLincensePictureUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.DriverLincensePictureUri = "profile-icon.png";
           
             if (string.IsNullOrWhiteSpace(response.VehiclePhotoUri))
-                response.VehiclePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.VehiclePhotoUri =  "profile-icon.png";
             
           
             if (string.IsNullOrWhiteSpace(response.InsurancePhotoUri))
-                response.InsurancePhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                response.InsurancePhotoUri =  "profile-icon.png";
 
             response.CustomerType = response.CustomerType.ToTitleCase();
             response.CustomerStatus = response.CustomerStatus.ToTitleCase();
 
-            
+
+            response.PersonalPhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.PersonalPhotoUri));
+            response.DriverLincensePictureUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.DriverLincensePictureUri));
+            response.VehiclePhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.VehiclePhotoUri));
+            response.InsurancePhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(response.InsurancePhotoUri));
+
+            //response.PersonalPhotoUri = "http://10.0.0.51:5205/api/v1/Pic/GetImage/fileName/driver%2F8c6dd355-c599-4e26-b348-8e679cd61c1c.jpg/pic";
+
+
 
             return View(response);
 
@@ -559,7 +575,18 @@ public async Task<IActionResult> DriverDetails(int? id)
             var shipping = JsonConvert.DeserializeObject<Shipment>((dataString));
 
 
+            if (string.IsNullOrWhiteSpace(shipping.PickupPictureUri))
+                shipping.PickupPictureUri = "profile-icon.png";
 
+            if (string.IsNullOrWhiteSpace(shipping.DeliveredPictureUri))
+                shipping.DeliveredPictureUri = "profile-icon.png"; 
+
+            shipping.PickupPictureUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(shipping.PickupPictureUri));
+
+
+            shipping.DeliveredPictureUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(shipping.DeliveredPictureUri));
+
+             
             shipping.ShippingStatusList = await PrepareShippingStatus();
 
 
@@ -701,46 +728,66 @@ public async Task<IActionResult> DriverDetails(int? id)
         [NonAction]
         public async Task<string> SaveFile(List<IFormFile> files, string belong)
         {
-
-            Guid extName = Guid.NewGuid();
-            //saving files
-            long size = files.Sum(f => f.Length);
-
-            // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-            var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
-            var fileName = "";
-
-            foreach (var formFile in files)
+            var token = await GetUserTokenAsync();
+            foreach (var file in files)
             {
-
-                if (formFile.Length > 0)
+                if (file.Length > 0)
                 {
-                    var extension = ".jpg";
-                    if (formFile.FileName.ToLower().EndsWith(".jpg"))
-                        extension = ".jpg";
-                    if (formFile.FileName.ToLower().EndsWith(".tif"))
-                        extension = ".tif";
-                    if (formFile.FileName.ToLower().EndsWith(".png"))
-                        extension = ".png";
-                    if (formFile.FileName.ToLower().EndsWith(".gif"))
-                        extension = ".gif";
-                    if (formFile.FileName.ToLower().EndsWith(".pdf"))
-                        extension = ".pdf";
-
-
-
-
-                    filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                    fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var ms = new MemoryStream())
                     {
-                        await formFile.CopyToAsync(stream);
+                        file.CopyTo(ms);
+                        //var fileBytes = ms.ToArray();
+                        //string s = Convert.ToBase64String(fileBytes);
+                        // act on the Base64 data
+                        ms.Position = 0;
+                      
+                      var fileNameGuid=  await _pictureService.UploadImage(ms, belong );
+                        return fileNameGuid;
                     }
                 }
             }
-            return fileName;
+            return "";
+              
+
+            //Guid extName = Guid.NewGuid();
+            ////saving files
+            //long size = files.Sum(f => f.Length);
+
+            //// full path to file in temp location
+            //var filePath = Path.GetTempFileName();
+            //var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
+            //var fileName = "";
+
+            //foreach (var formFile in files)
+            //{
+
+            //    if (formFile.Length > 0)
+            //    {
+            //        var extension = ".jpg";
+            //        if (formFile.FileName.ToLower().EndsWith(".jpg"))
+            //            extension = ".jpg";
+            //        if (formFile.FileName.ToLower().EndsWith(".tif"))
+            //            extension = ".tif";
+            //        if (formFile.FileName.ToLower().EndsWith(".png"))
+            //            extension = ".png";
+            //        if (formFile.FileName.ToLower().EndsWith(".gif"))
+            //            extension = ".gif";
+            //        if (formFile.FileName.ToLower().EndsWith(".pdf"))
+            //            extension = ".pdf";
+
+
+
+
+            //        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+            //        fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
+
+            //        using (var stream = new FileStream(filePath, FileMode.Create))
+            //        {
+            //            await formFile.CopyToAsync(stream);
+            //        }
+            //    }
+            //}
+            //return fileName;
 
         }
 

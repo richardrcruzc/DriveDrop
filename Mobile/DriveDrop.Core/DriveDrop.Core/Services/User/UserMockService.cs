@@ -32,12 +32,5 @@ namespace DriveDrop.Core.Services.User
 
             return MockUserInfo;
         }
-
-        public async Task<string> GetUserInfoAsync(string authToken, string userName, string password)
-        {
-            await Task.Delay(500);
-
-            return "";
-        }
     }
 }

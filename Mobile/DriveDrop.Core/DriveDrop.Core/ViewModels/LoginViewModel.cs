@@ -2,7 +2,6 @@
 using DriveDrop.Core.Models.User;
 using DriveDrop.Core.Services.Identity;
 using DriveDrop.Core.Services.OpenUrl;
-using DriveDrop.Core.Services.User;
 using DriveDrop.Core.Validations;
 using DriveDrop.Core.ViewModels.Base;
 using IdentityModel.Client;
@@ -25,17 +24,13 @@ namespace DriveDrop.Core.ViewModels
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
-        private IUserService _userService;
 
         public LoginViewModel(
             IOpenUrlService openUrlService,
-            IIdentityService identityService,
-            IUserService userService)
+            IIdentityService identityService)
         {
             _openUrlService = openUrlService;
             _identityService = identityService;
-
-            _userService = userService;
 
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
@@ -121,7 +116,6 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => LoginUrl);
             }
         }
-
         public ICommand DriverCommand => new Command(async () => await NewDriversAsync());
 
         public ICommand SenderCommand => new Command(async () => await DialogService.ShowAlertAsync("Option no available, try again later.", "Oops!", "Ok"));
@@ -156,7 +150,17 @@ namespace DriveDrop.Core.ViewModels
 
             return base.InitializeAsync(navigationData);
         }
-
+        private async Task NewDriversAsync()
+        {
+            try
+            {
+                await NavigationService.NavigateToAsync<NewDriverViewModel>();
+            }
+            catch ( Exception ex)
+            {
+                var t = ex.Message;
+            }
+        }
         private async Task MockSignInAsync()
         {
             IsBusy = true;
@@ -192,43 +196,8 @@ namespace DriveDrop.Core.ViewModels
 
             IsBusy = false;
         }
+
         private async Task SignInAsync()
-        {
-            IsBusy = true;
-            //IsValid = true;
-            bool isValid = Validate();
-            bool isAuthenticated = false;
-
-            if (isValid)
-            {
-                try
-                {
-                    await Task.Delay(500);
-                    LoginUrl = _identityService.CreateAuthorizationRequest();
-                  // IsLogin = true;
-                    //isAuthenticated = true;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[SignIn] Error signing in: {ex}");
-                }
-            }
-            else
-            {
-                IsValid = false;
-            }
-
-            if (isAuthenticated)
-            {
-                Settings.AuthAccessToken = GlobalSetting.Instance.AuthToken;
-
-                await NavigationService.NavigateToAsync<MainViewModel>();
-                await NavigationService.RemoveLastFromBackStackAsync();
-            }
-
-            IsBusy = false;
-        }
-        private async Task BackupSignInAsync()
         {
             IsBusy = true;
 
@@ -282,35 +251,18 @@ namespace DriveDrop.Core.ViewModels
                 var authResponse = new AuthorizeResponse(url);
                 if (!string.IsNullOrWhiteSpace(authResponse.Code))
                 {
-
                     var userToken = await _identityService.GetTokenAsync(authResponse.Code);
                     string accessToken = userToken.AccessToken;
 
-                    //valid user name and password
-                     
-                    var response = await _userService.GetUserInfoAsync(userToken.AccessToken, UserName.Value,Password.Value);
-
-                    if (response == "User Valid")
+                    if (!string.IsNullOrWhiteSpace(accessToken))
                     {
-
-                        if (!string.IsNullOrWhiteSpace(accessToken))
-                        {
-                            Settings.AuthAccessToken = accessToken;
-                            Settings.AuthIdToken = authResponse.IdentityToken;
-
-
-                            await NavigationService.NavigateToAsync<MainViewModel>();
-                            await NavigationService.RemoveLastFromBackStackAsync();
-
-                        }
+                        Settings.AuthAccessToken = accessToken;
+                        Settings.AuthIdToken = authResponse.IdentityToken;
+                        await NavigationService.NavigateToAsync<MainViewModel>();
+                        await NavigationService.RemoveLastFromBackStackAsync();
                     }
                 }
             }
-        }
-
-        private async Task NewDriversAsync()
-        {
-            await NavigationService.NavigateToAsync<NewDriverViewModel>();
         }
 
         private async Task SettingsAsync()

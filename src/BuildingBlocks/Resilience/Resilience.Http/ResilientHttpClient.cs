@@ -29,7 +29,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 
         public ResilientHttpClient(Func<string, IEnumerable<Policy>> policyCreator, ILogger<ResilientHttpClient> logger, IHttpContextAccessor httpContextAccessor)
         {
-            _client = new HttpClient();
+            _client = new System.Net.Http.HttpClient();
             _logger = logger;
             _policyCreator = policyCreator;
             _policyWrappers = new ConcurrentDictionary<string, PolicyWrap>();

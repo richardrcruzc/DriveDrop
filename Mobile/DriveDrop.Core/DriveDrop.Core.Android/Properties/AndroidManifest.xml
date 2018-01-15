@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.companyname.DriveDrop.Core" android:installLocation="auto" android:versionCode="1" android:versionName="1.0">
-	<uses-sdk android:minSdkVersion="15" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.goDriveDrop.DriveDrop.Core" android:installLocation="auto" android:versionCode="1" android:versionName="1.0">
+	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<application android:label="DriveDrop.Droid">
 		<!-- Put your Google Maps V2 API Key here. -->
 		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAKSaCcc_q8c2-TLPel63q2AwDfRrffNAo" />

@@ -64,7 +64,15 @@
                                                             @Html.DisplayFor(modelItem => shipping.ShippingStatus.Name)
                                                         </td>
                                                         <td class="align-center">
+                                                            @if (shipping.PackageStatusHistories != null)
+                                                            {
                                                             @Html.DisplayFor(modelItem => shipping.PackageStatusHistories.OrderByDescending(x => x.StatusDate).FirstOrDefault().StatusDate)
+                                                            }
+                                                            else
+                                                            { 
+                                                                <label>@DateTime.Today</label>
+
+                                                            }
 
                                                         </td>
                                                         <td class="align-center">

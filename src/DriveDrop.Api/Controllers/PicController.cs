@@ -33,11 +33,11 @@ namespace DriveDrop.Api.Controllers
             var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
             var fileName = "";
 
-           
 
-                if (formFile.Length > 0)
+            var extension = ".jpg";
+            if (formFile.Length > 0)
                 {
-                    var extension = ".jpg";
+                   
                     if (formFile.FileName.ToLower().EndsWith(".jpg"))
                         extension = ".jpg";
                     if (formFile.FileName.ToLower().EndsWith(".tif"))
@@ -57,15 +57,16 @@ namespace DriveDrop.Api.Controllers
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await formFile.CopyToAsync(stream);
+                        await formFile.CopyToAsync(stream); 
                     }
+
                 }
-           
+            fileName = string.Format("{0}/{1}{2}", belong, extName, extension);
             return Ok(fileName);
         }
 
         [HttpGet]
-        [Route("[action]/fileName/{fileName}")]
+        [Route("[action]/fileName/{fileName}/pic")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         // GET: /<controller>/
@@ -73,14 +74,14 @@ namespace DriveDrop.Api.Controllers
         {
             if (fileName == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             fileName = System.Net.WebUtility.UrlDecode(fileName);
-
+            fileName= fileName.Replace("/", "\\");
             var webRoot = _env.WebRootPath;
             var path = Path.Combine(webRoot, fileName);
-            path = string.Format("{0}{1}", webRoot, fileName);
+            path = string.Format("{0}\\uploads\\img\\{1}", webRoot, fileName);
             string imageFileExtension = Path.GetExtension(fileName);
             string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 

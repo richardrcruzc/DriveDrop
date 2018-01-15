@@ -32,16 +32,16 @@ namespace DriveDrop.Core.ViewModels
         private readonly IRequestProvider _requestProvider;
         //  private Geocoder geoCoder;
 
+        private ValidatableObject<string> _user;
         
-           
         private ValidatableObject<string> _lastName;
         private ValidatableObject<string> _firstName;
         private ValidatableObject<string> _primaryPhone;
         private ValidatableObject<string> _phone;
-        private ValidatableObject<int?> _transportTypeId;
-        private ValidatableObject<int?> _maxPackage;
-        private ValidatableObject<int?> _pickupRadius;
-        private ValidatableObject<int?> _deliverRadius;
+        private ValidatableObject<int> _transportTypeId;
+        private ValidatableObject<int> _maxPackage;
+        private ValidatableObject<int> _pickupRadius;
+        private ValidatableObject<int> _deliverRadius;
         private ValidatableObject<string> _vehicleMake;
         private ValidatableObject<string> _vehicleModel;
         private ValidatableObject<string> _vehicleColor;
@@ -79,18 +79,20 @@ namespace DriveDrop.Core.ViewModels
 
             _primaryPhone = new ValidatableObject<string>();
             _phone = new ValidatableObject<string>();
-            _transportTypeId = new ValidatableObject<int?>();
-            _maxPackage = new ValidatableObject<int?>();
-            _pickupRadius = new ValidatableObject<int?>();
-            _deliverRadius = new ValidatableObject<int?>();
+            _transportTypeId = new ValidatableObject<int>();
+            _maxPackage = new ValidatableObject<int>();
+            _pickupRadius = new ValidatableObject<int>();
+            _deliverRadius = new ValidatableObject<int>();
             _vehicleMake = new ValidatableObject<string>();
             _vehicleModel = new ValidatableObject<string>();
             _vehicleColor = new ValidatableObject<string>();
             _vehicleYear = new ValidatableObject<string>();
             _userEmail = new EmailRule<string>();
             _password = new ValidatableObject<string>();
-            _confirmPassword = new ValidatableObject<string>(); 
+            _confirmPassword = new ValidatableObject<string>();
 
+
+            _user = new ValidatableObject<string>();
             AddValidations();
 
 
@@ -471,7 +473,7 @@ namespace DriveDrop.Core.ViewModels
                     return;
                 RaisePropertyChanged(() => SelectedItem);
                 //SomeCommand.Execute(_selectedItem);
-                DialogService.ShowAlertAsync(_selectedItem, "Changes", "Ok");
+              //  DialogService.ShowAlertAsync(_selectedItem, "Changes", "Ok");
                 IsListViewVisible = false;
                 IsDefaultAddressVisible = true;
                 DefaultAddress = _selectedItem;
@@ -542,7 +544,7 @@ namespace DriveDrop.Core.ViewModels
 
 
             IsBusy = false;
-             await base.InitializeAsync(navigationData);
+            
         }
         
         public ValidatableObject<string> LastName
@@ -593,7 +595,7 @@ namespace DriveDrop.Core.ViewModels
         public string DeliveryCountry { get; set; }
         public string DeliveryZipCode { get; set; }
          
-        public ValidatableObject<int?> MaxPackage  
+        public ValidatableObject<int> MaxPackage  
         {
             get { return _maxPackage; }
             set
@@ -603,7 +605,7 @@ namespace DriveDrop.Core.ViewModels
             }
         }
          
-        public ValidatableObject<int?> PickupRadius
+        public ValidatableObject<int> PickupRadius
         {
             get { return _pickupRadius; }
             set
@@ -613,7 +615,7 @@ namespace DriveDrop.Core.ViewModels
             }
         }
          
-        public ValidatableObject<int?> DeliverRadius
+        public ValidatableObject<int> DeliverRadius
         {
             get { return _deliverRadius; }
             set
@@ -622,7 +624,7 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => DeliverRadius);
             }
         } 
-        public ValidatableObject<int?> TransportTypeId
+        public ValidatableObject<int> TransportTypeId
         {
             get { return _transportTypeId; }
             set
@@ -667,8 +669,8 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => VehicleYear);
             }
         }
-        private string _user;
-        public string UserEmail
+        
+        public ValidatableObject<string> UserEmail
         {
             get { return _user; }
             set
@@ -738,24 +740,25 @@ namespace DriveDrop.Core.ViewModels
       
 
         public async Task SubmitAsync()
-        { 
-            
-            IsBusy = true; 
+        {
+          // await _driverService.CreateDriverAsync(new NewDriver());
+
+            IsBusy = true;
 
             bool isValid =   Validate();
             if (isValid)
             {
-                if(Password.Value != ConfirmPassword.Value)
-                    {
+                if (Password.Value != ConfirmPassword.Value)
+                {
                     await DialogService.ShowAlertAsync("Password and  Confirmation Password must be equal !", "User Name or Password Invalid!", "Ok");
                     IsBusy = false;
                     return;
                 }
 
 
-                bool isvalidpi = ProfilePhotoImageMS!=null?true:false;
+                bool isvalidpi = ProfilePhotoImageMS != null ? true : false;
                 bool isvalidlpi = LicensePhotoImageS != null ? true : false;
-                bool isvalidvpi = VehiclePhotoImages!= null ? true : false;
+                bool isvalidvpi = VehiclePhotoImages != null ? true : false;
                 bool isvalidppi = ProofPhotoImages != null ? true : false;
 
                 if (!isvalidpi || !isvalidlpi || !isvalidvpi || !isvalidppi)
@@ -764,12 +767,11 @@ namespace DriveDrop.Core.ViewModels
                     IsBusy = false;
                     return;
                 }
-                
+
                 var vTypes = VehicleTypesList.ToList();
+                 
 
-                var authToken = Settings.AuthAccessToken;
-
-                var valid =await _commons.ValidateUserName(UserEmail, authToken);
+                var valid =await _commons.ValidateUserName(UserEmail.Value );
                 if (valid.Contains("duplicate"))
                 {
 
@@ -780,10 +782,10 @@ namespace DriveDrop.Core.ViewModels
                 }
 
 
-                var personalPhotoUri = await _commons.UploadImage(ProfilePhotoImageMS, "driver", authToken);
-                var vehiclePhotoUri = await _commons.UploadImage(VehiclePhotoImages, "driver", authToken);
-                var driverLincensePictureUri = await _commons.UploadImage(LicensePhotoImageS, "driver", authToken);
-                var insurancePhotoUri = await _commons.UploadImage(ProofPhotoImages, "driver", authToken);
+                var personalPhotoUri = await _commons.UploadImage(ProfilePhotoImageMS, "driver" );
+                var vehiclePhotoUri = await _commons.UploadImage(VehiclePhotoImages, "driver" );
+                var driverLincensePictureUri = await _commons.UploadImage(LicensePhotoImageS, "driver" );
+                var insurancePhotoUri = await _commons.UploadImage(ProofPhotoImages, "driver" );
 
 
                 if (string.IsNullOrWhiteSpace(personalPhotoUri) ||
@@ -796,16 +798,28 @@ namespace DriveDrop.Core.ViewModels
                     return;
                 }
 
+                // fix the address
+                AddressModel address = await _googleAddress.CompleteAddress(DefaultAddress, "");
+
                 var driver = new NewDriver
                 {
+                    DeliveryStreet =address.Street,
+                    DeliveryCity= address.City,
+                    DeliveryState = address.State,
+                    DeliveryZipCode = address.ZipCode,
+                    DeliveryCountry = address.Country,
+                    DeliveryLatitude = address.Latitude,
+                    DeliveryLongitude = address.Longitude,
+
+
                     FirstName =  FirstName.Value,
                     LastName =LastName.Value,
                     PrimaryPhone = PrimaryPhone.Value,
                     Phone = Phone.Value,
                     
-                    MaxPackage = MaxPackage.Value??0,
-                    DeliverRadius =DeliverRadius.Value??0,
-                    PickupRadius = PickupRadius.Value??0,
+                    MaxPackage = MaxPackage.Value ,
+                    DeliverRadius =DeliverRadius.Value,
+                    PickupRadius = PickupRadius.Value,
                     TransportTypeId = vTypes[SelectedIndex].Id,
                     VehicleMake = VehicleMake.Value,
                     VehicleModel =  VehicleModel.Value,
@@ -817,16 +831,36 @@ namespace DriveDrop.Core.ViewModels
                     DriverLincensePictureUri = driverLincensePictureUri,
                     InsurancePhotoUri = insurancePhotoUri,
 
-                    UserEmail = UserEmail,
+                    UserEmail = UserEmail.Value,
                     Password = Password.Value, 
+                    ConfirmPassword= ConfirmPassword.Value,
+                    Email = UserEmail.Value,
                 };
+                var response =  "Info updated";
+                try
+                {
+                      response = await _driverService.CreateDriverAsync(driver);
+
+                    
+                }
+                catch (Exception ex)
+                {
+                    response = ex.Message;
+
+                    IsValid = false;
+                }
+                if (response == "Info updated")
+                {
+                    await DialogService.ShowAlertAsync(" Shortly, you will receive an email with a link. Follow the link to verify your email address.", "Driver Account has Been Created", "Ok");
+                    IsValid = true;
+                }
+                else
+                {
+                    await DialogService.ShowAlertAsync(response, "Error", "Ok");
+                    IsValid = false;
+                }
 
 
-              var   response = await _driverService.CreateDriverAsync(driver, authToken);
-
-                await DialogService.ShowAlertAsync(" Shortly, you will receive an email with a link. Follow the link to verify your email address.", "Driver Account has Been Created", "Ok");
-
-                IsValid = true;
             }
             else
             {
@@ -976,10 +1010,10 @@ namespace DriveDrop.Core.ViewModels
 
             _primaryPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Contact Phone is required." });
             _phone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Cell Phone is required." });
-            _transportTypeId.Validations.Add(new IsNotNullOrEmptyRule<int?> { ValidationMessage = "Transportation is required." });
-            _maxPackage.Validations.Add(new  IsNotNullOrEmptyRule<int?> { ValidationMessage = "Maximum Package to Pickup is required." });
-            _pickupRadius.Validations.Add(new IsNotNullOrEmptyRule<int?> { ValidationMessage = "Maximum Drive Pickup Radius in Miles is required." });
-            _deliverRadius.Validations.Add(new IsNotNullOrEmptyRule<int?> { ValidationMessage = "Maximum Drive Deliver Package Radius  in Miles is required." });
+            _transportTypeId.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Transportation is required." });
+            _maxPackage.Validations.Add(new  IsNotNullOrEmptyRule<int> { ValidationMessage = "Maximum Package to Pickup is required." });
+            _pickupRadius.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Maximum Drive Pickup Radius in Miles is required." });
+            _deliverRadius.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Maximum Drive Deliver Package Radius  in Miles is required." });
             _vehicleMake.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Make is required." });
             _vehicleModel.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Model is required." });
             _vehicleColor.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Color is required." });

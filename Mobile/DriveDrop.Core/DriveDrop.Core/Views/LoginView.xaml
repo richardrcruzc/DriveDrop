@@ -18,7 +18,7 @@
             <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
             <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
             <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
-            
+
             <Style x:Key="TitleLabelStyle"
                 TargetType="{x:Type Label}">
                 <Setter Property="FontFamily"
@@ -88,7 +88,7 @@
                 <Setter Property="Margin"
                     Value="12" />
             </Style>
-            
+
             <animations:StoryBoard
               x:Key="LoginAnimation"
               Target="{x:Reference LoginPanel}">
@@ -175,7 +175,7 @@
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
-               
+
                 <StackLayout  
                   Grid.Column="3"
                   Orientation="Horizontal"
@@ -202,28 +202,28 @@
                   Text="User name or email"
                   Style="{StaticResource HeaderLabelStyle}" />
                 <Entry Text="{Binding UserName.Value, Mode=TwoWay}" Keyboard="Email">
-					<Entry.Style>
+                    <Entry.Style>
                         <OnPlatform x:TypeArguments="Style">
                             <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
                             <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
                         </OnPlatform>
                     </Entry.Style>
                     <Entry.Behaviors>
-                        <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
+                        <!--<behaviors:EmailValidatorBehavior x:Name="emailValidator"/>-->
                         <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateUserNameCommand}" />
-					</Entry.Behaviors>
-					<Entry.Triggers>
-						<DataTrigger 
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
 							TargetType="Entry"
 							Binding="{Binding UserName.IsValid}"
 							Value="False">
-							<Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
-						</DataTrigger>
-					</Entry.Triggers>
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
                 </Entry>
-				<Label 
+                <Label 
 					Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
                 <Label
@@ -238,21 +238,21 @@
                             <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
                         </OnPlatform>
                     </Entry.Style>
-					<Entry.Behaviors>
-						<behaviors:EventToCommandBehavior
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePasswordCommand}" />
-					</Entry.Behaviors>
-					<Entry.Triggers>
-						<DataTrigger 
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
 							TargetType="Entry"
 							Binding="{Binding Password.IsValid}"
 							Value="False">
-							<Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
-						</DataTrigger>
-					</Entry.Triggers>
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
                 </Entry>
-				<Label 
+                <Label 
 					Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
             </StackLayout>
@@ -271,7 +271,7 @@
                         Command="{Binding SignInCommand}"
                         NumberOfTapsRequired="1" />
                 </Grid.GestureRecognizers>
-                 
+
             </Grid>
         </Grid>
         <!-- AUTH -->

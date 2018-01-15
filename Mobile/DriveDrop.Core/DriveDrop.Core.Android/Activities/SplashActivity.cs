@@ -7,7 +7,7 @@ using Android.Support.V7.App;
 namespace DriveDrop.Droid.Activities
 {
     [Activity(
-         Label = "eShopOnContainers",
+         Label = "DriveDrop",
          Icon = "@drawable/icon",
          Theme = "@style/Theme.Splash",
          NoHistory = true,

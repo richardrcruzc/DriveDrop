@@ -10,7 +10,7 @@ namespace DriveDrop.Core.Services.Driver
 { 
     public interface IDriverService
     {
-        Task<NewDriver> CreateDriverAsync(NewDriver newDriver, string token);
+        Task<string> CreateDriverAsync(NewDriver newDriver );
         Task<ObservableCollection<NewDriver>> GetDriversAsync(string token);
         Task<NewDriver> GetDriverAsync(int driverId, string token);
         Task<NewDriver> GetDriverAsync(string userName, string token);

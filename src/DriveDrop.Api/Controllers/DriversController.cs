@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using DriveDrop.Api.Services;
 using Microsoft.Extensions.Options;
 using ApplicationCore.Entities.Helpers;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DriveDrop.Api.Controllers
 {
@@ -337,7 +338,11 @@ namespace DriveDrop.Api.Controllers
             {
                 if (c == null || !ModelState.IsValid)
                 {
-                    return BadRequest(ErrorCode.DriverInformationRequired.ToString());
+                    var msgError = string.Empty;
+                    IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                    foreach (var er in allErrors)
+                        msgError += " " + er.ErrorMessage;
+                    return BadRequest(msgError);
                 }
                  var exists = await  _context.Customers.FindAsync(id);
                 if (exists !=null)

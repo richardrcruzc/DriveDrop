@@ -52,7 +52,8 @@ namespace DriveDrop.Web.ViewComponents
             var getcurrent = API.Admin.GetbyUserName(_remoteServiceBaseUrl, user.Email);
             var currentDataString = await _apiClient.GetStringAsync(getcurrent, token);
             var currentUser = JsonConvert.DeserializeObject<CurrentCustomerModel>((currentDataString));
-             
+            currentUser.PersonalPhotoUri = _settings.Value.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(currentUser.PersonalPhotoUri));
+
 
             if (currentUser == null)
             { 

@@ -132,8 +132,8 @@
                     <Label
                   Text="NEW DRIVER INFORMATION"
                     Style="{StaticResource TitleLabelStyle}" />
-                
-                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}" Placeholder="First Name">
+
+                    <Entry Text="{Binding FirstName.Value, Mode=TwoWay}"  Placeholder="First Name">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -185,7 +185,7 @@
 
  
                     <Entry Text="{Binding PrimaryPhone.Value, Mode=TwoWay}" 
-                           Keyboard="Numeric" Placeholder="Contact Primary Phone" >
+                            Keyboard="Telephone"  Placeholder="Contact Primary Phone" >
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -193,8 +193,8 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
-                            <behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
-                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                            <!--<behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />-->
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePrimaryPhoneCommand}" />
@@ -212,8 +212,8 @@
 					Text="{Binding PrimaryPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
-                  
-                    <Entry Text="{Binding Phone.Value, Mode=TwoWay}" Placeholder="Cell Phone"  >
+
+                    <Entry Text="{Binding Phone.Value, Mode=TwoWay}"   Keyboard="Telephone"  Placeholder="Cell Phone"  >
                     <Entry.Style>
                         <OnPlatform x:TypeArguments="Style">
                             <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -221,8 +221,8 @@
                         </OnPlatform>
                     </Entry.Style>
                     <Entry.Behaviors>
-                            <behaviors:PhoneNumberMaskBehavior x:Name="PhoneMask" />
-                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                            <!--<behaviors:PhoneNumberMaskBehavior x:Name="PhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />-->
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePhoneCommand}" />
@@ -263,69 +263,7 @@
                         ItemsSource="{Binding Items}" 
                               VerticalOptions="FillAndExpand" 
                               SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
-
-                    <!-- <ListView x:Name="SearchResultListView" VerticalOptions="FillAndExpand"
-                          IsPullToRefreshEnabled="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                        <Label Text="{Binding ResultValue}"  TextColor="Black" Font="Bold,14"/>
-                                        --><!-- ... --><!--
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>-->
-
-                    <!--<SearchBar Text="{Binding SearchText, Mode=TwoWay}" 
-                               SearchCommand="{Binding SearchCommand}"
-                        Placeholder="Enter your Address" 
-                               HorizontalOptions="FillAndExpand"/>
-
-                    <SearchBar x:Name="SearchFor"
-    			Placeholder="search for"
-				Text="{Binding Path=SearchText}"
-				TextChanged="OnValueChanged" 
-				SearchButtonPressed="OnSearch" />-->
-                
-                    <!--<SearchBar Text="{Binding SearchText}"
-Placeholder="Enter your Address"
-               SearchCommand="{Binding SearchCommand}"  
-                                HorizontalOptions="FillAndExpand"/>-->
-                
-
-                    <!--<ScrollView VerticalOptions="FillAndExpand">
-                        <StackLayout x:Name="resultsLayout">
-                        </StackLayout>
-                    </ScrollView>-->
-
-                        <!--<Entry Text="{Binding FirstName.Value, Mode=TwoWay}" Placeholder="Enter your Address">
-                        <Entry.Style>
-                            <OnPlatform x:TypeArguments="Style">
-                                <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
-                                <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
-                            </OnPlatform>
-                        </Entry.Style>
-                        <Entry.Behaviors>
-                            <behaviors:EventToCommandBehavior
-							EventName="TextChanged"
-							Command="{Binding ValidateFirstNameCommand}" />
-                        </Entry.Behaviors>
-                        <Entry.Triggers>
-                            <DataTrigger 
-							TargetType="Entry"
-							Binding="{Binding FirstName.IsValid}"
-							Value="False">
-                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
-                    <Label 
-					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
-					Style="{StaticResource ValidationErrorLabelStyle}" />-->
-
-
+ 
                     <!--Driver Package and Drive Information-->
                     <Label
                   Text="Driver Package and Drive Information"
@@ -505,7 +443,7 @@ Placeholder="Enter your Address"
 					Style="{StaticResource ValidationErrorLabelStyle}" />
 
 
-                    <Entry Text="{Binding VehicleYear.Value, Mode=TwoWay}" Placeholder="Vehicle Year">
+                    <Entry Text="{Binding VehicleYear.Value, Mode=TwoWay}"  Keyboard="Numeric" Placeholder="Vehicle Year">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -561,8 +499,8 @@ Placeholder="Enter your Address"
                   Text="Login Information"
                    Style="{StaticResource TitleLabelStyle}" />
 
-                  
-                    <Entry Text="{Binding UserEmail.Value, Mode=TwoWay}" Placeholder="User Email">
+
+                    <Entry Text="{Binding UserEmail.Value, Mode=TwoWay}"  Keyboard="Email"  Placeholder="User Email">
                         <Entry.Style>
                             <OnPlatform x:TypeArguments="Style">
                                 <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
@@ -570,7 +508,7 @@ Placeholder="Enter your Address"
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
-                            <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
+                            <!--<behaviors:EmailValidatorBehavior x:Name="emailValidator"/>-->
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateUserEmailCommand}" />

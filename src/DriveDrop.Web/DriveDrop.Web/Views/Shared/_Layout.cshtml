@@ -23,10 +23,10 @@
 <body>
     
         @await Html.PartialAsync("_LoginPartial")
-    
-     
-        @await Component.InvokeAsync("UserStatus")
+    <div>
 
+        @await Component.InvokeAsync("UserStatus")
+    </div>
 
         @RenderBody()
      

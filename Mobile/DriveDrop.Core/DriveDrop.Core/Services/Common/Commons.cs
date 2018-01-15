@@ -38,7 +38,7 @@ namespace DriveDrop.Core.Services.Common
             return vehicleTypes;
         }
 
-        public async Task<string> UploadImage(Stream input, string belingTo, string token)
+        public async Task<string> UploadImage(Stream input, string belingTo )
         {
             var returnedFileName = "";
             if (input == null)
@@ -86,7 +86,7 @@ namespace DriveDrop.Core.Services.Common
         }
 
 
-        public async Task<string> ValidateUserName(string userName, string token)
+        public async Task<string> ValidateUserName(string userName )
         {
             var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
             {
@@ -96,7 +96,7 @@ namespace DriveDrop.Core.Services.Common
 
 
             string result =
-                 await _requestProvider.GetAsync<string>(uri, token);
+                 await _requestProvider.GetAsync<string>(uri );
 
 
             return result;

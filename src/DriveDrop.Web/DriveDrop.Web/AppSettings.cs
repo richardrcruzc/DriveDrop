@@ -11,6 +11,8 @@ namespace DriveDrop.Web
         public string DriveDropUrl { get; set; }
         public string IdentityUrl { get; set; }
         public string CallBackUrl { get; set; }
+        public string ImagesUrl { get; set; }
+        public string PicBaseUrl { get; set; }        
         public Logging Logging { get; set; }
 
         public string BusinessAccountKey { get; set; }

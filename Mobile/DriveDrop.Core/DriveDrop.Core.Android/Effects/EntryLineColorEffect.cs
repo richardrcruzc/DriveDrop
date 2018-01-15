@@ -7,7 +7,7 @@ using DriveDrop.Core.Behaviors;
 using System.ComponentModel;
 using System.Diagnostics;
 
-[assembly: ResolutionGroupName("eShopOnContainers")]
+[assembly: ResolutionGroupName("DriveDrop")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]
 namespace DriveDrop.Droid.Effects
 {

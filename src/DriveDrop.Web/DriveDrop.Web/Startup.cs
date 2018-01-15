@@ -72,7 +72,8 @@ namespace DriveDrop.Web
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
- 
+            services.AddTransient<IPictureService, PictureService>();
+
 
             services.AddTransient<FormatService>();
 

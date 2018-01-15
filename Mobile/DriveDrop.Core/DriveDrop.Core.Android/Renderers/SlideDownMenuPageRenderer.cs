@@ -5,9 +5,6 @@ using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-using Android.Content; 
-using Xamarin.Forms.Platform.Android.AppCompat;
-
 [assembly: ExportRenderer(typeof(CatalogView), typeof(SlideDownMenuPageRenderer))]
 namespace DriveDrop.Droid.Renderers
 {
@@ -19,9 +16,8 @@ namespace DriveDrop.Droid.Renderers
 
         public Action<int, int, int, int> OnSizeChangedEvent { get; set; }
 
-        public SlideDownMenuPageRenderer(Context context) : base(context)
+        public SlideDownMenuPageRenderer()
         {
-            AutoPackage = false;
             new SlideOverKitDroidHandler().Init(this);
         }
 

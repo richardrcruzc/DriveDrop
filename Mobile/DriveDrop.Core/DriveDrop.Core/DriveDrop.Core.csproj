@@ -28,19 +28,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\CompareValidationBehavior.cs" />
+    <Compile Include="Behaviors\DateValidationBehavior.cs" />
     <Compile Include="Behaviors\EmailValidatorBehavior.cs" />
     <Compile Include="Behaviors\EntryLengthValidatorBehavior.cs" />
+    <Compile Include="Behaviors\FadeToAnimation.cs" />
     <Compile Include="Behaviors\NumericValidationBehavior.cs" />
+    <Compile Include="Behaviors\PasswordValidationBehavior.cs" />
     <Compile Include="Behaviors\PhoneNumberMaskBehavior.cs" />
     <Compile Include="Behaviors\StarBehavior.cs" />
-    <Compile Include="Controls\MaskedEntry.cs" />
-    <Compile Include="Library\Exts.cs" />
-    <Compile Include="Library\MaskRules.cs" />
-    <Compile Include="Library\SelectionPoint.cs" />
     <Compile Include="Models\Commons\AddressModel.cs" />
     <Compile Include="Models\Commons\Generic.cs" />
     <Compile Include="Models\Commons\GoogleGeoCodeResponse.cs" />
     <Compile Include="Models\Commons\LoginModel.cs" />
+    <Compile Include="Models\Commons\SendEmailModel.cs" />
     <Compile Include="Models\Drivers\NewDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App.xaml.cs">
@@ -77,10 +78,10 @@
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Services\Common\Commons.cs" />
     <Compile Include="Services\Common\GoogleAddress.cs" />
+    <Compile Include="Services\Common\Helps.cs" />
     <Compile Include="Services\Common\ICommons.cs" />
     <Compile Include="Services\Common\IGoogleAddress.cs" />
     <Compile Include="Services\Common\SearchCommand.cs" />
-    <Compile Include="Services\Common\Helps.cs" />
     <Compile Include="Services\Driver\DriverService.cs" />
     <Compile Include="Services\Driver\IDriverService.cs" />
     <Compile Include="Validations\EmailRule.cs" />
@@ -216,7 +217,10 @@
     <Compile Include="GlobalSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml">

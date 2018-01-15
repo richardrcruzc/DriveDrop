@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
 
-
-namespace DriveDrop.Core.Droid
+namespace DriveDrop.Droid
 {
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks

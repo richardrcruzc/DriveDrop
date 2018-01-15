@@ -5,7 +5,7 @@
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
         // public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
-        //public const string CallBackEndpoint = "http://api.godrivedrop.com/api/v1/";
+        //public const string DriveDropEndpoint = "http://api.godrivedrop.com/api/v1/";
 
         public const string DefaultEndpoint = "http://10.0.0.51:58652/";
         public const string DriveDropEndpoint = "http://10.0.0.51:5205/api/v1/";
@@ -46,9 +46,9 @@
             }
         }
 
-        public string ClientId { get { return "xamarin"; }}
+        public string ClientId { get { return "xamarin"; } }
 
-        public string ClientSecret { get { return "secret"; }}
+        public string ClientSecret { get { return "secret"; } }
 
         public string AuthToken { get; set; }
 
@@ -85,13 +85,13 @@
 
         public string CustomerId { get; set; }
         public string CommonEndpoint { get; set; }
-        
+
 
         private void UpdateEndpoint(string baseEndpoint)
         {
             RegisterWebsite = $"{baseEndpoint}Account/Register";
-              IdentityEndpoint = $"{baseEndpoint}connect/authorize";
-             TokenEndpoint = $"{baseEndpoint}connect/token";
+            IdentityEndpoint = $"{baseEndpoint}connect/authorize";
+            TokenEndpoint = $"{baseEndpoint}connect/token";
             LogoutEndpoint = $"{baseEndpoint}connect/endsession";
             IdentityCallback = $"{baseEndpoint}xamarincallback";
             LogoutCallback = $"{baseEndpoint}Account/Redirecting";
@@ -101,11 +101,11 @@
         }
         private void UpdateApiEndpoint(string baseEndpoint)
         {
-         
+
             CatalogEndpoint = $"{baseEndpoint}5101";
             OrdersEndpoint = $"{baseEndpoint}5102";
             BasketEndpoint = $"{baseEndpoint}5103";
-         
+
             LocationEndpoint = $"{baseEndpoint}5109";
             MarketingEndpoint = $"{baseEndpoint}5110";
 

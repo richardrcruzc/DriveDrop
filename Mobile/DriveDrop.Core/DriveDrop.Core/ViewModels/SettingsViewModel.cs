@@ -271,7 +271,7 @@ namespace DriveDrop.Core.ViewModels
             }
             else
             {
-                TitleUseAzureServices = "Use Microservices/Containers from eShopOnContainers";
+                TitleUseAzureServices = "Use Microservices/Containers from DriveDrop";
                 DescriptionUseAzureServices = "When enabling the use of microservices/containers, the app will attempt to use real services deployed as Docker containers at the specified base endpoint, which will must be reachable through the network.";
             }
         }

@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using DriveDrop.Core.Models.User;
-using DriveDrop.Core.Models.Commons;
 
 namespace DriveDrop.Core.Services.User
 {
@@ -26,24 +25,5 @@ namespace DriveDrop.Core.Services.User
 
             return userInfo;
         }
-        public async Task<string> GetUserInfoAsync(string authToken, string userName, string password)
-        {
-            var model = new LoginModel { Email =  userName, Password =  password };
-
-            UriBuilder builder = new UriBuilder(GlobalSetting.Instance.UserValidation) ;
-
-            string uri = builder.ToString();
-            try
-            {
-                var response =
-                    await _requestProvider.PostAsync(uri, model, authToken);
-                model.ReturnUrl = response.ReturnUrl;
-            }
-            catch(Exception ex)
-            {
-                model.ReturnUrl +=" "+ ex.Message.ToString();
-            }
-            return model.ReturnUrl;
-            }
     }
 }

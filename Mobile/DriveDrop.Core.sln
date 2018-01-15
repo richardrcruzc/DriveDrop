@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveDrop.Droid", "DriveDrop.Core\DriveDrop.Core.Android\DriveDrop.Droid.csproj", "{085557A2-949A-4620-B703-9676654BD7F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveDrop.Core.iOS", "DriveDrop.Core\DriveDrop.Core.iOS\DriveDrop.Core.iOS.csproj", "{B890B85E-7D16-48EB-93F7-E555F15500DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveDrop.iOS", "DriveDrop.Core\DriveDrop.Core.iOS\DriveDrop.iOS.csproj", "{B890B85E-7D16-48EB-93F7-E555F15500DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveDrop.UWP", "DriveDrop.Core\DriveDrop.Core.UWP\DriveDrop.UWP.csproj", "{F8358E85-CA6F-4ACF-BEAD-B7B5DAAD90C0}"
 EndProject

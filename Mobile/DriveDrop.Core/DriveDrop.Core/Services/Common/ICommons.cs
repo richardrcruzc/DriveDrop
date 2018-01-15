@@ -12,8 +12,8 @@ namespace DriveDrop.Core.Services.Common
     public interface ICommons
     {
         Task<IEnumerable<Generic>> VehicleTypes(string token);
-        Task<string> UploadImage(Stream input, string belingTo, string token);
-        Task<string> ValidateUserName(string userName, string token);
+        Task<string> UploadImage(Stream input, string belingTo );
+        Task<string> ValidateUserName(string userName);
         
     }
 }

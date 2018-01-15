@@ -24,6 +24,7 @@ namespace DriveDrop.Web.Controllers
     [Authorize]
     public class DriverController : Controller
     {
+        private readonly IPictureService _pictureService;
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
         private readonly string _remoteServiceCommonUrl;
@@ -38,7 +39,9 @@ namespace DriveDrop.Web.Controllers
 
         private readonly IHostingEnvironment _env;
 
-        public DriverController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
+        public DriverController(
+              IPictureService pictureService,
+            IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser, IHostingEnvironment env)
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
@@ -51,7 +54,7 @@ namespace DriveDrop.Web.Controllers
             _apiClient = httpClient;
             _appUserParser = appUserParser;
             _env = env;
-
+            _pictureService = pictureService;
         }
 
         public IActionResult Index()
@@ -435,10 +438,10 @@ namespace DriveDrop.Web.Controllers
                         return View(c);
                     }
 
-                   c.PersonalPhotoUri =await SaveFile(c.Personalfiles, "driver");
+                    c.PersonalPhotoUri =await SaveFile(c.Personalfiles, "driver");
                     c.DriverLincensePictureUri = await SaveFile(c.Licensefiles, "driver");
-                   c.VehiclePhotoUri = await SaveFile(c.Vehiclefiles, "driver");
-                   c.InsurancePhotoUri = await SaveFile(c.Insurancefiles, "driver");
+                    c.VehiclePhotoUri = await SaveFile(c.Vehiclefiles, "driver");
+                    c.InsurancePhotoUri = await SaveFile(c.Insurancefiles, "driver");
                     
                     var user = _appUserParser.Parse(HttpContext.User);
                     var token = await GetUserTokenAsync();
@@ -678,7 +681,7 @@ namespace DriveDrop.Web.Controllers
 
 
             if (string.IsNullOrWhiteSpace(currentUser.PersonalPhotoUri))
-                currentUser.PersonalPhotoUri = _settings.Value.CallBackUrl + "/images/profile-icon.png";
+                currentUser.PersonalPhotoUri = _settings.Value.ImagesUrl + "/images/profile-icon.png";
 
             currentUser.CustomerStatus=  currentUser.CustomerStatus.ToTitleCase();
 
@@ -817,45 +820,65 @@ namespace DriveDrop.Web.Controllers
         public async Task<string> SaveFile(List<IFormFile> files, string belong)
         {
 
-            Guid extName = Guid.NewGuid();
-            //saving files
-            long size = files.Sum(f => f.Length);
-
-            // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-            var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
-            var fileName = "";
-
-            foreach (var formFile in files)
+            var token = await GetUserTokenAsync();
+            foreach (var file in files)
             {
-
-                if (formFile.Length > 0)
+                if (file.Length > 0)
                 {
-                    var extension = ".jpg";
-                    if (formFile.FileName.ToLower().EndsWith(".jpg"))
-                        extension = ".jpg";
-                    if (formFile.FileName.ToLower().EndsWith(".tif"))
-                        extension = ".tif";
-                    if (formFile.FileName.ToLower().EndsWith(".png"))
-                        extension = ".png";
-                    if (formFile.FileName.ToLower().EndsWith(".gif"))
-                        extension = ".gif";
-                    if (formFile.FileName.ToLower().EndsWith(".pdf"))
-                        extension = ".pdf";
-
-
-
-
-                    filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
-                    fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var ms = new MemoryStream())
                     {
-                        await formFile.CopyToAsync(stream);
+                        file.CopyTo(ms);
+                        //var fileBytes = ms.ToArray();
+                        //string s = Convert.ToBase64String(fileBytes);
+                        // act on the Base64 data
+                        ms.Position = 0;
+                        var fileNameGuid = await _pictureService.UploadImage(ms, belong );
+                        return fileNameGuid;
                     }
                 }
             }
-            return fileName;
+            return "";
+
+
+            //Guid extName = Guid.NewGuid();
+            ////saving files
+            //long size = files.Sum(f => f.Length);
+
+            //// full path to file in temp location
+            //var filePath = Path.GetTempFileName();
+            //var uploads = Path.Combine(_env.WebRootPath, string.Format("uploads\\img\\{0}", belong));
+            //var fileName = "";
+
+            //foreach (var formFile in files)
+            //{
+
+            //    if (formFile.Length > 0)
+            //    {
+            //        var extension = ".jpg";
+            //        if (formFile.FileName.ToLower().EndsWith(".jpg"))
+            //            extension = ".jpg";
+            //        if (formFile.FileName.ToLower().EndsWith(".tif"))
+            //            extension = ".tif";
+            //        if (formFile.FileName.ToLower().EndsWith(".png"))
+            //            extension = ".png";
+            //        if (formFile.FileName.ToLower().EndsWith(".gif"))
+            //            extension = ".gif";
+            //        if (formFile.FileName.ToLower().EndsWith(".pdf"))
+            //            extension = ".pdf";
+
+
+
+
+            //        filePath = string.Format("{0}\\{1}{2}", uploads, extName, extension);
+            //        fileName = string.Format("/uploads/img/{0}/{1}{2}", belong, extName, extension);
+
+            //        using (var stream = new FileStream(filePath, FileMode.Create))
+            //        {
+            //            await formFile.CopyToAsync(stream);
+            //        }
+            //    }
+            //}
+            //return fileName;
 
         }
 

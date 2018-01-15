@@ -41,50 +41,50 @@ namespace DriveDrop.Core.Helpers
 
         public static string AuthAccessToken
         {
-            get => AppSettings.GetValueOrDefault(AccessToken, AccessTokenDefault);
-            set => AppSettings.AddOrUpdateValue(AccessToken, value);
+            get => AppSettings.GetValueOrDefault<string>(AccessToken, AccessTokenDefault);
+            set => AppSettings.AddOrUpdateValue<string>(AccessToken, value);
         }
 
         public static string AuthIdToken
         {
-            get => AppSettings.GetValueOrDefault(IdToken, IdTokenDefault);
-            set => AppSettings.AddOrUpdateValue(IdToken, value);
+            get => AppSettings.GetValueOrDefault<string>(IdToken, IdTokenDefault);
+            set => AppSettings.AddOrUpdateValue<string>(IdToken, value);
         }
 
         public static bool UseMocks
         {
-            get => AppSettings.GetValueOrDefault(IdUseMocks, UseMocksDefault);
-            set => AppSettings.AddOrUpdateValue(IdUseMocks, value);
+            get => AppSettings.GetValueOrDefault<bool>(IdUseMocks, UseMocksDefault);
+            set => AppSettings.AddOrUpdateValue<bool>(IdUseMocks, value);
         }
 
         public static string UrlBase
         {
-            get => AppSettings.GetValueOrDefault(IdUrlBase, UrlBaseDefault);
-            set => AppSettings.AddOrUpdateValue(IdUrlBase, value);
+            get => AppSettings.GetValueOrDefault<string>(IdUrlBase, UrlBaseDefault);
+            set => AppSettings.AddOrUpdateValue<string>(IdUrlBase, value);
         }
 
         public static bool UseFakeLocation
         {
-            get => AppSettings.GetValueOrDefault(IdUseFakeLocation, UseFakeLocationDefault);
-            set => AppSettings.AddOrUpdateValue(IdUseFakeLocation, value);
+            get => AppSettings.GetValueOrDefault<bool>(IdUseFakeLocation, UseFakeLocationDefault);
+            set => AppSettings.AddOrUpdateValue<bool>(IdUseFakeLocation, value);
         }
 
         public static string Latitude
         {
-            get => AppSettings.GetValueOrDefault(IdLatitude, FakeLatitudeDefault.ToString());
-            set => AppSettings.AddOrUpdateValue(IdLatitude, value);
+            get => AppSettings.GetValueOrDefault<string>(IdLatitude, FakeLatitudeDefault.ToString());
+            set => AppSettings.AddOrUpdateValue<string>(IdLatitude, value);
         }
 
         public static string Longitude
         {
-            get => AppSettings.GetValueOrDefault(IdLongitude, FakeLongitudeDefault.ToString());
-            set => AppSettings.AddOrUpdateValue(IdLongitude, value);
+            get => AppSettings.GetValueOrDefault<string>(IdLongitude, FakeLongitudeDefault.ToString());
+            set => AppSettings.AddOrUpdateValue<string>(IdLongitude, value);
         }
 
         public static bool AllowGpsLocation
         {
-            get => AppSettings.GetValueOrDefault(IdAllowGpsLocation, AllowGpsLocationDefault);
-            set => AppSettings.AddOrUpdateValue(IdAllowGpsLocation, value);
+            get => AppSettings.GetValueOrDefault<bool>(IdAllowGpsLocation, AllowGpsLocationDefault);
+            set => AppSettings.AddOrUpdateValue<bool>(IdAllowGpsLocation, value);
         }
     }
 }

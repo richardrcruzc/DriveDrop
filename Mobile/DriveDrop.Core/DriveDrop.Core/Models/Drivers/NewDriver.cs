@@ -46,9 +46,9 @@ namespace DriveDrop.Core.Models.Drivers
         public Generic TransportType { get; set; }
         public int CustomerStatusId { get; set; }
         public Generic CustomerStatus { get; set; }
-        public int MaxPackage { get; set; }
-        public int PickupRadius { get; set; }
-        public int DeliverRadius { get; set; }
+        public int? MaxPackage { get; set; }
+        public int? PickupRadius { get; set; }
+        public int? DeliverRadius { get; set; }
 
 
         public string VehicleMake { get; set; }
@@ -95,6 +95,8 @@ namespace DriveDrop.Core.Models.Drivers
         public String DeliveryCountry { get; set; }
         public String DeliveryZipCode { get; set; }
 
+
+        public String ErrorMsg { get; set; }
 
     }
 }
