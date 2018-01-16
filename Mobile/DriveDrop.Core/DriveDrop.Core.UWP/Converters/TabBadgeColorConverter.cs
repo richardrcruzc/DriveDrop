@@ -1,11 +1,11 @@
 ﻿using DriveDrop.Core.Controls;
-using DriveDrop.UWP.Helpers;
+using DriveDrop.Windows.Helpers;
 using System;
 using Windows.UI.Xaml.Media;
 using Xamarin.Forms;
 using UI = Windows.UI;
 
-namespace DriveDrop.UWP.Converters
+namespace DriveDrop.Windows.Converters
 {
     public class TabBadgeColorConverter : UI.Xaml.Data.IValueConverter
     {

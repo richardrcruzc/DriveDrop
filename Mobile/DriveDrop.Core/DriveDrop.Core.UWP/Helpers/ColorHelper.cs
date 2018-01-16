@@ -1,7 +1,7 @@
 ﻿using Xamarin.Forms;
 using UI = Windows.UI;
 
-namespace DriveDrop.UWP.Helpers
+namespace DriveDrop.Windows.Helpers
 {
     public static class ColorHelper
     {

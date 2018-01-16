@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{F8358E85-CA6F-4ACF-BEAD-B7B5DAAD90C0}</ProjectGuid>
+    <ProjectGuid>{C3C1E2CF-B1F7-4654-BBDC-50143DB22E0B}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DriveDrop.UWP</RootNamespace>
-    <AssemblyName>DriveDrop.UWP</AssemblyName>
+    <RootNamespace>DriveDrop.Windows</RootNamespace>
+    <AssemblyName>DriveDrop.Windows</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -18,6 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Windows_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +90,19 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="..\CommonResources\Fonts\Montserrat-Bold.ttf">
+      <Link>Assets\Fonts\Montserrat-Bold.ttf</Link>
+    </Content>
+    <Content Include="..\CommonResources\Fonts\Montserrat-Regular.ttf">
+      <Link>Assets\Fonts\Montserrat-Regular.ttf</Link>
+    </Content>
+    <Content Include="..\CommonResources\Fonts\SourceSansPro-Regular.ttf">
+      <Link>Assets\Fonts\SourceSansPro-Regular.ttf</Link>
+    </Content>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -113,14 +127,12 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Windows_TemporaryKey.pfx" />
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\app_settings.png" />
-    <Content Include="Assets\background.png" />
     <Content Include="Assets\banner.png" />
     <Content Include="Assets\circle_button_background.png" />
-    <Content Include="Assets\default_campaign.png" />
+    <AndroidResource Include="Assets\default_campaign.png" />
     <Content Include="Assets\default_product.png" />
     <Content Include="Assets\fake_campaign_01.png" />
     <Content Include="Assets\fake_campaign_02.png" />
@@ -129,7 +141,6 @@
     <Content Include="Assets\fake_product_03.png" />
     <Content Include="Assets\fake_product_04.png" />
     <Content Include="Assets\fake_product_05.png" />
-    <Content Include="Assets\icon.png" />
     <Content Include="Assets\menu_campaigns.png" />
     <Content Include="Assets\menu_cart.png" />
     <Content Include="Assets\menu_filter.png" />
@@ -138,40 +149,14 @@
     <Content Include="Assets\product_add.png" />
     <Content Include="Assets\switchOff.png" />
     <Content Include="Assets\switchOn.png" />
-    <Content Include="Properties\Default.rd.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Assets\LockScreenLogo.scale-100.png" />
-    <Content Include="Assets\LockScreenLogo.scale-125.png" />
-    <Content Include="Assets\LockScreenLogo.scale-150.png" />
+    <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\LockScreenLogo.scale-400.png" />
-    <Content Include="Assets\SplashScreen.scale-100.png" />
-    <Content Include="Assets\SplashScreen.scale-125.png" />
-    <Content Include="Assets\SplashScreen.scale-150.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-400.png" />
-    <Content Include="Assets\Square150x150Logo.scale-100.png" />
-    <Content Include="Assets\Square150x150Logo.scale-125.png" />
-    <Content Include="Assets\Square150x150Logo.scale-150.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-400.png" />
-    <Content Include="Assets\Square44x44Logo.scale-100.png" />
-    <Content Include="Assets\Square44x44Logo.scale-125.png" />
-    <Content Include="Assets\Square44x44Logo.scale-150.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-400.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-32_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-125.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -179,8 +164,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\TabItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -188,58 +173,15 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs">
-      <Version>6.5.1</Version>
-    </PackageReference>
-    <PackageReference Include="IdentityModel">
-      <Version>2.16.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Bcl">
-      <Version>1.1.10</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Bcl.Build">
-      <Version>1.0.21</Version>
-    </PackageReference>
-    <PackageReference Include="PCLCrypto">
-      <Version>2.0.147</Version>
-    </PackageReference>
-    <PackageReference Include="PCLStorage">
-      <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="SlideOverKit">
-      <Version>2.1.5</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugin.Geolocator">
-      <Version>4.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugin.Media">
-      <Version>3.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugins.Settings">
-      <Version>3.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.FFImageLoading.Forms">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.5" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Fonts\" />
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DriveDrop.Core\DriveDrop.Core.csproj">
       <Project>{ba96a12c-4ee3-46c4-bb3f-f811b554cd01}</Project>
       <Name>DriveDrop.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using UI = Windows.UI;
 
-namespace DriveDrop.UWP.Converters
+namespace DriveDrop.Windows.Converters
 {
     public class TabIconConverter : UI.Xaml.Data.IValueConverter
     {

@@ -2,11 +2,11 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace DriveDrop.UWP.Controls
+namespace DriveDrop.Windows.Controls
 {
     public sealed partial class TabItem : UserControl
     {
-        public static readonly DependencyProperty IconProperty = 
+        public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(string), typeof(TabItem), null);
 
         public string Icon
@@ -15,7 +15,7 @@ namespace DriveDrop.UWP.Controls
             set { SetValue(IconProperty, value); }
         }
 
-        public static readonly DependencyProperty LabelProperty = 
+        public static readonly DependencyProperty LabelProperty =
             DependencyProperty.Register("Label", typeof(string), typeof(TabItem), null);
 
         public string BadgeText

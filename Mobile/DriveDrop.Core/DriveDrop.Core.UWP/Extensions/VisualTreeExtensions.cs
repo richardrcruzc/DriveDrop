@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 
-namespace DriveDrop.UWP.Extensions
+namespace DriveDrop.Windows.Extensions
 {
     public static class VisualTreeExtensions
     {

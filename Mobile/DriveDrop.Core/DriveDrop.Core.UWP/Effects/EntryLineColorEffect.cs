@@ -7,12 +7,12 @@ using Media = Windows.UI.Xaml.Media;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.UWP;
 using Windows.UI.Xaml.Controls;
-using DriveDrop.UWP.Effects;
+using DriveDrop.Windows.Effects;
 using DriveDrop.Core.Behaviors;
 
-[assembly: ResolutionGroupName("eShopOnContainers")]
+[assembly: ResolutionGroupName("DriveDrop")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]
-namespace DriveDrop.UWP.Effects
+namespace DriveDrop.Windows.Effects
 {
     public class EntryLineColorEffect : PlatformEffect
     {

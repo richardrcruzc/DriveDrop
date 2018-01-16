@@ -31,12 +31,12 @@ namespace DriveDrop.UWP
             // Mobile Customization
             if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
-                //var statusBar = StatusBar.GetForCurrentView();
-                //if (statusBar != null)
-                //{
-                //    statusBar.BackgroundOpacity = 1;
-                //    statusBar.BackgroundColor = (Color)App.Current.Resources["NativeAccentColor"];
-                //}
+                var statusBar = StatusBar.GetForCurrentView();
+                if (statusBar != null)
+                {
+                    statusBar.BackgroundOpacity = 1;
+                    statusBar.BackgroundColor = (Color)App.Current.Resources["NativeAccentColor"];
+                }
             }
 
             // Launch in Window Mode

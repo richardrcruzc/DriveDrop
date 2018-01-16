@@ -1,8 +1,8 @@
 ﻿using DriveDrop.Core.Controls;
-using DriveDrop.UWP.Controls;
-using DriveDrop.UWP.Extensions;
-using DriveDrop.UWP.Helpers;
-using DriveDrop.UWP.Renderers;
+using DriveDrop.Windows.Controls;
+using DriveDrop.Windows.Extensions;
+using DriveDrop.Windows.Helpers;
+using DriveDrop.Windows.Renderers;
 using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
@@ -11,7 +11,7 @@ using Xamarin.Forms.Platform.UWP;
 using Xaml = Windows.UI.Xaml;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
-namespace DriveDrop.UWP.Renderers
+namespace DriveDrop.Windows.Renderers
 {
     [Preserve]
     public class CustomTabbedPageRenderer : TabbedPageRenderer

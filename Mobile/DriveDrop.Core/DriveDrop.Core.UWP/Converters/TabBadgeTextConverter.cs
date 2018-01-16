@@ -3,7 +3,7 @@ using System;
 using Xamarin.Forms;
 using UI = Windows.UI;
 
-namespace DriveDrop.UWP.Converters
+namespace DriveDrop.Windows.Converters
 {
     public class TabBadgeTextConverter : UI.Xaml.Data.IValueConverter
     {

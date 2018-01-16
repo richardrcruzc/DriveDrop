@@ -10,7 +10,7 @@ using Plugin.Geolocator;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-//[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace DriveDrop
 {
     public partial class App : Application
@@ -23,7 +23,7 @@ namespace DriveDrop
 
             InitApp();
 
-			if (Device.RuntimePlatform == Device.UWP)
+            if (Device.RuntimePlatform == Device.UWP)
             {
                 InitNavigation();
             }
@@ -46,7 +46,7 @@ namespace DriveDrop
         {
             base.OnStart();
 
-			if (Device.RuntimePlatform != Device.UWP)
+            if (Device.RuntimePlatform != Device.UWP)
             {
                 await InitNavigation();
             }
@@ -74,7 +74,7 @@ namespace DriveDrop
             var locator = CrossGeolocator.Current;
 
             if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
-            { 
+            {
                 locator.AllowsBackgroundUpdates = true;
                 locator.DesiredAccuracy = 50;
 
