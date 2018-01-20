@@ -12,10 +12,12 @@ using DriveDrop.Core.Controls;
 using DriveDrop.Droid.Renderers;
 using Android.Support.V4.View;
 using Android.Graphics;
+using Android.Content;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace DriveDrop.Droid.Renderers
 {
+
     public class CustomTabbedPageRenderer : TabbedPageRenderer
     {
         private const int DelayBeforeTabAdded = 10;
@@ -25,6 +27,11 @@ namespace DriveDrop.Droid.Renderers
         private ViewPager _viewPager;
         private TabbedPage _tabbedPage;
         private bool _firstTime = true;
+
+        public CustomTabbedPageRenderer(Context context) : base(context)
+        {
+        }
+
 
         protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {

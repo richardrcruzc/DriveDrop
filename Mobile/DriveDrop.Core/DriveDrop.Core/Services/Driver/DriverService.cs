@@ -32,7 +32,7 @@ namespace DriveDrop.Core.Services.Driver
         }
         public async Task<string> CreateDriverAsync(NewDriver newDriver )
         {
-           
+            var dataString = string.Empty;
             //****************
             var result = "Info updated";
             var eroorMsg = string.Empty;
@@ -49,18 +49,25 @@ namespace DriveDrop.Core.Services.Driver
 
 
             var userUri = ($"{addNewUserUri}?userName={userName}&password={password}").ToString();
-
-            var dataString = await _requestProvider.GetAsync<string>(userUri);
-            if (dataString == null)
+            try
             {
+                  dataString = await _requestProvider.GetAsync<string>(userUri);
+                if (dataString == null)
+                {
 
-                return "Unable to register user: "+ newDriver.UserEmail;
+                    return "Unable to register user: " + newDriver.UserEmail;
+                }
+                if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
+                {
+                    return "Unable to register user: " + newDriver.UserEmail;
+                }
+
             }
-            if (!dataString.Contains("IsAuthenticated") && !dataString.Contains("IsNotAuthenticated"))
+            catch (WebException wex)
             {
-                return "Unable to register user: " + newDriver.UserEmail;
+                result = wex.Message;
+                return result;
             }
-
             //create customer as driver
 
             var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)

@@ -193,8 +193,8 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
-                            <!--<behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
-                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />-->
+                            <behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePrimaryPhoneCommand}" />
@@ -221,8 +221,8 @@
                         </OnPlatform>
                     </Entry.Style>
                     <Entry.Behaviors>
-                            <!--<behaviors:PhoneNumberMaskBehavior x:Name="PhoneMask" />
-                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />-->
+                            <behaviors:PhoneNumberMaskBehavior x:Name="PhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidatePhoneCommand}" />
@@ -508,7 +508,7 @@
                             </OnPlatform>
                         </Entry.Style>
                         <Entry.Behaviors>
-                            <!--<behaviors:EmailValidatorBehavior x:Name="emailValidator"/>-->
+                            <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
                             <behaviors:EventToCommandBehavior
 							EventName="TextChanged"
 							Command="{Binding ValidateUserEmailCommand}" />

@@ -147,11 +147,18 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => ProfilePhotoImage);
             }
         }
-        
 
-        public ICommand TakePhotoProfileCommand => new Command(async () => await TakePhotoProfileAsync());
+        private bool _loaded = false;
+        public ICommand TakePhotoProfileCommand => new Command(async () => await TakePhotoProfileAsync());      
         private async Task TakePhotoProfileAsync()
         {
+            if (_loaded)
+                return;
+            _loaded = true;
+
+            await CrossMedia.Current.Initialize();
+
+
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
                 await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
@@ -173,6 +180,7 @@ namespace DriveDrop.Core.ViewModels
 
             ProfilePhotoImageMS = file.GetStream();
             file.Dispose();
+            _loaded = false;
         }
 
         public ICommand PickPhotoProfileCommand => new Command(async () => await PickPhotoProfileAsync());
