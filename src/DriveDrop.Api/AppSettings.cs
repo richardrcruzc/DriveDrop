@@ -27,7 +27,7 @@ namespace DriveDrop.Api
         public int EmailLocalPort { get; set; }
         public string EmailUser { get; set; }
         public string EmailPassword { get; set; }
-
+        public bool UseCustomizationData { get; set; }
     }
 
    

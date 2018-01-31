@@ -1,0 +1,119 @@
+﻿@model IEnumerable<DriveDrop.Bl.ViewModels.RateModel>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "rates" };
+}
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Rates</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="side-2">
+                                    <div class="page-body">
+
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Package Size</th>
+                                                    <th><input id="packageSize" placeholder="New Size Name" /> </th>
+                                                    <th><button id="addPacakeSize" >Add </button></th>
+                                                </tr>
+                                               
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+
+                                                    <tr>
+                                                        <td>
+
+                                                            <h5 class="title">@item.PackageSize.Name</h5>
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h5 class="title">Details</h5></a>
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="Edit" asp-route-id="@item.Id"><h5 class="title">Edit</h5></a>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</section>
+ @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script>
+    $(function () {
+        $('#addPacakeSize').click(function (event) {
+            if (confirm('Are You Sure?')) {
+                var packageSize = $('#packageSize').val();
+
+                  $.ajax({
+                cache: false,
+                type: "POST",
+                url: '@Url.Action("AddSize", "Rates")',
+                data: { m: packageSize },
+                success: function (data) {
+                    alert(data);
+                    if (data == 'Size added') {
+                        top.location.href = '@Url.Action("index", "Rates")';
+                    }
+                    
+                    //ddlpriorityType.html('');
+                    //$.each(data, function (id, option) {
+                        //alert(option.text);
+                        //var option = $('<option />');
+                        //option.attr('value', this.value).text(this.Text);
+                        //ddlpriorityType.append(option);
+                       // ddlpriorityType.append($('<option></option>').val(option.value).html(option.text));
+                    //});
+                    statesProgress.toggle();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to add packageSize.');
+                    statesProgress.toggle();
+                }
+            });
+
+
+            }
+            else
+            { alert(2)}
+
+
+
+
+
+
+
+
+
+    });
+    });
+</script>
+     }

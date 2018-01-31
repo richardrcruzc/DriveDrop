@@ -23,8 +23,18 @@ namespace DriveDrop.Web.Infrastructure
             {
                 return $"{baseUri}ChangePassword?Email={Email}&OldPassword={OldPassword}&NewPassword={NewPassword}&ConfirmPassword={ConfirmPassword}";
             }
+            public static string XamariLogin(string baseUri)
+            {
+                return $"{baseUri}XamariLogin";
+            }
 
-            
+            public static string LoginExt(string baseUri, string userName, string password)
+            {
+                return $"{baseUri}LoginExt?email={userName}&password={password}";
+            }
+
+
+
         }
         public static class Tax
         {

@@ -1,0 +1,169 @@
+@model DriveDrop.Bl.ViewModels.TaxModel
+
+@{
+    ViewData["Title"] = "Add Tax";
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "ListTaxes" };
+}
+
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Add Tax Rate</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="center-2">
+                                        <div class="page account-page customer-info-page">
+                                            <div class="page-title">
+                                                <h1>Add Tax Rate</h1>
+                                            </div>
+                                            <div class="page-body">
+
+                                                <form asp-action="AddTax" data-ajax-method="POST"  id="formAddTax">
+                                                    @Html.AntiForgeryToken()
+
+                                                    <div class="fieldset">
+
+                                                        <div class="form-fields">
+
+
+                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                                            <div class="inputs">
+
+                                                                <label for="State" class="pull-left">State</label>
+                                                                <input asp-for="State" placeholder="State" class="form-control" />
+
+
+                                                                <span asp-validation-for="State" class="text-danger"></span>
+
+
+                                                            </div>
+                                                            <div class="inputs">
+
+                                                                <label for="County" class="pull-left">County</label>
+                                                                <input asp-for="County" placeholder="County" class="form-control" />
+
+
+                                                                <span asp-validation-for="County" class="text-danger"></span>
+
+
+                                                            </div>
+
+                                                            <div class="inputs">
+
+                                                                <label for="City" class="pull-left">City</label>
+                                                                <input asp-for="City" placeholder="City" class="form-control" />
+
+
+                                                                <span asp-validation-for="City" class="text-danger"></span>
+
+
+                                                            </div>
+                                                            <div class="inputs">
+
+                                                                <label for="Rate" class="pull-left">Rate</label>
+
+                                                                <input asp-for="Rate" placeholder="Rate" class="form-control" />
+
+                                                                <span class="required">*</span>
+
+                                                                <span asp-validation-for="Rate" class="text-danger"></span>
+
+
+                                                            </div>
+                                                            <div class="inputs">
+
+                                                                <label for="RateDefault" class="pull-left">Default</label>
+
+                                                                <input asp-for="RateDefault" placeholder="RateDefault" class="form-control" />
+
+
+                                                                <span asp-validation-for="RateDefault" class="text-danger"></span>
+
+
+                                                            </div>
+
+                                                            <div class="buttons">
+                                                                <input type="button" value="Save" class="bttn" id="save-info-button" />
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+<script>
+
+        $(document).ready(function () {
+            $("#save-info-button").click(function (e) {
+                e.preventDefault();
+               
+                var fdata = new FormData();
+                var myform = $('#formAddTax'); // specify the form element
+                var idata = myform.serializeArray();
+                //var document = $('input[type="file"]')[0].files[0];
+                //fdata.append('PersonalPhotoUri', document);
+                $.each(idata, function (key, input) {
+                    fdata.append(input.name, input.value);
+                });
+                  $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SaveTax", "Rates")',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                                        success: function (data) {
+
+                                            alert(data);
+                                            if (data == 'tax created') {
+                                                top.location.href = '@Url.Action("ListTaxes", "Rates")';
+                                            }
+
+                    }, error: function (xhr, ajaxOptions, thrownError) {
+                        //alert(xhr.responseText);
+                        //alert(xhr.status);
+                        alert(thrownError);
+
+                    }
+                });
+
+
+            });
+        });
+
+</script>
+}

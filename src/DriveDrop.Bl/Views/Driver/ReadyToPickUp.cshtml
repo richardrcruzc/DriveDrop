@@ -1,0 +1,346 @@
+@model DriveDrop.Bl.ViewModels.PaginatedShippings
+@{
+
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = Model.CustomerId, Option = "readytopickup" };
+}
+<style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #mapgoogle {
+        height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+    }
+
+    #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+    }
+
+        #right-panel select, #right-panel input {
+            font-size: 15px;
+        }
+
+        #right-panel select {
+            width: 100%;
+        }
+
+        #right-panel i {
+            font-size: 12px;
+        }
+
+    #right-panel {
+        height: 100%;
+        float: right;
+        width: 390px;
+        overflow: auto;
+    }
+
+    #mapgoogle {
+        margin-right: 400px;
+    }
+
+    #floating-panel {
+        background: #fff;
+        padding: 5px;
+        font-size: 14px;
+        font-family: Arial;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+        display: none;
+    }
+</style>
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("DriverNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Packages Available</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+
+                                    @if (Model.Count > 0)
+                                    {
+
+                                        <h3>List Pick up Based on the Driver's requirements. </h3>
+                                        <p><label>Pickup Distance: <span>@Model.PickupDistance</span> Miles</label></p>
+                                        <p><label>Deliver Distance: <span>@Model.DeliverDistance</span> Miles</label></p>
+
+                                        <div class="row">
+                                            <table class="table table-responsive table-hover">
+
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th><div>Date </div> Status</th>
+                                                    <th><div>Priority</div></th>
+                                                    @*<th><div>Amount</div>Discount</th>*@
+                                                    <th>Pickup Address</th>
+                                                    <th>Delivery Address</th>
+
+                                                    <th> <div>Delivery Distance </div></th>
+                                                    <th> </th>
+
+                                                </tr>
+
+                                                @foreach (var item in Model.Data.OrderBy(x => x.ShippingStatusId))
+                                                {
+                                                    var url = ViewBag.Uri + item.PickupPictureUri;
+                                                    <tr>
+
+                                                        <td>
+                                                            <div class="pickup-pickage">
+
+                                                                <div>
+                                                                    <img src="@url" class="img-rounded" alt="Cinque Terre" width="150" height="150">
+                                                                </div>
+                                                                <div>
+                                                                    @Html.DisplayFor(modelItem => item.IdentityCode)
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+
+                                                            <div>
+                                                                @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div>  @Html.DisplayFor(modelItem => item.PriorityType.Name) </div>
+
+                                                        </td>
+                                                        @*<td>
+                                                                @Html.DisplayFor(modelItem => item.ChargeAmount)/
+                                                                @Html.DisplayFor(modelItem => item.Discount)
+                                                            </td>*@
+                                                        <td>
+                                                            <div>
+                                                                @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                                                            </div>
+                                                            <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                                                            @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                                                            </div>
+                                                            <div>
+                                                                @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                                                            </div>
+                                                            @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Distance) Miles
+                                                        </td>
+                                                        <td>
+                                                            @*  <a asp-controller="driver" asp-action="AssignDriver" asp-all-route-id="@ViewBag.DriverId" asp-all-route-shipingId="@item.Id" class="btn btn-danger">PickUp !</a>*@
+                                                            <div id="@item.Id" class="btn btn-danger" onClick="javascript:AsignDriver(@item.Id);">PickUp !</div>
+                                                            @*@Html.ActionLink("PickUp !", "#", new { id = ViewBag.DriverId, shipingId = item.Id }, new { @class = "btn btn-danger" })*@
+
+
+
+                                                            @*<div>
+                                                                    <button id="@item.Id"
+                                                                            pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                                                            delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                                                                            onClick="javascript:SetAddressFunction(this);">
+                                                                        <i class="material-icons" style="font-size:12px;color:red">directions</i>
+                                                                    </button>
+                                                                </div>*@
+
+                                                        </td>
+
+
+                                                    </tr>
+                                                }
+                                            </table>
+
+
+
+                                        </div>
+
+
+                                        <div id="floating-panel">
+
+                                            @*<select id="start" v>
+                                                    <option value="Seattle WA">Seattle WA</option>
+                                                </select>
+                                                <select id="end">
+                                                    <option value="Seattle WA">Seattle WA</option>
+                                                </select>*@
+                                            <input id="start" value="Seattle WA" />
+                                            <input id="end" value="Seattle WA" />
+
+
+                                            <input id="submit" type="button" value="Geocode">
+                                        </div>
+
+                                        <div class="hidden" id="right-panel"></div>
+                                        <div class="hidden" id="mapgoogle"></div>
+
+                                    }
+                                    else
+                                    {
+
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span class="sr-only">Error:</span>
+                                            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                                        </div>
+                                    }
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    function   AsignDriver(shippingId){
+
+        alert(shippingId);
+        
+
+    $.ajax({
+        url: '@Url.Action("AssignDriver", "Driver")',
+        type: "GET", 
+        data: {
+            id: shippingId
+        },
+        success: function (result) {
+           
+            alert(result);
+        },
+        error: function (response) {
+            alert("Error:" + response);
+        }
+        });
+    };
+</script>
+
+    @*<script>
+
+            
+            //$('.clickMe').click(function () {
+            //    var clickedID = this.id;
+            //    alert(clickedID);
+            //});
+
+            function fireEvent(element, event) {
+                if (document.createEventObject) {
+                    // dispatch for IE
+                    var evt = document.createEventObject();
+                    return element.fireEvent('on' + event, evt)
+                }
+                else {
+                    // dispatch for firefox + others
+                    var evt = document.createEvent("HTMLEvents");
+                    evt.initEvent(event, true, true); // event type,bubbling,cancelable
+                    return !element.dispatchEvent(evt);
+                }
+            }
+            function SetAddressFunction(obj) {
+
+                $('#right-panel').removeClass('hidden');
+                $('#mapgoogle').removeClass('hidden');
+
+                var pu = $(obj).attr('pickup-id');
+                var dl = $(obj).attr('delivery-id');
+
+                $("#start").val(pu);
+                $("#end").val(dl);
+
+                var x = document.getElementById("start");
+                fireEvent(x, 'change');
+
+                document.getElementById("mapgoogle").scrollIntoView()
+            }
+
+            function initMap() {
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                var directionsService = new google.maps.DirectionsService;
+                var map = new google.maps.Map(document.getElementById('mapgoogle'), {
+                    zoom: 7,
+                    center: { lat: 41.85, lng: -87.65 }
+                });
+                directionsDisplay.setMap(map);
+                directionsDisplay.setPanel(document.getElementById('right-panel'));
+
+                var control = document.getElementById('floating-panel');
+                control.style.display = 'block';
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+                var onChangeHandler = function () {
+                    calculateAndDisplayRoute(directionsService, directionsDisplay);
+                };
+                document.getElementById('start').addEventListener('change', onChangeHandler);
+                document.getElementById('end').addEventListener('change', onChangeHandler);
+            }
+
+            function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                var start = document.getElementById('start').value;
+                var end = document.getElementById('end').value;
+                directionsService.route({
+                    origin: start,
+                    destination: end,
+                    travelMode: 'DRIVING'
+                }, function (response, status) {
+                    if (status === 'OK') {
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+            }
+
+
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&callback=initMap">
+        </script>*@
+
+
+
+
+}

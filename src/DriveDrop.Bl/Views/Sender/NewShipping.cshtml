@@ -1,0 +1,867 @@
+﻿@model DriveDrop.Bl.ViewModels.NewShipment
+
+@{
+    ViewData["Title"] = "Create";
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = Model.CustomerId, Option = "NewShipping" };
+}
+
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js"></script>
+
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+                <div>
+
+
+                </div>
+                @await Html.PartialAsync("CustomerNavigation", option)
+
+                <div id="content" class="col-sm-9">
+
+                        <h3 class="blue-head active">New Packages Information</h3>
+
+                    <form asp-controller="Sender" asp-action="NewShipping" data-ajax="true" role="form" data-ajax-method="POST"
+                          enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification" name="newShippingfrm">
+                        <input asp-for="CustomerId" hidden />
+                        <input asp-for="Distance" hidden />
+                        <input asp-for="TotalCharge" hidden />
+
+
+                        <input asp-for="DeliveryLatitude" hidden />
+                        <input asp-for="DeliveryLongitude" hidden />
+                        <input asp-for="PickupLatitude" hidden />
+                        <input asp-for="PickupLongitude" hidden />
+
+                            <div class="form-group">
+
+                                <div class="title marginbottom10">
+
+                                    <strong>Send a Package</strong>
+                                </div>
+
+
+                                <div asp-validation-summary="ModelOnly" class="result"></div>
+                                <div class="title marginbottom10">
+                                    <strong>Select a Pickup Address From Your Address Book or Enter a New Address</strong>
+
+                                </div>
+                                <div class="title marginbottom10">
+                                    @Html.DropDownListFor(m => m.PickupAddressId, Model.PickupAddresses, new { @class = "form-control", @id = "PickupAddressId" })
+                                </div>
+
+                                <div id="pickup-new-address-form">
+                                    <div class="edit-address">
+                                        <div class="form-field marginbottom10">
+                                            <input id="autocomplete" class="form-control" placeholder="Enter your  pickup address" />
+                                        </div>
+                                        <div class="form-field marginbottom10">
+
+                                            <input asp-for="PickupStreet" class="form-control" placeholder="Street" readonly  />
+
+                                            <span asp-validation-for="PickupStreet" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="PickupCity" class="form-control" placeholder="City" readonly />
+
+                                            <span asp-validation-for="PickupCity" class="text-danger"></span>
+
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="PickupState" class="form-control" placeholder="State" readonly />
+
+                                            <span asp-validation-for="PickupState" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code" readonly />
+
+                                            <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="PickupCountry" class="form-control" placeholder="Country" readonly />
+
+                                            <span asp-validation-for="PickupCountry" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="PickupPhone" class="form-control" placeholder="Phone" data-inputmask="'mask': '(999) 999-9999'" />
+
+                                            <span asp-validation-for="PickupPhone" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="PickupContact" class="form-control" placeholder="Contact" />
+
+                                            <span asp-validation-for="PickupContact" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="title marginbottom10">
+                                    <strong>Select a Dropoff Address From Your Address Book or Enter a New Address </strong>
+
+                                </div>
+                                <div class="title marginbottom10">
+                                    @Html.DropDownListFor(m => m.DropAddressId, Model.DropAddresses, new { @class = "form-control", @id = "DropAddressId" })
+                                </div>
+                                <div id="drop-new-address-form">
+                                    <div class="edit-address">
+
+                                        <div class="form-field marginbottom10">
+                                            <input id="autocomplete1" class="form-control" placeholder="Enter your drop address" />
+                                        </div>
+                                        <div class="form-field marginbottom10">
+
+                                            <input asp-for="DeliveryStreet" class="form-control" placeholder="Street" readonly />
+
+
+                                            <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="DeliveryCity" class="form-control" placeholder="City" readonly />
+
+                                            <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="DeliveryState" class="form-control" placeholder="State" readonly />
+
+                                            <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code" readonly />
+
+                                            <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                                        </div>
+
+
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="DeliveryCountry" class="form-control" placeholder="Country" readonly />
+
+                                            <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="DeliveryPhone" class="form-control" placeholder="Phone" data-inputmask="'mask': '(999) 999-9999'" />
+
+                                            <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <input asp-for="DeliveryContact" class="form-control" placeholder="Contact" />
+
+                                            <span asp-validation-for="DeliveryContact" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="title marginbottom10">
+                                    <strong> Package Photo </strong>
+                                </div>
+                                <div class="edit-address">
+                                    <div class="form-field marginbottom10">
+
+                                        <div class="avatar-page">
+                                            <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
+                                            <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="marginbottom10"></div>
+                                <div class="title marginbottom10">
+                                    <strong>Package Information </strong>
+                                    
+                                </div>
+                                <div class="edit-address">
+                                    <div class="form-field marginbottom10">
+                                        @Html.LabelFor(x => x.NeedVanOrPickUp)
+                                        
+                                        <label class="radio-inline">
+                                            <input type="radio" name="NeedVanOrPickUp"><label>Yes</label>
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="NeedVanOrPickUp"><label>No</label>
+                                        </label>
+                                       
+                                        
+                                     </div>
+                                        <div class="form-field marginbottom10">
+                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="form-control"></select>*@
+                                            @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
+                                            <span asp-validation-for="PackageSizeId" class="text-danger"></span>
+                                            <span id="loading-progress" style="display: none;" class="glyphicon glyphicon-refresh spinning">Wait...</span>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            @*<select asp-for="@Model.PriorityTypeList" asp-items="@Model.PriorityTypeId" class="form-control"></select>*@
+                                            @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
+                                            <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
+
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            @Html.EditorFor(m => m.Amount, new { @class = "form-control" })
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+
+                                                <input asp-for="Amount" class="form-control" placeholder="Estimate Shipping Value" data-inputmask="'alias':'decimal'" />
+                                                <span asp-validation-for="Amount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">#</span>
+                                                <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate Approximate Weight" data-inputmask="'alias':'decimal'" />
+                                                <span asp-validation-for="ShippingWeight" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-field marginbottom10">
+                                            <div class="sub-form">
+                                                <div class="form-field marginbottom10">
+                                                    @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
+                                                    <textarea name="Note" class="span6" rows="3" placeholder="Note to the Driver, Pickup window, Special instructions, dimensions, if you're not inuding a picture, plase be descriptive."></textarea>
+                                                    <span asp-validation-for="Note" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-field marginbottom10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input asp-for="ExtraCharge" class="form-control" placeholder="Extra Charge" data-inputmask="'alias':'decimal'" />
+                                                <span asp-validation-for="ExtraCharge" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-field marginbottom10">
+                                            @*<input asp-for="Note" class="form-control" placeholder="Note to the driver"/>*@
+                                            <textarea name="ExtraChargeNote" id="ExtraChargeNote" class="span6" rows="3" placeholder="Extra Charge Note"></textarea>
+                                            <span asp-validation-for="ExtraChargeNote" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                <div class="edit-address">
+                                    <div class="form-field marginbottom10">
+                                        <input asp-for="PromoCode" class="form-control" placeholder="Promo Code" />
+                                        <span asp-validation-for="PromoCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="marginbottom10">
+                                    <span id="loading-progress1" style="display: none;" class="glyphicon glyphicon-refresh spinning">Wait...</span>
+                                    <input id="calcTotal" type="button" value="Total" name="save-info-button" class="bttn green-box" style="width:200px;" />
+                                </div>
+
+
+
+                                <div class="edit-address invisible" id="totalDetails">
+                                    <div class="title marginbottom10">
+                                        <h2><strong> Shipping Total </strong></h2> 
+                                    </div>
+                                    <div class="total">
+                                        <div class="text-center">
+                                            <div class="text-center">
+                                                <table class="table-responsive">
+                                                    <tbody>
+                                                        <tr class="order-subtotal">
+                                                            <td class="text-left">
+                                                                <label>Package Type:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-Size"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-Size"> </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="order-subtotal">
+                                                            <td class="text-left">
+                                                                <label>Package Type + Priority:</label>
+                                                            </td>
+                                                            <td>
+                                                                <span class="desc-Priority"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-AmountSizePriority">$0.00</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="order-subtotal">
+                                                            <td class="text-left">
+                                                                <label>Distance + Weight:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-DistanceWeight"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-DistanceWeight">$0.00</span>
+                                                            </td>
+                                                        </tr>
+                                                        @*<tr class="order-subtotal">
+                                                            <td class="text-left">
+                                                                <label>Weight:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-Weight"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-Weight">$0.00</span>
+                                                            </td>
+                                                        </tr>*@
+                                                  
+
+
+                                                        <tr class="order-subtotal">
+                                                            <td class="text-left">
+                                                                <label>Extra Charge:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-extra"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-extra">$0.00</span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr class="order-subtotal">
+                                                            <td class="text-left">
+                                                                <label>Sub-Total:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-Sub"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-Sub">$0.00</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="shipping-cost">
+                                                            <td class="text-left">
+                                                                <label>Discount:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-Discount"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-Discount">$0.00</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="tax-value">
+                                                            <td class="text-left">
+                                                                <label>Tax:</label>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-Tax"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <span class="value-Tax">$0.00</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="order-total">
+                                                            <td class="text-left">
+                                                                <h3><label>Total:</label></h3>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="desc-total"></span>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <h3>
+                                                                <span class="value-total">$0.00</span>
+                                                                </h3>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div id="payPalBtn" class="invisible marginbottom10">
+
+                                    <div class="edit-address">
+                                        <div class="buttons">
+                                            <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="bttn" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                    </form>
+                                    <div class="center-block bg-primary text-center" id="bar-notification">
+                                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+  @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*//results.rows[0].elements[0].distance //returns in meters, i want it in kms.*@
+
+    <script>
+
+//        $(document).ready(function () {
+            
+
+//            $("#PackageSizeId").change(function () {
+//                var statesProgress = $("#loading-progress");
+//                statesProgress.toggle();
+
+//                var packageSizeId = $("#PackageSizeId").val();
+//                var ddlpriorityType = $("#PriorityTypeId");
+
+
+//                $.ajax({
+//                    cache: false,
+//                    type: "GET",
+//                    url: "/sender/GetRateByPackageSizeId",
+//                    data: { id: packageSizeId },
+//                    success: function (data) {
+//                        ddlpriorityType.html('');
+//                        $.each(data, function (id, option) {
+////alert(option.text);
+//                            //var option = $('<option />');
+//                            //option.attr('value', this.value).text(this.Text);
+//                            //ddlpriorityType.append(option);
+//ddlpriorityType.append($('<option></option>').val(option.value).html(option.text));                          
+//                        });
+//                        statesProgress.toggle();
+//                    },
+//                    error: function (xhr, ajaxOptions, thrownError) {
+//                        alert('Failed to retrieve Priorities.');
+//                        statesProgress.toggle();
+//                    }
+//                    });
+            
+//                });
+
+//        });
+
+
+
+             function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#blah').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#photoUrl").change(function () {
+                readURL(this);
+            });
+
+ $(function () {
+               $('#calcTotal').click(function (event) {
+                   calcTotal(event);
+               });
+
+         function calcTotal(event) {
+           
+                    //alert(1);
+
+            var pAdrress = $('#PickupAddressId option:selected').text();
+            var dAddress = $('#DropAddressId option:selected').text();
+
+
+
+            if (pAdrress == 'Add new address') {
+                pAdrress = document.getElementById("PickupStreet").value + " " +
+                    document.getElementById("PickupCity").value + " " +
+                    document.getElementById("PickupState").value + " " +
+                    document.getElementById("PickupZipCode").value + " " +
+                    document.getElementById("PickupCountry").value + " ";
+
+                if (document.getElementById("PickupStreet").value == "") { alert("select a pickup address"); return; }
+
+            }
+            if (dAddress == 'Add new address')
+            {
+                dAddress=   document.getElementById("DeliveryStreet").value +" "+
+                document.getElementById("DeliveryCity").value + " "+
+                document.getElementById("DeliveryState").value + " "+
+                document.getElementById("DeliveryZipCode").value + " "+
+                document.getElementById("DeliveryCountry").value + " " ;
+
+                if (document.getElementById("DeliveryStreet").value == "") { alert("select a drop address"); return; }
+            }
+
+            var priorityTypeId = $("#PriorityTypeId").val();
+            var promoCode = $("#PromoCode").val();
+            var shippingWeight = $("#ShippingWeight").val();
+            var packageSizeId = $("#PackageSizeId").val();
+
+            var extraCharge = $("#ExtraCharge").val();
+            var extraChargeNote = $("#ExtraChargeNote").val();
+            var pickupState = $("#PickupState").val();
+            var pickupCity = $("#PickupCity").val();
+
+            if (shippingWeight == '0.00') {
+                alert('add shipping weight');
+                return;
+            }
+            if (priorityTypeId == 'Select Priority Shipping') {
+                alert('add priority');
+                return;
+            }
+            if (packageSizeId == 'All') {
+                alert('add packageSize');
+                return;
+            }
+
+                    var geocoder = new google.maps.Geocoder;
+
+                    var service = new google.maps.DistanceMatrixService;
+                    service.getDistanceMatrix({
+                        origins: [pAdrress],
+                        destinations: [dAddress],
+                        travelMode: 'DRIVING',
+                        unitSystem: google.maps.UnitSystem.METRIC,
+                        avoidHighways: false,
+                        avoidTolls: false
+                    }, function (response, status) {
+                        if (status !== 'OK') {
+                            alert('Error was: ' + status);
+                        } else {
+
+                            var originList = response.originAddresses;
+                            var destinationList = response.destinationAddresses;
+
+                            var results = response.rows[0].elements;
+
+                            if (typeof results[0].distance == 'undefined') { return; }
+                            var distance = results[0].distance.text.split(" ");
+
+
+                            var km = distance[0];
+//var transportTypeId = $("#TransportTypeId").val();
+                          
+                            
+
+                            var statesProgress = $("#loading-progress1");
+                            statesProgress.toggle();
+
+                            $("#Distance").val(km);
+                            //alert($("#Distance").val());
+
+                                          //  alert('distance:' + km + ' weight:' + shippingWeight + ' priority:' +  priorityTypeId +'promoCode:' +  promoCode + '  packageSizeId:' +  packageSizeId + '  extraCharge:' +   extraCharge +'  extraChargeNote:' + extraChargeNote + '  pickupState:' +  pickupState +'  pickupCity:' +  pickupCity);
+
+                            $.ajax({
+                                url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "GET", //to do a post request
+                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode, packageSizeId: packageSizeId, extraCharge: extraCharge, extraChargeNote: extraChargeNote, pickupState: pickupState, pickupCity: pickupCity}, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    // data is your result from controller
+
+                                    if (data) {
+                                        //alert(data.priorityAmountDetail); 
+                                        $(".desc-Size").text(data.amountPerSizeDetails);
+                                        $(".value-AmountSizePriority").text(data.amountSizePriority);
+
+                                      
+                                        $(".desc-DistanceWeight").text(data.distanceWeightDetails);
+                                        $(".value-DistanceWeight").text(data.distanceWeight);
+
+                                        //$(".value-Priority").text(data.strPriorityAmount);
+                                        //$(".desc-Priority").text(data.priorityAmountDetail);
+                                        //$(".value-Distance").text(data.strDistanceAmount);
+                                        //$(".desc-Distance").text(data.distanceAmountDetails);
+                                        //$(".value-Weight").text(data.strWeightAmount);
+                                        //$(".desc-Weight").text(data.weightAmountDetails);
+                                        //$(".value-Size").text(data.strAmountPerSize);
+                                        
+
+                                        $(".value-extra").text(data.strExtraCharge);
+                                        $(".desc-extra").text(extraChargeNote);
+
+
+                                        $(".value-Sub").text(data.strSubTotal);
+                                        $(".value-Discount").text(data.strDiscount);
+                                        $(".desc-Tax").text(data.taxRate+" %");
+                                        $(".value-Tax").text(data.strTaxAmount);
+                                        $(".value-total").text(data.strAmountToCharge);
+
+                                        $("#TotalCharge").text(data.strAmountToCharge);
+
+                                       // alert($("#Distance").val());
+
+                                            $("#totalDetails").removeClass('invisible');
+                                        $("#payPalBtn").removeClass('invisible');
+
+                                    }
+                                    statesProgress.toggle();
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    //alert(thrownError);
+                                    statesProgress.toggle();
+                                }
+                            });
+
+                            }
+                        });
+                };
+
+
+                $('#pickup-new-address-form').hide();
+                $('#drop-new-address-form').hide();
+
+                if ($('#PickupAddressId').val() == "Add new address") {
+                    $('#pickup-new-address-form').show();
+
+                    $("#PickupStreet").value = '';
+                    document.getElementById("PickupCity").value = '';
+                    document.getElementById("PickupState").value = '';
+                    document.getElementById("PickupZipCode").value = '';
+                    document.getElementById("PickupCountry").value = '';
+
+                    document.getElementById("PickupPhone").value = '';
+                    document.getElementById("PickupPhone").disabled = false;
+                    document.getElementById("PickupContact").value = '';
+                    document.getElementById("PickupContact").disabled = false;
+
+                }
+                if ($('#DropAddressId').val() == "Add new address") {
+                    $('#drop-new-address-form').show();
+                    document.getElementById("DeliveryStreet").value = '';
+                    document.getElementById("DeliveryCity").value = '';
+                    document.getElementById("DeliveryState").value = '';
+                    document.getElementById("DeliveryZipCode").value = '';
+                    document.getElementById("DeliveryCountry").value = '';
+                    document.getElementById("DeliveryPhone").value = '';
+                    document.getElementById("DeliveryContact").value = '';
+
+                }
+
+                $('#PickupAddressId').change(function (event) {
+                    if ($('#PickupAddressId').val() == "Add new address") {
+                        $('#pickup-new-address-form').show();
+                        document.getElementById("PickupStreet").value = '';
+                        document.getElementById("PickupCity").value = '';
+                        document.getElementById("PickupState").value = '';
+                        document.getElementById("PickupZipCode").value = '';
+                        document.getElementById("PickupCountry").value = '';
+
+                        document.getElementById("PickupPhone").value = '';
+                        document.getElementById("PickupContact").value = '';
+                    }
+                    else
+                        $('#pickup-new-address-form').hide();
+                });
+                $('#DropAddressId').change(function (event) {
+                    if ($('#DropAddressId').val() == "Add new address") {
+                        $('#drop-new-address-form').show();
+
+                        document.getElementById("DeliveryStreet").value = '';
+                        document.getElementById("DeliveryCity").value = '';
+                        document.getElementById("DeliveryState").value = '';
+                        document.getElementById("DeliveryZipCode").value = '';
+                        document.getElementById("DeliveryCountry").value = '';
+                        document.getElementById("DeliveryPhone").value = '';
+                        document.getElementById("DeliveryContact").value = '';
+
+                    }
+                    else
+                        $('#drop-new-address-form').hide();
+                });
+
+
+                //$('form').submit(function () {
+
+                //    $('#calcTotal').click();
+
+                //    if ($(this).valid()) {
+
+
+                //        $.ajax({
+                //            url: this.action,
+                //            type: this.method,
+                //            data: $(this).serialize(),
+                //            success: function (result) {
+                //                $('#bar-notification').html(result);
+                //            },
+                //            error: function (response) {
+                //                alert("Error:" + response);
+                //            }
+                //        });
+                //    }
+                //    return false;
+                //});
+
+            });
+
+
+
+            // This example displays an address form, using the autocomplete feature
+            // of the Google Places API to help users fill in the information.
+
+            // This example requires the Places library. Include the libraries=places
+            // parameter when you first load the API. For example:
+            // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+            var placeSearch, autocomplete,autocomplete1;
+            var componentForm = {
+                street_number: 'short_name',
+                route: 'long_name',
+                locality: 'long_name',
+                administrative_area_level_1: 'short_name',
+                country: 'long_name',
+                postal_code: 'short_name'
+            };
+
+            function initAutocomplete() {
+                // Create the autocomplete object, restricting the search to geographical
+                // location types.
+                autocomplete = new google.maps.places.Autocomplete(
+            /** type {!HTMLInputElement} */
+            (document.getElementById('autocomplete')),
+            { types: ['geocode'] });
+                // When the user selects an address from the dropdown, populate the address
+                // fields in the form.
+                autocomplete.addListener('place_changed', fillInAddress);
+
+                autocomplete1 = new google.maps.places.Autocomplete(
+                    /** type {!HTMLInputElement} */
+                    (document.getElementById('autocomplete1')),
+                    { types: ['geocode'] });
+                autocomplete1.addListener('place_changed', fillInAddress1);
+
+
+            }
+
+
+
+            function fillInAddress1() {
+
+                // Get the place details from the autocomplete object.
+                 var place = autocomplete1.getPlace();
+                 // Get each component of the address from the place details
+                 // and fill the corresponding field on the form.
+                 for (var i = 0; i < place.address_components.length; i++) {
+
+                     var addressType = place.address_components[i].types[0];
+
+                     if (componentForm[addressType]) {
+                         var val = place.address_components[i][componentForm[addressType]];
+
+                         if (addressType == 'street_number')
+                             $("#DeliveryStreet").val(place.address_components[i]['short_name']);
+
+                         if (addressType == 'route')
+                             $("#DeliveryStreet").val($("#DeliveryStreet").val() + " " + place.address_components[i]['long_name']);
+
+                         if (addressType == 'locality')
+                             $("#DeliveryCity").val(place.address_components[i]['long_name']);
+
+                         if (addressType == 'administrative_area_level_1')
+                             $("#DeliveryState").val(place.address_components[i]['short_name']);
+
+                         if (addressType == 'country')
+                             $("#DeliveryCountry").val(place.address_components[i]['long_name']);
+
+                         if (addressType == 'postal_code')
+                             $("#DeliveryZipCode").val(place.address_components[i]['short_name']);
+
+
+
+                     }
+
+
+                 }
+
+                 //assign lat and lng
+                 $("#DeliveryLatitude").val(place.geometry.location.lat());
+                 $("#DeliveryLongitude").val(place.geometry.location.lng());
+
+                 $("#autocomplete1").val("");
+            }
+            function fillInAddress() {
+                // Get the place details from the autocomplete object.
+                var place = autocomplete.getPlace();
+
+
+                // Get each component of the address from the place details
+                // and fill the corresponding field on the form.
+                for (var i = 0; i < place.address_components.length; i++) {
+                    var addressType = place.address_components[i].types[0];
+                    if (componentForm[addressType]) {
+                        var val = place.address_components[i][componentForm[addressType]];
+
+
+             if (addressType == 'street_number')
+                    $("#PickupStreet").val(place.address_components[i]['short_name']);
+
+                if (addressType == 'route')
+                    $("#PickupStreet").val($("#PickupStreet").val() + " " + place.address_components[i]['long_name']);
+
+                if (addressType == 'locality')
+                    $("#PickupCity").val(place.address_components[i]['long_name']);
+
+                if (addressType == 'administrative_area_level_1')
+                    $("#PickupState").val(place.address_components[i]['short_name']);
+
+                if (addressType == 'country')
+                    $("#PickupCountry").val(place.address_components[i]['long_name']);
+
+                if (addressType == 'postal_code')
+                    $("#PickupZipCode").val(place.address_components[i]['short_name']);
+
+
+
+                    }
+
+                }
+
+                //assign lat and lng
+                $("#PickupLatitude").val(place.geometry.location.lat());
+                $("#PickupLongitude").val(place.geometry.location.lng());
+            $("#autocomplete").val("");
+
+
+            }
+            // Bias the autocomplete object to the user's geographical location,
+            // as supplied by the browser's 'navigator.geolocation' object.
+            function geolocate() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var geolocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        var circle = new google.maps.Circle({
+                            center: geolocation,
+                            radius: position.coords.accuracy
+                        });
+                        autocomplete.setBounds(circle.getBounds());
+                    });
+                }
+            }
+
+            //distance service
+</script>
+                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+                                                async defer></script>
+
+                                    }

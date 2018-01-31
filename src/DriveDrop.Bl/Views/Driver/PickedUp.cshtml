@@ -1,0 +1,134 @@
+@model DriveDrop.Bl.ViewModels.PaginatedShippings
+ @{ 
+
+         var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)@ViewBag.CustomerId, Option = "PickedUp" };
+ }
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("DriverNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Pick-Up Packages</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                     <p id="demo"></p>
+ @if(Model.Data.Count > 0)
+ {
+                                    <h3>List Deliver Packages</h3>
+                                                    <div class="row">
+                                                        <table class="table table-responsive table-hover">
+
+                                                            <tr>
+                                                                <th>Timer</th>
+                                                                <th><div>Date </div> Status</th>
+                                                                <th>Priority</th>
+                                                                <th>Pickup Address</th>
+                                                                <th>Delivery Address</th>
+                                                                <th>Distance</th>
+
+
+                                                            </tr>
+
+                                                            @foreach (var item in Model.Data)
+                                                            {
+
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="priorityClock" data-id="@item.Id" data-priority="@item.PriorityType.Name" data-pickupDate="@item.ShippingPickupDate.AddMinutes(30)">
+                                                                            @Html.DisplayFor(modelItem => item.Id)
+                                                                        </div>
+
+                                                                    </td>
+                                                                    <td>
+                                                                        <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                                                                        <div>
+                                                                            @Html.DisplayFor(modelItem => item.IdentityCode)
+                                                                        </div>
+                                                                        <div>
+                                                                            @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                                                                        </div>
+                                                                        <div class="license-btn" >
+                                                                           @if (item.ShippingStatusId == 4)
+                                                                           {
+                                                                            @Html.ActionLink("Start Deliver!", "UpdateDropStatus", new { shippingId = item.Id, shippingStatusId = 6 })
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                            @Html.ActionLink("Drop Package!", "SetDropByInfo", new { id = item.Id })
+                                                                           }
+                                                                            @*<form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST">
+                                                                                <input value="@item.DriverId" hidden name="DriverId" />
+                                                                                <input value="@item.Id" hidden name="shippingId" />
+
+                                                                                @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList, htmlAttributes: new { @data_inputmask = "'mask': '(999) 999-9999'" })
+
+                                                                              
+
+                                                                                <input type="submit" class="btn btn-danger" value="Change" />
+                                                                            </form>*@
+
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.PriorityType.Name)
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div>
+                                                                            @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                                                                        </div>
+                                                                        <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                                                                        @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                                                                    </td>
+                                                                    <td>
+                                                                        <div>
+                                                                            @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                                                                        </div>
+                                                                        <div>
+                                                                            @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                                                                        </div>
+                                                                        @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Distance)
+                                                                        
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+
+
+
+                                                    </div>
+                                    }
+                                    else
+                                    {
+
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span class="sr-only">Error:</span>
+                                            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+ 
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

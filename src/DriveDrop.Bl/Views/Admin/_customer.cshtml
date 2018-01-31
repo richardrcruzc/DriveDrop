@@ -1,0 +1,103 @@
+﻿@model DriveDrop.Bl.ViewModels.CustomerModel
+
+
+
+<td>
+   @Model.CustomerType.Name
+</td>
+<td>
+  @Model.FullName
+</td>
+<td>
+    @Model.UserName
+</td>
+<td>
+   @*@Model.CustomerStatus.Name*@
+    <select asp-for="@Model.CustomerStatusId" asp-items="@ViewBag.CustomerStatus" class="form-control"  onchange="changstatus(this,@(Model.Id))" ></select>
+</td>
+<td>
+    @if (Model.TransportType != null)
+    {
+  @Model.TransportType.Name
+    }
+    
+</td>
+
+<td>
+    
+   @if (Model.CustomerTypeId == 1)
+   {
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+   }
+   else if (Model.CustomerTypeId == 2)
+   {
+    <a asp-action="SenderDetails" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+    
+   }
+   else  if (Model.CustomerTypeId == 3)
+   {
+    <a asp-action="DriverDetails" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+     
+   }
+</td>
+
+<script type="text/javascript">
+    function changstatus(newId, Customerid) {
+
+        var selectedValue = $(newId).val();
+        var selectedText = $(newId).find("option:selected").text();
+
+        if (confirm('Are you sure to change status to: ' + selectedText+" ?")) {
+                                var postData = {
+                                    customerId: Customerid,
+                                    statusId: selectedValue,
+                                };
+                                $.ajax({
+                                    cache: false,
+                                    type: 'GET',
+                                    url: '/api/v1/admin/ChangeCustomerStatus/CustomerId/' + Customerid + '/statusId/' + selectedValue,
+                                   // data: postData,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                         alert(data);
+                                        @*location.href = '/common/Address/@ViewBag.Id';*@
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        alert('Failed to update');
+                                    }
+                                });
+                            }
+    }
+</script>
+@*<form asp-controller="Customer" asp-action="Index">*@
+
+    @*<img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
+    <input class="esh-catalog-button @((!User.Identity.IsAuthenticated) ? "is-disabled" : "")" type="submit" value="[ ADD TO CART ]" />*@
+
+
+
+
+
+    @*<div class="esh-customer-name">
+        <span>@Model.CustomerType.Name</span>
+    </div>
+    <div class="esh-customer-name">
+        <span>@Model.FullName</span>
+    </div>
+    <div class="esh-customer-name">
+        <span>@Model.CustomerStatus.Name</span>
+    </div>
+    <div class="esh-customer-name">
+        <span>@Model.TransportType.Name</span>
+    </div>*@
+
+    @*<input type="hidden" asp-for="@Model.CatalogBrand" name="brand" />
+        <input type="hidden" asp-for="@Model.CatalogBrandId" name="brandId" />
+        <input type="hidden" asp-for="@Model.CatalogType" name="type" />
+        <input type="hidden" asp-for="@Model.CatalogTypeId" name="typeId" />
+        <input type="hidden" asp-for="@Model.Description" name="description" />
+        <input type="hidden" asp-for="@Model.Id" name="id" />
+        <input type="hidden" asp-for="@Model.Name" name="name" />
+        <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
+        <input type="hidden" asp-for="@Model.Price" name="price" />*@
+    @*</form>*@

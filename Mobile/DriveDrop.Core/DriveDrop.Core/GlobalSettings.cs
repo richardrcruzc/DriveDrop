@@ -7,8 +7,12 @@
         // public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
         //public const string DriveDropEndpoint = "http://api.godrivedrop.com/api/v1/";
 
-        public const string DefaultEndpoint = "http://10.0.0.51:58652/";
-        public const string DriveDropEndpoint = "http://10.0.0.51:5205/api/v1/";
+        //public const string DefaultEndpoint = "http://10.0.0.51:58652/";
+        //public const string DriveDropEndpoint = "http://10.0.0.51:5205/api/v1/";
+         
+
+        public const string DefaultEndpoint = "http://169.254.80.80:58652/";
+        public const string DriveDropEndpoint = "http://169.254.80.80:5205/api/v1/";
 
         private string _baseEndpoint;
         private string _drivedrppEndpoint;

@@ -1,0 +1,58 @@
+
+@{
+    ViewData["Title"] = "Return";
+
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)@ViewBag.CustomerId, Option = "NewShipping" };
+}
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("CustomerNavigation", option)
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">New Package</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="page account-page address-list-page">
+                                        <div class="page-title">
+                                            <h1>My Account - New Package</h1>
+                                        </div>
+                                        <div class="page-body">
+                                            <h2>Shipping Have Been Processed</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </section>
+            
+
+
+ 
+
+                                    @*<button onclick="htmlSendNotice('dddddddddddddddddddddddd')">sendButton</button>
+                                <button id="sendButton">sendButton</button>*@
+
+                                    @section Scripts {
+                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                                        <script>
+
+
+
+                                            htmlSendNotice('dddddddddddddddddddddddd');
+
+
+                                        </script>
+                                    }
+
+

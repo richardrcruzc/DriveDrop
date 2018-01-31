@@ -1,0 +1,91 @@
+@using Microsoft.AspNetCore.Identity
+@using DriveDrop.Bl.Models
+@using DriveDrop.Bl.Services
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <header class="blue-bg deshbord-head sub-nav-hed">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-2 mobile-header-logo">
+                    <a href="/"><img src="~/images/logo.png"></a>
+                </div>
+                <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm">
+
+                    <div class="col-xs-9">
+                        <div class="login-profile">
+                            <a asp-area="" asp-controller="home" asp-action="MyAccount" title="Manage">
+                                @await Component.InvokeAsync("UserInfo")
+                                @*<span>Hi <br>@await Component.InvokeAsync("UserInfo")</span>
+                                    <figure><img src="~/images/profile.jpg"></figure>*@
+                            </a>
+                        </div>
+
+
+                    </div>
+                    <div class="col-xs-1">
+                        <div class="login-profile">
+                            <a href="javascript:document.getElementById('logoutForm').submit()">
+                                <span>SignOut</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+                <br />
+            </div>
+        </div>
+        <div class="deshbord-nav">
+
+        </div>
+
+
+    </header>
+
+}
+else
+{
+    <header class="blue-bg">
+        <div class="container">
+            <div class="row descktop-menu">
+                <div class="col-xs-2">
+                    <a href="/"><img src="~/images/logo.png"></a>
+                </div>
+                <div class="col-xs-8 pull-right">
+                    <nav>
+                        <ul class="main-menu">
+
+                            <li>
+                                <a asp-area="" asp-controller="sender" asp-action="NewSender" class="ico-register">Senders </a>
+
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="driver" asp-action="newDriver" class="ico-register">Drivers  </a>
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+
+                        <a asp-area="" asp-controller="Account" asp-action="Login" class="bttn">Sign In @UserManager.GetUserName(User)</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="mobile-menu">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()"> <img src="~/images/mobile-nav.png"></span>
+                <a href="/"><img src="~/images/logo.png"></a>
+            </div>
+
+        </div>
+    </header>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/">Home</a>
+        <a asp-area="" asp-controller="sender" asp-action="NewSender" class="ico-register">Sign Up Senders  </a>
+        <a asp-area="" asp-controller="driver" asp-action="newDriver" class="ico-register">Sign Up Drivers  </a>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="bttn">Sign-In</a>
+    </div>
+
+}

@@ -1,0 +1,120 @@
+
+@model DriveDrop.Bl.ViewModels.PaginatedShippings
+
+
+<div class="side-2">
+
+
+
+    @await Html.PartialAsync("DriverNavigation", (int)@ViewBag.CustomerId)
+
+
+</div>
+<div class="center-2">
+
+
+    <div class="page account-page address-list-page">
+        <div class="page-title">
+            <h1>Shipping Canceled</h1>
+        </div>
+        <div class="page-body">
+            @if(Model.Count>0)
+            {
+
+                <h3>List of Shipping Canceled</h3>
+                <div class="row">
+                    <table class="table table-responsive table-hover">
+
+                        <tr>
+                            @*<th>#</th>*@
+                            <th><div>Date </div> Status</th>
+                            <th>Priority</th>
+                            <th><div>Amount</div>Discount</th>
+                            <th>Pickup Address</th>
+                            <th>Delivery Address</th>
+
+                        </tr>
+
+                        @foreach (var item in Model.Data)
+                        {
+
+                            <tr>
+
+                                <td>
+                                    <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.IdentityCode)
+                                    </div>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                                    </div>
+                                    <div>
+                                        <form asp-controller="Driver" asp-action="UpdatePackageStatus" role="form" data-method="POST">
+                                            <input value="@item.DriverId" hidden name="DriverId" />
+                                            <input value="@item.Id" hidden name="shippingId" />
+
+                                            @Html.DropDownListFor(modelItem => item.ShippingStatusId, Model.ShippingStatusList, htmlAttributes: new { @data_inputmask = "'mask': '(999) 999-9999'" })
+
+                                            @*@Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id , customerId= item.DriverId}, new { @class = "btn-danger"})*@
+
+                                            <input type="submit" class="btn btn-danger" value="Change" />
+                                        </form>
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                                    @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)/
+                                    @Html.DisplayFor(modelItem => item.Discount)
+                                </td>
+                                <td>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                                    </div>
+                                    <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                                    @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                                </td>
+                                <td>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                                    </div>
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                                    </div>
+                                    @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                                </td>
+                                <td>
+                                    <div>
+                                        <button id="@item.Id"
+                                                pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                                delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                                                onClick="javascript:SetAddressFunction(this);">
+                                            <i class="material-icons" style="font-size:14px;color:red">directions</i>
+                                        </button>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    </table>
+
+
+
+                </div>
+            }
+            else{
+
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

@@ -8,7 +8,8 @@ namespace DriveDrop.Api.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return new RedirectResult("~/swagger");
+            return View();
+          //  return new RedirectResult("~/swagger");
         }
     }
 }

@@ -1,0 +1,73 @@
+﻿ 
+@model DriveDrop.Bl.ViewModels.PaginatedShippings
+
+    <div class="row">
+        <table class="table table-responsive table-hover">
+
+            <tr>
+                @*<th>#</th>*@
+                <th><div>Date </div> Status</th>
+                <th>Priority</th>
+                <th><div>Amount</div>discount</th>
+                <th>Pickup Address</th>
+                <th>Delivery Address</th>
+
+            </tr>
+
+            @foreach (var item in Model.Data)
+            {
+
+                <tr>
+
+                    <td>
+                        <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                        </div>
+                        <div>
+                            @Html.ActionLink("Update Status!", "UpdatePackageStatus", new { id = item.Id, customerId = item.DriverId }, new { @class = "btn-danger" })
+                        </div>
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                        @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)/
+                        @Html.DisplayFor(modelItem => item.Discount)
+                    </td>
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                        </div>
+                        <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                        @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+                    </td>
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                        </div>
+                        @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+                    </td>
+                    <td>
+                        <div>
+                            <button id="@item.Id"
+                                    pickup-id="@item.PickupAddress.Street @item.PickupAddress.City @item.PickupAddress.ZipCode"
+                                    delivery-id="@item.DeliveryAddress.Street @item.DeliveryAddress.City @item.DeliveryAddress.ZipCode"
+                                    onClick="javascript:SetAddressFunction(this);">
+                                <i class="material-icons" style="font-size:14px;color:red">directions</i>
+                            </button>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </table>
+
+
+
+    </div>

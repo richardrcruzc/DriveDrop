@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+@*<h2>@ViewData["Title"].</h2>
+    <h3>@ViewData["Message"]</h3>
+
+    <p>Use this area to provide additional information.</p>*@
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row ">
+                <iframe id="myIFrame"></iframe>
+            </div>
+        </div>
+    </div>
+    </section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                <script type="text/javascript">
+                    $(document).ready(function () {
+
+                        var iframeURL = 'http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/';
+                        var iframeID = 'MyIFrame';
+                        var credentials = "username=" + encodeURIComponent('rtaadmin') + "&password=" + encodeURIComponent('SecurityPass#1');
+
+                        var oReq = new XMLHttpRequest();
+                        oReq.open("POST", this.iframeUR + credentials, true);
+                        oReq.send();
+                        var iFrameWin = document.getElementById(this.iframeID);
+                        iFrameWin.src = this.iframeURL + "?extraParameters=true";
+
+
+                        //var iframeURL = 'http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/';
+                        //var iframeID = 'MyIFrame';
+
+                        //function loadIframe() {
+                        //    //pre-authenticate
+                        //    var req = new XMLHttpRequest();
+                        //    req.open("POST", this.iframeURL, false, "rtaadmin", "SecurityPass#1"); //use POST to safely send combination
+                        //    req.send(null); //here you can pass extra parameters through
+
+                        //    //setiFrame's SRC attribute
+                        //    var iFrameWin = document.getElementById(this.iframeID);
+                        //    iFrameWin.src = this.iframeURL + "?extraParameters=true";
+                        //}
+
+                        ////onload, call loadIframe() function
+                        //loadIframe();
+
+
+                        //// submit the form into iframe for login into remote site
+                        // document.getElementById('login').submit();
+
+                        //// once you're logged in, change the source url (if needed)
+                        //var iframe = document.getElementById('myIFrame');
+                        //iframe.onload = function() {
+                        //    if (iframe.src != "http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/") {
+                        //        iframe.src = "http://rtaauto.eastus.cloudapp.azure.com:8081/Reports/browse/";
+                        //    }
+                        //}
+                    });
+                </script>
+
+ 
+
+
+    }

@@ -113,7 +113,10 @@ namespace ApplicationCore.Entities.ClientAgregate
             Email = email;
             PrimaryPhone = primaryPhone;
             Phone = phone;
-            PersonalPhotoUri = photoUrl;
+            if(!string.IsNullOrEmpty(photoUrl))
+                if (photoUrl != "null")
+                    PersonalPhotoUri = photoUrl;
+
             VerificationId = verificationId;
 
             return this;

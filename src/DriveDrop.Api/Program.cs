@@ -17,6 +17,16 @@ namespace DriveDrop.Api
         public static void Main(string[] args)
         {
             BuildWebHost(args)
+                 .MigrateDbContext<ApplicationDbContext>((context, services) =>
+                 {
+                     var env = services.GetService<IHostingEnvironment>();
+                     var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
+                     var settings = services.GetService<IOptions<AppSettings>>();
+
+                     new ApplicationDbContextSeed()
+                         .SeedAsync(context, env, logger, settings)
+                         .Wait();
+                 })
                 .MigrateDbContext<DriveDropContext>((context, services) =>
                 {
                     var env = services.GetService<IHostingEnvironment>();
@@ -37,7 +47,7 @@ namespace DriveDrop.Api
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args) 
                 .UseStartup<Startup>()
-                .UseHealthChecks("/hc")
+               // .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {

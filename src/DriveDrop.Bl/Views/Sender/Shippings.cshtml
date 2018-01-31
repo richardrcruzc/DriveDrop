@@ -1,0 +1,105 @@
+@model IEnumerable<DriveDrop.Bl.ViewModels.ShipmentModel>
+@{
+
+
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)@ViewBag.Id, Option = "Shippings" };
+}
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("CustomerNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">My Packages</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+
+                                    @if (Model != null && Model.Any())
+                                    {
+
+                                        <table class="table table-responsive table-hover">
+                                            <thead>
+                                                <tr>
+
+                                                    <td>Priority</td>
+                                                    <td>Package #</td>
+                                                    <td>Driver</td>
+                                                    <td>Status</td>
+                                                    <td>Status Date </td>
+                                                    <td>Created Date </td>
+                                                    <td>Security Code</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @foreach (var shipping in Model.OrderBy(x => x.PriorityTypeId))
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => shipping.PriorityType.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink(shipping.IdentityCode, "ShippingDetails", "sender", new { id = shipping.Id })
+                                                        </td>
+                                                        <td>
+
+                                                            @if (shipping.Driver != null)
+                                                            {
+
+                                                                var driver = shipping.Driver.FirstName + " " + shipping.Driver.LastName;
+
+                                                                @*@Html.ActionLink(driver, "details", "admin", new { id = shipping.DriverId })*@
+                                                                @Html.ActionLink(driver, "ShippingDetails", "sender", new { id = shipping.Id })
+
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => shipping.ShippingStatus.Name)
+                                                        </td>
+                                                        <td class="align-center">
+                                                            @if (shipping.PackageStatusHistories != null)
+                                                            {
+                                                            @Html.DisplayFor(modelItem => shipping.PackageStatusHistories.OrderByDescending(x => x.StatusDate).FirstOrDefault().StatusDate)
+                                                            }
+                                                            else
+                                                            { 
+                                                                <label>@DateTime.Today</label>
+
+                                                            }
+
+                                                        </td>
+                                                        <td class="align-center">
+                                                            @Html.DisplayFor(modelItem => shipping.ShippingCreateDate)
+
+
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => shipping.SecurityCode)
+                                                        </td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                                <div class="post-gig">
+                                    <input type="submit" value="Add New" name="save-info-button" class="bttn save-customer-info-button"  onclick="location.href='/sender/NewShipping?id=@(ViewBag.Id)'"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   </section>
+                     

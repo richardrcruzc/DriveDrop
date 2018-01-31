@@ -58,16 +58,16 @@ namespace DriveDrop.Web
 
 
 
-            services.AddHealthChecks(checks =>
-            {
-                var minutes = 1;
-                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-                checks.AddUrlCheck(Configuration["DriveDropUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
-            });
+            //services.AddHealthChecks(checks =>
+            //{
+                //var minutes = 1;
+                //if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
+                //{
+                //    minutes = minutesParsed;
+                //}
+                //checks.AddUrlCheck(Configuration["DriveDropUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+                //checks.AddUrlCheck(Configuration["IdentityUrl"] + "/hc", TimeSpan.FromMinutes(minutes));
+            //});
 
             // Add application services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -77,60 +77,69 @@ namespace DriveDrop.Web
 
             services.AddTransient<FormatService>();
 
-            if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
-            {
-                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<ResilientHttpClient>>();
-                    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+            //if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
+            //{
+            //    services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
+            //    {
+            //        var logger = sp.GetRequiredService<ILogger<ResilientHttpClient>>();
+            //        var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
 
-                    var retryCount = 6;
-                    if (!string.IsNullOrEmpty(Configuration["HttpClientRetryCount"]))
-                    {
-                        retryCount = int.Parse(Configuration["HttpClientRetryCount"]);
-                    }
+            //        var retryCount = 6;
+            //        if (!string.IsNullOrEmpty(Configuration["HttpClientRetryCount"]))
+            //        {
+            //            retryCount = int.Parse(Configuration["HttpClientRetryCount"]);
+            //        }
 
-                    var exceptionsAllowedBeforeBreaking = 5;
-                    if (!string.IsNullOrEmpty(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]))
-                    {
-                        exceptionsAllowedBeforeBreaking = int.Parse(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]);
-                    }
+            //        var exceptionsAllowedBeforeBreaking = 5;
+            //        if (!string.IsNullOrEmpty(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]))
+            //        {
+            //            exceptionsAllowedBeforeBreaking = int.Parse(Configuration["HttpClientExceptionsAllowedBeforeBreaking"]);
+            //        }
 
-                    return new ResilientHttpClientFactory(logger, httpContextAccessor, exceptionsAllowedBeforeBreaking, retryCount);
-                });
-                services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
-            }
-            else
-            {
+            //        return new ResilientHttpClientFactory(logger, httpContextAccessor, exceptionsAllowedBeforeBreaking, retryCount);
+            //    });
+            //    services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
+            //}
+            //else
+            //{
                 services.AddSingleton<IHttpClient, StandardHttpClient>();
-            }
+            //}
             var useLoadTest = Configuration.GetValue<bool>("UseLoadTest");
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
             var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
 
             // Add Authentication services          
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect(options =>
-            {
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.Authority = identityUrl.ToString();
-                options.SignedOutRedirectUri = callBackUrl.ToString();
-                options.ClientId = useLoadTest ? "mvctest" : "mvc";
-                options.ClientSecret = "secret";
-                options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
-                options.SaveTokens = true;
-                options.GetClaimsFromUserInfoEndpoint = true;
-                options.RequireHttpsMetadata = false;
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("drivedrop");
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+     .AddCookie(options =>
+     {
+         options.AccessDeniedPath = "/Account/AccessDenied";
+         options.Cookie.Name = "goDriveDrop";
+         options.LoginPath = "/Account/Login";
+         options.LogoutPath = "/Account/Signout";
+     });
+
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie()
+            //.AddOpenIdConnect(options =>
+            //{
+            //    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.Authority = identityUrl.ToString();
+            //    options.SignedOutRedirectUri = callBackUrl.ToString();
+            //    options.ClientId = useLoadTest ? "mvctest" : "mvc";
+            //    options.ClientSecret = "secret";
+            //    options.ResponseType = useLoadTest ? "code id_token token" : "code id_token";
+            //    options.SaveTokens = true;
+            //    options.GetClaimsFromUserInfoEndpoint = true;
+            //    options.RequireHttpsMetadata = false;
+            //    options.Scope.Add("openid");
+            //    options.Scope.Add("profile");
+            //    options.Scope.Add("drivedrop");
+            //});
 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

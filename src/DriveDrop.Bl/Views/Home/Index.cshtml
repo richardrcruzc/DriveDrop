@@ -1,0 +1,633 @@
+﻿@model DriveDrop.Bl.ViewModels.HomeQuote
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<section class="banner home-page-banner">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                <div class="g-bg"></div>
+                <div class="img-bg"></div>
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>
+                        Introduction to<br>
+                        DriveDrop
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="form-block">
+    <div class="container">
+        <h3>Get Estimate</h3>
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-xs-12 col-md-3">
+                    <div class="form-field">
+
+                        <span class="text-danger">
+
+                            <input type="text" placeholder="From Address" id="start" class="autocomplete">
+
+                        </span>
+
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <div class="form-field">
+                        <span class="text-danger">
+                            <input type="text" placeholder="To Address" id="end" class="autocomplete">
+
+                        </span>
+
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="form-field select-field">
+
+
+                        <span>
+                            <label class="dropdown">
+                                @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
+
+                            </label>
+
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2"> 
+                        <div class="form-field select-field">
+                            <span>
+                                <label class="dropdown">
+                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
+                                </label>
+                            </span>
+                        </div> 
+                </div>
+                <div class="col-xs-12 col-md-1">
+                    <div class="form-field select-field">
+                     
+                            <span class="text-danger"><input type="text" placeholder="Weight" id="weight" style="width:50px"></span>
+                         
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-1">
+
+                    <button class="bttnEstimate" id="calcTotal">Submit</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <br /><br />
+                    <h3>
+                        <label id="AmountEstimated"></label>
+                    </h3> 
+
+                </div>
+            </div>
+</div>
+                @*<div class="table-responsive">
+
+                    <table  class="table">
+
+                        <thead>
+                            <tr>
+                                <th colspan="6" style="text-align: center;">
+                                    <h3>Get Estimate</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <span class="text-danger">
+                                                <input type="text" placeholder="From Address" id="start" class="autocomplete">
+                                                <button><img src="images/icon-send.png"> </button>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <span class="text-danger">
+                                                <input type="text" placeholder="To Address" id="end" class="autocomplete">
+                                                <button><img src="images/icon-send.png"> </button>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field select-field">
+
+
+                                            <span>
+                                                <label class="dropdown">
+                                                    @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList)
+
+                                                </label>
+
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field select-field">
+                                            <span>
+                                                <label class="dropdown">
+                                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList)
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-field">
+
+                                            <span class="text-danger"><input type="text" placeholder="Weight" id="weight" style="width:70px"></span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="bttn" id="calcTotal">Submit</button>
+                                    <div class="clearfix"></div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="text-align: center;">
+                                    <br /><br /><h3>
+                                        <label id="AmountEstimated"></label>
+                                    </h3>
+                                    <br /><br />
+                                    <br /><br />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>*@
+
+            </div>
+
+
+</section>
+
+    <section class="how-it-work mt-40">
+        <div class="container">
+            <div class="row">
+                <div class="headline">
+
+                    <h3>How to Ship with <span>DriveDrop</span></h3>
+                </div>
+
+                <div class="block">
+
+                    <div class="clearfix"></div>
+                    <div class="desktop">
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Delivery Right<br>
+                                when You Need it
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-01.png"> </figure>
+                        </div>
+                    </div>
+                    <div class="mobile">
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Delivery Right<br>
+                                when You Need it
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-01.png"> </figure>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="block">
+                    <div class="clearfix"></div>
+
+                    <div class="desktop">
+
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-right"> <img src="~/images/how-to-ship-with-drivedrop-img-02.png"> </figure>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Know the About<br>
+                                Available Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+
+                    </div>
+
+                    <div class="mobile">
+
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Know the About<br>
+                                Available Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-right"> <img src="~/images/how-to-ship-with-drivedrop-img-02.png"> </figure>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="block ">
+
+                    <div class="clearfix"></div>
+
+                    <div class="desktop">
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Choose a Perfect<br>
+                                Driver for You Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-03.png"> </figure>
+                        </div>
+                    </div>
+
+                    <div class="mobile">
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Choose a Perfect<br>
+                                Driver for You Gigs
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure class="arrow-left"> <img src="~/images/how-to-ship-with-drivedrop-img-03.png"> </figure>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="block">
+
+                    <div class="clearfix"></div>
+                    <div class="desktop">
+                        <div class="col-xs-6 content">
+                            <figure> <img src="~/images/how-to-ship-with-drivedrop-img-04.png"> </figure>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Track Your Stuff<br>
+                                in Real-Time
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                    </div>
+
+                    <div class="mobile">
+
+                        <div class="col-xs-6 content">
+                            <h4>
+                                Track Your Stuff<br>
+                                in Real-Time
+                            </h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                            <a href="#" class="bttn">Send Something</a>
+                        </div>
+                        <div class="col-xs-6 content">
+                            <figure> <img src="~/images/how-to-ship-with-drivedrop-img-04.png"> </figure>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="services">
+        <div class="container">
+            <div class="row">
+                <div class="headline">
+
+                    <h3>DriveDrop <span>Delivers</span> More</h3>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-01.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-02.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-03.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="block">
+                        <figure><img src="~/images/service-icon-04.png"></figure>
+                        <h5>Lorem Ipsum text</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry it to make a type specimen book.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="row">
+                <div class="headline">
+
+                    <h3>What <span>Our Customers</span> Are Saying</h3>
+                    <span class="border"></span>
+                </div>
+                <div class="owl-testi owl-carousel mt-40">
+                    <div class="block">
+                        <div class="gray-bg">
+                            <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
+                            <div class="stars">
+                                <a href="#">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile">
+                            <figure><img src="~/images/profile.jpg"> <i class="fa fa-facebook"></i></figure>
+                            <div class="details">
+                                <h5>Jannatul Fa.</h5>
+                                <span>Photographer CreativeGigs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block">
+                        <div class="gray-bg">
+                            <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
+                            <div class="stars">
+                                <a href="#">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile">
+                            <figure><img src="~/images/profile.jpg"> <i class="fa fa-twitter"></i></figure>
+                            <div class="details">
+                                <h5>Jannatul Fa.</h5>
+                                <span>Photographer CreativeGigs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block">
+                        <div class="gray-bg">
+                            <p>Looking cauitiously round, ascerten that they were not great over heard, cowered fire chuckd.</p>
+                            <div class="stars">
+                                <a href="#">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile">
+                            <figure><img src="~/images/profile.jpg"> <i class="fa fa-pinterest-p"></i></figure>
+                            <div class="details">
+                                <h5>Jannatul Fa.</h5>
+                                <span>Photographer CreativeGigs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+
+
+
+        // This example displays an address form, using the autocomplete feature
+        // of the Google Places API to help users fill in the information.
+
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+        var placeSearch, autocomplete, autocomplete1;
+        var componentForm = {
+            street_number: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+        };
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** type {!HTMLInputElement} */
+                (document.getElementById('start')),
+                { types: ['geocode'] });
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            //autocomplete.addListener('place_changed', fillInAddress);
+
+            autocomplete1 = new google.maps.places.Autocomplete(
+                /** type {!HTMLInputElement} */
+                (document.getElementById('end')),
+                { types: ['geocode'] });
+
+            ///autocomplete1.addListener('place_changed', fillInAddress1);
+
+
+        }
+
+
+
+        // Bias the autocomplete object to the user's geographical location,
+        // as supplied by the browser's 'navigator.geolocation' object.
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var geolocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    var circle = new google.maps.Circle({
+                        center: geolocation,
+                        radius: position.coords.accuracy
+                    });
+                    autocomplete.setBounds(circle.getBounds());
+                });
+            }
+        }
+
+        //*******************
+
+            $(function () {
+
+
+                $('#calcTotal').click(function (event) {
+
+
+            var pAdrress = $('#start').val();
+            var dAddress = $('#end').val();
+
+
+                    var geocoder = new google.maps.Geocoder;
+
+                    var service = new google.maps.DistanceMatrixService;
+                    service.getDistanceMatrix({
+                        origins: [pAdrress],
+                        destinations: [dAddress],
+                        travelMode: 'DRIVING',
+                        unitSystem: google.maps.UnitSystem.METRIC,
+                        avoidHighways: false,
+                        avoidTolls: false
+                    }, function (response, status) {
+                        if (status !== 'OK') {
+                            alert('Error was: ' + status);
+                        } else {
+                            var originList = response.originAddresses;
+                            var destinationList = response.destinationAddresses;
+
+                            var results = response.rows[0].elements;
+                            var distance = results[0].distance.text.split(" ");
+
+
+                            var km = distance[0];
+                            var transportTypeId = $("#TransportTypeId").val();
+                            var priorityTypeId = $("#PriorityTypeId").val();
+                            var promoCode = $("#PromoCode").val();
+
+                            var packageSizeId = $("#PackageSizeId").val(); 
+                            
+
+                            var weight = $("#weight").val();
+                            
+                            $.ajax({
+                                url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "POST", //to do a post request
+
+                                //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { distance: km, weight: weight, priority: priorityTypeId, packageSizeId: packageSizeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    // data is your result from controller
+                                    if (data) {
+                                        //$("#distance").value = km;
+                                        //$(".value-Sub").text(data.strSubTotal);
+                                        //$(".value-Discount").text(data.strDiscount);
+                                        //$(".value-Tax").text(data.strTaxAmount);
+                                        $("#AmountEstimated").addClass('alert alert-success');
+
+                                        $("#AmountEstimated").text(data.strAmountToCharge);
+
+                                    }
+
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    //alert(thrownError);
+
+                                }
+                            });
+
+
+
+                            }
+                        });
+
+
+                });
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+                async defer></script>
+    }

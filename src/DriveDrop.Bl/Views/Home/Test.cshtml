@@ -1,0 +1,37 @@
+
+@{
+    ViewData["Title"] = "Test";
+    Layout = null;
+}
+
+<style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: table;
+        width: 100%;
+    }
+
+    .page-row {
+        display: table-row;
+        height: 1px;
+    }
+
+    .page-row-expanded {
+        height: 100%;
+    }
+</style>
+<header class="page-row">
+    <h1>Site Title</h1>
+</header>
+
+<main class="page-row page-row-expanded">
+    <p>Page content goes here.</p>
+</main>
+
+<footer class="page-row">
+    <p>Copyright, blah blah blah.</p>
+</footer>

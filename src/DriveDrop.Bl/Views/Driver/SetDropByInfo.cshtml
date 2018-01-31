@@ -1,0 +1,143 @@
+@model DriveDrop.Bl.ViewModels.ShipmentModel
+@{
+    ViewData["Title"] = "ShippingDetails";
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)Model.SenderId, Option = "PickedUp" };
+}
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+
+                @await Html.PartialAsync("DriverNavigation", option)
+
+
+
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Drop Info</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="page account-page order-list-page">
+                                        <div class="page-title">
+                                            <h1>Drop Packages Details</h1>
+                                        </div>
+
+                                        <div class="page-body">
+
+                                            <div class="order-list">
+                                                <div class="section order-item">
+                                                    <div class="title">
+                                                        <strong><label>Shipping #:</label> @Model.IdentityCode</strong>
+                                                    </div>
+                                                    <ul class="info">
+                                                        <li><label>Status:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingStatus.Name)</span></li>
+                                                        <li><label>Priority:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PriorityType.Name)</span></li>
+                                                        <li><label>Package Size:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PackageSize.Name)</span></li>
+                                                        <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
+                                                        <li><label>Pickup Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                                                        <li><label>Delivery Address: </label><span class="order-status pending"> @Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
+                                                        <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
+
+                                                    </ul>
+                                                </div>
+                                                <div class="section order-item">
+                                                    <div class="title">
+                                                        <strong><label>Drop Package    </label></strong>
+                                                    </div>
+                                                    <div class="title">
+                                                        <strong><label>Please Enter Any Comment or Note about Package </label></strong>
+                                                    </div>
+                                                    <div class="info">
+
+                                                        @* <form id="acceptPackage" role="form" method="POST" action="/Driver/AceptPackageFromSender" enctype="multipart/form-data">*@
+
+                                                        <input asp-for="DriverId" hidden />
+                                                        <input asp-for="Id" hidden />
+                                                        <textarea asp-for="DropComment" placeholder="Note to the Sender" autofocus ></textarea>
+
+                                                        <div class="avatar-page">
+                                                            <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
+                                                            <img id="blah" src="@ViewBag.PhotoUrl" class="img-thumbnail img-responsive" width="150" height="150" />
+                                                        </div>
+                                                        <input type="button" class="btn btn-danger drop-package" value="Drop Package" />
+                                                        @*</form>*@
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(".drop-package").click(function () {
+
+                                            var formData = new FormData();
+                                            jQuery.each(jQuery('#photoUrl')[0].files, function (i, file) {
+                                                formData.append('photoUrl', file);
+                                            });
+                                            var id = $("#Id").val();
+                                            var dropNote = $("#DropComment").val();
+                                            var driverId = $("#DriverId").val();
+
+                                            formData.append('id', id);
+                                            formData.append('DropNote', dropNote);
+                                           // alert(formData);
+
+           
+
+                                            //var formData = new FormData(this);
+                                            //alert(window.location.pathname);
+                                            $.ajax({
+                                                url: '/driver/SetDropByInfo',
+                                                type: 'POST',
+                                                data: formData,
+                                                async: false,
+                                                success: function (data) {
+                                                    alert(data)
+                                                    window.location.href = "/driver/PickedUp/" + driverId;
+                                                },
+                                                cache: false,
+                                                contentType: false,
+                                                processData: false
+                                            });
+
+                                            return false;
+                                        });
+                                        //$(".clickableLabel").click(function () {
+                                        //    alert($(this).attr("name"));
+                                        //})
+                                        function readURL(input) {
+
+                                            if (input.files && input.files[0]) {
+                                                var reader = new FileReader();
+
+                                                reader.onload = function (e) {
+                                                    $('#blah').attr('src', e.target.result);
+                                                }
+
+                                                reader.readAsDataURL(input.files[0]);
+                                            }
+                                        }
+                                        $("#photoUrl").change(function () {
+                                            readURL(this);
+                                        });
+
+    </script>
+}

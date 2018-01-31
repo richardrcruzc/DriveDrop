@@ -1,0 +1,390 @@
+@model DriveDrop.Bl.ViewModels.ShipmentModel
+@{
+    ViewData["Title"] = "ShippingDetails";
+ 
+
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "shippings" };
+}
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">My packages Details</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="center-2">
+                                        <div class="page account-page order-list-page">
+                                            <div class="page-title">
+                                                <h1>My packages Details</h1>
+                                            </div>
+
+                                            <div class="page-body">
+
+                                                <div class="order-list">
+                                                    <div class="section order-item">
+                                                        <div class="title">
+                                                            <strong><label>Shipping #:</label> @Model.IdentityCode</strong>
+                                                        </div>
+                                                        <ul class="info">
+                                                            <li>
+                                                                <label>Status:</label> <span class="order-status pending">
+
+                                                                    <select asp-for="ShippingStatusId" asp-items="Model.ShippingStatusList" class="form-control" onchange="changshippingstatus(this,@(Model.Id))"></select>
+                                                                </span>
+                                                            </li>
+                                                            <li><label>Priority:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PriorityType.Name)</span></li>
+                                                            <li><label>Package Size:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PackageSize.Name)</span></li>
+
+                                                            <li><label>Charge Amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ChargeAmount)</span></li>
+                                                            <li><label>Discount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Discount)</span></li>
+                                                            <li><label>Promo Code:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.PromoCode)</span></li>
+                                                            <li><label>Tax Amount:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Tax)</span></li>
+                                                            <li><label>Amount Paid:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.AmountPay)</span></li>
+                                                            <li><label>Note to Driver:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Note)</span></li>
+
+
+                                                            <li><label>Date:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
+                                                            <li><label>Priority: </label><span class="order-date"> @Html.DisplayFor(modelItem => Model.ShippingCreateDate)</span></li>
+                                                            <li><label>Pickup Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.PickupAddress.Street), @Html.DisplayFor(modelItem => Model.PickupAddress.City), @Html.DisplayFor(modelItem => Model.PickupAddress.ZipCode)</span></li>
+                                                            <li><label>Delivery Address: </label><span class="order-status pending">@Html.DisplayFor(modelItem => Model.DeliveryAddress.Street), @Html.DisplayFor(modelItem => Model.DeliveryAddress.City), @Html.DisplayFor(modelItem => Model.DeliveryAddress.ZipCode)</span></li>
+                                                            <li><label>Distance:</label> <span class="order-status pending">@Html.DisplayFor(modelItem => Model.Distance)</span> Miles</li>
+                                                            <li>
+                                                                @if (Model.Sender != null)
+                                                                {
+                                                                    var sender = Model.Sender.FirstName + " " + Model.Sender.LastName;
+                                                                    <div>
+                                                                        <label>Sender:</label> @Html.ActionLink(sender, "details", "admin", new { id = Model.SenderId })
+                                                                    </div>
+
+                                                                }
+                                                            </li>
+                                                            <li>
+
+                                                                @if (Model.Driver != null)
+                                                                {
+                                                                    var driver = Model.Driver.FirstName + " " + Model.Driver.LastName;
+                                                                    <div>
+                                                                        <label>Driver:</label>   @Html.ActionLink(driver, "details", "admin", new { id = Model.DriverId })
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label>Assign New Driver: </label>
+                                                                        <input type="text" id="DriverName" data-autocomplete="@Url.Action("driverautocomplete","admin")" autocomplete="on" />
+                                                                    </div>
+                                                                    <div id="newDriver" class="hidden">
+                                                                        <div>
+                                                                            <h3> <label>New Driver:</label><span class="order-status pending" id="hfCustomer"></span> </h3>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input type="button" class="btn btn-primary" value="Please Confirm" id="PleaseConfirm" />
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="order-status pending">Driver not Asigned Yet</span>
+                                                                }
+                                                            </li>
+
+                                                            <li>
+
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                    <div class="section order-item">
+                                                        <div class="title">
+                                                            <strong><label>Images</label></strong>
+                                                        </div>
+                                                        <div class="info">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <div><label>PickUp Image </label></div>
+                                                                    <img src="@Model.PickupPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <br />
+                                                                <div class="col-md-5">
+                                                                    <div><label>Delivery Image</label></div>
+                                                                    <img src="@Model.DeliveredPictureUri" class="img-rounded" alt="no package image" width="100" height="75">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (Model.ShippingStatus.Id == 4)
+                                                    {
+
+                                                        <div class="section order-item">
+                                                            <div class="title">
+                                                                <strong><label>Reviews</label></strong>
+                                                            </div>
+
+                                                            <div class="info">
+
+                                                                <div class="title">
+                                                                    <strong>Review From Driver</strong>
+                                                                </div>
+
+
+                                                                @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 2, shippingId = Model.Id, hidden = "sender" })
+
+                                                            </div>
+                                                            <div class="info">
+
+                                                                <div class="title">
+                                                                    <strong>Review to Driver</strong>
+                                                                </div>
+                                                                @if (Model.Reviews == null || Model.Reviews.Count() == 0)
+                                                                {
+
+                                                                    <div class="add-button">
+                                                                        <input type="button" class="button-1 add-address-button" onclick="location.href='/sender/InitializeReview/@(Model.Id)'" value="Review Driver" />
+                                                                    </div>
+
+                                                                }
+                                                                @await Component.InvokeAsync("RatingByShippingIdList", new { reviwApplyTo = 1, shippingId = Model.Id })
+
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    }
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ 
+
+                                    <!-- Button to trigger modal -->
+                                    <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+
+                                    <!-- Modal -->
+                                    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 id="myModalLabel">Modal header</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>One fine body…</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                            <button class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+
+
+                                    @section Scripts {
+                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                                        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet" />
+
+                                        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+                                        <script type="text/javascript">
+
+            var newDriverId;
+            $(document).ready(function () {
+
+
+                $('#PleaseConfirm').click(function () {
+
+                    $.ajax({
+                        cache: false,
+                        url: '/admin/AssignDriver/',
+                        type: "POST",
+                        dataType: "json",
+                        data: { shipingId: @Model.Id, driverId: newDriverId},
+                        success: function (data) {
+                            if (data == "Ok"){
+                                    alert("New Driver Assigned");
+                                    location.href = '/admin/ShippingDetails/@Model.Id';
+                                }
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+
+                 });
+
+
+
+                //$("#DriverName").each(function () {
+                //    $(this).autocomplete(
+                //        {
+                //            source: $(this).attr("data-autocomplete"),
+                //            minLength: 3
+                //        });
+                //});
+
+                $("#DriverName").autocomplete({
+                    minLength: 3,
+                    source: function (request, response) {
+
+                        $.ajax({
+                            url: '/admin/driverautocomplete/',
+                            type: "POST",
+                            dataType: "json",
+                            data: { value: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.firstName + " " + item.firstName, value: item.id };
+                                }))
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    },
+                    select: function (e, i) {
+                        $("#newDriver").removeClass("hidden");
+                        $("#hfCustomer").text(i.item.value + " " + i.item.label);
+
+                        newDriverId = i.item.value;
+                    },
+                    minLength: 1
+                });
+
+
+            });
+
+
+            function changshippingstatus(newId, shippingId) {
+
+        var selectedValue = $(newId).val();
+        var selectedText = $(newId).find("option:selected").text();
+
+        if (confirm('Are you sure to change status to: ' + selectedText+" ?")) {
+                                var postData = {
+                                    shippingId: shippingId,
+                                    statusId: selectedValue,
+                                };
+                                $.ajax({
+                                    cache: false,
+                                    type: 'POST',
+                                    url: '/api/v1/admin/changshippingstatus',
+                                    data: postData,
+                                    dataType: 'json',
+                                    success: function (data) {
+                alert(data);
+            @*location.href = '/common/Address/@ViewBag.Id';*@
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to update');
+                                    }
+                                });
+                            }
+    }
+
+
+
+
+
+
+         // <!-- begin snippet: js hide: false console: false babel: false -->
+        //<div class="btn btn-{% if rate.value > 0 %}warning{% else %}default{% endif %}{% if rate.value == 1 %} selected{% endif %} btn-sm"><span class="glyphicon glyphicon-star-empty"></span></div>
+
+//<!-- language: lang-js -->
+
+        $(function () {
+
+            $('#rating-save-button').click(function () {
+               // alert(1);
+                var rArray = new Array();
+                var question = "";
+                var rating = "";
+                $(".btn-warning").each(function (index, element) {
+
+                        question = $(this).data('question')
+                        rating = $(this).data('rating');
+                        rArray.push(question + "|" + rating);
+                });
+
+                //$('.rating-select-cnt').val()
+                //alert(rArray + $('.rating-select-cnt').val());
+
+                var postData = {
+                    shippingId: @Model.Id,
+                    questionIdValues: rArray.toString(),
+                    reviewed :"driver"
+
+                };
+
+                  $.ajax({
+                        cache: false,
+                        type: 'POST',
+                        url: '/Common/SaveReview',
+                        data: postData,
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(data);
+                            // location.href = '/common/Addresses/@ViewBag.Id';
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to update');
+                        }
+        });
+
+
+            });
+
+
+        $('.rating-select .btn').on('mouseover', function () {
+            $(this).removeClass('btn-default').addClass('btn-warning');
+            $(this).prevAll().removeClass('btn-default').addClass('btn-warning');
+            $(this).nextAll().removeClass('btn-warning').addClass('btn-default');
+        });
+
+        $('.rating-select').on('mouseleave', function () {
+            active = $(this).parent().find('.selected');
+            if (active.length) {
+                active.removeClass('btn-default').addClass('btn-warning');
+                active.prevAll().removeClass('btn-default').addClass('btn-warning');
+                active.nextAll().removeClass('btn-warning').addClass('btn-default');
+            } else {
+                $(this).find('.btn').removeClass('btn-warning').addClass('btn-default');
+            }
+        });
+
+        $('.rating-select .btn').click(function () {
+            if ($(this).hasClass('selected')) {
+                $('.rating-select .selected').removeClass('selected');
+            } else {
+                $('.rating-select .selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+});
+                                        </script>
+                                    }

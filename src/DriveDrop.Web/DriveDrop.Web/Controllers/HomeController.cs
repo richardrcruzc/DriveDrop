@@ -31,12 +31,13 @@ namespace DriveDrop.Web.Controllers
         private readonly string _remoteServiceIdentityUrl;
 
         private readonly IOptionsSnapshot<AppSettings> _settings;
-        private readonly IHttpContextAccessor _httpContextAccesor;
+       // private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly IIdentityParser<ApplicationUser> _appUserParser;
 
         private readonly string _remoteServiceAdminUrl;
 
-        public HomeController(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor,
+        public HomeController(IOptionsSnapshot<AppSettings> settings,
+            //, IHttpContextAccessor httpContextAccesor,
             IHttpClient httpClient, IIdentityParser<ApplicationUser> appUserParser)
         {
             _remoteServiceCommonUrl = $"{settings.Value.DriveDropUrl}/api/v1/common/";
@@ -46,7 +47,7 @@ namespace DriveDrop.Web.Controllers
             _remoteServiceIdentityUrl = $"{settings.Value.IdentityUrl}/account/";
             _remoteServiceAdminUrl = $"{settings.Value.DriveDropUrl}/api/v1/admin";
             _settings = settings;
-            _httpContextAccesor = httpContextAccesor;
+          //  _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _appUserParser = appUserParser;
 
@@ -267,9 +268,12 @@ namespace DriveDrop.Web.Controllers
         [NonAction]
         async Task<string> GetUserTokenAsync()
         {
-            var context = _httpContextAccesor.HttpContext;
+            await Task.Delay(100);
+            return string.Empty;
 
-             return await context.GetTokenAsync("access_token");
+            //var context = _httpContextAccesor.HttpContext;
+
+            // return await context.GetTokenAsync("access_token");
         }
 
     }

@@ -1,0 +1,241 @@
+﻿@model  DriveDrop.Bl.ViewModels.CurrentCustomerModel
+
+@{
+    ViewData["Title"] = "Details";
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = Model.Id, Option = "result" };
+}
+
+
+
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("CustomerNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Sender Information</h3>
+                        @*sfgdfg*@
+                        <form data-ajax-method="POST" asp-action="UpdateInfo" enctype="multipart/form-data" id="senderUpdateForm"
+                              data-ajax="true" data-ajax-mode="replace" data-ajax-update="#bar-notification">
+
+                            @Html.AntiForgeryToken()
+
+
+                            <input asp-for="Id" hidden />
+                            <input asp-for="CustomerStatusId" hidden />
+                            <input asp-for="CustomerStatus" hidden />
+                            <input asp-for="PersonalPhotoUri" hidden />
+
+
+                            <div class="form-body">
+                                <div class="profile-form">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="profile">
+                                                <input type="file" id="PhotoUrl" name="PhotoUrl" class="file-select" />
+                                                <div class="photo">
+                                                    <div class="avatar-page">
+
+                                                        <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-field">
+                                                    <div class="col-xs-12">
+                                                        <label for="CustomerStatus" style="font-size:large; background:#43b249;color:#fff"> <span>Status:  @Model.CustomerStatus</span> </label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-sm-9">
+                                            <div class="driver-form">
+                                                <div class="row">
+
+
+                                                    <div class="title">
+                                                        <strong>My Personal Information Details</strong><br /><br />
+                                                    </div>
+
+                                                    <div class="form-horizontal">
+
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="FirstName">First Name</label>
+
+                                                                <input asp-for="FirstName" placeholder="First name" class="form-control" />
+
+
+                                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="LastName">Last Name</label>
+                                                                <input asp-for="LastName" placeholder="Last name" class="form-control" />
+
+                                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="LastName">Email address</label>
+                                                                <input asp-for="Email" placeholder="Email" class="form-control" />
+
+                                                                <span asp-validation-for="Email " class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                @Html.LabelFor(m => m.PrimaryPhone)
+                                                                @Html.TextBoxFor(m => m.PrimaryPhone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+
+
+                                                                <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                @Html.LabelFor(m => m.Phone)
+                                                                @Html.TextBoxFor(m => m.Phone, new { @data_inputmask = "'mask': '(999) 999-9999'", @class = "form-control" })
+
+
+                                                                <span asp-validation-for="Phone" class="text-danger"></span>
+
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <label for="VerificationId">Verification ID</label>
+                                                                <input asp-for="VerificationId" placeholder="Verification ID" class="form-control" />
+
+                                                                <span asp-validation-for="VerificationId" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <div class="col-lg-12">
+                                                                <br />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="post-gig">
+                                                            <input type="submit" value="Save" name="save-info-button" class="bttn save-customer-info-button" />
+                                                        </div>
+
+                                                        <div class="center-block bg-primary text-center" id="bar-notification">
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+
+                        @*//dfdfdfdfdfdf*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+                                    
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+            $(function () {
+                $('form').submit(function (e) {
+                    e.preventDefault();
+                    //alert(1);
+                    //var data = new FormData('senderUpdateForm').serialize();
+                    //i = 0;
+
+                    //$("#my-file-selector-Personal").each(function () { data.append($(this).val(), $(this).get(0).files[0]); i++; })
+
+                    //var postData = $('#photoUrl :input');
+
+                    //$.each(postData, function (key, input) {
+                    //    alert(input.name);
+                    //    alert(input.value);
+                    //    data.append(input.name, input.value);
+                    //});
+
+                    //fd.append('photoUrl', file);  
+                   
+                    var fdata = new FormData();
+                    var myform = $('#senderUpdateForm'); // specify the form element
+                    var idata = myform.serializeArray();
+                    var document = $('input[type="file"]')[0].files[0];
+                    fdata.append('PhotoUrl', document);
+                    
+                    $.each(idata, function (key, input) {
+                        fdata.append(input.name, input.value);
+                    });
+
+
+
+                    if ($(this).valid()) {
+                        $.ajax({
+                            url: this.action,
+                            type: this.method,
+                            data: fdata, // $(this).serialize(),
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                $('#bar-notification').html(result);
+                                alert(result);
+                            },
+                            error: function (response) {
+                                alert("Error:" + response);
+                            }
+                        });
+                    }
+                    return false;
+                });
+            });
+
+
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#blah').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-select").change(function () {
+                readURL(this);
+            });
+
+         
+
+
+
+
+
+                                        </script>
+@*<script src="~/js/profile.js"></script>*@
+
+                                    }

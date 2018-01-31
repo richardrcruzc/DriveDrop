@@ -1,0 +1,140 @@
+﻿@model DriveDrop.Bl.ViewModels.CustomerIndex
+@{
+    ViewData["Title"] = "Admin";
+    
+
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "Index" };
+}
+<section class="sender-desh">
+    <div class="container">
+        <div class="main-cont">
+            <div class="row">
+
+                @await Html.PartialAsync("AdminNavigation", option)
+
+                <div id="content" class="col-sm-9">
+                    <div id="gig-information" class="sender-form">
+                        <h3 class="blue-head active">Users List</h3>
+                        <div class="form-body">
+                            <div class="profile-form">
+                                <div class="row">
+                                    <div class="page account-page customer-info-page">
+                                        <div class="page-title">
+                                            <h2>Senders / Drivers List</h2>
+                                        </div>
+                                        <div class="page-body">
+                                            <div class="fieldset">
+
+                                                <div class="order-list">
+
+
+
+                                                    <div class="title">
+                                                        <div class="form-fields">
+                                                            <form asp-action="Index" asp-controller="Admin" method="post">
+                                                                <label class="esh-catalog-label" data-title="Type">
+                                                                    <select asp-for="TypeFilterApplied" asp-items="@Model.CustomerType" class="form-control"></select>
+                                                                </label>
+                                                                <label class="esh-catalog-label" data-title="Status">
+                                                                    <select asp-for="StatusFilterApplied" asp-items="@Model.CustomerStatus" class="form-control"></select>
+                                                                </label>
+                                                                <label class="esh-catalog-label" data-title="Vehicle Types">
+                                                                    <select asp-for="TransportFilterApplied" asp-items="@Model.TransportType" class="form-control"></select>
+                                                                </label>
+
+                                                                <label class="esh-catalog-label" data-title="Last Name">
+                                                                    <input asp-for="LastName" placeholder="Last Name" class="form-control form-control" />
+                                                                </label>
+
+
+                                                                <input type="submit" value="Search" name="save-info-button" class="bttn" />
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="fieldset">
+                                                    <div class="form-fields">
+
+
+
+                                                        @if (Model.CustomerList.Any())
+            {
+
+
+
+                                                            @Html.Partial("_pagination", Model.PaginationInfo)
+
+
+                                                            <table class="table table-responsive table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Type
+                                                                        </th>
+                                                                        <th>
+                                                                            Full Name
+                                                                        </th>
+                                                                        <th>
+                                                                            Email Address
+                                                                        </th>
+                                                                        <th>
+                                                                            Status
+                                                                        </th>
+                                                                        <th>
+                                                                            Vehicle
+                                                                        </th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+
+                                                                    @foreach (var customer in Model.CustomerList)
+                {
+                                                                        <tr>
+
+                                                                            @Html.Partial("_customer", customer)
+
+                                                                        </tr>
+                                                                    }
+
+                                                                    <tr>
+                                                                        <td colspan="5">
+                                                                            @Html.Partial("_pagination", Model.PaginationInfo)
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                                <span class="sr-only">Error:</span>
+                                                                THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+                                                            </div>
+
+
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+ 

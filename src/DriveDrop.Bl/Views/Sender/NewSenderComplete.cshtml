@@ -1,0 +1,855 @@
+﻿@model DriveDrop.Bl.ViewModels.CustomerModelComplete
+
+@{
+    ViewData["Title"] = "sender-NewSender";
+
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "pickup",
+        Value = "PickUp"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Drop",
+        Value = "Drop",
+        Selected = true
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Home",
+        Value = "Home"
+    });
+}
+
+ 
+
+<style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+<style>
+    #locationField, #controls {
+        position: relative;
+        width: 480px;
+    }
+
+    #autocomplete {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 99%;
+    }
+
+    .label {
+        text-align: right;
+        font-weight: bold;
+        width: 100px;
+        color: #303030;
+    }
+
+    #address {
+        border: 1px solid #000090;
+        background-color: #f0f0ff;
+        width: 480px;
+        padding-right: 2px;
+    }
+
+        #address td {
+            font-size: 10pt;
+        }
+
+    .field {
+        width: 99%;
+    }
+
+    .slimField {
+        width: 80px;
+    }
+
+    .wideField {
+        width: 200px;
+    }
+
+    #locationField {
+        height: 20px;
+        margin-bottom: 2px;
+    }
+</style>
+
+
+<section class="form-controls">
+    <div class="row">
+        <h2>New Sender information</h2>
+    </div>
+</section>
+<div class="row">
+    
+        @*<form asp-controller="Sender" asp-action="NewSender" data-ajax="true" role="form" data-ajax-method="POST" enctype="multipart/form-data" data-ajax-mode="replace" data-ajax-update="#bar-notification">*@
+            <form asp-controller="Sender" asp-action="NewSender"   role="form" data-ajax-method="POST" enctype="multipart/form-data">
+
+                <input asp-for="Distance" hidden />
+                <input asp-for="CustomerTypeId" hidden />
+
+                <div class="row">
+
+                    <div class="col-md-10">
+
+
+                        <hr />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-5">
+                        <h3>Sender information</h3>
+                        <hr />
+
+                        <div class="form-horizontal">
+
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input asp-for="PrimaryPhone" class="form-control phone-number" placeholder="Primary Phone Number" />
+                                    <span asp-validation-for="PrimaryPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input asp-for="Phone" class="form-control phone-number" placeholder="Cell Number" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input asp-for="Email" class="form-control" placeholder="Email Address" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+
+                        <h3>Profile photo </h3>
+                        <hr />
+                        <div class="image-placeholder">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type='file' id="imgFoto" name="imgeFoto" />
+                                        <img id="blah" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="150" height="150" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <hr />
+                        <h3>Address for Future Pickup and Dropoff</h3>
+                        <hr />
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <input id="autocomplete" class="form-control" placeholder="Enter Your Address" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+
+                                    <a class="btn btn-primary btn-lg" role="button" id="asPickup">pickup</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+
+                                    <a class="btn btn-primary btn-lg" role="button" id="asDrop">drop</a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h3>Pickup Address</h3>
+                        <hr />
+                        <div class="form-horizontal">
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupStreet" class="form-control" placeholder="Street"   />
+                                    <span asp-validation-for="PickupStreet" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupCity" class="form-control" placeholder="City"   />
+                                    <span asp-validation-for="PickupCity" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupZipCode" class="form-control" placeholder="Zip Code"   />
+                                    <span asp-validation-for="PickupZipCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupState" class="form-control" placeholder="State"   />
+                                    <span asp-validation-for="PickupState" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupCountry" class="form-control" placeholder="Country"   />
+                                    <span asp-validation-for="PickupCountry" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupPhone" class="form-control phone-number" placeholder="Contact phone"   />
+                                    <span asp-validation-for="PickupPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PickupContact" class="form-control" placeholder="Contact person"   />
+                                    <span asp-validation-for="PickupContact" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-5">
+                        <h3>Drop Address</h3>
+                        <hr />
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryStreet" class="form-control" placeholder="Street"  />
+                                    <span asp-validation-for="DeliveryStreet" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryCity" class="form-control" placeholder="City"   />
+                                    <span asp-validation-for="DeliveryCity" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryZipCode" class="form-control" placeholder="Zip Code"  />
+                                    <span asp-validation-for="DeliveryZipCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryState" class="form-control" placeholder="State"  />
+                                    <span asp-validation-for="DeliveryState" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryCountry" class="form-control" placeholder="Country"  />
+                                    <span asp-validation-for="DeliveryCountry" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryPhone" class="form-control phone-number" placeholder="Contact phone"    />
+                                    <span asp-validation-for="DeliveryPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="DeliveryContact" class="form-control" placeholder="Contact person"   />
+                                    <span asp-validation-for="DeliveryContact" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-10">
+                        <h3>Package picture </h3>
+                        <hr />
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="btn btn-primary" for="my-file-selector">
+                                    <input id="my-file-selector" name="packageImage" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+                                    <img id="blah1" src="~/images/profile-icon.png" class="img-thumbnail img-responsive" width="220" height="220" />
+                                    Click here to upload package picture
+                                </label>
+                                <span class='label label-info' id="upload-file-info"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+
+
+
+                    <div class="col-md-5">
+
+                        <h3>
+                            Delivery Information
+
+                        </h3>
+                        <hr />
+                        <div class="form-horizontal">
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(m => m.PriorityTypeId, Model.PriorityTypeList, new { @class = "form-control" })
+                                    <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(m => m.PackageSizeId, Model.PackageSizeList, new { @class = "form-control" })
+                                    <span asp-validation-for="PackageSizeId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="Amount" class="form-control" placeholder="Estimate shipping value" />
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="ShippingWeight" class="form-control" placeholder="Estimate approximate weight" />
+                                    <span asp-validation-for="ShippingWeight" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <textarea name="Note" class="span6" rows="3" cols="50" placeholder="Note for driver"></textarea>
+                                    <span asp-validation-for="Note" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="PromoCode" class="form-control" placeholder="Promo Code" />
+                                    <span asp-validation-for="PromoCode" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+
+                        <h3>
+                            <strong> Shipping Total </strong>
+
+                        </h3>
+                        <hr />
+                        <div class="total">
+                            <div class="total-info">
+                                <div class="total-info">
+                                    <table class="cart-total">
+                                        <tbody>
+                                            <tr class="order-subtotal">
+                                                <td class="cart-total-left">
+                                                    <label>Sub-Total:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Sub">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="shipping-cost">
+                                                <td class="cart-total-left">
+                                                    <label>Discount:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Discount">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="tax-value">
+                                                <td class="cart-total-left">
+                                                    <label>Tax:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-Tax">$0.00</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <td class="cart-total-left">
+                                                    <label>Total:</label>
+                                                </td>
+                                                <td class="cart-total-right">
+                                                    <span class="value-total">$0.00</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <input id="calcTotal" type="button" value="Total" name="save-info-button" class="btn btn-primary" />
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+
+                    <div class="col-md-5">
+                        <div class="form-horizontal">
+
+                            <h3>
+                                Authentication Info
+                            </h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="UserEmail" class="form-control" placeholder="User Email" />
+                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="Password" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="Password" class="Password"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                                    <span asp-validation-for="ConfirmPassword" class="ConfirmPassword"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-5">
+
+                        <h3>
+                            <strong> Payment method </strong>
+                        </h3>
+                        <hr />
+                        <div class="buttons">
+                            <input id="payWithPP" type="submit" value="Pay With Paypal" name="save-info-button" class="btn btn-primary" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                </div>
+
+
+
+
+            </form>
+
+    <div>
+        <hr />
+        
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script>
+
+    //    $('input#submitButton').click(function () {
+
+    //        $.ajax({
+    //            url: '/driver/NewDriver',
+    //            type: 'post',
+    //           // dataType: 'json',
+    //            data: $('form#myForm').serialize(),
+    //            success: function (data) {
+    //                alert("good");
+    //                 }
+    //    });
+    //});
+
+
+
+    //jQuery('#PickupZipCode').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+    //jQuery('#DeliveryZipCode').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+    //jQuery('#Quantity').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+    //jQuery('#Amount').on('input propertychange paste', function () {
+    //    UpdateRate()
+    //});
+
+    //$("#TransportTypeId").change(function () {
+    //    UpdateRate()
+    //});
+
+    //$("#PriorityTypeId").change(function () {
+    //    UpdateRate()
+    //});
+
+    //$("#PromoCode").change(function () {
+    //    UpdateRate()
+    //});
+
+      $('#calcTotal').click(function (event) {
+                    //alert(1);
+
+          var pAdrress = $('#PickupStreet').val() + "," + $('#PickupCity').val() + "," + $('#PickupZipCode').val() + "," + $('#PickupState').val() + "," + $('#PickupCountry').val();
+          var dAddress = $('#DeliveryStreet').val() + "," + $('#DeliveryCity').val() + "," + $('#DeliveryZipCode').val() + "," + $('#DeliveryState').val() + "," + $('#DeliveryCountry').val();;
+
+                    var geocoder = new google.maps.Geocoder;
+
+                    var service = new google.maps.DistanceMatrixService;
+                    service.getDistanceMatrix({
+                        origins: [pAdrress],
+                        destinations: [dAddress],
+                        travelMode: 'DRIVING',
+                        unitSystem: google.maps.UnitSystem.METRIC,
+                        avoidHighways: false,
+                        avoidTolls: false
+                    }, function (response, status) {
+                        if (status !== 'OK') {
+                            alert('Error was: ' + status);
+                        } else {
+                            var originList = response.originAddresses;
+                            var destinationList = response.destinationAddresses;
+
+                            var results = response.rows[0].elements;
+                            var distancekm = results[0].distance.text.split(" ");
+
+
+                            var km = distancekm[0];
+                            var transportTypeId = $("#TransportTypeId").val();
+                            var priorityTypeId = $("#PriorityTypeId").val();
+                            var promoCode = $("#PromoCode").val();
+                            var shippingWeight = $("#ShippingWeight").val();
+
+                            $.ajax({
+                                url: '@Url.Action("CalculateAmount", "rates")', // to get the right path to controller from TableRoutes of Asp.Net MVC
+                                dataType: "json", //to work with json format
+                                type: "POST", //to do a post request
+
+                               //  contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                                cache: false, //avoid caching results
+                                data: { distance: km, weight: shippingWeight, priority: priorityTypeId, promoCode: promoCode }, // here you can pass arguments to your request if you need
+                                success: function (data) {
+                                    // data is your result from controller
+
+                                    if (data) {
+                                        $("#Distance").val(km);
+                                        $(".value-Sub").text(data.strSubTotal);
+                                        $(".value-Discount").text(data.strDiscount);
+                                        $(".value-Tax").text(data.strTaxAmount);
+                                        $(".value-total").text(data.strAmountToCharge);
+
+                                         
+
+                                    }
+
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                    //alert(xhr.status);
+                                    //alert(thrownError);
+
+                                }
+                            });
+
+
+                            }
+                        });
+
+
+
+                });
+
+
+                     function readURL1(input) {
+
+                         if (input.files && input.files[0]) {
+                             var reader = new FileReader();
+
+                             reader.onload = function (e) {
+                                 $('#blah1').attr('src', e.target.result);
+                             }
+
+                             reader.readAsDataURL(input.files[0]);
+                         }
+                     }
+
+                     $("#my-file-selector").change(function () {
+                         readURL1(this);
+                     });
+
+                     function readURL(input) {
+
+                         if (input.files && input.files[0]) {
+                             var reader = new FileReader();
+
+                             reader.onload = function (e) {
+                                 $('#blah').attr('src', e.target.result);
+                             }
+
+                             reader.readAsDataURL(input.files[0]);
+                         }
+                     }
+
+                     $("#imgFoto").change(function () {
+                         readURL(this);
+                     });
+
+                     $("#asPickup").click(function () {
+
+                         // Get the place details from the autocomplete object.
+                         var place = autocomplete.getPlace();
+                         // Get each component of the address from the place details
+                         // and fill the corresponding field on the form.
+                         for (var i = 0; i < place.address_components.length; i++) {
+                             var addressType = place.address_components[i].types[0];
+                             if (componentForm[addressType]) {
+                                 var val = place.address_components[i][componentForm[addressType]];
+
+                                 if (addressType == 'street_number')
+                                     $("#PickupStreet").val(place.address_components[i]['short_name']);
+
+                                 if (addressType == 'route')
+                                     $("#PickupStreet").val($("#PickupStreet").val()+" "+place.address_components[i]['long_name']);
+
+                                 if (addressType == 'locality' )
+                                     $("#PickupCity").val(place.address_components[i]['long_name']);
+
+                                 if (addressType == 'administrative_area_level_1' )
+                                     $("#PickupState").val(place.address_components[i]['short_name']);
+
+                                 if (addressType == 'country' )
+                                     $("#PickupCountry").val(place.address_components[i]['long_name']);
+
+                                 if (addressType == 'postal_code' )
+                                 $("#PickupZipCode").val(place.address_components[i]['short_name']);
+
+                             }
+                         }
+
+                       
+
+                         document.getElementById('autocomplete').value = '';
+                     });
+
+                     $("#asDrop").click(function () {
+                         // Get the place details from the autocomplete object.
+                         var place = autocomplete.getPlace();
+                         // Get each component of the address from the place details
+                         // and fill the corresponding field on the form.
+                         for (var i = 0; i < place.address_components.length; i++) {
+                             var addressType = place.address_components[i].types[0];
+                             if (componentForm[addressType]) {
+                                 var val = place.address_components[i][componentForm[addressType]];
+
+                                 if (addressType == 'street_number')
+                                     $("#DeliveryStreet").val(place.address_components[i]['short_name']);
+
+                                 if (addressType == 'route')
+                                     $("#DeliveryStreet").val($("#DeliveryStreet").val() + " " + place.address_components[i]['long_name']);
+
+                                 if (addressType == 'locality')
+                                     $("#DeliveryCity").val(place.address_components[i]['long_name']);
+
+                                 if (addressType == 'administrative_area_level_1')
+                                     $("#DeliveryState").val(place.address_components[i]['short_name']);
+
+                                 if (addressType == 'country')
+                                     $("#DeliveryCountry").val(place.address_components[i]['long_name']);
+
+                                 if (addressType == 'postal_code')
+                                     $("#DeliveryZipCode").val(place.address_components[i]['short_name']);
+
+                             }
+                         }
+
+                        
+
+                         document.getElementById('autocomplete').value = '';
+                     });
+
+
+// This example displays an address form, using the autocomplete feature
+      // of the Google Places API to help users fill in the information.
+
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+      var placeSearch, autocomplete;
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+      };
+
+      function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+       // autocomplete.addListener('place_changed', fillInAddress);
+
+
+      }
+
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+
+        for (var component in componentForm) {
+
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+              var val = place.address_components[i][componentForm[addressType]];
+
+              document.getElementById(addressType).value = '';
+              document.getElementById(addressType).disabled = false;
+           document.getElementById(addressType).value = val;
+          }
+        }
+      }
+
+      // Bias the autocomplete object to the user's geographical location,
+      // as supplied by the browser's 'navigator.geolocation' object.
+      function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }
+      }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwSXLEryUNhIeBBzRN1qxNrqs7Tq15P6o&libraries=places&callback=initAutocomplete"
+        async defer></script>
+}

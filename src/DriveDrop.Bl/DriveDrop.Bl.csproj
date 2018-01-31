@@ -1,0 +1,196 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-DriveDrop.Bl-797B54F1-51E2-4072-AB27-60010DADC35A</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\bootstrap.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\bootstrap.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\custom.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\npm.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\owl.carousel.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\profile.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\scrolling-nav.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="MailKit" Version="2.0.1" />
+    <PackageReference Include="MediatR" Version="4.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
+    <PackageReference Include="MimeKit" Version="2.0.1" />
+    <PackageReference Include="Polly" Version="5.7.0" />
+    <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Admin\Create.cshtml" />
+    <None Include="Views\Admin\Details.cshtml" />
+    <None Include="Views\Admin\DriverDetails.cshtml" />
+    <None Include="Views\Admin\Edit.cshtml" />
+    <None Include="Views\Admin\Index.cshtml" />
+    <None Include="Views\Admin\ReadyToPickUp.cshtml" />
+    <None Include="Views\Admin\Sender.cshtml" />
+    <None Include="Views\Admin\ShippingDetails.cshtml" />
+    <None Include="Views\Admin\Shippings.cshtml" />
+    <None Include="Views\Admin\_customer.cshtml" />
+    <None Include="Views\Admin\_pagination.cshtml" />
+    <None Include="Views\Admin\_shipping.cshtml" />
+    <None Include="Views\Common\AddressAdd.cshtml" />
+    <None Include="Views\Common\Addresses.cshtml" />
+    <None Include="Views\Driver\AceptPackageFromSender.cshtml" />
+    <None Include="Views\Driver\Canceled.cshtml" />
+    <None Include="Views\Driver\DashBoard.cshtml" />
+    <None Include="Views\Driver\Deliver.cshtml" />
+    <None Include="Views\Driver\DeliveryInProcess.cshtml" />
+    <None Include="Views\Driver\Index.cshtml" />
+    <None Include="Views\Driver\NewDriver.cshtml" />
+    <None Include="Views\Driver\NewDriverResults.cshtml" />
+    <None Include="Views\Driver\PendingPickUp.cshtml" />
+    <None Include="Views\Driver\PickedUp.cshtml" />
+    <None Include="Views\Driver\ReadyToPickUp.cshtml" />
+    <None Include="Views\Driver\Result.cshtml" />
+    <None Include="Views\Driver\SetDropByInfo.cshtml" />
+    <None Include="Views\Driver\Vehicle.cshtml" />
+    <None Include="Views\Rates\AddTax.cshtml" />
+    <None Include="Views\Rates\Details.cshtml" />
+    <None Include="Views\Rates\DistanceAndWeight.cshtml" />
+    <None Include="Views\Rates\Edit.cshtml" />
+    <None Include="Views\Rates\EditTax.cshtml" />
+    <None Include="Views\Rates\Index.cshtml" />
+    <None Include="Views\Rates\ListTaxes.cshtml" />
+    <None Include="Views\Sender\Index.cshtml" />
+    <None Include="Views\Sender\NewSender.cshtml" />
+    <None Include="Views\Sender\NewSenderComplete.cshtml" />
+    <None Include="Views\Sender\NewSenderResults.cshtml" />
+    <None Include="Views\Sender\NewShipping.cshtml" />
+    <None Include="Views\Sender\PostToPayPalAsync.cshtml" />
+    <None Include="Views\Sender\Result.cshtml" />
+    <None Include="Views\Sender\Return.cshtml" />
+    <None Include="Views\Sender\ShippingDetails.cshtml" />
+    <None Include="Views\Sender\Shippings.cshtml" />
+    <None Include="Views\Shared\Components\NewShipment\Default.cshtml" />
+    <None Include="Views\Shared\Components\PerMiles\Default.cshtml" />
+    <None Include="Views\Shared\Components\RatingByShippingIdList\Default.cshtml" />
+    <None Include="Views\Shared\Components\ShippingByCustomer\Default.cshtml" />
+    <None Include="Views\Shared\Components\ShippingByDriver\Default.cshtml" />
+    <None Include="Views\Shared\Components\ShippingNoAssigned\Default.cshtml" />
+    <None Include="Views\Shared\Components\UserInfo\Default.cshtml" />
+    <None Include="Views\Shared\Components\UserStatus\Default.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\Addresses.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\RateDetailModel.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\RateDistanceModel.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\RatePackageSizeModel.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\RatePriorityModel.cshtml" />
+    <None Include="Views\Shared\EditorTemplates\RateWeightModel.cshtml" />
+    <None Include="wwwroot\images\banner1.svg" />
+    <None Include="wwwroot\images\banner2.svg" />
+    <None Include="wwwroot\images\banner3.svg" />
+    <None Include="wwwroot\images\banner4.svg" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\site.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\bindings\inputmask.binding.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\dependencyLibs\inputmask.dependencyLib.jquery.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\dependencyLibs\inputmask.dependencyLib.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\global\document.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\global\window.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\inputmask.date.extensions.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\inputmask.extensions.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\inputmask.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\inputmask.numeric.extensions.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\inputmask.phone.extensions.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\inputmask.regex.extensions.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\jquery.inputmask.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\phone-codes\phone-be.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\phone-codes\phone-nl.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\phone-codes\phone-ru.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\phone-codes\phone-uk.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\inputmask\phone-codes\phone.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\jquery.inputmask.bundle.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\bindings\inputmask.binding.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\dependencyLibs\inputmask.dependencyLib.jquery.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\dependencyLibs\inputmask.dependencyLib.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\global\document.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\global\window.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\inputmask.date.extensions.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\inputmask.extensions.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\inputmask.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\inputmask.numeric.extensions.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\inputmask.phone.extensions.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\inputmask.regex.extensions.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\jquery.inputmask.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\phone-codes\phone-be.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\phone-codes\phone-nl.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\phone-codes\phone-ru.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\phone-codes\phone-uk.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\inputmask\phone-codes\phone.min.js" />
+    <None Include="wwwroot\lib\Inputmask\dist\min\jquery.inputmask.bundle.min.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApplicationCore">
+      <HintPath>..\ApplicationCore\ApplicationCore\bin\Debug\netstandard2.0\ApplicationCore.dll</HintPath>
+    </Reference>
+    <Reference Include="WebHost.Customization">
+      <HintPath>..\BuildingBlocks\WebHostCustomization\WebHost.Customization\bin\Debug\netcoreapp2.0\WebHost.Customization.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\Img\Driver\" />
+    <Folder Include="wwwroot\Uploads\Img\Sender\" />
+    <Folder Include="wwwroot\Uploads\Img\Shipment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\site.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\sticky-sidebar.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\stickySidebar.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -211,7 +211,12 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             DropComment = comment;
             return this;
         }
-        
+        public Shipment SetSecyurityCode(string code)
+        {
+            SecurityCode = code;
+            return this;
+        }
+
         public Shipment SetDriver(Customer driver)
         {
             Driver = driver;

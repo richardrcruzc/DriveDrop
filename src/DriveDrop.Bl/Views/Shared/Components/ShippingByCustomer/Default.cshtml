@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DriveDrop.Bl.ViewModels.Shipment>
+
+@{
+    ViewData["Title"] = "Create";
+}
+<table class="table table-responsive table-hover">
+    <tr>
+        <th colspan="5"><h3><label class="title"> My Shippings </label> </h3> </th>
+
+    </tr>
+
+    <tr>
+        <th><div>Date </div> Status</th>
+        <th>Priority</th>
+        <th><div>Amount</div>discount</th>
+        <th>Pickup Address</th>
+        <th>Delivery Address</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+
+        var url = ViewBag.Uri + item.PickupPictureUri;
+        <tr>
+
+            <td>
+                <div> @Html.DisplayFor(modelItem => item.ShippingCreateDate)</div>
+                <div class="btn-outline-danger">
+                    @Html.DisplayFor(modelItem => item.ShippingStatus.Name)
+                </div>
+                <div>
+                    <img src="@url" class="img-rounded" alt="no package image" width="100" height="75">
+                </div>
+                <div>
+                    @item.IdentityCode
+                </div>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PriorityType.Name)/
+                @Html.DisplayFor(modelItem => item.PriorityTypeLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)/
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                <div>
+                    @Html.DisplayFor(modelItem => item.PickupAddress.Street)
+                </div>
+                <div>    @Html.DisplayFor(modelItem => item.PickupAddress.City)</div>
+                @Html.DisplayFor(modelItem => item.PickupAddress.ZipCode)
+            </td>
+            <td>
+                <div>
+                    @Html.DisplayFor(modelItem => item.DeliveryAddress.Street)
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.DeliveryAddress.City)
+                </div>
+                @Html.DisplayFor(modelItem => item.DeliveryAddress.ZipCode)
+            </td>
+        </tr>
+    }
+</table>
+
+
+ 
