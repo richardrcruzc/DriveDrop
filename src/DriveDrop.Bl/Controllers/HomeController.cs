@@ -39,6 +39,15 @@ namespace DriveDrop.Bl.Controllers
             _userManager = userManager; 
         }
 
+        [Route("identity")]
+        [Authorize]
+            [HttpGet]
+            public IActionResult Get()
+            {
+                return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
+            }
+        
+
         //[Route("ProvideData")]
         //[HttpGet]
         public ActionResult ProvideData(string data = "test msq", string connectionName = "default")
@@ -225,7 +234,12 @@ namespace DriveDrop.Bl.Controllers
 
             return View();
         }
+        public IActionResult Register()
+        {
 
+
+            return View();
+        }
         [HttpGet]
         public IActionResult Testchat()
         {

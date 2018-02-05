@@ -1,9 +1,13 @@
-@model  DriveDrop.Bl.ViewModels.TwoParameterModel
-
+@model DriveDrop.Bl.ViewModels.TwoParameterModel
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
-
-   // Model.Option = "Addresses";
-
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-125px";
+    }
 }
 <div id="sidebar" class="col-sm-3 sidebar-desktop">
     <ul id="side-navbar" class="side-fixed-menu">
@@ -31,7 +35,7 @@
                 @Html.ActionLink("My Address", "Addresses", "common", new { id = Model.Id }, new { @class = "gig-information" })
 
             }
-           
+
 
         </li>
         <li>
@@ -40,8 +44,8 @@
                 @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
             }
             else
-            { @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "gig-information" }) }
-           
+            { @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "gig-information" })}
+
 
         </li>
         <li>
@@ -54,7 +58,7 @@
 
                 @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model.Id }, new { @class = "gig-information" })
             }
-          
+
 
 
         </li>
@@ -68,49 +72,92 @@
 
                 @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "gig-information" })
             }
-           
+
 
 
         </li>
     </ul>
     @*<div class="credits">
-        <p>CREDITS <a href="#" class="help">?</a></p>
-        <a href="#" class="price">$0.00</a>
-    </div>
-    <h3>Redeem Promo Code</h3>*@
+            <p>CREDITS <a href="#" class="help">?</a></p>
+            <a href="#" class="price">$0.00</a>
+        </div>
+        <h3>Redeem Promo Code</h3>*@
     <div class="clearfix"></div>
 </div>
 
- <div class="col-sm-3 sidebar-mobile">
+<div class="col-sm-3 sidebar-mobile" style="top: @top;">
     <ul id="side-navbar" class="side-fixed-menu">
         <li>
-            @Html.ActionLink("My Personal Info", "result", "sender", new { id = Model }, new { @class = "gig-information" })
-        </li>
-        <li>
-            @Html.ActionLink("My Address", "Addresses", "common", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "result")
+            {
+                @Html.ActionLink("My Personal Info", "result", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+                @Html.ActionLink("My Personal Info", "result", "sender", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+
+
 
         </li>
         <li>
-            @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "Addresses")
+            {
+                @Html.ActionLink("My Address", "Addresses", "common", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("My Address", "Addresses", "common", new { id = Model.Id }, new { @class = "gig-information" })
+
+            }
+
 
         </li>
         <li>
-            @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "Shippings")
+            {
+                @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            { @Html.ActionLink("My Packages", "Shippings", "sender", new { id = Model.Id }, new { @class = "gig-information" })}
 
 
         </li>
         <li>
-            @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model }, new { @class = "gig-information" })
+            @if (Model.Option == "NewShipping")
+            {
+                @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+                @Html.ActionLink("Add New Packages", "NewShipping", "sender", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+
 
 
         </li>
+        <li>
+            @if (Model.Option == "ChangePassword")
+            {
+                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
 
+                @Html.ActionLink("Change Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+
+
+
+        </li>
     </ul>
     @*<div class="credits">
-        <p>CREDITS <a href="#" class="help">?</a></p>
-        <a href="#" class="price">$0.00</a>
-    </div>
-    <h3>Redeem Promo Code</h3>*@
+            <p>CREDITS <a href="#" class="help">?</a></p>
+            <a href="#" class="price">$0.00</a>
+        </div>
+        <h3>Redeem Promo Code</h3>*@
     <div class="clearfix"></div>
 </div>
 

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-DriveDrop.Bl-797B54F1-51E2-4072-AB27-60010DADC35A</UserSecretsId>
   </PropertyGroup>
@@ -19,6 +20,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="IdentityServer4" Version="2.1.1" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.3.0" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
     <PackageReference Include="MailKit" Version="2.0.1" />
     <PackageReference Include="MediatR" Version="4.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
@@ -26,8 +30,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
     <PackageReference Include="MimeKit" Version="2.0.1" />
-    <PackageReference Include="Polly" Version="5.7.0" />
+    <PackageReference Include="Polly" Version="5.8.0" />
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
+    <PackageReference Include="Wangkanai.Detection.Device" Version="2.0.0-beta5-fix" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,13 +42,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Admin\Create.cshtml" />
     <None Include="Views\Admin\Details.cshtml" />
     <None Include="Views\Admin\DriverDetails.cshtml" />
     <None Include="Views\Admin\Edit.cshtml" />
     <None Include="Views\Admin\Index.cshtml" />
     <None Include="Views\Admin\ReadyToPickUp.cshtml" />
-    <None Include="Views\Admin\Sender.cshtml" />
     <None Include="Views\Admin\ShippingDetails.cshtml" />
     <None Include="Views\Admin\Shippings.cshtml" />
     <None Include="Views\Admin\_customer.cshtml" />

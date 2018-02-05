@@ -1,8 +1,16 @@
 @model DriveDrop.Bl.ViewModels.ShipmentModel
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "ShippingDetails";
 
-    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "Shippings" }; 
+    var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "Shippings" };
 }
 
 <section class="sender-desh">
@@ -12,7 +20,7 @@
 
                 @await Html.PartialAsync("CustomerNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">My packages Details</h3>
                         <div class="form-body">
@@ -134,35 +142,37 @@
                                                     }
 
 
-                                                    <div class="section order-item"><br />
+                                                    <div class="section order-item">
+                                                        <br />
                                                         <div class="title">
                                                             <strong><label>Package Status History</label></strong>
                                                         </div>
-                                                        @if (Model.PackageStatusHistories.Count() > 0) { 
-                                                        <div class="info">
-                                                            <table class="table-condensed table-hover">
-                                                                <thead>
-                                                                    <tr>
-                                                                        @*<th>#</th>*@
-                                                                        <th> Status</th>
-                                                                        <th>Date</th>
-
-
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach (var h in Model.PackageStatusHistories)
-                                                                    {
+                                                        @if (Model.PackageStatusHistories.Count() > 0)
+                                                        {
+                                                            <div class="info">
+                                                                <table class="table-condensed table-hover">
+                                                                    <thead>
                                                                         <tr>
+                                                                            @*<th>#</th>*@
+                                                                            <th> Status</th>
+                                                                            <th>Date</th>
 
-                                                                            <td>@h.ShippingStatus.Name</td>
-                                                                            <td>@h.StatusDate</td>
 
                                                                         </tr>
-                                                                    }
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var h in Model.PackageStatusHistories)
+                                                                        {
+                                                                            <tr>
+
+                                                                                <td>@h.ShippingStatus.Name</td>
+                                                                                <td>@h.StatusDate</td>
+
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         }
                                                     </div>
 
@@ -179,11 +189,11 @@
 
         </div>
     </div>
-    </section>
+</section>
 
-                                    @section Scripts {
-                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-                                        <script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
          // <!-- begin snippet: js hide: false console: false babel: false -->
         //<div class="btn btn-{% if rate.value > 0 %}warning{% else %}default{% endif %}{% if rate.value == 1 %} selected{% endif %} btn-sm"><span class="glyphicon glyphicon-star-empty"></span></div>
 
@@ -258,5 +268,5 @@
             }
         });
 });
-                                        </script>
-                                    }
+    </script>
+}

@@ -1,6 +1,15 @@
 ﻿@model DriveDrop.Bl.ViewModels.CurrentCustomerModel
 
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
+
     ViewData["Title"] = "Details";
 
 
@@ -506,7 +515,7 @@
     </div>
 </section>
 
- 
+
 
 <script>
 
@@ -551,7 +560,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+    <script>
 
     $(document).ready(function () {
         $('form').submit(function (e) {
@@ -733,6 +742,6 @@
     button.addEventListener("click", removeRed, false);*@
 
 
-</script>
+    </script>
 
 }

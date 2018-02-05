@@ -1,6 +1,15 @@
-﻿@model  DriveDrop.Bl.ViewModels.CurrentCustomerModel
+﻿@model DriveDrop.Bl.ViewModels.CurrentCustomerModel
 
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
+
     ViewData["Title"] = "Driver Details";
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "index" };
@@ -13,7 +22,7 @@
             <div class="row">
 
                 @await Html.PartialAsync("AdminNavigation", option)
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9"  style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Driver Information</h3>
 
@@ -128,33 +137,33 @@
 
                                         </div>
 
-                                      
 
-                                            <div class="profile">
 
-                                                <div class="photo">
+                                        <div class="profile">
 
-                                                    <div class="avatar-page">
-                                                        <div class="inputs">
-                                                            
-                                                            <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select"  />
-                                                            <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
-                                                            @Html.ValidationMessageFor(m => m.PersonalPhotoUri)
-                                                        </div>
+                                            <div class="photo">
 
+                                                <div class="avatar-page">
+                                                    <div class="inputs">
+
+                                                        <input type='file' id="PersonalPhotoUri" name="PersonalPhotoUri" class="file-select" />
+                                                        <img id="blah" src="@Model.PersonalPhotoUri" class="img-thumbnail img-responsive" width="150" height="150" />
+                                                        @Html.ValidationMessageFor(m => m.PersonalPhotoUri)
                                                     </div>
+
+                                                </div>
                                             </div>
                                         </div>
 
-                                            @*<div class="buttons">
+                                        @*<div class="buttons">
                                                 <input type="submit" value="Save" name="save-info-button" class="bttn" />
 
                                             </div>*@
 
 
 
-                                        </div>
                                     </div>
+                                </div>
                             </form>
                         </div>
 
@@ -340,15 +349,15 @@
             </div>
         </div>
     </div>
-    </section>
-
-              
+</section>
 
 
-                @section Scripts {
-                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-                    <script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
 
     $("#DeleteCustomer").click(function (event) {
         event.preventDefault();
@@ -441,7 +450,7 @@
 
 
 
-                    </script>
+    </script>
 
-                }
+}
 

@@ -1,5 +1,13 @@
 ﻿@model DriveDrop.Bl.ViewModels.ShipmentModel
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "ShippingDetails";
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)Model.SenderId, Option = "PendingPickUp" };
 }
@@ -16,7 +24,7 @@
 
 
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Acept Package</h3>
                         <div class="form-body">
@@ -82,62 +90,62 @@
     </div>
 </section>
 
-                                @section Scripts {
-                                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-                                    <script type="text/javascript">
-                                        $(".acept-package").click(function () {
+    <script type="text/javascript">
+        $(".acept-package").click(function () {
 
-                                            var formData = new FormData();
-                                            jQuery.each(jQuery('#photoUrl')[0].files, function (i, file) {
-                                                formData.append('photoUrl', file);
-                                            });
-                                            var id = $("#Id").val();
-                                            var SecurityCode = $("#SecurityCode").val();
+            var formData = new FormData();
+            jQuery.each(jQuery('#photoUrl')[0].files, function (i, file) {
+                formData.append('photoUrl', file);
+            });
+            var id = $("#Id").val();
+            var SecurityCode = $("#SecurityCode").val();
 
-                                            formData.append('id', id);
-                                            formData.append('SecurityCode', SecurityCode);
-                                           // alert(formData);
-
-
+            formData.append('id', id);
+            formData.append('SecurityCode', SecurityCode);
+            // alert(formData);
 
 
-                                            //var formData = new FormData(this);
-                                            //alert(window.location.pathname);
-                                            $.ajax({
-                                                url: '/driver/AceptPackageFromSender',
-                                                type: 'POST',
-                                                data: formData,
-                                                async: false,
-                                                success: function (data) {
-                                                    alert(data)
-                                                    window.location.href = "/driver/PickedUp/" + driverId;
-                                                },
-                                                cache: false,
-                                                contentType: false,
-                                                processData: false
-                                            });
 
-                                            return false;
-                                        });
-                                        //$(".clickableLabel").click(function () {
-                                        //    alert($(this).attr("name"));
-                                        //})
-                                        function readURL(input) {
 
-                                            if (input.files && input.files[0]) {
-                                                var reader = new FileReader();
+            //var formData = new FormData(this);
+            //alert(window.location.pathname);
+            $.ajax({
+                url: '/driver/AceptPackageFromSender',
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    alert(data)
+                    window.location.href = "/driver/PickedUp/" + driverId;
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
 
-                                                reader.onload = function (e) {
-                                                    $('#blah').attr('src', e.target.result);
-                                                }
+            return false;
+        });
+        //$(".clickableLabel").click(function () {
+        //    alert($(this).attr("name"));
+        //})
+        function readURL(input) {
 
-                                                reader.readAsDataURL(input.files[0]);
-                                            }
-                                        }
-                                        $("#photoUrl").change(function () {
-                                            readURL(this);
-                                        });
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-                                    </script>
-                                }
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#photoUrl").change(function () {
+            readURL(this);
+        });
+
+    </script>
+}

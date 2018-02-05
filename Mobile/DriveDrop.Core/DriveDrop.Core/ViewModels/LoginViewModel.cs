@@ -1,5 +1,7 @@
-﻿using DriveDrop.Core.Helpers;
+﻿using DriveDrop.Core.Extensions;
+using DriveDrop.Core.Helpers;
 using DriveDrop.Core.Models.User;
+using DriveDrop.Core.Services.Dependency;
 using DriveDrop.Core.Services.Identity;
 using DriveDrop.Core.Services.OpenUrl;
 using DriveDrop.Core.Validations;
@@ -116,29 +118,26 @@ namespace DriveDrop.Core.ViewModels
                 RaisePropertyChanged(() => LoginUrl);
             }
         }
-        public ICommand DriverCommand => new Command(async () => await NewDriversAsync());
-
-        public ICommand SenderCommand => new Command(async () => await DialogService.ShowAlertAsync("Option no available, try again later.", "Oops!", "Ok"));
-
-
 
         public ICommand MockSignInCommand => new Command(async () => await MockSignInAsync());
 
         public ICommand SignInCommand => new Command(async () => await SignInAsync());
 
         public ICommand RegisterCommand => new Command(Register);
+        public ICommand RegisterCommandDriver => new Command(RegisterDriver);
+        public ICommand RegisterCommandSender => new Command(RegisterSender);
 
         public ICommand NavigateCommand => new Command<string>(async (url) => await NavigateAsync(url));
 
         public ICommand SettingsCommand => new Command(async () => await SettingsAsync());
 
-		public ICommand ValidateUserNameCommand => new Command(() => ValidateUserName());
+        public ICommand ValidateUserNameCommand => new Command(() => ValidateUserName());
 
-		public ICommand ValidatePasswordCommand => new Command(() => ValidatePassword());
+        public ICommand ValidatePasswordCommand => new Command(() => ValidatePassword());
 
         public override Task InitializeAsync(object navigationData)
         {
-            if(navigationData is LogoutParameter)
+            if (navigationData is LogoutParameter)
             {
                 var logoutParameter = (LogoutParameter)navigationData;
 
@@ -150,17 +149,7 @@ namespace DriveDrop.Core.ViewModels
 
             return base.InitializeAsync(navigationData);
         }
-        private async Task NewDriversAsync()
-        {
-            try
-            {
-                await NavigationService.NavigateToAsync<NewDriverViewModel>();
-            }
-            catch ( Exception ex)
-            {
-                var t = ex.Message;
-            }
-        }
+
         private async Task MockSignInAsync()
         {
             IsBusy = true;
@@ -214,7 +203,14 @@ namespace DriveDrop.Core.ViewModels
         {
             _openUrlService.OpenUrl(GlobalSetting.Instance.RegisterWebsite);
         }
-
+        private void RegisterDriver()
+        {
+            _openUrlService.OpenUrl(GlobalSetting.Instance.RegisterDriver);
+        }
+        private void RegisterSender()
+        {
+            _openUrlService.OpenUrl(GlobalSetting.Instance.RegisterSender);
+        }
         private void Logout()
         {
             var authIdToken = Settings.AuthIdToken;
@@ -229,7 +225,7 @@ namespace DriveDrop.Core.ViewModels
             if (Settings.UseMocks)
             {
                 Settings.AuthAccessToken = string.Empty;
-                Settings.AuthIdToken = string.Empty; 
+                Settings.AuthIdToken = string.Empty;
             }
 
             Settings.UseFakeLocation = false;
@@ -272,21 +268,21 @@ namespace DriveDrop.Core.ViewModels
 
         private bool Validate()
         {
-			bool isValidUser = ValidateUserName();
+            bool isValidUser = ValidateUserName();
             bool isValidPassword = ValidatePassword();
 
             return isValidUser && isValidPassword;
         }
 
-		private bool ValidateUserName()
-		{
-			return _userName.Validate();
-		}
+        private bool ValidateUserName()
+        {
+            return _userName.Validate();
+        }
 
-		private bool ValidatePassword()
-		{
-			return _password.Validate();
-		}
+        private bool ValidatePassword()
+        {
+            return _password.Validate();
+        }
 
         private void AddValidations()
         {

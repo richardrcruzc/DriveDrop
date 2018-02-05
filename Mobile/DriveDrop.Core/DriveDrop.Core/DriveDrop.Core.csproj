@@ -37,6 +37,9 @@
     <Compile Include="Behaviors\PasswordValidationBehavior.cs" />
     <Compile Include="Behaviors\PhoneNumberMaskBehavior.cs" />
     <Compile Include="Behaviors\StarBehavior.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Models\Browser\BrowserResult.cs" />
+    <Compile Include="Models\Browser\BrowserResultType.cs" />
     <Compile Include="Models\Commons\AddressModel.cs" />
     <Compile Include="Models\Commons\Generic.cs" />
     <Compile Include="Models\Commons\GoogleGeoCodeResponse.cs" />
@@ -82,6 +85,9 @@
     <Compile Include="Services\Common\ICommons.cs" />
     <Compile Include="Services\Common\IGoogleAddress.cs" />
     <Compile Include="Services\Common\SearchCommand.cs" />
+    <Compile Include="Services\Dependency\DependencyService.cs" />
+    <Compile Include="Services\Dependency\IDependencyService.cs" />
+    <Compile Include="Services\Dependency\INativeBrowserService.cs" />
     <Compile Include="Services\Driver\DriverService.cs" />
     <Compile Include="Services\Driver\IDriverService.cs" />
     <Compile Include="Validations\EmailRule.cs" />

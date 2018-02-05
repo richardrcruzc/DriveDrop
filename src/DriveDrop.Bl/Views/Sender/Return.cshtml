@@ -1,5 +1,13 @@
 
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "Return";
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)@ViewBag.CustomerId, Option = "NewShipping" };
@@ -12,7 +20,7 @@
             <div class="row">
 
                 @await Html.PartialAsync("CustomerNavigation", option)
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">New Package</h3>
                         <div class="form-body">
@@ -34,25 +42,25 @@
             </div>
         </div>
     </div>
-        </section>
-            
-
-
- 
-
-                                    @*<button onclick="htmlSendNotice('dddddddddddddddddddddddd')">sendButton</button>
-                                <button id="sendButton">sendButton</button>*@
-
-                                    @section Scripts {
-                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-                                        <script>
+</section>
 
 
 
-                                            htmlSendNotice('dddddddddddddddddddddddd');
 
 
-                                        </script>
-                                    }
+@*<button onclick="htmlSendNotice('dddddddddddddddddddddddd')">sendButton</button>
+    <button id="sendButton">sendButton</button>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+
+
+        htmlSendNotice('dddddddddddddddddddddddd');
+
+
+    </script>
+}
 
 

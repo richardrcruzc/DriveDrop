@@ -1,10 +1,15 @@
 ﻿@model DriveDrop.Bl.ViewModels.CurrentCustomerModel
-
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
+ 
     ViewData["Title"] = "Details";
-
-
-
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "Details" };
 }
@@ -16,7 +21,7 @@
 
                 @await Html.PartialAsync("AdminNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Administrator Information</h3>
                         <div class="form-body">
@@ -506,7 +511,7 @@
     </div>
 </section>
 
- 
+
 
 <script>
 
@@ -551,7 +556,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+    <script>
 
     $(document).ready(function () {
         $('form').submit(function (e) {
@@ -733,6 +738,6 @@
     button.addEventListener("click", removeRed, false);*@
 
 
-</script>
+    </script>
 
 }

@@ -20,6 +20,8 @@ namespace DriveDrop.Bl.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
+
+        private readonly ICustomerService _cService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -30,12 +32,14 @@ namespace DriveDrop.Bl.Controllers
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
         public ManageController(
+            ICustomerService cService,
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
         {
+            _cService = cService;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -144,6 +148,11 @@ namespace DriveDrop.Bl.Controllers
             {
                 return RedirectToAction(nameof(SetPassword));
             }
+            
+            var current = await _cService.Get(user.Email);
+            ViewBag.CustomerType = current.CustomerTypeId;
+            ViewBag.Id = current.Id;
+
 
             var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
             return View(model);

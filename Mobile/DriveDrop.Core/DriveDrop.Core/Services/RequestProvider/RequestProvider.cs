@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System;
+using System.Text;
 
 namespace DriveDrop.Core.Services.RequestProvider
 {
@@ -119,6 +120,12 @@ namespace DriveDrop.Core.Services.RequestProvider
             if (!string.IsNullOrEmpty(token))
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            else
+            {
+                var authData = string.Format("{0}:{1}", GlobalSetting.Instance.User, GlobalSetting.Instance.Password);
+                var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
             }
             return httpClient;
         }

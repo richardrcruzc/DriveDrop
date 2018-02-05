@@ -1,6 +1,14 @@
-﻿@model  DriveDrop.Bl.ViewModels.CurrentCustomerModel
+﻿@model DriveDrop.Bl.ViewModels.CurrentCustomerModel
 
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "Details";
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = Model.Id, Option = "result" };
 }
@@ -14,7 +22,7 @@
 
                 @await Html.PartialAsync("CustomerNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Sender Information</h3>
                         @*sfgdfg*@
@@ -156,86 +164,86 @@
         </div>
     </div>
 </section>
-                                    
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
 
-            $(function () {
-                $('form').submit(function (e) {
-                    e.preventDefault();
-                    //alert(1);
-                    //var data = new FormData('senderUpdateForm').serialize();
-                    //i = 0;
+        $(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
+                //alert(1);
+                //var data = new FormData('senderUpdateForm').serialize();
+                //i = 0;
 
-                    //$("#my-file-selector-Personal").each(function () { data.append($(this).val(), $(this).get(0).files[0]); i++; })
+                //$("#my-file-selector-Personal").each(function () { data.append($(this).val(), $(this).get(0).files[0]); i++; })
 
-                    //var postData = $('#photoUrl :input');
+                //var postData = $('#photoUrl :input');
 
-                    //$.each(postData, function (key, input) {
-                    //    alert(input.name);
-                    //    alert(input.value);
-                    //    data.append(input.name, input.value);
-                    //});
+                //$.each(postData, function (key, input) {
+                //    alert(input.name);
+                //    alert(input.value);
+                //    data.append(input.name, input.value);
+                //});
 
-                    //fd.append('photoUrl', file);  
-                   
-                    var fdata = new FormData();
-                    var myform = $('#senderUpdateForm'); // specify the form element
-                    var idata = myform.serializeArray();
-                    var document = $('input[type="file"]')[0].files[0];
-                    fdata.append('PhotoUrl', document);
-                    
-                    $.each(idata, function (key, input) {
-                        fdata.append(input.name, input.value);
-                    });
+                //fd.append('photoUrl', file);
 
+                var fdata = new FormData();
+                var myform = $('#senderUpdateForm'); // specify the form element
+                var idata = myform.serializeArray();
+                var document = $('input[type="file"]')[0].files[0];
+                fdata.append('PhotoUrl', document);
 
-
-                    if ($(this).valid()) {
-                        $.ajax({
-                            url: this.action,
-                            type: this.method,
-                            data: fdata, // $(this).serialize(),
-                            processData: false,
-                            contentType: false,
-                            success: function (result) {
-                                $('#bar-notification').html(result);
-                                alert(result);
-                            },
-                            error: function (response) {
-                                alert("Error:" + response);
-                            }
-                        });
-                    }
-                    return false;
+                $.each(idata, function (key, input) {
+                    fdata.append(input.name, input.value);
                 });
-            });
 
 
-            function readURL(input) {
 
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#blah').attr('src', e.target.result);
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
+                if ($(this).valid()) {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: fdata, // $(this).serialize(),
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            $('#bar-notification').html(result);
+                            alert(result);
+                        },
+                        error: function (response) {
+                            alert("Error:" + response);
+                        }
+                    });
                 }
-            }
-            $(".file-select").change(function () {
-                readURL(this);
+                return false;
             });
-
-         
-
+        });
 
 
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".file-select").change(function () {
+            readURL(this);
+        });
 
 
-                                        </script>
-@*<script src="~/js/profile.js"></script>*@
 
-                                    }
+
+
+
+
+    </script>
+    @*<script src="~/js/profile.js"></script>*@
+
+}

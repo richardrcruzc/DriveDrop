@@ -1,7 +1,15 @@
 ﻿@model DriveDrop.Bl.ViewModels.CustomerIndex
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "Admin";
-    
+
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "Index" };
 }
@@ -12,7 +20,7 @@
 
                 @await Html.PartialAsync("AdminNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9"  style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Users List</h3>
                         <div class="form-body">
@@ -61,7 +69,7 @@
 
 
                                                         @if (Model.CustomerList.Any())
-            {
+                                                        {
 
 
 
@@ -93,7 +101,7 @@
 
 
                                                                     @foreach (var customer in Model.CustomerList)
-                {
+                                                                    {
                                                                         <tr>
 
                                                                             @Html.Partial("_customer", customer)
@@ -136,5 +144,5 @@
             </div>
         </div>
     </div>
-    </section>
- 
+</section>
+

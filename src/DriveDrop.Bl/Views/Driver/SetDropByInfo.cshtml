@@ -1,5 +1,13 @@
 @model DriveDrop.Bl.ViewModels.ShipmentModel
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "ShippingDetails";
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)Model.SenderId, Option = "PickedUp" };
 }
@@ -16,7 +24,7 @@
 
 
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Drop Info</h3>
                         <div class="form-body">
@@ -58,7 +66,7 @@
 
                                                         <input asp-for="DriverId" hidden />
                                                         <input asp-for="Id" hidden />
-                                                        <textarea asp-for="DropComment" placeholder="Note to the Sender" autofocus ></textarea>
+                                                        <textarea asp-for="DropComment" placeholder="Note to the Sender" autofocus></textarea>
 
                                                         <div class="avatar-page">
                                                             <input type='file' id="photoUrl" name="photoUrl" class="file-select" />
@@ -88,56 +96,56 @@
     <script type="text/javascript">
         $(".drop-package").click(function () {
 
-                                            var formData = new FormData();
-                                            jQuery.each(jQuery('#photoUrl')[0].files, function (i, file) {
-                                                formData.append('photoUrl', file);
-                                            });
-                                            var id = $("#Id").val();
-                                            var dropNote = $("#DropComment").val();
-                                            var driverId = $("#DriverId").val();
+            var formData = new FormData();
+            jQuery.each(jQuery('#photoUrl')[0].files, function (i, file) {
+                formData.append('photoUrl', file);
+            });
+            var id = $("#Id").val();
+            var dropNote = $("#DropComment").val();
+            var driverId = $("#DriverId").val();
 
-                                            formData.append('id', id);
-                                            formData.append('DropNote', dropNote);
-                                           // alert(formData);
+            formData.append('id', id);
+            formData.append('DropNote', dropNote);
+            // alert(formData);
 
-           
 
-                                            //var formData = new FormData(this);
-                                            //alert(window.location.pathname);
-                                            $.ajax({
-                                                url: '/driver/SetDropByInfo',
-                                                type: 'POST',
-                                                data: formData,
-                                                async: false,
-                                                success: function (data) {
-                                                    alert(data)
-                                                    window.location.href = "/driver/PickedUp/" + driverId;
-                                                },
-                                                cache: false,
-                                                contentType: false,
-                                                processData: false
-                                            });
 
-                                            return false;
-                                        });
-                                        //$(".clickableLabel").click(function () {
-                                        //    alert($(this).attr("name"));
-                                        //})
-                                        function readURL(input) {
+            //var formData = new FormData(this);
+            //alert(window.location.pathname);
+            $.ajax({
+                url: '/driver/SetDropByInfo',
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    alert(data)
+                    window.location.href = "/driver/PickedUp/" + driverId;
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
 
-                                            if (input.files && input.files[0]) {
-                                                var reader = new FileReader();
+            return false;
+        });
+        //$(".clickableLabel").click(function () {
+        //    alert($(this).attr("name"));
+        //})
+        function readURL(input) {
 
-                                                reader.onload = function (e) {
-                                                    $('#blah').attr('src', e.target.result);
-                                                }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-                                                reader.readAsDataURL(input.files[0]);
-                                            }
-                                        }
-                                        $("#photoUrl").change(function () {
-                                            readURL(this);
-                                        });
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#photoUrl").change(function () {
+            readURL(this);
+        });
 
     </script>
 }

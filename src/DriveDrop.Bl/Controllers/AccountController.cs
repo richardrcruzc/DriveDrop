@@ -14,6 +14,7 @@ using DriveDrop.Bl.Models;
 using DriveDrop.Bl.ViewModels.AccountViewModels;
 using DriveDrop.Bl.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Wangkanai.Detection;
 
 namespace DriveDrop.Bl.Controllers
 {
@@ -21,17 +22,23 @@ namespace DriveDrop.Bl.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly IUserAgent _useragent;
+        private readonly IDevice _device;
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
+            IDeviceResolver deviceResolver,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
+            _useragent = deviceResolver.UserAgent;
+            _device = deviceResolver.Device;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -49,6 +56,18 @@ namespace DriveDrop.Bl.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
+
+            //if (_device.Type == DeviceType.Desktop)
+            //{
+            //    //some logic
+            //}
+            if (_device.Type == DeviceType.Mobile || _device.Type == DeviceType.Tablet)
+            {
+                //some logic
+                return View("LoginMobile");
+            }
+            
+
             return View();
         }
          
@@ -101,6 +120,7 @@ namespace DriveDrop.Bl.Controllers
             if (result.IsLockedOut)
             {
                 _logger.LogWarning(2, "User account locked out.");
+
                 return View("Lockout");
             }
             else
@@ -111,10 +131,76 @@ namespace DriveDrop.Bl.Controllers
         }
 
         // If we got this far, something failed, redisplay form
-        return View(model);
-    }
+      
+            if (_device.Type == DeviceType.Mobile || _device.Type == DeviceType.Tablet)
+            {
+                //some logic
+                return View("LoginMobile", model);
+            }
+            return View(model);
+        }
+        // POST: /Account/Login 
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Authenticate([FromBody] LoginViewModel model )
+        {
+           
+            if (ModelState.IsValid)
+            {
 
-    [HttpGet]
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(1, "User logged in.");
+
+
+                    //        var claims = new List<Claim>
+                    //    {
+                    //        new Claim(ClaimTypes.Name, model.Email, ClaimValueTypes.String, "https://godrivedrop.com")
+                    //    };
+                    //        var userIdentity = new ClaimsIdentity(claims, "SecureLogin");
+                    //        var userPrincipal = new ClaimsPrincipal(userIdentity);
+
+
+                    //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    //userPrincipal,
+                    //new AuthenticationProperties
+                    //{
+                    //    ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                    //    IsPersistent = true,
+                    //    AllowRefresh = false
+                    //});
+
+                    //if (Url.IsLocalUrl(returnUrl))
+                    //{
+                    //    return Redirect(returnUrl);
+                    //}
+                    //return RedirectToAction("Index", "Home");
+
+                    
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return new JsonResult("RequiresTwoFactor");
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "User account locked out.");
+                    return new JsonResult("IsLockedOut");
+                }
+                else
+                {
+                   
+                    return new JsonResult("Invalid login attempt");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return new JsonResult("something failed");
+        }
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
         {

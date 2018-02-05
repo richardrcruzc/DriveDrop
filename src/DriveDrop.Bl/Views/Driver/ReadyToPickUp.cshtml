@@ -1,5 +1,13 @@
 @model DriveDrop.Bl.ViewModels.PaginatedShippings
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = Model.CustomerId, Option = "readytopickup" };
 }
@@ -78,7 +86,7 @@
 
                 @await Html.PartialAsync("DriverNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">Packages Available</h3>
                         <div class="form-body">
@@ -236,20 +244,20 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+    <script>
     function   AsignDriver(shippingId){
 
         alert(shippingId);
-        
+
 
     $.ajax({
         url: '@Url.Action("AssignDriver", "Driver")',
-        type: "GET", 
+        type: "GET",
         data: {
             id: shippingId
         },
         success: function (result) {
-           
+
             alert(result);
         },
         error: function (response) {
@@ -257,11 +265,11 @@
         }
         });
     };
-</script>
+    </script>
 
     @*<script>
 
-            
+
             //$('.clickMe').click(function () {
             //    var clickedID = this.id;
             //    alert(clickedID);

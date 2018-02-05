@@ -1,6 +1,4 @@
-﻿ 
-
-namespace DriveDrop.Core.Models.Browser
+﻿namespace DriveDrop.Core.Models.Browser
 {
     public enum BrowserResultType
     {

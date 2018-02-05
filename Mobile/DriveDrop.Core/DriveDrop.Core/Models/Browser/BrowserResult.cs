@@ -1,5 +1,4 @@
 ﻿using DriveDrop.Core.Extensions;
- 
 
 namespace DriveDrop.Core.Models.Browser
 {

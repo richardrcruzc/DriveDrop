@@ -1,7 +1,15 @@
 @model DriveDrop.Bl.ViewModels.ShipmentModel
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
     ViewData["Title"] = "ShippingDetails";
- 
+
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = 1, Option = "shippings" };
 }
@@ -14,7 +22,7 @@
 
                 @await Html.PartialAsync("AdminNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9"  style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">My packages Details</h3>
                         <div class="form-body">
@@ -179,33 +187,33 @@
     </div>
 </section>
 
- 
-
-                                    <!-- Button to trigger modal -->
-                                    <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
-
-                                    <!-- Modal -->
-                                    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h3 id="myModalLabel">Modal header</h3>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>One fine body…</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                            <button class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
 
 
-                                    @section Scripts {
-                                        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-                                        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet" />
+<!-- Button to trigger modal -->
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
 
-                                        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-                                        <script type="text/javascript">
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Modal header</h3>
+    </div>
+    <div class="modal-body">
+        <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <script type="text/javascript">
 
             var newDriverId;
             $(document).ready(function () {
@@ -386,5 +394,5 @@
             }
         });
 });
-                                        </script>
-                                    }
+    </script>
+}

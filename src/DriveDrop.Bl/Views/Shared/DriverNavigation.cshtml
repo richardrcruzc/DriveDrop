@@ -1,11 +1,20 @@
-@model  DriveDrop.Bl.ViewModels.TwoParameterModel
-
+@model DriveDrop.Bl.ViewModels.TwoParameterModel
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
+@{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-125px";
+    }
+}
 <div id="sidebar" class="col-sm-3 sidebar-desktop">
     <ul id="side-navbar" class="side-fixed-menu">
         <li>
             @if (Model.Option == "readytopickup")
             {
-            @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model.Id }, new { @class = "active gig-information" })
+                @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model.Id }, new { @class = "active gig-information" })
             }
             else
             {
@@ -14,149 +23,219 @@
             }
 
         </li>
-       <li>
-           @if (Model.Option == "PendingPickUp")
+        <li>
+            @if (Model.Option == "PendingPickUp")
             {
-            @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, new { @class = "active gig-information" })
-           }
-           else
-           {
-            @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, new { @class = "gig-information" })
+                @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, new { @class = "gig-information" })
 
-           }
-           
+            }
+
 
         </li>
-       <li>
-           @if (Model.Option == "PickedUp")
-           {
-            @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, new { @class = "active gig-information PickedUp" })
-           }
-           else
-           {
-            @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, new { @class = "gig-information PickedUp" })
-           }
-            
+        <li>
+            @if (Model.Option == "PickedUp")
+            {
+                @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, new { @class = "active gig-information PickedUp" })
+            }
+            else
+            {
+                @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, new { @class = "gig-information PickedUp" })
+            }
+
 
         </li>
-       @*<li>
-           @if (Model.Option == "DeliveryInProcess")
+        @*<li>
+               @if (Model.Option == "DeliveryInProcess")
+                {
+                @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, new { @class = "active gig-information DeliveryInProcess" })
+               }
+               else
+               {
+                @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, new { @class = "gig-information DeliveryInProcess" })
+
+               }
+
+
+            </li>*@
+
+        <li>
+            @if (Model.Option == "result")
             {
-            @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, new { @class = "active gig-information DeliveryInProcess" })
-           }
-           else
-           {
-            @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, new { @class = "gig-information DeliveryInProcess" })
-
-           }
-          
-
-        </li>*@
-
-       <li>
-           @if (Model.Option == "result")
+                @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, new { @class = "active gig-information result" })
+            }
+            else
             {
-            @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, new { @class = "active gig-information result" })
-           }
-           else
-           {
 
-            @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, new { @class = "gig-information result" })
-           }
-            
+                @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, new { @class = "gig-information result" })
+            }
+
 
         </li>
-       <li>
-           @if (Model.Option == "Addresses")
+        <li>
+            @if (Model.Option == "Addresses")
             {
-            @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, new { @class = " active gig-information Addresses" })
-           }
-           else
-           {
+                @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, new { @class = " active gig-information Addresses" })
+            }
+            else
+            {
 
-            @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, new { @class = "gig-information Addresses" })
-           }
-          
+                @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, new { @class = "gig-information Addresses" })
+            }
+
 
         </li>
 
-       <li>
-           @if (Model.Option == "Vehicle")
+        <li>
+            @if (Model.Option == "Vehicle")
             {
-            @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, new { @class = "active gig-information " })
-           }
-           else
-           {
+                @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, new { @class = "active gig-information " })
+            }
+            else
+            {
 
-            @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, new { @class = "gig-information " })
-           }
-            
+                @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, new { @class = "gig-information " })
+            }
+
         </li>
 
         <li class="change-password">
             @if (Model.Option == "ChangePassword")
             {
-            @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "active gig-information " })
+                @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "active gig-information " })
             }
             else
             {
 
                 @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "gig-information" })
             }
-            
+
 
         </li>
     </ul>
     @*<div class="credits">
-        <p>CREDITS <a href="#" class="help">?</a></p>
-        <a href="#" class="price">$0.00</a>
-    </div>
-    <h3>Redeem Promo Code</h3>*@
+            <p>CREDITS <a href="#" class="help">?</a></p>
+            <a href="#" class="price">$0.00</a>
+        </div>
+        <h3>Redeem Promo Code</h3>*@
     <div class="clearfix"></div>
 </div>
 
-<div class="col-sm-3 sidebar-mobile">
+<div class="col-sm-3 sidebar-mobile" style="top: @top;">
     <ul id="side-navbar" class="side-fixed-menu">
         <li>
-            @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model.Id }, null)
+            @if (Model.Option == "readytopickup")
+            {
+                @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+
+                @Html.ActionLink("Packages Available", "readytopickup", "driver", new { id = Model.Id }, new { @class = "gig-information" })
+            }
 
         </li>
         <li>
-            @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, null)
+            @if (Model.Option == "PendingPickUp")
+            {
+                @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, new { @class = "active gig-information" })
+            }
+            else
+            {
+                @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model.Id }, new { @class = "gig-information" })
+
+            }
+
 
         </li>
         <li>
-            @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, null)
+            @if (Model.Option == "PickedUp")
+            {
+                @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, new { @class = "active gig-information PickedUp" })
+            }
+            else
+            {
+                @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model.Id }, new { @class = "gig-information PickedUp" })
+            }
+
+
+        </li>
+        @*<li>
+               @if (Model.Option == "DeliveryInProcess")
+                {
+                @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, new { @class = "active gig-information DeliveryInProcess" })
+               }
+               else
+               {
+                @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, new { @class = "gig-information DeliveryInProcess" })
+
+               }
+
+
+            </li>*@
+
+        <li>
+            @if (Model.Option == "result")
+            {
+                @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, new { @class = "active gig-information result" })
+            }
+            else
+            {
+
+                @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, new { @class = "gig-information result" })
+            }
+
 
         </li>
         <li>
-            @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model.Id }, null)
+            @if (Model.Option == "Addresses")
+            {
+                @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, new { @class = " active gig-information Addresses" })
+            }
+            else
+            {
+
+                @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, new { @class = "gig-information Addresses" })
+            }
+
 
         </li>
 
         <li>
-            @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model.Id }, null)
+            @if (Model.Option == "Vehicle")
+            {
+                @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, new { @class = "active gig-information " })
+            }
+            else
+            {
 
-        </li>
-        <li>
-            @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model.Id }, null)
+                @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, new { @class = "gig-information " })
+            }
 
-        </li>
-
-        <li>
-            @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model.Id }, null)
         </li>
 
         <li class="change-password">
-            @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model.Id }, null)
+            @if (Model.Option == "ChangePassword")
+            {
+                @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "active gig-information " })
+            }
+            else
+            {
+
+                @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model.Id }, new { @class = "gig-information" })
+            }
+
 
         </li>
     </ul>
     @*<div class="credits">
-        <p>CREDITS <a href="#" class="help">?</a></p>
-        <a href="#" class="price">$0.00</a>
-    </div>
-    <h3>Redeem Promo Code</h3>*@
+            <p>CREDITS <a href="#" class="help">?</a></p>
+            <a href="#" class="price">$0.00</a>
+        </div>
+        <h3>Redeem Promo Code</h3>*@
     <div class="clearfix"></div>
 </div>
 
@@ -164,47 +243,47 @@
 
 
 @*<div class="block block-account-navigation">
-    <div class="title">
-        <strong>Driver Dashboard</strong>
-    </div>    
-    <div class="listbox">
-        <ul class="list">
-           <li>
-                @Html.ActionLink("Packages Available for Pick up Based on the Driver's requirements.", "readytopickup", "driver", new { id = Model }, null)
+        <div class="title">
+            <strong>Driver Dashboard</strong>
+        </div>
+        <div class="listbox">
+            <ul class="list">
+               <li>
+                    @Html.ActionLink("Packages Available for Pick up Based on the Driver's requirements.", "readytopickup", "driver", new { id = Model }, null)
 
-            </li>
-           <li>
-                @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model }, null)
+                </li>
+               <li>
+                    @Html.ActionLink("Pick-Up Packages", "PendingPickUp", "driver", new { id = Model }, null)
 
-            </li>
-           <li>
-                @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model }, null)
+                </li>
+               <li>
+                    @Html.ActionLink("Deliver Packages", "PickedUp", "driver", new { id = Model }, null)
 
-            </li>
-           <li>
-                @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, null)
+                </li>
+               <li>
+                    @Html.ActionLink("Delivery In Process", "DeliveryInProcess", "driver", new { id = Model }, null)
 
-            </li> 
-            
-           <li>
-                @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model }, null)
-                 
-            </li>
-           <li> 
-                @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model }, null)
+                </li>
 
-            </li>
+               <li>
+                    @Html.ActionLink("My Personal Info", "result", "driver", new { id = Model }, null)
 
-           <li>
-                @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model }, null)
-            </li>
-            
-            <li class="change-password">
-                @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model }, null)
-               
-            </li>
+                </li>
+               <li>
+                    @Html.ActionLink("My Addresses", "Addresses", "common", new { id = Model }, null)
+
+                </li>
+
+               <li>
+                    @Html.ActionLink("My Vehicle", "Vehicle", "driver", new { id = Model }, null)
+                </li>
+
+                <li class="change-password">
+                    @Html.ActionLink("Change My Password", "ChangePassword", "manage", new { id = Model }, null)
+
+                </li>
 
 
-        </ul>
-    </div>
-</div>*@
+            </ul>
+        </div>
+    </div>*@

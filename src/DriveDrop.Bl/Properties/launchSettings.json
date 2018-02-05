@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:58622/",
+      "applicationUrl": "http://localhost:5205/",
       "sslPort": 44346
     }
   },
@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:44346/",
+      "launchUrl": "https://localhost:5205/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -22,7 +22,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:58623/"
+      "applicationUrl": "http://localhost:5205/"
     },
     "DriveDrop.Web (Staging)": {
       "commandName": "Project",

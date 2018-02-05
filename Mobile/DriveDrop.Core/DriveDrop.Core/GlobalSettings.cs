@@ -2,17 +2,21 @@
 {
     public class GlobalSetting
     {
+
+        public   string _user = "admin@driveDrop.com";
+        public   string _passworrd = "Pass@word1";
+
+
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
+
         // public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
         //public const string DriveDropEndpoint = "http://api.godrivedrop.com/api/v1/";
 
-        //public const string DefaultEndpoint = "http://10.0.0.51:58652/";
-        //public const string DriveDropEndpoint = "http://10.0.0.51:5205/api/v1/";
-         
+        
+        //public const string DefaultEndpoint = "http://10.0.0.51:5205/";
+        public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/";
 
-        public const string DefaultEndpoint = "http://169.254.80.80:58652/";
-        public const string DriveDropEndpoint = "http://169.254.80.80:5205/api/v1/";
 
         private string _baseEndpoint;
         private string _drivedrppEndpoint;
@@ -21,8 +25,7 @@
         public GlobalSetting()
         {
             AuthToken = "INSERT AUTHENTICATION TOKEN";
-            BaseEndpoint = DefaultEndpoint;
-            ApiEndpoint = DriveDropEndpoint;
+            BaseEndpoint = DefaultEndpoint; 
         }
 
         public static GlobalSetting Instance
@@ -58,6 +61,10 @@
 
         public string RegisterWebsite { get; set; }
 
+        public string RegisterDriver { get; set; }
+
+        public string RegisterSender { get; set; }
+
         public string CatalogEndpoint { get; set; }
 
         public string OrdersEndpoint { get; set; }
@@ -91,10 +98,29 @@
         public string CommonEndpoint { get; set; }
 
 
+        public string User {
+            get { return _user; }
+            set
+            {
+                _user = value; 
+            }
+        }
+        public string Password
+        {
+            get { return _passworrd; }
+            set
+            {
+                _passworrd = value;
+            }
+        }
+
+
         private void UpdateEndpoint(string baseEndpoint)
         {
-            RegisterWebsite = $"{baseEndpoint}Account/Register";
-            IdentityEndpoint = $"{baseEndpoint}connect/authorize";
+            RegisterWebsite = $"{baseEndpoint}/home/register";
+            RegisterSender = $"{baseEndpoint}Sender/NewSender";
+            RegisterDriver = $"{baseEndpoint}Driver/NewDriver/NewDriver";
+            IdentityEndpoint = $"{baseEndpoint}Account/Login";
             TokenEndpoint = $"{baseEndpoint}connect/token";
             LogoutEndpoint = $"{baseEndpoint}connect/endsession";
             IdentityCallback = $"{baseEndpoint}xamarincallback";
@@ -109,6 +135,7 @@
             CatalogEndpoint = $"{baseEndpoint}5101";
             OrdersEndpoint = $"{baseEndpoint}5102";
             BasketEndpoint = $"{baseEndpoint}5103";
+
 
             LocationEndpoint = $"{baseEndpoint}5109";
             MarketingEndpoint = $"{baseEndpoint}5110";

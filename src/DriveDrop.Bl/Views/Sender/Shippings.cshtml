@@ -1,5 +1,13 @@
 @model IEnumerable<DriveDrop.Bl.ViewModels.ShipmentModel>
+@using DriveDrop.Bl.Services
+@inject StatisticsService StatsService
 @{
+    var isMobile = @StatsService.Mobile(); //await Component.InvokeAsync("MobileLayout");
+    var top = "0px";
+    if (isMobile == true)
+    {
+        top = "-105px";
+    }
 
 
     var option = new DriveDrop.Bl.ViewModels.TwoParameterModel { Id = (int)@ViewBag.Id, Option = "Shippings" };
@@ -13,7 +21,7 @@
 
                 @await Html.PartialAsync("CustomerNavigation", option)
 
-                <div id="content" class="col-sm-9">
+                <div id="content" class="col-sm-9" style="top: @top;">
                     <div id="gig-information" class="sender-form">
                         <h3 class="blue-head active">My Packages</h3>
                         <div class="form-body">
@@ -66,10 +74,10 @@
                                                         <td class="align-center">
                                                             @if (shipping.PackageStatusHistories != null)
                                                             {
-                                                            @Html.DisplayFor(modelItem => shipping.PackageStatusHistories.OrderByDescending(x => x.StatusDate).FirstOrDefault().StatusDate)
+                                                                @Html.DisplayFor(modelItem => shipping.PackageStatusHistories.OrderByDescending(x => x.StatusDate).FirstOrDefault().StatusDate)
                                                             }
                                                             else
-                                                            { 
+                                                            {
                                                                 <label>@DateTime.Today</label>
 
                                                             }
@@ -91,7 +99,7 @@
                                     }
                                 </div>
                                 <div class="post-gig">
-                                    <input type="submit" value="Add New" name="save-info-button" class="bttn save-customer-info-button"  onclick="location.href='/sender/NewShipping?id=@(ViewBag.Id)'"/>
+                                    <input type="submit" value="Add New" name="save-info-button" class="bttn save-customer-info-button" onclick="location.href='/sender/NewShipping?id=@(ViewBag.Id)'" />
                                 </div>
 
                             </div>
@@ -101,5 +109,4 @@
             </div>
         </div>
     </div>
-   </section>
-                     
+</section>
