@@ -22,7 +22,27 @@ namespace DriveDrop.Core.Services.Identity
         {
             _requestProvider = requestProvider;
         }
+       //public  Thinktecture.IdentityModel.Client.TokenResponse GetToken()
+       // {
+       //     try
+       //     {
+       //         var client = new Thinktecture.IdentityModel.Client.OAuth2Client(
+       //         new Uri(GlobalSetting.Instance.TokenEndpoint),
+       //          GlobalSetting.Instance.ClientId,
+       //          GlobalSetting.Instance.ClientSecret);
 
+       //         var re = client.RequestResourceOwnerPasswordAsync("admin@drivedrop.com", "Pass@word1", "drivedrop").Result;
+       //         return re;
+       //     }
+       //     catch (AggregateException e)
+       //     {
+
+       //     }
+
+       //     return null;
+
+
+       // }
         public string CreateAuthorizationRequest()
         {
             // Create URI to authorization endpoint
@@ -84,5 +104,7 @@ namespace DriveDrop.Core.Services.Identity
             CryptographicBuffer.CopyToByteArray(challengeBuffer, out challengeBytes);
             return Base64Url.Encode(challengeBytes);
         }
+
+         
     }
 }

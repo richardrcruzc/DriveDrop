@@ -7,11 +7,14 @@ using DriveDrop.Core.Services.OpenUrl;
 using DriveDrop.Core.Validations;
 using DriveDrop.Core.ViewModels.Base;
 using IdentityModel.Client;
+
+using Newtonsoft.Json.Linq;
+
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
+using Xamarin.Forms; 
 
 namespace DriveDrop.Core.ViewModels
 {
@@ -191,9 +194,45 @@ namespace DriveDrop.Core.ViewModels
             IsBusy = true;
 
             await Task.Delay(500);
+            //  var callbackUrl = _identityService.CreateAuthorizationRequest();
 
-            LoginUrl = _identityService.CreateAuthorizationRequest();
+            //var response = new AuthorizeResponse(callbackUrl);
+            try
+            {
+             
 
+                var tokenClient = new TokenClient("http://localhost:5205/connect/token", "ro.client", "secret");
+                var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("admin@drivedrop.com", "Pass@word1", "drivedrop");
+
+                if (tokenResponse.IsError)
+                {
+                    var t = tokenResponse.Json;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                var r = ex.Message;
+            }
+
+            //        var client = new  TokenClient(
+            // GlobalSetting.Instance.IdentityEndpoint,
+            //GlobalSetting.Instance.ClientId,
+            // GlobalSetting.Instance.ClientSecret);
+
+            //        var response = await client.RequestClientCredentialsAsync("scope");
+            //        var token = response.AccessToken;
+
+            //LoginUrl =
+            //var callbackUrl = _identityService.CreateAuthorizationRequest();
+
+            //var response = new AuthorizeResponse(callbackUrl);
+
+
+            //await NavigateAsync(callbackUrl);
+
+            //   var tmp = _identityService.GetToken();
             IsValid = true;
             IsLogin = true;
             IsBusy = false;

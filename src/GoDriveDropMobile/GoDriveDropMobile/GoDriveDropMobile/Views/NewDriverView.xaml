@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:vm="clr-namespace:GoDriveDrop.Core.ViewModels;"
+                 xmlns:behaviors="clr-namespace:GoDriveDrop.Core.Behaviors"			
+  xmlns:viewModelBase="clr-namespace:GoDriveDrop.Core.ViewModels;assembly=GoDriveDrop.Core"
+             x:Class="GoDriveDrop.Core.Views.NewDriverView"
+               viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+               Title="{Binding Title}"  Icon="{Binding Icon}">
+    <ContentPage.BindingContext>
+        <vm:NewDriverViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout Orientation="Vertical">
+                <Label Text="NEW DRIVER INFORMATION"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+
+                <!--Driver personal  Information-->
+                
+                <Entry Text="{Binding FirstName, Mode=TwoWay}" Placeholder="First Name" 
+                       IsVisible="{Binding EditMode}"/>
+                <Entry Text="{Binding LastName, Mode=TwoWay}" Placeholder="Last Name" 
+                       IsVisible="{Binding EditMode}"/>
+                <Entry Text="{Binding PrimaryPhone, Mode=TwoWay}" Placeholder="Primary Phone" 
+                       IsVisible="{Binding EditMode}">
+                    <Entry.Behaviors>
+                        <behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
+                        <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePrimaryPhoneCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Text="{Binding Phone, Mode=TwoWay}" Placeholder="Phone" 
+                       IsVisible="{Binding EditMode}">
+                    <Entry.Behaviors>
+                        <behaviors:PhoneNumberMaskBehavior x:Name="PhoneMask" />
+                        <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePrimaryPhoneCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+
+
+                <!--Driver DEFAUL ADDRESS-->
+                <Label
+                  Text="DEFAUL ADDRESS"   HorizontalOptions="CenterAndExpand"/>
+
+                <SearchBar  x:Name="SearchFor" 
+                                Text="{Binding SearchText  }"
+                            SearchCommand="{Binding SearchCommand}"
+                                Placeholder="Enter your Address" 
+                                  HorizontalOptions="FillAndExpand"/>
+
+
+                <Label
+                  Text="{Binding DefaultAddress }"
+                        IsVisible="{Binding IsDefaultAddressVisible}" />
+
+                <ListView 
+                        IsVisible="{Binding IsListViewVisible}"
+                        ItemsSource="{Binding Items}" 
+                              VerticalOptions="FillAndExpand" 
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}"/>
+
+                <!--Driver Package and Drive Information-->
+                <Label
+                  Text="Driver Package and Drive Information"     HorizontalOptions="CenterAndExpand"/>
+
+                <Entry Text="{Binding MaxPackage, Mode=TwoWay}" 
+                           Placeholder="Maximum Package to Pickup"   Keyboard="Numeric" >
+                  
+                    <Entry.Behaviors>
+                        <behaviors:EntryLengthValidatorBehavior MaxLength="3" />
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateMaxPackageCommand}"/>
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding MaxPackage.IsValid}"
+							Value="False">
+                           
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry Text="{Binding PickupRadius, Mode=TwoWay}" 
+                           Placeholder="Maximum Drive Pickup Radius in Miles"   Keyboard="Numeric" >
+
+                    <Entry.Behaviors>
+                        <behaviors:EntryLengthValidatorBehavior MaxLength="3" />
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateMaxPackageCommand}"/>
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding MaxPackage.IsValid}"
+							Value="False">
+
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry Text="{Binding DeliverRadius, Mode=TwoWay}" 
+                           Placeholder="Maximum Drive Deliver Package Radius in Miles"   Keyboard="Numeric" >
+
+                    <Entry.Behaviors>
+                        <behaviors:EntryLengthValidatorBehavior MaxLength="3" />
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateMaxPackageCommand}"/>
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding MaxPackage.IsValid}"
+							Value="False">
+
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+ 
+
+                <!--Driver vehicle Information-->
+
+                <Label
+                  Text="Driver vehicle Information"     HorizontalOptions="CenterAndExpand"/>
+
+                <Picker Title="All Vehicle Types" ItemsSource="{Binding VehicleTypesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                            SelectedIndex="{Binding SelectedIndex , Mode=TwoWay}"
+                             SelectedItem="{Binding SelectedVehicle, Mode=OneWay}" 
+                            HorizontalOptions="FillAndExpand">
+                    <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                </Picker>
+
+
+
+                <Entry Text="{Binding VehicleMake, Mode=TwoWay}" Placeholder="Vehicle Marke">
+                    
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleMakeCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleMake.IsValid}"
+							Value="False">
+                             
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry Text="{Binding VehicleModel, Mode=TwoWay}" Placeholder="Vehicle Model">
+                   
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleModelCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleModel.IsValid}"
+							Value="False">
+                           
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry Text="{Binding VehicleColor, Mode=TwoWay}" Placeholder="Vehicle Color">
+                   
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleColorCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleColor.IsValid}"
+							Value="False">
+                          
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry Text="{Binding VehicleYear, Mode=TwoWay}"  Keyboard="Numeric" Placeholder="Vehicle Year">
+                   
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateVehicleYearCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding VehicleYear.IsValid}"
+							Value="False">
+                           
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+ 
+
+
+                <!--ProfilePhoto-->
+                <Label
+                  Text="Profile and Vehicle Photos"     HorizontalOptions="CenterAndExpand"/>
+                
+                
+                <Button x:Name="takePhotoProfile" Text="Take Profile Photo"  Command="{Binding TakePhotoProfileCommand}"/>
+                <Button x:Name="pickPhotoProfile" Text="Pick Profile Photo" Command="{Binding PickPhotoProfileCommand}"/>
+                <!--<Label Text="{Binding pickPhotoProfileErrors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />-->
+                <Image x:Name="profilePhotoImage" WidthRequest = "70" HeightRequest = "70" Source="{Binding ProfilePhotoImage, Mode=OneWay}"/>
+
+                <!--<Image Source="{Binding ProfilePhotoImage , Converter={StaticResource ImageConverter}"/>-->
+
+                <Button x:Name="takePhotoLicense" Text="Take Driver License Photo"  Command="{Binding TakePhotoLicenseCommand}"/>
+                <Button x:Name="pickPhotoLicense" Text="Pick Driver License Photo"   Command="{Binding PickPhotoLicenseCommand}"/>
+                <Image x:Name="licensePhotoImage"  WidthRequest = "70" HeightRequest = "70" Source="{Binding LicensePhotoImage, Mode=OneWay}"/>
+
+                <Button x:Name="takePhotoVehicle" Text="Take Vehicle Photo"  Command="{Binding TakePhotoVehicleCommand}"/>
+                <Button x:Name="pickPhotoVehicle" Text="Pick Vehicle Photo"  Command="{Binding PickPhotoVehicleCommand}"/>
+                <Image x:Name="vehiclePhotoImage"  WidthRequest = "70" HeightRequest = "70" Source="{Binding VehiclePhotoImage, Mode=OneWay}"/>
+
+                <Button x:Name="takePhotoProof" Text="Take Proof of Insurance Photo"  Command="{Binding TakePhotoProofCommand}"/>
+                <Button x:Name="pickPhotoProof" Text="Pick Proof of Insurance Photo"  Command="{Binding PickPhotoProofCommand}"/>
+                <Image x:Name="ProofPhotoImage"  WidthRequest = "70" HeightRequest = "70" Source="{Binding ProofPhotoImage, Mode=OneWay}"/>
+
+                <!--Login Information-->
+                <Label
+                  Text="Login Information"     HorizontalOptions="CenterAndExpand"/>
+
+                <Entry Text="{Binding UserEmail, Mode=TwoWay}"  Keyboard="Email"  Placeholder="User Email">
+                    
+                    <Entry.Behaviors>
+                        <behaviors:EmailValidatorBehavior x:Name="emailValidator"/>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateUserEmailCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding UserEmail.IsValid}"
+							Value="False">
+                            
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry 
+                         IsPassword="True"
+                        Text="{Binding Password, Mode=TwoWay}" Placeholder="Password">
+                    
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePasswordCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Password.IsValid}"
+							Value="False">
+                            
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry  
+                        IsPassword="True"
+                            Text="{Binding ConfirmPassword.Value, Mode=TwoWay}" Placeholder="Confirm Password">
+                    
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateConfirmPasswordCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding ConfirmPassword.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Button x:Name="submitCmd" Text="[ Submit ]"  Command="{Binding SubmitCommand}"/>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -35,7 +35,8 @@ namespace DriveDrop.Bl.Configuration
                 {
                     ClientId = "xamarin",
                     ClientName = "Drivedrop Xamarin OpenId Client",
-                   AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                   //AllowedGrantTypes = GrantTypes.Hybrid,
                     // AllowedGrantTypes = GrantTypes.ClientCredentials,
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =

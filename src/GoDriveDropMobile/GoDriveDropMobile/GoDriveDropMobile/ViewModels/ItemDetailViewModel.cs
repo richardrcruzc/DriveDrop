@@ -1,0 +1,16 @@
+﻿using System;
+
+using GoDriveDrop.Core.Models;
+
+namespace GoDriveDrop.Core.ViewModels
+{
+    public class ItemDetailViewModel : BaseViewModel
+    {
+        public Item Item { get; set; }
+        public ItemDetailViewModel(Item item = null)
+        {
+            Title = item?.Text;
+            Item = item;
+        }
+    }
+}
