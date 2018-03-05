@@ -12,7 +12,7 @@ namespace GoDriveDrop.Core.Services.Common
     {
 
         private readonly IRequestProvider _requestProvider;
-        private const string ApiUrlBase = "api/v1/common";
+        private const string ApiUrlBase = "common";
 
         public GoogleAddress(IRequestProvider requestProvider)
         {

@@ -1,5 +1,5 @@
-﻿ 
-using DriveDrop.Bl.Data;
+﻿using DriveDrop.Bl.Data;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting; 
 using Microsoft.Extensions.Configuration;
@@ -17,6 +17,7 @@ namespace DriveDrop.Bl
         public static void Main(string[] args)
         {
             BuildWebHost(args)
+                 .MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
                   .MigrateDbContext<ApplicationDbContext>((context, services) =>
                   {
                       var env = services.GetService<IHostingEnvironment>();
@@ -37,13 +38,20 @@ namespace DriveDrop.Bl
                          .SeedAsync(context, env, settings, logger)
                          .Wait();
                  })
-                 
+                  .MigrateDbContext<ConfigurationDbContext>((context, services) =>
+                  {
+                      var configuration = services.GetService<IConfiguration>();
+
+                      new ConfigurationDbContextSeed()
+                          .SeedAsync(context, configuration)
+                          .Wait();
+                  })
                  .Run();
         }
-
+      
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseShutdownTimeout(TimeSpan.FromSeconds(10))
+           .UseShutdownTimeout(TimeSpan.FromSeconds(10))
                 .UseStartup<Startup>()
                 // .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())

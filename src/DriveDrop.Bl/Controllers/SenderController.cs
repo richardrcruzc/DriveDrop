@@ -21,6 +21,7 @@ using DriveDrop.Bl.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using DriveDrop.Bl.Extensions;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DriveDrop.Bl.Controllers
 {
@@ -383,8 +384,7 @@ namespace DriveDrop.Bl.Controllers
             return CreatedAtAction(nameof(GetbyId), new { id = updateCustomer.Id }, null);
 
         }
-        [AllowAnonymous]
-      
+        [AllowAnonymous]      
         public IActionResult NewSender()
         {
             //await HttpContext.Authentication.SignOutAsync("Cookies");
@@ -401,27 +401,38 @@ namespace DriveDrop.Bl.Controllers
         {   
             try
             {
-                foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
+                if (c.FromXamarin == false)
                 {
-                    var tt = state.Errors.ToString();
-                }
-                if (c.ImgeFoto == null || c.ImgeFoto.Length <= 0)
-                {                   
-                    return     "Upload profile photo"  ;
-                }
-                if (c.ImgeFoto.Length > 1048576)
-                {
-                    
-                    return   "profile photo file exceeds the file maximum size: 1MB" ;
-                }
+                    foreach (var state in ViewData.ModelState.Values.Where(x => x.Errors.Count > 0))
+                    {
+                        var tt = state.Errors.ToString();
+                    }
+                    if (c.ImgeFoto == null || c.ImgeFoto.Length <= 0)
+                    {
+                        return "Upload profile photo";
+                    }
+                    if (c.ImgeFoto.Length > 1048576)
+                    {
 
-                if (ModelState.IsValid)
-                {
+                        return "profile photo file exceeds the file maximum size: 1MB";
+                    }
+                }
+                if (c.FromXamarin == false)
+                    if (c == null || !ModelState.IsValid)
+                    {
+                        var msgError = string.Empty;
+                        IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                        foreach (var er in allErrors)
+                            msgError += " " + er.ErrorMessage;
+                        return msgError;
+                    }
+                
                     var user = new ApplicationUser { UserName = c.UserEmail, Email = c.UserEmail };
                     var result = await _userManager.CreateAsync(user, c.Password);
                     if (result.Succeeded)
                     {
-                        c.PersonalPhotoUri = await SaveFile(c.ImgeFoto, "sender");
+                        if (c.FromXamarin == false)
+                            c.PersonalPhotoUri = await SaveFile(c.ImgeFoto, "sender");
 
                         //   var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact, 0, 0);
                         var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, "", "", c.PickupLatitude, c.PickupLongitude);
@@ -466,7 +477,7 @@ namespace DriveDrop.Bl.Controllers
 
                         return   "new sender created" ;
                     }
-                }
+                
             }
             catch (DbUpdateException ex)
             {
@@ -475,7 +486,7 @@ namespace DriveDrop.Bl.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator. {0}", ex.Message);
 
-                return   "UnableToSaveChanges" ;
+                return error;
             }
             return  "UnableToSaveChanges"  ;
         }
@@ -499,8 +510,12 @@ namespace DriveDrop.Bl.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> NewSenderFromBody([FromBody]SenderRegisterModel c) //, [FromBody]List<IFormFile> files)
         {
+
+            c.UserEmail = System.Net.WebUtility.UrlDecode(c.UserEmail);
+            c.Password = System.Net.WebUtility.UrlDecode(c.Password);
+
             var results = await AddSender(c);
-            return new JsonResult(results);
+            return Ok(c);
         }
 
         //PUT [controller]/New

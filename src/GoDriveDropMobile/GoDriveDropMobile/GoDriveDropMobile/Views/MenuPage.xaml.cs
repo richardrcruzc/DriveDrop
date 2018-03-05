@@ -43,6 +43,7 @@ namespace GoDriveDrop.Core.Views
                     new HomeMenuItem { Title = "Change Password", MenuType = MenuType.Password, Icon = "keys.png" }, 
 
                      new HomeMenuItem { Title = "About", MenuType = MenuType.About, Icon ="about.png" },
+                      new HomeMenuItem { Title = "LogOut", MenuType = MenuType.LogOut, Icon ="logout.png" },
 
                 };
 

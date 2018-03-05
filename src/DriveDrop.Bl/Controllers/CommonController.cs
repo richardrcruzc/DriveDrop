@@ -69,17 +69,26 @@ namespace DriveDrop.Bl.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("[action]/addresspart/{initialPart}")]
+        [Route("addresspart/{initialPart}")]
         public async Task<IActionResult> Autocomplete(string initialPart)
         {
-            //var predictions = await _google.Get("", "");
-            var predictions = await _google.Autocomplete(initialPart);
+            List<string> results = new List<string>();
+            try
+            {
+                //var predictions = await _google.Get("", "");
+                results = await _google.Autocomplete(initialPart);
 
-            return  new JsonResult(predictions);
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+            }
+            return  new JsonResult(results );
+
         }
         [AllowAnonymous]
         [HttpGet]
-        [Route("[action]/address/{address}")]
+        [Route("address/{address}")]
         public async Task<IActionResult> GetCompleAddress(string address)
         {
             //var predictions = await _google.Get("", "");
@@ -244,7 +253,8 @@ namespace DriveDrop.Bl.Controllers
 
 
         [AllowAnonymous]
-        [AcceptVerbs("Get", "Post")] 
+        [AcceptVerbs("Get", "Post")]
+        [Route("{UserEmail}")]
         public async Task<IActionResult> ValidateUserName(string UserEmail)
         {
             try
@@ -484,8 +494,7 @@ namespace DriveDrop.Bl.Controllers
 
         // GET Common/CustomerTypes
         [AllowAnonymous]
-        [HttpGet]
-      
+        [HttpGet] 
         public async Task<IActionResult> CustomerTypes()
         {
             try
@@ -501,8 +510,7 @@ namespace DriveDrop.Bl.Controllers
         }
         // GET Common/CustomerTypes
         [AllowAnonymous]
-        [HttpGet]
-      
+        [HttpGet] 
         public async Task<IActionResult> ShippingStatuses()
         {
             try
@@ -518,8 +526,7 @@ namespace DriveDrop.Bl.Controllers
         }
         // GET Common/CustomerTypes
         [AllowAnonymous]
-        [HttpGet]
-      
+        [HttpGet] 
         public async Task<IActionResult> PriorityTypes()
         {
             try
@@ -536,8 +543,7 @@ namespace DriveDrop.Bl.Controllers
         }
         // GET Common/CustomerTypes
         [AllowAnonymous]
-        [HttpGet]
-      
+        [HttpGet] 
         public async Task<IActionResult> CustomerStatuses()
         {
             try
@@ -553,8 +559,7 @@ namespace DriveDrop.Bl.Controllers
         }
         // GET Common/CustomerTypes
         [AllowAnonymous]
-        [HttpGet]
-      
+        [HttpGet]      
         public async Task<IActionResult> TransportTypes()
         {
             try
@@ -572,8 +577,7 @@ namespace DriveDrop.Bl.Controllers
 
         // GET Common/CustomerTypes
         [AllowAnonymous]
-        [HttpGet]
-      
+        [HttpGet] 
         public async Task<IActionResult> PackageSizes()
         {
             try

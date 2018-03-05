@@ -39,7 +39,6 @@ namespace Identity.Api
          
 
         public static IWebHost BuildWebHost(string[] args) =>
-
             WebHost.CreateDefaultBuilder(args) 
                 .UseKestrel()
                 .UseHealthChecks("/hc")
@@ -48,7 +47,7 @@ namespace Identity.Api
                 .UseStartup<Startup>()
                .ConfigureAppConfiguration((builderContext, config) =>
                {
-                  // config.AddJsonFile("appsettings.json");
+                   config.AddJsonFile("appsettings.json");
                    config.AddEnvironmentVariables();
                })
                 .ConfigureLogging((hostingContext, builder) =>

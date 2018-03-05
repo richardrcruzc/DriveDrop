@@ -17,11 +17,18 @@ using DriveDrop.Bl.Data;
 using DriveDrop.Bl.ViewModels; 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using IdentityServer4.Services;
 
 namespace DriveDrop.Bl.Controllers
 {
     public class HomeController : Controller
-    { 
+    {
+
+        private readonly IIdentityServerInteractionService _interaction;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
+        private readonly IRedirectService _redirectSvc;
+
+
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DriveDropContext _context;
@@ -30,14 +37,28 @@ namespace DriveDrop.Bl.Controllers
         public HomeController(ICustomerService cService, 
             IIdentityParser<ApplicationUser> appUserParser,
             DriveDropContext context, SignInManager<ApplicationUser> signInManager,
-             UserManager<ApplicationUser> userManager )
+             UserManager<ApplicationUser> userManager ,
+             IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings, IRedirectService redirectSvc)
         {
             _appUserParser = appUserParser;
             _cService = cService;
             _context = context;
             _signInManager = signInManager;
-            _userManager = userManager; 
+            _userManager = userManager;
+
+            _interaction = interaction;
+            _settings = settings;
+            _redirectSvc = redirectSvc;
         }
+
+        public IActionResult ReturnToOriginalApplication(string returnUrl)
+        {
+            if (returnUrl != null)
+                return Redirect(_redirectSvc.ExtractRedirectUriFromReturnUrl(returnUrl));
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
 
         [Route("identity")]
         [Authorize]
@@ -262,9 +283,21 @@ namespace DriveDrop.Bl.Controllers
             return View();
         }
 
-        public IActionResult Error()
+        /// <summary>
+        /// Shows the error page
+        /// </summary>
+        public async Task<IActionResult> Error(string errorId)
         {
-            return View();
+            var vm = new ViewModels.ErrorViewModel();
+
+            // retrieve error details from identityserver
+            var message = await _interaction.GetErrorContextAsync(errorId);
+            if (message != null)
+            {
+                vm.Error = message;
+            }
+
+            return View("Error", vm);
         }
         [NonAction]
         async Task<string> GetUserTokenAsync()

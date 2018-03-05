@@ -14,6 +14,7 @@ using GoDriveDrop.Core.Services.Navigation;
 using GoDriveDrop.Core.Services.OpenUrl;
 using GoDriveDrop.Core.Views;
 using GoDriveDrop.Core.Services.Location;
+using GoDriveDrop.Core.Services.User;
 
 namespace GoDriveDrop.Core.ViewModels
 {
@@ -48,10 +49,12 @@ namespace GoDriveDrop.Core.ViewModels
             builder.RegisterType<LoginViewModel>();
 
             builder.RegisterType<NewDriverViewModel>();
-
+            builder.RegisterType<NewSenderViewModel>();
+            
             // Services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
 
+            builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<DialogService>().As<IDialogService>();
              builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
              builder.RegisterType<IdentityService>().As<IIdentityService>();
@@ -61,6 +64,7 @@ namespace GoDriveDrop.Core.ViewModels
              builder.RegisterType<Commons>().As<ICommons>();
              builder.RegisterType<GoogleAddress>().As<IGoogleAddress>();
              builder.RegisterType<DriverService>().As<IDriverService>();
+            builder.RegisterType<SenderService>().As<ISenderService>();
 
 
 

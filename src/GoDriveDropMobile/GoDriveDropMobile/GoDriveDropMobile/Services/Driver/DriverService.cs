@@ -18,7 +18,7 @@ namespace GoDriveDrop.Core.Services.Driver
     {
         private IIdentityService _identityService;
         private readonly IRequestProvider _requestProvider;
-        private const string ApiUrlBase = "api/v1/drivers/";
+        private const string ApiUrlBase = "drivers/";
         public DriverService(
             IIdentityService identityService,
             IRequestProvider requestProvider)
@@ -26,9 +26,53 @@ namespace GoDriveDrop.Core.Services.Driver
             _identityService = identityService;
             _requestProvider = requestProvider;
         }
-        public async Task<string> CreateDriverAsync(NewDriverModel newDriver)
+        public async Task<string> CreateDriverAsync(NewDriverModel c)
         {
-            var dataString = string.Empty;
+            c.FromXamarin = true;
+
+            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            {
+                //Path = $"/account/RegisterUser?userName={userName}&password={password}"
+                Path = "/driver/NewDriverFromBody"
+            };
+            c.UserEmail = System.Net.WebUtility.UrlEncode(c.UserEmail);
+            c.Password = System.Net.WebUtility.UrlEncode(c.Password);
+            var uri = builder.ToString(); 
+             
+            try
+            {
+                var driver = await _requestProvider.PostAsync<NewDriverModel>(uri, c);
+                return "Info updated";
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (var errorResponse = (HttpWebResponse)wex.Response)
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            string error = reader.ReadToEnd();
+
+                            var errorList = JsonConvert.DeserializeObject<List<string>>(error,
+                   new JsonSerializerSettings
+                   {
+                       NullValueHandling = NullValueHandling.Ignore
+                   });
+
+
+                            //TODO: use JSON.net to parse this string and look at the error message
+                            //newDriver.ErrorMsg = error;
+                        }
+                    }
+                }
+
+                return "Something wrong !";
+            }
+        }
+            public async Task<string> BackCreateDriverAsync(NewDriverModel newDriver)
+            {
+                var dataString = string.Empty;
             //****************
             var result = "Info updated";
             var eroorMsg = string.Empty;

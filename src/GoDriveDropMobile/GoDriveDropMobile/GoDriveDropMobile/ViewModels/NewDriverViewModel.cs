@@ -8,378 +8,134 @@ using System.Windows.Input;
 using GoDriveDrop.Core.Models;
 using Xamarin.Forms;
 using Plugin.Media;
+using GoDriveDrop.Core.Validations;
+using GoDriveDrop.Core.Services.Driver;
+using GoDriveDrop.Core.Services.Common;
+using GoDriveDrop.Core.Services.User;
+using GoDriveDrop.Core.Services.RequestProvider;
+using GoDriveDrop.Core.Models.Commons;
+using GoDriveDrop.Core.Helpers;
+using System.Linq;
+using GoDriveDrop.Core.Services.Navigation;
 
 namespace GoDriveDrop.Core.ViewModels
 {
-    public class NewDriverViewModel: BaseViewModel
+    public class NewDriverViewModel : BaseViewModel
     {
-         
+        const string emailRegex = @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+        @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$";
 
-        public NewDriverViewModel()
+        private readonly IRequestProvider _requestProvider;
+        //  private Geocoder geoCoder;
+
+        private ValidatableObject<string> _user;
+
+        private ValidatableObject<string> _lastName;
+        private ValidatableObject<string> _firstName;
+        private ValidatableObject<string> _primaryPhone;
+        private ValidatableObject<string> _phone;
+        private ValidatableObject<int> _transportTypeId;
+        private ValidatableObject<string> _maxPackage;
+        private ValidatableObject<string> _pickupRadius;
+        private ValidatableObject<string> _deliverRadius;
+        private ValidatableObject<string> _vehicleMake;
+        private ValidatableObject<string> _vehicleModel;
+        private ValidatableObject<string> _vehicleColor;
+        private ValidatableObject<string> _vehicleYear;
+        private EmailRule<string> _userEmail;
+        private ValidatableObject<string> _password;
+        private ValidatableObject<string> _confirmPassword;
+
+        private bool _isValid;
+
+        private IUserService _userService;
+        private NewDriverModel _driver;
+        private IDriverService _driverService;
+        private IGoogleAddress _googleAddress;
+        private ICommons _commons;
+
+
+        public NewDriverViewModel(
+            ICommons commons,
+            IGoogleAddress googleAddress,
+            IRequestProvider requestProvider,
+            IDriverService driverService,
+            IUserService userService
+            )
         {
-            Title = "Be a Driver";
-            Icon = "serviceicon04";
+            _commons = commons;
+            _googleAddress = googleAddress;
+            _driverService = driverService;
+            _userService = userService;
+
+            _requestProvider = requestProvider;
+
+
+            _lastName = new ValidatableObject<string>();
+            _firstName = new ValidatableObject<string>();
+
+            _primaryPhone = new ValidatableObject<string>();
+            _phone = new ValidatableObject<string>();
+            _transportTypeId = new ValidatableObject<int>();
+            _maxPackage = new ValidatableObject<string>();
+            _pickupRadius = new ValidatableObject<string>();
+            _deliverRadius = new ValidatableObject<string>();
+            _vehicleMake = new ValidatableObject<string>();
+            _vehicleModel = new ValidatableObject<string>();
+            _vehicleColor = new ValidatableObject<string>();
+            _vehicleYear = new ValidatableObject<string>();
+            _userEmail = new EmailRule<string>();
+            _password = new ValidatableObject<string>();
+            _confirmPassword = new ValidatableObject<string>();
+
+
+            _user = new ValidatableObject<string>();
+             AddValidations();
+
+
+
+
         }
 
-        private NewDriverModel _newDriverModel = new NewDriverModel();
-
-        public NewDriverModel NewDriverModel
-        {
-            get { return _newDriverModel; }
-            set
-            {
-                _newDriverModel = value;
-                OnPropertyChanged("NewDriverModel"); // Add the OnPropertyChanged();
-            }
-        }
-
-        #region [Commands]
-        public ICommand SubmitCommand => new Command(async () => await SubmitAsync());
-
-        public async Task SubmitAsync()
-        {
-            IsBusy = true;
-            if (Password != ConfirmPassword)
-            {
-                await DialogService.ShowAlertAsync("Password and  Confirmation Password must be equal !", "User Name or Password Invalid!", "Ok");
-                IsBusy = false;
-                return;
-            }
-        }
-
-
-
-        public Command CreateCommand // for ADD
-        {
-            get
-            {
-                return new Command(() => {
-                    // for auto increment the id upon adding
-                    //_newDriverModel.CustomerId = _getRealmInstance.All<NewDriverModel>().Count() + 1;
-                    //_getRealmInstance.Write(() =>
-                    //{
-                    //    _getRealmInstance.Add(_customerDetails); // Add the whole set of details
-                    //});
-                });
-            }
-        }
-        public Command UpdateCommand // For UPDATE
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    // instantiate to supply the new set of details
-                    var customerDetailsUpdate = new NewDriverModel
-                    {
-                        CustomerId = _newDriverModel.CustomerId,
-                        LastName = _newDriverModel.LastName,
-                        FirstName = _newDriverModel.FirstName,                        
-                        PrimaryPhone= _newDriverModel.PrimaryPhone,
-                        Phone = _newDriverModel.Phone,
-                    };
-
-                    //_getRealmInstance.Write(() =>
-                    //{
-                    //    // when there's id match, the details will be replaced except by primary key
-                    //    _getRealmInstance.Add(customerDetailsUpdate, update: true);
-                    //})
-                });
-            }
-        }
-        public Command RemoveCommand
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    //// get the details with specific id
-                    //var getAllCustomerDetailsById = _getRealmInstance.All<CustomerDetails>().First(x => x.CustomerId == _customerDetails.CustomerId);
-
-                    //using (var transaction = _getRealmInstance.BeginWrite())
-                    //{
-                    //    // remove all details
-                    //    _getRealmInstance.Remove(getAllCustomerDetailsById);
-                    //    transaction.Commit();
-                    //};
-                });
-            }
-        }
-
+        #region image names
+        private string PersonalPhotoUri { set; get; }
+        private string VehiclePhotoUri { set; get; }
+        private string DriverLincensePictureUri { set; get; }
+        private string InsurancePhotoUri { set; get; } 
         #endregion
 
-        #region [Priver fields]
 
-        string lastName = string.Empty;
-        string LastName
-        {
-            get { return lastName; }
-            set { lastName = value;
-                OnPropertyChanged("LastName");
-            }
-        }
-        string firstName = string.Empty;
-        public string FirstName
-        {
-            get { return firstName; }
-            set
-            {
-                firstName = value;
-                OnPropertyChanged("FirstName");
-            }
-        }
-        string primaryPhone = string.Empty;
-        public string PrimaryPhone
-        {
-            get { return primaryPhone; }
-            set
-            {
-                primaryPhone = value;
-                OnPropertyChanged("PrimaryPhone");
-            }
-        }
-        string phone = string.Empty;
-        public string Phone
-        {
-            get { return phone; }
-            set
-            {
-                phone = value;
-                OnPropertyChanged("Phone");
-            }
-        }
-        string maxPackage = string.Empty;
-        public string MaxPackage
-        {
-            get { return maxPackage; }
-            set
-            {
-                maxPackage = value;
-                OnPropertyChanged("MaxPackage");
-            }
-        }
 
-        string pickupRadius = string.Empty;
-        public string PickupRadius
+        #region Pickers
+        private int selectedIndex;
+        public int SelectedIndex
         {
-            get { return pickupRadius; }
+            get
+            {
+                return selectedIndex;
+            }
             set
             {
-                pickupRadius = value;
-                OnPropertyChanged("PickupRadius");
-            }
-        }
+                selectedIndex = value;
 
-        string deliverRadius = string.Empty;
-        public string DeliverRadius
-        {
-            get { return deliverRadius; }
-            set
-            {
-                deliverRadius = value;
-                OnPropertyChanged("DeliverRadius");
+                RaisePropertyChanged(() => selectedIndex);
             }
         }
+        private IEnumerable<Generic> _vehicleTypes;
+        public IEnumerable<Generic> VehicleTypesList
+        {
+            get
+            {
+                return _vehicleTypes;
+            }
+            set
+            {
+                _vehicleTypes = value;
 
-        string transportTypeId = string.Empty;
-        public string TransportTypeId
-        {
-            get { return transportTypeId; }
-            set
-            {
-                transportTypeId = value;
-                OnPropertyChanged("TransportTypeId");
-            }
-        }
-
-        string _vehicleMake = string.Empty;
-        public  string VehicleMake
-        {
-            get { return _vehicleMake; }
-            set
-            {
-                _vehicleMake = value;
-                OnPropertyChanged("VehicleMake");
-            }
-        }
-        string _vehicleModel = string.Empty;
-        public  string VehicleModel
-        {
-            get { return _vehicleModel; }
-            set
-            {
-                _vehicleModel = value;
-                OnPropertyChanged("VehicleModel");
-            }
-        }
-        string _vehicleColor = string.Empty;
-        public  string VehicleColor
-        {
-            get { return _vehicleColor; }
-            set
-            {
-                _vehicleColor = value;
-                OnPropertyChanged("VehicleColor");
-            }
-        }
-
-        string _vehicleYear = string.Empty;
-        public  string  VehicleYear
-        {
-            get { return _vehicleYear; }
-            set
-            {
-                _vehicleYear = value;
-                OnPropertyChanged("VehicleYear");
-            }
-        }
-        string _user = string.Empty;
-        public  string UserEmail
-        {
-            get { return _user; }
-            set
-            {
-                _user = value;
-                OnPropertyChanged("UserEmail");
-}
-        }
-        string password = string.Empty;
-        public  string  Password
-        {
-            get { return password; }
-            set
-            {
-                password = value;
-                OnPropertyChanged("Password");
-            }
-        }
-        string _confirmPassword = string.Empty;
-        public  string  ConfirmPassword
-        {
-            get { return _confirmPassword; }
-            set
-            {
-                _confirmPassword = value;
-                OnPropertyChanged("ConfirmPassword");
+                RaisePropertyChanged(() => VehicleTypesList);
             }
         }
         #endregion
-
-        #region Command and associated methods for SearchCommand
-        private ObservableCollection<string> _list;
-        public ObservableCollection<string> Items
-        {
-            get
-            {
-                return _list;
-            }
-            set
-            {
-                _list = value;
-
-                OnPropertyChanged("Items");
-            }
-        }
-
-        private string _searchText = string.Empty;
-        public string SearchText
-        {
-            get { return _searchText; }
-            set
-            {
-                if (_searchText != value)
-                {
-                    _searchText = value ?? string.Empty;
-                    OnPropertyChanged("SearchText");
-                    // Perform the search
-                    //if (SearchCommand.CanExecute(null))
-                    //{
-                    //    SearchCommand.Execute(null);
-                    //}
-                }
-            }
-        }
-        public ICommand SearchCommand => new Command(async () => await DoSearchCommandAsync());
-        private async Task DoSearchCommandAsync()
-        {
-            // Refresh the list, which will automatically apply the search text
-
-            string keyword = SearchText;
-
-            if (keyword.Length >= 3)
-            {
-                var authToken = string.Empty; // GloboSettings.AuthAccessToken;
-                //IEnumerable<String> predictions = await _googleAddress.AutoComplete(keyword, authToken);
-                //Items = new ObservableCollection<string>(predictions);
-                //if (Items.Count > 0)
-                //    IsListViewVisible = true;
-            }
-        }
-
-        private string _selectedItem;
-        public string SelectedItem
-        {
-            get
-            {
-                return _selectedItem;
-            }
-            set
-            {
-                _selectedItem = value;
-
-                if (_selectedItem == null)
-                    return;
-                OnPropertyChanged("SelectedItem");
-                //SomeCommand.Execute(_selectedItem);
-                //  DialogService.ShowAlertAsync(_selectedItem, "Changes", "Ok");
-                IsListViewVisible = false;
-                IsDefaultAddressVisible = true;
-                DefaultAddress = _selectedItem;
-            }
-        }
-        public bool isListViewVisible;
-        public bool IsListViewVisible
-        {
-            get
-            {
-                return isListViewVisible;
-            }
-            set
-            {
-                isListViewVisible = value;
-                OnPropertyChanged("IsListViewVisible");
-            }
-        }
-
-        private string _defaultAddress;
-        public string DefaultAddress
-        {
-            get
-            {
-                return _defaultAddress;
-            }
-            set
-            {
-                _defaultAddress = value;
-                OnPropertyChanged("DefaultAddress");
-            }
-        }
-
-        public bool isDefaultAddressVisible;
-        public bool IsDefaultAddressVisible
-        {
-            get
-            {
-                return isDefaultAddressVisible;
-            }
-            set
-            {
-                isDefaultAddressVisible = value;
-                OnPropertyChanged("IsDefaultAddressVisible");
-            }
-        }
-        #endregion
-
 
         #region [profilePhotoImage profilePhotoImage profilePhotoImage]
 
@@ -396,7 +152,7 @@ namespace GoDriveDrop.Core.ViewModels
             {
                 _profilePhotoImage = value;
 
-                OnPropertyChanged("ProfilePhotoImage");
+                RaisePropertyChanged(() => ProfilePhotoImage);
             }
         }
 
@@ -440,7 +196,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-               await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
                 return;
             }
             var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -477,7 +233,7 @@ namespace GoDriveDrop.Core.ViewModels
             {
                 _licensePhotoImage = value;
 
-                OnPropertyChanged("LicensePhotoImage");
+                RaisePropertyChanged(() => LicensePhotoImage);
             }
         }
         public ICommand TakePhotoLicenseCommand => new Command(async () => await TakePhotoLicenseAsync());
@@ -510,7 +266,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-               await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
                 return;
             }
             var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -543,7 +299,7 @@ namespace GoDriveDrop.Core.ViewModels
             {
                 _vehiclePhotoImage = value;
 
-                OnPropertyChanged("VehiclePhotoImage");
+                RaisePropertyChanged(() => VehiclePhotoImage);
             }
         }
         public ICommand TakePhotoVehicleCommand => new Command(async () => await TakePhotoVehicleAsync());
@@ -551,7 +307,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
-             //   await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
+                await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
                 return;
             }
 
@@ -576,7 +332,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                //await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
                 return;
             }
             var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -609,7 +365,7 @@ namespace GoDriveDrop.Core.ViewModels
             {
                 _proofPhotoImage = value;
 
-                OnPropertyChanged("ProofPhotoImage");
+                RaisePropertyChanged(() => ProofPhotoImage);
             }
         }
         public ICommand TakePhotoProofCommand => new Command(async () => await TakePhotoProofAsync());
@@ -617,7 +373,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
-               // await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
+                await DialogService.ShowAlertAsync("No Camera", ":( No camera avaialble.", "OK");
                 return;
             }
 
@@ -642,7 +398,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-               // await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+                await DialogService.ShowAlertAsync("Photos Not Supported", ":( Permission not granted to photos.", "OK");
                 return;
             }
             var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -665,7 +421,666 @@ namespace GoDriveDrop.Core.ViewModels
 
         #endregion
 
+        #region Command and associated methods for SearchCommand
+        private ObservableCollection<string> _list;
+        public ObservableCollection<string> Items
+        {
+            get
+            {
+                return _list;
+            }
+            set
+            {
+                _list = value;
 
+                RaisePropertyChanged(() => Items);
+            }
+        }
+
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value ?? string.Empty;
+                    RaisePropertyChanged(() => SearchText);
+                    // Perform the search
+                    if (SearchCommand.CanExecute(null))
+                    {
+                        SearchCommand.Execute(null);
+                    }
+                }
+            }
+        }
+
+        public ICommand SearchCommand => new Command(async () => await DoSearchCommandAsync());
+        private async Task DoSearchCommandAsync()
+        {
+            // Refresh the list, which will automatically apply the search text
+
+            string keyword = SearchText;
+
+            if (keyword.Length >= 3)
+            {
+                var authToken = Settings.AuthAccessToken;
+                IEnumerable<String> predictions = await _googleAddress.AutoComplete(keyword, authToken);
+                Items = new ObservableCollection<string>(predictions);
+                if (Items.Count > 0)
+                    IsListViewVisible = true;
+            }
+        }
+
+        private string _selectedItem;
+        public string SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                _selectedItem = value;
+
+                if (_selectedItem == null)
+                    return;
+                RaisePropertyChanged(() => SelectedItem);
+                //SomeCommand.Execute(_selectedItem);
+                //  DialogService.ShowAlertAsync(_selectedItem, "Changes", "Ok");
+                IsListViewVisible = false;
+                IsDefaultAddressVisible = true;
+                DefaultAddress = _selectedItem;
+            }
+        }
+        public bool isListViewVisible;
+        public bool IsListViewVisible
+        {
+            get
+            {
+                return isListViewVisible;
+            }
+            set
+            {
+                isListViewVisible = value;
+                RaisePropertyChanged(() => IsListViewVisible);
+            }
+        }
+
+        private string _defaultAddress;
+        public string DefaultAddress
+        {
+            get
+            {
+                return _defaultAddress;
+            }
+            set
+            {
+                _defaultAddress = value;
+                RaisePropertyChanged(() => DefaultAddress);
+            }
+        }
+
+        public bool isDefaultAddressVisible;
+        public bool IsDefaultAddressVisible
+        {
+            get
+            {
+                return isDefaultAddressVisible;
+            }
+            set
+            {
+                isDefaultAddressVisible = value;
+                RaisePropertyChanged(() => IsDefaultAddressVisible);
+            }
+        }
+        #endregion
+
+
+        public NewDriverModel NewDriver
+        {
+            get { return _driver; }
+            set
+            {
+                _driver = value;
+                RaisePropertyChanged(() => NewDriver);
+            }
+        }
+
+
+        public override async Task InitializeAsync(object navigationData)
+        {
+            IsBusy = false;
+
+            var authToken = Settings.AuthAccessToken;
+            VehicleTypesList = await _commons.VehicleTypes(token: authToken);
+
+
+
+            IsBusy = false;
+
+        }
+
+        #region Fields
+        public ValidatableObject<string> LastName
+        {
+
+            get { return _lastName; }
+            set
+            {
+
+                _lastName = value;
+                RaisePropertyChanged(() => LastName);
+            }
+        }
+
+        public ValidatableObject<string> FirstName
+        {
+            get { return _firstName; }
+            set
+            {
+                _firstName = value;
+                RaisePropertyChanged(() => FirstName);
+            }
+        }
+
+        public ValidatableObject<string> PrimaryPhone
+        {
+            get { return _primaryPhone; }
+            set
+            {
+                _primaryPhone = value;
+                RaisePropertyChanged(() => PrimaryPhone);
+            }
+        }
+
+        public ValidatableObject<string> Phone
+        {
+            get { return _phone; }
+            set
+            {
+                _phone = value;
+                RaisePropertyChanged(() => Phone);
+            }
+        }
+
+        public string DeliveryStreet { get; set; }
+        public string DeliveryCity { get; set; }
+        public string DeliveryState { get; set; }
+        public string DeliveryCountry { get; set; }
+        public string DeliveryZipCode { get; set; }
+
+        public ValidatableObject<string> MaxPackage
+        {
+            get { return _maxPackage; }
+            set
+            {
+                _maxPackage = value;
+                RaisePropertyChanged(() => MaxPackage);
+            }
+        }
+
+        public ValidatableObject<string> PickupRadius
+        {
+            get { return _pickupRadius; }
+            set
+            {
+                _pickupRadius = value;
+                RaisePropertyChanged(() => PickupRadius);
+            }
+        }
+
+        public ValidatableObject<string> DeliverRadius
+        {
+            get { return _deliverRadius; }
+            set
+            {
+                _deliverRadius = value;
+                RaisePropertyChanged(() => DeliverRadius);
+            }
+        }
+        public ValidatableObject<int> TransportTypeId
+        {
+            get { return _transportTypeId; }
+            set
+            {
+                _transportTypeId = value;
+                RaisePropertyChanged(() => TransportTypeId);
+            }
+        }
+        public ValidatableObject<string> VehicleMake
+        {
+            get { return _vehicleMake; }
+            set
+            {
+                _vehicleMake = value;
+                RaisePropertyChanged(() => VehicleMake);
+            }
+        }
+        public ValidatableObject<string> VehicleModel
+        {
+            get { return _vehicleModel; }
+            set
+            {
+                _vehicleModel = value;
+                RaisePropertyChanged(() => VehicleModel);
+            }
+        }
+        public ValidatableObject<string> VehicleColor
+        {
+            get { return _vehicleColor; }
+            set
+            {
+                _vehicleColor = value;
+                RaisePropertyChanged(() => VehicleColor);
+            }
+        }
+        public ValidatableObject<string> VehicleYear
+        {
+            get { return _vehicleYear; }
+            set
+            {
+                _vehicleYear = value;
+                RaisePropertyChanged(() => VehicleYear);
+            }
+        }
+
+        public ValidatableObject<string> UserEmail
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                RaisePropertyChanged(() => UserEmail);
+            }
+        }
+        public ValidatableObject<string> Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = value;
+                RaisePropertyChanged(() => Password);
+            }
+        }
+        public ValidatableObject<string> ConfirmPassword
+        {
+            get { return _confirmPassword; }
+            set
+            {
+                _confirmPassword = value;
+                RaisePropertyChanged(() => ConfirmPassword);
+            }
+        }
+
+        #endregion
+
+        public bool IsValid
+        {
+            get
+            {
+                return _isValid;
+            }
+            set
+            {
+                _isValid = value;
+                RaisePropertyChanged(() => IsValid);
+            }
+        }
+
+        public ICommand ValidateFirstNameCommand => new Command(() => ValidateFirstName());
+        public ICommand ValidateLastNameCommand => new Command(() => ValidateLastName());
+        public ICommand ValidatePrimaryPhoneCommand => new Command(() => ValidatePrimaryPhone());
+        public ICommand ValidatePhoneCommand => new Command(() => ValidatePhone());
+
+        public ICommand ValidateMaxPackageCommand => new Command(() => ValidateMaxPackage());
+        public ICommand ValidatePickupRadiusCommand => new Command(() => ValidatePickupRadius());
+        public ICommand ValidateDeliverRadiusCommand => new Command(() => ValidateDeliverRadius());
+        public ICommand ValidateTransportTypeIdCommand => new Command(() => ValidateTransportTypeId());
+        public ICommand ValidateVehicleMakeCommand => new Command(() => ValidateVehicleMake());
+
+
+        public ICommand ValidateUserEmailCommand => new Command(() => ValidateUserEmail());
+        public ICommand ValidatePasswordCommand => new Command(() => ValidatePassword());
+        public ICommand ValidateConfirmPasswordCommand => new Command(() => ValidateConfirmPassword());
+
+
+        public ICommand SubmitCommand => new Command(async () => await SubmitAsync());
+
+        public ICommand OnSearchTextChangedCommand => new Command(async () => await DialogService.ShowAlertAsync("Chamges", "Changes", "Ok"));
+
+        //public ICommand takePhotoCommand => new Command(async () => await DialogService.ShowAlertAsync("Phonto", "Phonto", "Ok"));
+
+
+
+
+
+        public async Task SubmitAsync()
+        {
+            // await _driverService.CreateDriverAsync(new NewDriver());
+
+            IsBusy = true;
+
+            bool isValid = Validate();
+            if (isValid)
+            {
+                if (Password.Value != ConfirmPassword.Value)
+                {
+                    await DialogService.ShowAlertAsync("Password and  Confirmation Password must be equal !", "User Name or Password Invalid!", "Ok");
+                    IsBusy = false;
+                    return;
+                }
+                 
+                var vTypes = VehicleTypesList.ToList();
+
+
+                var valid = await _commons.ValidateUserName(UserEmail.Value);
+                if (!valid.Contains("true"))
+                {
+
+                    await DialogService.ShowAlertAsync("Invalid User Name or Password", "User Name Issue", "Ok");
+
+                    IsBusy = false;
+                    return;
+                }
+
+
+                // fix the address
+                AddressModel address = await _googleAddress.CompleteAddress(DefaultAddress, "");
+
+                var driver = new NewDriverModel
+                {
+                    DeliveryStreet = address.Street,
+                    DeliveryCity = address.City,
+                    DeliveryState = address.State,
+                    DeliveryZipCode = address.ZipCode,
+                    DeliveryCountry = address.Country,
+                    DeliveryLatitude = address.Latitude,
+                    DeliveryLongitude = address.Longitude,
+
+
+                    FirstName = FirstName.Value,
+                    LastName = LastName.Value,
+                    PrimaryPhone = PrimaryPhone.Value,
+                    Phone = Phone.Value,
+
+                    MaxPackage = MaxPackage.Value,
+                    DeliverRadius = DeliverRadius.Value,
+                    PickupRadius = PickupRadius.Value,
+                    TransportTypeId = vTypes[SelectedIndex].Id,
+                    VehicleMake = VehicleMake.Value,
+                    VehicleModel = VehicleModel.Value,
+                    VehicleColor = VehicleColor.Value,
+                    VehicleYear = VehicleYear.Value,
+                     
+                    UserEmail = UserEmail.Value,
+                    Password = Password.Value,
+                    ConfirmPassword = ConfirmPassword.Value,
+                    Email = UserEmail.Value,
+                };
+
+
+
+                bool isvalidpi = ProfilePhotoImageMS != null ? true : false;
+                bool isvalidlpi = LicensePhotoImageS != null ? true : false;
+                bool isvalidvpi = VehiclePhotoImages != null ? true : false;
+                bool isvalidppi = ProofPhotoImages != null ? true : false;
+
+                if (!isvalidpi || !isvalidlpi || !isvalidvpi || !isvalidppi)
+                {
+                    await DialogService.ShowAlertAsync("Need a profile or driver license or vehicle or proof of insurance photo", "Saving data ProfilePhotoImage", "Ok");
+                    IsBusy = false;
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(PersonalPhotoUri) && ProfilePhotoImageMS.CanRead)
+                    driver.PersonalPhotoUri = await _commons.UploadImage(ProfilePhotoImageMS, "driver");                
+                else
+                    driver.PersonalPhotoUri = PersonalPhotoUri;
+
+                if (string.IsNullOrEmpty(VehiclePhotoUri) && VehiclePhotoImages.CanRead)
+                    driver.VehiclePhotoUri = await _commons.UploadImage(VehiclePhotoImages, "driver");
+                else
+                    driver.VehiclePhotoUri = VehiclePhotoUri;
+
+                if (string.IsNullOrEmpty(DriverLincensePictureUri) && LicensePhotoImageS.CanRead)
+                    driver.DriverLincensePictureUri = await _commons.UploadImage(LicensePhotoImageS, "driver");
+                else
+                    driver.DriverLincensePictureUri = DriverLincensePictureUri;
+
+                if (string.IsNullOrEmpty(InsurancePhotoUri) && ProofPhotoImages.CanRead)
+                    driver.InsurancePhotoUri = await _commons.UploadImage(ProofPhotoImages, "driver");
+                else
+                    driver.InsurancePhotoUri = InsurancePhotoUri;
+
+                PersonalPhotoUri = driver.PersonalPhotoUri;
+                VehiclePhotoUri = driver.VehiclePhotoUri;
+                DriverLincensePictureUri = driver.DriverLincensePictureUri;
+                InsurancePhotoUri = driver.InsurancePhotoUri;
+
+
+
+
+                if (string.IsNullOrWhiteSpace(driver.PersonalPhotoUri) ||
+                    string.IsNullOrWhiteSpace(driver.VehiclePhotoUri) ||
+                    string.IsNullOrWhiteSpace(driver.DriverLincensePictureUri) ||
+                    string.IsNullOrWhiteSpace(driver.InsurancePhotoUri))
+                {
+                    IsBusy = false;
+                    await DialogService.ShowAlertAsync("Unable to Save Photos !", "Verify Informations", "Ok");
+                    return;
+                }
+                 
+
+                var response = "Info updated";
+                try
+                {
+                    response = await _driverService.CreateDriverAsync(driver);
+
+
+                }
+                catch (Exception ex)
+                {
+                    response = ex.Message;
+
+                    IsValid = false;
+                }
+                if (response == "Info updated")
+                {
+                    await DialogService.ShowAlertAsync(" Shortly, you will receive an email with a link. Follow the link to verify your email address.", "Driver Account has Been Created", "Ok");
+                    IsValid = true;
+
+
+                    var navigationService = ViewModelLocator.Resolve<INavigationService>();
+                     await navigationService.InitializeAsync();
+                }
+                else
+                {
+                    await DialogService.ShowAlertAsync(response, "Error", "Ok");
+                    IsValid = false;
+                }
+
+
+            }
+            else
+            {
+                await DialogService.ShowAlertAsync("Something Wrong !", "Verify Informations", "Ok");
+
+
+
+                IsValid = false;
+            }
+            IsBusy = false;
+
+        }
+
+
+        private bool Validate()
+        {
+            bool isValidFirstName = ValidateFirstName();
+            bool isValidLastName = ValidateLastName();
+            bool isValiPP = ValidatePrimaryPhone();
+            bool isValiP = ValidatePhone();
+            bool isValiVM = ValidateVehicleMake();
+            bool isValiVEM = ValidateVehicleModel();
+            bool isValiVC = ValidateVehicleColor();
+            bool isValiVY = ValidateVehicleYear();
+            bool isValiE = ValidateUserEmail();
+            bool isValiPass = ValidatePassword();
+            bool isValiPC = ValidateConfirmPassword();
+
+            bool isvalidpi = ValidateProfilePhotoImage();
+            bool isvalidlpi = ValidatelicensePhotoImage();
+            bool isvalidvpi = ValidatevehiclePhotoImage();
+            bool isvalidppi = ValidateProofPhotoImage();
+
+
+            bool validMp = ValidateMaxPackage();
+            bool validRp = ValidatePickupRadius();
+            bool validDp = ValidateDeliverRadius();
+
+
+
+            return isValidFirstName &&
+                    isValidLastName &&
+                    isValiPP &&
+                    isValiP &&
+                    isValiVM &&
+                    isValiVEM &&
+                    isValiVC &&
+                    isValiVC &&
+                    isValiVY &&
+                    isValiE &&
+                    isValiPass &&
+                    isValiPC &&
+                    isvalidpi &&
+                    isvalidlpi &&
+                    isvalidvpi &&
+                    isvalidppi &&
+                    validMp &&
+                    validRp &&
+                    validDp;
+
+        }
+        private bool ValidateProfilePhotoImage()
+        {
+            if (string.IsNullOrEmpty(ProfilePhotoImage.ToString()) || ProfilePhotoImage.ToString().Trim() == "Assets/profileicon.png")
+                return false;
+            return true;
+        }
+        private bool ValidatelicensePhotoImage()
+        {
+            if (string.IsNullOrEmpty(LicensePhotoImage.ToString()) || LicensePhotoImage.ToString().Trim() == "Assets/profileicon.png")
+                return false;
+            return true;
+        }
+        private bool ValidatevehiclePhotoImage()
+        {
+            if (string.IsNullOrEmpty(VehiclePhotoImage.ToString()) || VehiclePhotoImage.ToString().Trim() == "Assets/profileicon.png")
+                return false;
+            return true;
+        }
+        private bool ValidateProofPhotoImage()
+        {
+            if (string.IsNullOrEmpty(ProofPhotoImage.ToString()) || ProofPhotoImage.ToString().Trim() == "Assets/profileicon.png")
+                return false;
+            return true;
+        }
+        private bool ValidateFirstName()
+        {
+            return _firstName.Validate();
+        }
+        private bool ValidateLastName()
+        {
+            return _lastName.Validate();
+        }
+
+        private bool ValidatePrimaryPhone()
+        {
+            return _primaryPhone.Validate();
+        }
+        private bool ValidatePhone()
+        {
+            return _phone.Validate();
+        }
+
+        private bool ValidateMaxPackage()
+        {
+            return   _maxPackage.Validate();
+        }
+        private bool ValidatePickupRadius()
+        {
+            return   _pickupRadius.Validate();
+        }
+        private bool ValidateDeliverRadius()
+        {
+            return   _deliverRadius.Validate();
+        }
+        private bool ValidateTransportTypeId()
+        {
+            return _transportTypeId.Value > 0; // _transportTypeId.Validate();
+        }
+
+        private bool ValidateVehicleMake()
+        {
+            return _vehicleMake.Validate();
+        }
+        private bool ValidateVehicleModel()
+        {
+            return _vehicleModel.Validate();
+        }
+        private bool ValidateVehicleColor()
+        {
+            return _vehicleColor.Validate();
+        }
+        private bool ValidateVehicleYear()
+        {
+            return _vehicleYear.Validate();
+        }
+        private bool ValidateUserEmail()
+        {
+            // return true;
+            //Task.Run(async () => {
+
+            //    var tt = await _commons.ValidateUserName(UserEmail.Value);
+            //});
+           
+               return _userEmail.Check(UserEmail.Value);
+        }
+        private bool ValidatePassword()
+        {
+            return _password.Validate();
+        }
+        private bool ValidateConfirmPassword()
+        {
+            return _confirmPassword.Validate();
+        }
+
+
+        private void AddValidations()
+        {
+            _firstName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "First Name is required." });
+            _lastName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Last Name is required." });
+
+            _primaryPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Contact Phone is required." });
+            _phone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Cell Phone is required." });
+            _transportTypeId.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Transportation is required." });
+            _maxPackage.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Maximum Package to Pickup is required." });
+            _pickupRadius.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Maximum Drive Pickup Radius in Miles is required." });
+            _deliverRadius.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Maximum Drive Deliver Package Radius  in Miles is required." });
+            _vehicleMake.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Make is required." });
+            _vehicleModel.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Model is required." });
+            _vehicleColor.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Color is required." });
+            _vehicleYear.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Vehicle Year is required." });
+            _userEmail.ValidationMessage = "User Name is required.";
+            _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password is required." });
+            _confirmPassword.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Configrmation Password is required." });
+
+
+
+
+        }
 
     }
 }

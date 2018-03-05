@@ -21,6 +21,10 @@ namespace DriveDrop.Bl.ViewModels
 
             PackageSizeList = new List<SelectListItem>(); 
         }
+
+        public bool FromXamarin { get; set; }
+
+
         //[FileExtensions(Extensions = ".jpg,.jpeg")]
         [Display(Name = "profile photo")]
         [Required(ErrorMessage = "Your must provide a profile photo")]       

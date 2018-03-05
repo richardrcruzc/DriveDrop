@@ -22,6 +22,9 @@ namespace GoDriveDropMobile.UWP
     /// </summary>
     sealed partial class App : Application
     {
+#if WINDOWS_PHONE_APP
+        private TransitionCollection transitions;
+#endif
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -40,7 +43,12 @@ namespace GoDriveDropMobile.UWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
-
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                DebugSettings.EnableFrameRateCounter = true;
+            }
+#endif
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -96,6 +104,14 @@ namespace GoDriveDropMobile.UWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+#if WINDOWS_PHONE_APP
+          Plugin.Media.MediaImplementation.OnFilesPicked(args);                      
+#endif
+
+            base.OnActivated(args);
         }
     }
 }

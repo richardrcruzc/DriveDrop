@@ -11,7 +11,8 @@ namespace GoDriveDrop.Core.Models
         Package, 
         Password,
         About,
-        
+        LogOut
+
     }
     public class HomeMenuItem : BaseModel
     {

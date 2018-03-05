@@ -17,7 +17,7 @@ namespace GoDriveDrop.Core.Services.Common
     public class Commons:ICommons
     {
         private readonly IRequestProvider _requestProvider;
-        private const string ApiUrlBase = "api/v1/common";
+        private const string ApiUrlBase = "common";
 
         public Commons(IRequestProvider requestProvider)
         {
@@ -46,7 +46,7 @@ namespace GoDriveDrop.Core.Services.Common
 
             var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
             {
-                Path = $"api/v1/Pic/UploadFiles/belong/{belingTo}"
+                Path = $"Pic/UploadFiles/belong/{belingTo}"
             };
             var uri = builder.ToString();
             

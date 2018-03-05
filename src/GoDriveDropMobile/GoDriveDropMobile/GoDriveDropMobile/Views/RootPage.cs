@@ -1,5 +1,6 @@
 ﻿using GoDriveDrop.Core.Controls;
 using GoDriveDrop.Core.Models;
+using GoDriveDrop.Core.Services.Navigation;
 using GoDriveDrop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace GoDriveDrop.Core.Views
 
 
         public async Task NavigateAsync(int id)
-        {
+        { 
 
             if (Detail != null)
             {
@@ -56,24 +57,38 @@ namespace GoDriveDrop.Core.Views
                     case (int)MenuType.About:
                         Pages.Add(id, new GoDriveDropNavigationPage(new AboutPage()));
                         break;
-                    //case (int)MenuType.Blog:
-                    //    Pages.Add(id, new GoDriveDropNavigationPage(new BlogPage()));
-                    //    break;
-                    //case (int)MenuType.DeveloperLife:
-                    //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
-                    //    break;
-                    //case (int)MenuType.Hanselminutes:
-                    //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
-                    //    break;
-                    //case (int)MenuType.Ratchet:
-                    //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
-                    //    break;
-                    //case (int)MenuType.Twitter:
-                    //    Pages.Add(id, new GoDriveDropNavigationPage(new TwitterPage()));
-                    //    break;
-                    //case (int)MenuType.Videos:
-                    //    Pages.Add(id, new GoDriveDropNavigationPage(new Channel9VideosPage()));
-                    //    break;
+
+                    case (int)MenuType.LogOut:
+                        IsBusy = true;
+                        // Logout
+
+                        var navigationService = ViewModelLocator.Resolve<INavigationService>();
+                        await navigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
+                       await navigationService.RemoveBackStackAsync();
+                         
+                        IsBusy = false;
+                        return;
+                    default:
+                        Pages.Add(id, new GoDriveDropNavigationPage(new AboutPage()));
+                        break;
+                        //case (int)MenuType.Blog:
+                        //    Pages.Add(id, new GoDriveDropNavigationPage(new BlogPage()));
+                        //    break;
+                        //case (int)MenuType.DeveloperLife:
+                        //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
+                        //    break;
+                        //case (int)MenuType.Hanselminutes:
+                        //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
+                        //    break;
+                        //case (int)MenuType.Ratchet:
+                        //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
+                        //    break;
+                        //case (int)MenuType.Twitter:
+                        //    Pages.Add(id, new GoDriveDropNavigationPage(new TwitterPage()));
+                        //    break;
+                        //case (int)MenuType.Videos:
+                        //    Pages.Add(id, new GoDriveDropNavigationPage(new Channel9VideosPage()));
+                        //    break;
                 }
             }
 

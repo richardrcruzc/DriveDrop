@@ -18,11 +18,7 @@ namespace DriveDrop.Bl.Data
     {
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
 
-
-        //public ApplicationDbContextSeed(IPasswordHasher<ApplicationUser> passwordHasher)
-        //{
-        //    _passwordHasher = passwordHasher;
-        //}
+        
 
         public async Task SeedAsync(ApplicationDbContext context, IHostingEnvironment env,
           ILogger<ApplicationDbContextSeed> logger, IOptions<AppSettings> settings, int? retry = 0)
@@ -42,7 +38,6 @@ namespace DriveDrop.Bl.Data
 
                     await context.SaveChangesAsync();
                 }
-
                 //if (useCustomizationData)
                 //{
                 //    GetPreconfiguredImages(contentRootPath, webroot, logger);

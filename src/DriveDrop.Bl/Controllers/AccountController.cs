@@ -15,308 +15,269 @@ using DriveDrop.Bl.ViewModels.AccountViewModels;
 using DriveDrop.Bl.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Wangkanai.Detection;
+using IdentityServer4.Services;
+using IdentityServer4.Stores;
+using IdentityServer4.Models;
+using DriveDrop.Bl.ViewModels;
+using IdentityModel;
+using IdentityServer4;
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
+ 
+
 
 namespace DriveDrop.Bl.Controllers
 {
-    [Authorize]
-    [Route("[controller]/[action]")]
+    /// <summary>
+    /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
+    /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
+    /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
+    /// </summary>
     public class AccountController : Controller
     {
-        private readonly IUserAgent _useragent;
-        private readonly IDevice _device;
-
+        //private readonly InMemoryUserLoginService _loginService;
+        private readonly ILoginService<ApplicationUser> _loginService;
+        private readonly IIdentityServerInteractionService _interaction;
+        private readonly IClientStore _clientStore;
+        private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+
         private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
+
+        private readonly StatisticsService _statisticsService;
+        
 
         public AccountController(
-            IDeviceResolver deviceResolver,
+
+            //InMemoryUserLoginService loginService,
+            ILoginService<ApplicationUser> loginService,
+            IIdentityServerInteractionService interaction,
+            IClientStore clientStore,
+            ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
-            ILogger<AccountController> logger)
+             IEmailSender emailSender,
+             StatisticsService statisticsService)
         {
-            _useragent = deviceResolver.UserAgent;
-            _device = deviceResolver.Device;
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _statisticsService = statisticsService;
             _emailSender = emailSender;
+            _loginService = loginService;
+            _interaction = interaction;
+            _clientStore = clientStore;
             _logger = logger;
+            _userManager = userManager;
         }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
-
+        /// <summary>
+        /// Show login page
+        /// </summary>
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl)
         {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ViewData["ReturnUrl"] = returnUrl;
-
-            //if (_device.Type == DeviceType.Desktop)
-            //{
-            //    //some logic
-            //}
-            if (_device.Type == DeviceType.Mobile || _device.Type == DeviceType.Tablet)
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            if (context?.IdP != null)
             {
-                //some logic
-                return View("LoginMobile");
+                // if IdP is passed, then bypass showing the login screen
+                return ExternalLogin(context.IdP, returnUrl);
             }
-            
 
-            return View();
-        }
-         
-     //
-// POST: /Account/Login
-[HttpPost]
-    [AllowAnonymous]
-    [ValidateAntiForgeryToken] 
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-    {
-        ViewData["ReturnUrl"] = returnUrl;
-        if (ModelState.IsValid)
-        {
-             
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email,model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(1, "User logged in.");
+            var vm = await BuildLoginViewModelAsync(returnUrl, context);
 
-               
-                    //        var claims = new List<Claim>
-                    //    {
-                    //        new Claim(ClaimTypes.Name, model.Email, ClaimValueTypes.String, "https://godrivedrop.com")
-                    //    };
-                    //        var userIdentity = new ClaimsIdentity(claims, "SecureLogin");
-                    //        var userPrincipal = new ClaimsPrincipal(userIdentity);
+            //ViewData["ReturnUrl"] = returnUrl;
+            //if(_statisticsService.Mobile())
+            //    return View("LoginMobile", vm);
+            //else
+                return View(vm);
 
-
-                    //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    //userPrincipal,
-                    //new AuthenticationProperties
-                    //{
-                    //    ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
-                    //    IsPersistent = true,
-                    //    AllowRefresh = false
-                    //});
-
-                    if (Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return RedirectToAction("Index", "Home");
-                }
-            if (result.RequiresTwoFactor)
-            {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning(2, "User account locked out.");
-
-                return View("Lockout");
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View(model);
-            }
         }
 
-        // If we got this far, something failed, redisplay form
-      
-            if (_device.Type == DeviceType.Mobile || _device.Type == DeviceType.Tablet)
-            {
-                //some logic
-                return View("LoginMobile", model);
-            }
-            return View(model);
-        }
-        // POST: /Account/Login 
-        [AllowAnonymous]
+        /// <summary>
+        /// Handle postback from username/password login
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Authenticate([FromBody] LoginViewModel model )
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-           
             if (ModelState.IsValid)
             {
-
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user = await _loginService.FindByUsername(model.Email);
+                if (await _loginService.ValidateCredentials(user, model.Password))
                 {
-                    _logger.LogInformation(1, "User logged in.");
+                    AuthenticationProperties props = null;
+                    if (model.RememberMe)
+                    {
+                        props = new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddYears(10)
+                        };
+                    };
 
+                    await _loginService.SignIn(user);
 
-                    //        var claims = new List<Claim>
-                    //    {
-                    //        new Claim(ClaimTypes.Name, model.Email, ClaimValueTypes.String, "https://godrivedrop.com")
-                    //    };
-                    //        var userIdentity = new ClaimsIdentity(claims, "SecureLogin");
-                    //        var userPrincipal = new ClaimsPrincipal(userIdentity);
+                    // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
+                    if (_interaction.IsValidReturnUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
 
-
-                    //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    //userPrincipal,
-                    //new AuthenticationProperties
-                    //{
-                    //    ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
-                    //    IsPersistent = true,
-                    //    AllowRefresh = false
-                    //});
-
-                    //if (Url.IsLocalUrl(returnUrl))
-                    //{
-                    //    return Redirect(returnUrl);
-                    //}
-                    //return RedirectToAction("Index", "Home");
-
-                    
+                    return Redirect("~/");
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return new JsonResult("RequiresTwoFactor");
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return new JsonResult("IsLockedOut");
-                }
-                else
-                {
-                   
-                    return new JsonResult("Invalid login attempt");
-                }
+
+                ModelState.AddModelError("", "Invalid username or password.");
             }
 
-            // If we got this far, something failed, redisplay form
-            return new JsonResult("something failed");
+            // something went wrong, show form with error
+            var vm = await BuildLoginViewModelAsync(model);
+
+            ViewData["ReturnUrl"] = model.ReturnUrl;
+
+          //if(_statisticsService.Mobile())
+          //      return View("LoginMobile", vm);
+          //  else
+                return View(vm);
         }
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
+
+        async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl, AuthorizationRequest context)
         {
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-
-            if (user == null)
+            var allowLocal = true;
+            if (context?.ClientId != null)
             {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
+                var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
+                if (client != null)
+                {
+                    allowLocal = client.EnableLocalLogin;
+                }
             }
 
-            var model = new LoginWith2faViewModel { RememberMe = rememberMe };
-            ViewData["ReturnUrl"] = returnUrl;
-
-            return View(model);
+            return new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                Email = context?.LoginHint,
+            };
         }
 
+        async Task<LoginViewModel> BuildLoginViewModelAsync(LoginViewModel model)
+        {
+            var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+            var vm = await BuildLoginViewModelAsync(model.ReturnUrl, context);
+            vm.Email = model.Email;
+            vm.RememberMe = model.RememberMe;
+            return vm;
+        }
+
+        /// <summary>
+        /// Show logout page
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Logout(string logoutId)
+        {
+            if (User.Identity.IsAuthenticated == false)
+            {
+                // if the user is not authenticated, then just show logged out page
+                return await Logout(new LogoutViewModel { LogoutId = logoutId });
+            }
+
+            //Test for Xamarin. 
+            var context = await _interaction.GetLogoutContextAsync(logoutId);
+            if (context?.ShowSignoutPrompt == false)
+            {
+                //it's safe to automatically sign-out
+                return await Logout(new LogoutViewModel { LogoutId = logoutId });
+            }
+
+            // show the logout prompt. this prevents attacks where the user
+            // is automatically signed out by another malicious web page.
+            var vm = new LogoutViewModel
+            {
+                LogoutId = logoutId
+            };
+            return View(vm);
+        }
+
+        /// <summary>
+        /// Handle logout page postback
+        /// </summary>
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginWith2fa(LoginWith2faViewModel model, bool rememberMe, string returnUrl = null)
+        public async Task<IActionResult> Logout(LogoutViewModel model)
         {
-            if (!ModelState.IsValid)
+            var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+
+            if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
             {
-                return View(model);
+                if (model.LogoutId == null)
+                {
+                    // if there's no current logout context, we need to create one
+                    // this captures necessary info from the current logged in user
+                    // before we signout and redirect away to the external IdP for signout
+                    model.LogoutId = await _interaction.CreateLogoutContextAsync();
+                }
+
+                string url = "/Account/Logout?logoutId=" + model.LogoutId;
+
+                try
+                {
+
+                    // hack: try/catch to handle social providers that throw
+                    await HttpContext.SignOutAsync(idp, new AuthenticationProperties
+                    {
+                        RedirectUri = url
+                    });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical(ex.Message);
+                }
             }
 
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            // delete authentication cookie
+            await HttpContext.SignOutAsync();
 
-            var authenticatorCode = model.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+            // set this so UI rendering sees an anonymous user
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, model.RememberMachine);
+            // get context information (client name, post logout redirect URI and iframe for federated signout)
+            var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
 
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
-                return RedirectToLocal(returnUrl);
-            }
-            else if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID {UserId}.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
-                return View();
-            }
+            return Redirect(logout?.PostLogoutRedirectUri);
         }
 
+
+        public async Task<IActionResult> DeviceLogOut(string redirectUrl)
+        {
+            // delete authentication cookie
+            await HttpContext.SignOutAsync();
+
+            // set this so UI rendering sees an anonymous user
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+            return Redirect(redirectUrl);
+        }
+
+        /// <summary>
+        /// initiate roundtrip to external authentication provider
+        /// </summary>
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginWithRecoveryCode(string returnUrl = null)
+        public IActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
+            if (returnUrl != null)
             {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
+                returnUrl = UrlEncoder.Default.Encode(returnUrl);
             }
+            returnUrl = "/account/externallogincallback?returnUrl=" + returnUrl;
 
-            ViewData["ReturnUrl"] = returnUrl;
-
-            return View();
+            // start challenge and roundtrip the return URL
+            var props = new AuthenticationProperties
+            {
+                RedirectUri = returnUrl,
+                Items = { { "scheme", provider } }
+            };
+            return new ChallengeResult(provider, props);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginWithRecoveryCode(LoginWithRecoveryCodeViewModel model, string returnUrl = null)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
 
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
-            }
-
-            var recoveryCode = model.RecoveryCode.Replace(" ", string.Empty);
-
-            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID {UserId} logged in with a recovery code.", user.Id);
-                return RedirectToLocal(returnUrl);
-            }
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
-                return View();
-            }
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Lockout()
-        {
-            return View();
-        }
-
+        // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
@@ -325,6 +286,8 @@ namespace DriveDrop.Bl.Controllers
             return View();
         }
 
+        //
+        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -333,115 +296,46 @@ namespace DriveDrop.Bl.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    //CardHolderName = model.User.CardHolderName,
+                    //CardNumber = model.User.CardNumber,
+                    //CardType = model.User.CardType,
+                    //City = model.User.City,
+                    //Country = model.User.Country,
+                    //Expiration = model.User.Expiration,
+                    //LastName = model.User.LastName,
+                    //Name = model.User.Name,
+                    //Street = model.User.Street,
+                    //State = model.User.State,
+                    //ZipCode = model.User.ZipCode,
+                    //PhoneNumber = model.p.User.PhoneNumber,
+                    //SecurityNumber = model.User.SecurityNumber
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (result.Errors.Count() > 0)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                   // await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    AddErrors(result);
+                    // If we got this far, something failed, redisplay form
+                    return View(model);
                 }
-                AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            if (returnUrl != null)
+            {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    return Redirect(returnUrl);
+                else
+                    if (ModelState.IsValid)
+                    return RedirectToAction("login", "account", new { returnUrl = returnUrl });
+                else
+                    return View(model);
+            }
+
+            return RedirectToAction("index", "home");
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignOut()
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
-        {
-            // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
-        {
-            if (remoteError != null)
-            {
-                ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToAction(nameof(Login));
-            }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return RedirectToAction(nameof(Login));
-            }
-
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                return RedirectToLocal(returnUrl);
-            }
-            if (result.IsLockedOut)
-            {
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
-            }
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string returnUrl = null)
-        {
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await _signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    throw new ApplicationException("Error loading external login information during confirmation.");
-                }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await _userManager.AddLoginAsync(user, info);
-                    if (result.Succeeded)
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewData["ReturnUrl"] = returnUrl;
-            return View(nameof(ExternalLogin), model);
-        }
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -543,14 +437,80 @@ namespace DriveDrop.Bl.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            //// delete authentication cookie
+            await HttpContext.SignOutAsync();
+
+            //// set this so UI rendering sees an anonymous user
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
+            //// "Catalog" because UrlHelper doesn't support nameof() for controllers
+            //// https://github.com/aspnet/Mvc/issues/5853
+            //var homeUrl = Url.Action(nameof(HomeController.Index), "Home");
+            //return new SignOutResult(OpenIdConnectDefaults.AuthenticationScheme,
+            //    new AspNetCore.Authentication.AuthenticationProperties { RedirectUri = homeUrl });
+
+            //return RedirectToAction(nameof(HomeController.Index), "Home");
+
+            //public async Task<IActionResult> SignOut(LogoutViewModel model)
+            //{
+            //var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+
+            //if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
+            //{
+            //    if (model.LogoutId == null)
+            //    {
+            //        // if there's no current logout context, we need to create one
+            //        // this captures necessary info from the current logged in user
+            //        // before we signout and redirect away to the external IdP for signout
+            //        model.LogoutId = await _interaction.CreateLogoutContextAsync();
+            //    }
+
+            //    string url = "/Account/Logout?logoutId=" + model.LogoutId;
+
+            //    try
+            //    {
+
+            //        // hack: try/catch to handle social providers that throw
+            //        await HttpContext.SignOutAsync(idp, new AuthenticationProperties
+            //        {
+            //            RedirectUri = url
+            //        });
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logger.LogCritical(ex.Message);
+            //    }
+            //}
+
+            ////await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            ////await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
+            //// delete authentication cookie
+            //await HttpContext.SignOutAsync();
+
+            //// set this so UI rendering sees an anonymous user
+            //HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+            //// get context information (client name, post logout redirect URI and iframe for federated signout)
+            //var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
+
+            //return Redirect(logout?.PostLogoutRedirectUri);
+        }
 
         [HttpGet]
-        public IActionResult AccessDenied()
+        public IActionResult Redirecting()
         {
             return View();
         }
-
-        #region Helpers
 
         private void AddErrors(IdentityResult result)
         {
@@ -559,19 +519,5 @@ namespace DriveDrop.Bl.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-        }
-
-        #endregion
     }
 }

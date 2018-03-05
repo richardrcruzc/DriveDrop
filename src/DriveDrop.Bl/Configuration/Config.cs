@@ -7,110 +7,209 @@ namespace DriveDrop.Bl.Configuration
 {
     public class Config
     {
-        // scopes define the resources in your system
-        public static IEnumerable<IdentityResource> GetIdentityResources()
+        // ApiResources define the apis in your system
+        public static IEnumerable<ApiResource> GetApis()
+        {
+            return new List<ApiResource>
+            {
+                new ApiResource("drivedrop", "drivedrop Service"),
+                new ApiResource("orders", "Orders Service"),
+                new ApiResource("basket", "Basket Service"),
+                new ApiResource("marketing", "Marketing Service"),
+                new ApiResource("locations", "Locations Service")
+            };
+        }
+
+        // Identity resources are data like user ID, name, or email address of a user
+        // see: http://docs.identityserver.io/en/release/configuration/resources.html
+        public static IEnumerable<IdentityResource> GetResources()
         {
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.Profile()
             };
         }
 
-        public static IEnumerable<ApiResource> GetApiResources()
+        // client want to access resources (aka scopes)
+        public static IEnumerable<Client> GetClients(Dictionary<string, string> clientsUrl)
         {
-            return new List<ApiResource>
-            {
-                new ApiResource("drivedrop", "My API")
-            };
-        }
-
-        // clients want to access resources (aka scopes)
-        public static IEnumerable<Client> GetClients()
-        {
-            // client credentials client
             return new List<Client>
             {
-                  new Client
+                // JavaScript Client
+                new Client
+                {
+                    ClientId = "js",
+                    ClientName = "eShop SPA OpenId Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    RequireConsent = false,
+                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
+                    AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "drivedrop",
+                        "basket",
+                        "locations",
+                        "marketing"
+                    }
+                },
+                new Client
                 {
                     ClientId = "xamarin",
-                    ClientName = "Drivedrop Xamarin OpenId Client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                   //AllowedGrantTypes = GrantTypes.Hybrid,
-                    // AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientName = "eShop Xamarin OpenId Client",
+                    AllowedGrantTypes = GrantTypes.Hybrid,                    
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-                   RedirectUris = { "http://10.0.0.51:5205/xamarincallback" },
+                    RedirectUris =  { clientsUrl["Xamarin"] },
                     RequireConsent = false,
-                   PostLogoutRedirectUris = {  "http://10.0.0.51:5205/Account/Redirecting" },
-                    AllowedCorsOrigins = { "http://drivedropxamarin" },
+                    RequirePkce = true,
+                    PostLogoutRedirectUris = { $"{clientsUrl["Xamarin"]}/Account/Redirecting" },
+                    AllowedCorsOrigins = { "http://eshopxamarin" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        IdentityServerConstants.StandardScopes.Email,
-                        "drivedrop",
-                        "locations"
+                        "drivedrop" ,
+                        "locations" 
                     },
                     //Allow requesting refresh tokens for long lived API access
-                    AllowOfflineAccess = true ,
-                    AllowAccessTokensViaBrowser  = true
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser = true
                 },
-                new Client
-                {
-                    ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "drivedrop"}
-                },
-
-                // resource owner password grant client
-                new Client
-                {
-                    ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "drivedrop"}
-                },
-
-                // OpenID Connect hybrid flow and client credentials client (MVC)
                 new Client
                 {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-
-                    RequireConsent = true,
-
-                    ClientSecrets =
+                    ClientSecrets = new List<Secret>
                     {
                         new Secret("secret".Sha256())
                     },
-
-                    RedirectUris = { "http://localhost:5205/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5205/signout-callback-oidc" },
-
-                    AllowedScopes =
+                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = false,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    RedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["Mvc"]}/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["Mvc"]}/signout-callback-oidc"
+                    },
+                    AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "drivedrop"
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "drivedrop",
+                        "basket",
+                        "locations",
+                        "marketing"
                     },
-                    AllowOfflineAccess = true
+                },
+                new Client
+                {
+                    ClientId = "mvctest",
+                    ClientName = "MVC Client Test",
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                    AllowOfflineAccess = true,
+                    RedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["Mvc"]}/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        $"{clientsUrl["Mvc"]}/signout-callback-oidc"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "drivedrop",
+                        "basket",
+                        "locations",
+                        "marketing"
+                    },
+                },
+                new Client
+                {
+                    ClientId = "locationsswaggerui",
+                    ClientName = "Locations Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "locations"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "marketingswaggerui",
+                    ClientName = "Marketing Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "marketing"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "basketswaggerui",
+                    ClientName = "Basket Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "basket"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "orderingswaggerui",
+                    ClientName = "Ordering Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "orders"
+                    }
                 }
             };
         }
     }
-}
+} 

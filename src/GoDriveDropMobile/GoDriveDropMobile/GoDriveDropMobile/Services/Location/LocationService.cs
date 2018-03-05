@@ -18,7 +18,7 @@
         {
             UriBuilder builder = new UriBuilder(GlobalSetting.Instance.LocationEndpoint);
 
-            builder.Path = "api/v1/locations";
+            builder.Path = "locations";
 
             string uri = builder.ToString();
 

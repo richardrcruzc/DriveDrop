@@ -15,15 +15,15 @@ namespace GoDriveDrop.Core
         public const string MockTag = "Mock";
 
         // public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
-        //public const string DriveDropEndpoint = "http://api.godrivedrop.com/api/v1/";
+        //public const string DriveDropEndpoint = "http://api.godrivedrop.com/";
 
 
-        //public const string DefaultEndpoint = "http://10.0.0.51:5205/";
-        public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/";
+        public const string DefaultEndpoint = "http://169.254.80.80:5205/"; // "http://10.0.0.53/";
+       // public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/";
 
 
         private string _baseEndpoint;
-        private string _drivedrppEndpoint;
+        private const string _drivedrppEndpoint = "http://169.254.80.80:5205/"; //"http://10.0.0.53/";
         private static readonly GlobalSetting _instance = new GlobalSetting();
 
         public GlobalSetting()
@@ -49,11 +49,11 @@ namespace GoDriveDrop.Core
 
         public string ApiEndpoint
         {
-            get { return _drivedrppEndpoint; }
+            get { return _baseEndpoint; }
             set
             {
-                _drivedrppEndpoint = value;
-                UpdateApiEndpoint(_drivedrppEndpoint);
+                _baseEndpoint = value;
+                UpdateEndpoint(_baseEndpoint);
             }
         }
 
@@ -91,6 +91,8 @@ namespace GoDriveDrop.Core
 
         public string LogoutCallback { get; set; }
 
+        public string AuthAccessToken { get; set; }
+        public string AuthIdToken { get; set; }
 
 
         public string DriverEndPoint { get; set; }
@@ -124,15 +126,23 @@ namespace GoDriveDrop.Core
         {
             RegisterWebsite = $"{baseEndpoint}/home/register";
             RegisterSender = $"{baseEndpoint}Sender/NewSender";
-            RegisterDriver = $"{baseEndpoint}Driver/NewDriver/NewDriver";
-            IdentityEndpoint = $"{baseEndpoint}Account/Login";
+            RegisterDriver = $"{baseEndpoint}Driver/NewDriver";
+            CommonEndpoint = $"{ApiEndpoint}common";
+
+            CatalogEndpoint = $"{baseEndpoint}";
+            OrdersEndpoint = $"{baseEndpoint}";
+            BasketEndpoint = $"{baseEndpoint}";
+            IdentityEndpoint = $"{baseEndpoint}connect/authorize";
+            UserInfoEndpoint = $"{baseEndpoint}connect/userinfo";
             TokenEndpoint = $"{baseEndpoint}connect/token";
             LogoutEndpoint = $"{baseEndpoint}connect/endsession";
             IdentityCallback = $"{baseEndpoint}xamarincallback";
             LogoutCallback = $"{baseEndpoint}Account/Redirecting";
-            UserInfoEndpoint = $"{baseEndpoint}connect/userinfo";
+            LocationEndpoint = $"{baseEndpoint}";
+            MarketingEndpoint = $"{baseEndpoint}";
 
-            UserValidation = $"{baseEndpoint}Account/XamariLogin";
+
+
         }
         private void UpdateApiEndpoint(string baseEndpoint)
         {
@@ -146,7 +156,7 @@ namespace GoDriveDrop.Core
             MarketingEndpoint = $"{baseEndpoint}5110";
 
             DriverEndPoint = $"{ApiEndpoint}drivers";
-            CommonEndpoint = $"{ApiEndpoint}common";
+          
 
         }
     }

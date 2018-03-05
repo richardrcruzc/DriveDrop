@@ -24,8 +24,8 @@ using AutoMapper;
 
 namespace DriveDrop.Bl.Controllers
 {
+    [Authorize]
     [Route("[controller]/[action]")]
-   [Authorize]
     public class DriverController : Controller
     {
 
@@ -687,10 +687,14 @@ namespace DriveDrop.Bl.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("[action]")]
-        public async Task<IActionResult> NewDriverFromBody(int id, [FromBody]DriverModel c)
+        [HttpPost]
+        public async Task<IActionResult> NewDriverFromBody([FromBody]DriverModel c)
         {
-            var result = await AddDriver(id,c);
+
+            c.UserEmail = System.Net.WebUtility.UrlDecode(c.UserEmail);
+            c.Password = System.Net.WebUtility.UrlDecode(c.Password);
+
+            var result = await AddDriver(0,c);
             return Ok(c);
         }
 
@@ -700,9 +704,8 @@ namespace DriveDrop.Bl.Controllers
         {
             try
             {
-
-
-                if (c == null || !ModelState.IsValid)
+                if (c.FromXamarin == false)
+                    if (c == null || !ModelState.IsValid)
                 {
                     var msgError = string.Empty;
                     IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
@@ -710,56 +713,58 @@ namespace DriveDrop.Bl.Controllers
                         msgError += " " + er.ErrorMessage;
                     return msgError;
                 }
+                if (c.FromXamarin == false)
+                {
+                    if (c.Personalfiles == null || c.Personalfiles[0].Length <= 0)
+                    {
+                        return "Upload profile photo";
+                    }
+                    if (c.Personalfiles[0].Length > 1048576)
+                    {
 
-                if (c.Personalfiles == null || c.Personalfiles[0].Length <= 0)
-                {
-                    return "Upload profile photo";
-                }
-                if (c.Personalfiles[0].Length > 1048576)
-                {
+                        return "profile photo file exceeds the file maximum size: 1MB";
+                    }
+                    if (c.Licensefiles == null || c.Licensefiles[0].Length <= 0)
+                    {
+                        return "Upload DriverLincensePicture photo";
+                    }
+                    if (c.Licensefiles[0].Length > 1048576)
+                    {
 
-                    return "profile photo file exceeds the file maximum size: 1MB";
-                }
-                if (c.Licensefiles == null || c.Licensefiles[0].Length <= 0)
-                {
-                    return "Upload DriverLincensePicture photo";
-                }
-                if (c.Licensefiles[0].Length > 1048576)
-                {
+                        return "Driver Lincense Picture file exceeds the file maximum size: 1MB";
+                    }
+                    if (c.Vehiclefiles == null || c.Vehiclefiles[0].Length <= 0)
+                    {
+                        return "Upload vehicle photo";
+                    }
+                    if (c.Vehiclefiles[0].Length > 1048576)
+                    {
 
-                    return "Driver Lincense Picture file exceeds the file maximum size: 1MB";
-                }
-                if (c.Vehiclefiles == null || c.Vehiclefiles[0].Length <= 0)
-                {
-                    return "Upload vehicle photo";
-                }
-                if (c.Vehiclefiles[0].Length > 1048576)
-                {
+                        return "vehicle photo file exceeds the file maximum size: 1MB";
+                    }
+                    if (c.Insurancefiles == null || c.Insurancefiles[0].Length <= 0)
+                    {
+                        return "Upload Insurance photo";
+                    }
+                    if (c.Insurancefiles[0].Length > 1048576)
+                    {
 
-                    return "vehicle photo file exceeds the file maximum size: 1MB";
-                }
-                if (c.Insurancefiles == null || c.Insurancefiles[0].Length <= 0)
-                {
-                    return "Upload Insurance photo";
-                }
-                if (c.Insurancefiles[0].Length > 1048576)
-                {
+                        return "vehicle Insurance file exceeds the file maximum size: 1MB";
 
-                    return "vehicle Insurance file exceeds the file maximum size: 1MB";
-
+                    }
                 }
-
                 var user = new ApplicationUser { UserName = c.UserEmail, Email = c.UserEmail };
                 var result = await _userManager.CreateAsync(user, c.Password);
                 if (result.Succeeded)
                 {
 
-
-                    c.PersonalPhotoUri = await SaveFile(c.Personalfiles[0], "driver");
-                    c.DriverLincensePictureUri = await SaveFile(c.Licensefiles[0], "driver");
-                    c.VehiclePhotoUri = await SaveFile(c.Vehiclefiles[0], "driver");
-                    c.InsurancePhotoUri = await SaveFile(c.Insurancefiles[0], "driver");
-
+                    if (c.FromXamarin == false)
+                    {
+                        c.PersonalPhotoUri = await SaveFile(c.Personalfiles[0], "driver");
+                        c.DriverLincensePictureUri = await SaveFile(c.Licensefiles[0], "driver");
+                        c.VehiclePhotoUri = await SaveFile(c.Vehiclefiles[0], "driver");
+                        c.InsurancePhotoUri = await SaveFile(c.Insurancefiles[0], "driver");
+                    }
 
                     var defaultAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, "", "", c.DeliveryLatitude, c.DeliveryLongitude);
 

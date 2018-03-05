@@ -22,7 +22,7 @@ namespace GoDriveDrop.Core.Models
         public IEnumerable<GenericModel> PriorityTypeList { get; set; }
         public IEnumerable<GenericModel> PackageSizeList { get; set; }
 
-
+        public bool FromXamarin { get; set; } 
 
         //[Required]
         //public List<IFormFile> Personalfiles { get; set; }
@@ -45,9 +45,9 @@ namespace GoDriveDrop.Core.Models
         public GenericModel TransportType { get; set; }
         public int CustomerStatusId { get; set; }
         public GenericModel CustomerStatus { get; set; }
-        public int? MaxPackage { get; set; }
-        public int? PickupRadius { get; set; }
-        public int? DeliverRadius { get; set; }
+        public string MaxPackage { get; set; }
+        public string PickupRadius { get; set; }
+        public string DeliverRadius { get; set; }
 
 
         public string VehicleMake { get; set; }
