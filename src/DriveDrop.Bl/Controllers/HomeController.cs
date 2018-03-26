@@ -50,7 +50,10 @@ namespace DriveDrop.Bl.Controllers
             _settings = settings;
             _redirectSvc = redirectSvc;
         }
-
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
         public IActionResult ReturnToOriginalApplication(string returnUrl)
         {
             if (returnUrl != null)

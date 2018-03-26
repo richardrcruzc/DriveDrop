@@ -83,10 +83,10 @@ namespace DriveDrop.Bl.Controllers
 
             var vm = await BuildLoginViewModelAsync(returnUrl, context);
 
-            //ViewData["ReturnUrl"] = returnUrl;
-            //if(_statisticsService.Mobile())
-            //    return View("LoginMobile", vm);
-            //else
+            ViewData["ReturnUrl"] = returnUrl;
+            if (_statisticsService.Mobile())
+                return View("LoginMobile", vm);
+            else
                 return View(vm);
 
         }
@@ -132,9 +132,9 @@ namespace DriveDrop.Bl.Controllers
 
             ViewData["ReturnUrl"] = model.ReturnUrl;
 
-          //if(_statisticsService.Mobile())
-          //      return View("LoginMobile", vm);
-          //  else
+            if (_statisticsService.Mobile())
+                return View("LoginMobile", vm);
+            else
                 return View(vm);
         }
 

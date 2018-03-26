@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using FFImageLoading.Forms.Touch;
 using Foundation;
 using GoDriveDrop.Core;
 using ImageCircle.Forms.Plugin.iOS;
@@ -37,6 +37,8 @@ namespace GoDriveDropMobile.iOS
             Forms.Init();
             VideoViewRenderer.Init();
             ImageCircleRenderer.Init();
+            SlideOverKit.iOS.SlideOverKit.Init();
+            CachedImageRenderer.Init();
             LoadApplication(new App());
 
 

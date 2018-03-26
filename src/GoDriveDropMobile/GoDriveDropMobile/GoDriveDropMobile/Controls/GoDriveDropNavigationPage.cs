@@ -18,7 +18,7 @@ namespace GoDriveDrop.Core.Controls
         void Init()
         {
 
-            BarBackgroundColor = Color.FromHex("#03A9F4");
+         BarBackgroundColor = Color.FromHex("#43b249");
             BarTextColor = Color.White;
         }
     }

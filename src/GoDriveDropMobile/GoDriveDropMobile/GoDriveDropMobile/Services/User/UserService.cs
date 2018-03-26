@@ -1,4 +1,5 @@
 ﻿using GoDriveDrop.Core.Models;
+using GoDriveDrop.Core.Models.Commons;
 using GoDriveDrop.Core.Services.RequestProvider;
 using Newtonsoft.Json;
 using System;
@@ -72,6 +73,39 @@ namespace GoDriveDrop.Core.Services.User
                 await _requestProvider.GetAsync<UserInfo>(uri, authToken);
 
             return userInfo;
+        }
+
+        public async Task<CustomerModel> MyAccount(string authToken)
+        {
+            try
+            {
+                UriBuilder builder = new UriBuilder(GlobalSetting.Instance.UserInfoEndpoint);
+
+                string uri = builder.ToString();
+
+                var userInfo =
+                    await _requestProvider.GetAsync<UserInfo>(uri, authToken);
+
+
+                //get the current customer info
+                var username = System.Net.WebUtility.UrlEncode(userInfo.Email);
+                builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
+                {
+                    Path = $"/api/v1/CurrentUser/{username}"
+                };
+                uri = builder.ToString();
+
+                var currentCustomer =
+                   await _requestProvider.GetAsync<CustomerModel>(uri, authToken);
+
+                return currentCustomer;
+            }
+            catch (Exception ex)
+            {
+                var tt = ex.Message;
+
+            }
+            return new CustomerModel();
         }
     }
 }

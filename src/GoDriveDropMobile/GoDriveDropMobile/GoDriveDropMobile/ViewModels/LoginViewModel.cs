@@ -4,6 +4,7 @@ using GoDriveDrop.Core.Models;
 using GoDriveDrop.Core.Services;
 using GoDriveDrop.Core.Services.Navigation;
 using GoDriveDrop.Core.Services.OpenUrl;
+using GoDriveDrop.Core.Services.User;
 using GoDriveDrop.Core.Validations;
 using GoDriveDrop.Core.Views;
 using IdentityModel.Client;
@@ -29,11 +30,15 @@ namespace GoDriveDrop.Core.ViewModels
 
         private IOpenUrlService _openUrlService;
         private IIdentityService _identityService;
+        public readonly IUserService _userService;
 
         public LoginViewModel(
+            IUserService userService,
             IOpenUrlService openUrlService,
             IIdentityService identityService)
         {
+            _userService = userService;
+
             Title = "goDriveDrop.com - Login";
 
             _openUrlService = openUrlService;
@@ -137,11 +142,12 @@ namespace GoDriveDrop.Core.ViewModels
             }
         }
 
-        
+        public ICommand NavigateCommand => new Command<string>(async (url) => await NavigateAsync(url));
 
         public ICommand SignInCommand => new Command(async () => await SignInAsync());
         public ICommand BSenderCommand => new Command(async () => await BeSenderCommandAsync());
         public ICommand BeDriverCommand => new Command(async () => await BeDriverCommandAsync());
+
         private async Task BeSenderCommandAsync()
         {
             IsBusy = true;
@@ -149,7 +155,7 @@ namespace GoDriveDrop.Core.ViewModels
 
             var navigationService = ViewModelLocator.Resolve<INavigationService>();
             await navigationService.NavigateToAsync<NewSenderViewModel>();
-            await navigationService.RemoveBackStackAsync();
+           // await navigationService.RemoveBackStackAsync();
 
             IsBusy = false;
         }
@@ -160,22 +166,14 @@ namespace GoDriveDrop.Core.ViewModels
 
             var navigationService = ViewModelLocator.Resolve<INavigationService>();
               await navigationService.NavigateToAsync<NewDriverViewModel>();
-            await navigationService.RemoveBackStackAsync();
+           // await navigationService.RemoveBackStackAsync();
 
             IsBusy = false;
         }
+         
+         
 
-
-        //public ICommand MockSignInCommand => new Command(async () => await MockSignInAsync());
-        //public ICommand RegisterCommand => new Command(Register);
-
-             public ICommand NavigateCommand => new Command<string>(async (url) => await NavigateAsync(url));
-
-            //public ICommand SettingsCommand => new Command(async () => await SettingsAsync());
-
-            //public ICommand ValidateUserNameCommand => new Command(() => ValidateUserName());
-
-            //public ICommand ValidatePasswordCommand => new Command(() => ValidatePassword());
+         
 
         public override Task InitializeAsync(object navigationData)
         {
@@ -236,24 +234,7 @@ namespace GoDriveDrop.Core.ViewModels
         {
             IsBusy = true;
 
-            await Task.Delay(100);
-
-            //var client = new DiscoveryClient("http://169.254.80.80:5205");
-            //client.Policy.RequireHttps = false;
-
-            //var disco = await client.GetAsync();
-            ////var tt = disco.AuthorizeEndpoint;
-
-
-
-            //// request token
-            //var tokenClient = new TokenClient("http://169.254.80.80:5205", GlobalSetting.Instance.ClientId, GlobalSetting.Instance.ClientSecret);
-            //var tokenResponse = await tokenClient.RequestClientCredentialsAsync("openid profile drivedrop offline_access");
-            //if (tokenResponse.IsError)
-            //{
-            //}
-
-
+            await Task.Delay(10); 
 
             LoginUrl = _identityService.CreateAuthorizationRequest();
 
@@ -322,12 +303,19 @@ namespace GoDriveDrop.Core.ViewModels
                         if (Device.RuntimePlatform == Device.WinPhone)
                             title = "goDriveDrop - WinPhone";
 
+
+                        //get current user info
+                        var authToken = GlobalSetting.Instance.AuthAccessToken;
+                        var userInfo = await _userService.MyAccount(authToken);
+
+                        GlobalSetting.Instance.CurrentCustomerModel = userInfo; 
+
                         //await NavigationService.NavigateToAsync<RootPage>()
 
                         // Set our Walks Page to be the root page of our application
                         var mainPage = new NavigationPage(new RootPage()
                         {
-                            Title = title,
+                            Title = userInfo.CustomerType,
                         });
 
                         // Set the NavigationBar TextColor and Background Color

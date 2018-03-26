@@ -617,6 +617,20 @@ namespace DriveDrop.Bl.Controllers
            // currentUser.CustomerStatus = currentUser.CustomerStatus.ToTitleCase();
             return View(currentUser);
         }
+
+        public async Task<IActionResult> GetPersonalInfo(string email)
+        {
+             
+            var currentUser = await _cService.Get(email);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            // currentUser.CustomerStatus = currentUser.CustomerStatus.ToTitleCase();
+            return Ok(currentUser);
+        }
         public async Task<string> SaveFile(IFormFile file, string belong)
         {
             var fileNameGuid = await _pictureService.UploadImage(file, belong);

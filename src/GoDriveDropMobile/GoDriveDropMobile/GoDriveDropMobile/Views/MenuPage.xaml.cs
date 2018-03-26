@@ -23,14 +23,21 @@ namespace GoDriveDrop.Core.Views
             InitializeComponent();
             if (Device.RuntimePlatform == Device.UWP)                
             {
-                BackgroundColor = Color.FromHex("#03A9F4");
+                BackgroundColor = Color.FromHex("#43b249");
                 ListViewMenu.BackgroundColor = Color.FromHex("#F5F5F5");
             }
 
+            var title = "Sender: ";
+            if (GlobalSetting.Instance.CurrentCustomerModel.CustomerType == "Driver")
+                title = "Driver: ";
+            title += " " + GlobalSetting.Instance.CurrentCustomerModel.FullName;
+
+            textUserName.Text = GlobalSetting.Instance.CurrentCustomerModel.FullName;
+            imgProfile.Source =$"{GlobalSetting.Instance.BaseEndpoint}{GlobalSetting.Instance.CurrentCustomerModel.PersonalPhotoUri}";
             BindingContext = new BaseViewModel
             {
-                Title = "Driver/Sender/Admin: Richard Cruz",
-                Subtitle = "Driver / Sender / Admin: Richard Cruz, Sub",
+                Title = title,
+                Subtitle = title,
                 Icon = "profile"
             };
 

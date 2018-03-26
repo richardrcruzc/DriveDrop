@@ -1,4 +1,5 @@
 ﻿using GoDriveDrop.Core.Models;
+using GoDriveDrop.Core.Models.Commons;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,6 @@ namespace GoDriveDrop.Core.Services.User
     {
         Task<string> GetLoginTokenAsync(string username, string password);
         Task<UserInfo> GetUserInfoAsync(string authToken);
+        Task<CustomerModel> MyAccount(string authToken);
     }
 }

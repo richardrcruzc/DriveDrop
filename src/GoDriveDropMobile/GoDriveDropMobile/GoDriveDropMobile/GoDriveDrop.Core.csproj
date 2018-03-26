@@ -4,12 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
     <PackageReference Include="Autofac" Version="4.6.2" />
-    <PackageReference Include="IdentityModel" Version="3.3.0" />
+    <PackageReference Include="IdentityModel" Version="3.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="PCLCrypto" Version="2.0.147" />
+    <PackageReference Include="SlideOverKit" Version="2.1.5" />
     <PackageReference Include="Xam.Plugin.Media" Version="2.6.0" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="2.0.2" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
@@ -60,9 +65,16 @@
     <EmbeddedResource Update="Views\NewSenderView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\PersonalInfoView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\SplashView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Sender\" />
   </ItemGroup>
 
 </Project>

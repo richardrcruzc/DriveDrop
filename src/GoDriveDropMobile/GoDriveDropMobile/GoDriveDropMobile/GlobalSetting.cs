@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoDriveDrop.Core.Models.Commons;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,7 @@ namespace GoDriveDrop.Core
 {
     public class GlobalSetting
     {
-
+        public CustomerModel _currentCustomer;
         public string _user = "admin@driveDrop.com";
         public string _passworrd = "Pass@word1";
 
@@ -18,12 +19,14 @@ namespace GoDriveDrop.Core
         //public const string DriveDropEndpoint = "http://api.godrivedrop.com/";
 
 
-        public const string DefaultEndpoint = "http://169.254.80.80:5205/"; // "http://10.0.0.53/";
-       // public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/";
+       // public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/"; 
+        public const string DefaultEndpoint = "http://169.254.80.80:5205/";
 
 
         private string _baseEndpoint;
-        private const string _drivedrppEndpoint = "http://169.254.80.80:5205/"; //"http://10.0.0.53/";
+      //  private const string _drivedrppEndpoint = "http://godrivedrop.azurewebsites.net/"; 
+       private const string _drivedrppEndpoint = "http://169.254.80.80:5205/";
+
         private static readonly GlobalSetting _instance = new GlobalSetting();
 
         public GlobalSetting()
@@ -56,6 +59,20 @@ namespace GoDriveDrop.Core
                 UpdateEndpoint(_baseEndpoint);
             }
         }
+
+        public CustomerModel CurrentCustomerModel
+        {
+            get { return _currentCustomer; }
+            set
+            {
+                _currentCustomer = value;
+            }
+        }
+        public string CurrentCustomer { get; set; }
+
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+
 
         public string ClientId { get { return "xamarin"; } }
 
@@ -124,6 +141,7 @@ namespace GoDriveDrop.Core
 
         private void UpdateEndpoint(string baseEndpoint)
         {
+            CurrentCustomer = $"{baseEndpoint}/api/v1/CurrentUser";
             RegisterWebsite = $"{baseEndpoint}/home/register";
             RegisterSender = $"{baseEndpoint}Sender/NewSender";
             RegisterDriver = $"{baseEndpoint}Driver/NewDriver";
@@ -136,7 +154,9 @@ namespace GoDriveDrop.Core
             UserInfoEndpoint = $"{baseEndpoint}connect/userinfo";
             TokenEndpoint = $"{baseEndpoint}connect/token";
             LogoutEndpoint = $"{baseEndpoint}connect/endsession";
-            IdentityCallback = $"{baseEndpoint}xamarincallback";
+           IdentityCallback = $"{baseEndpoint}xamarincallback";
+           // IdentityCallback = "http://421D6EA8F42B4F269D21672217D437FD/xamarincallback"; 
+
             LogoutCallback = $"{baseEndpoint}Account/Redirecting";
             LocationEndpoint = $"{baseEndpoint}";
             MarketingEndpoint = $"{baseEndpoint}";

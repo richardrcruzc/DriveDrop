@@ -101,10 +101,10 @@
       BackgroundColor="{StaticResource BackgroundColor}">
  
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
-            <RowDefinition Height="60" />
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="20*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="20*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition /> 
@@ -190,69 +190,5 @@
             </ActivityIndicator.WidthRequest>
         </ActivityIndicator>
     </Grid>
-    <!--<ContentPage.Content>
-        
-        <StackLayout Orientation="Vertical" Padding="30" Spacing="40">
-
-            --><!-- WEBVIEW --><!--
-            <AbsoluteLayout 
-                IsVisible="{Binding IsLogin}">
-                <WebView     
-                  Source="{Binding LoginUrl}"
-                  AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                  AbsoluteLayout.LayoutFlags="All">
-                    <WebView.Behaviors>
-                        <OnPlatform x:TypeArguments="Behavior">
-                            <On Platform="iOS, Android">
-                                <On.Value>
-                                    <behaviors:EventToCommandBehavior 
-                                        EventName="Navigating"
-                                        EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
-                                        Command="{Binding NavigateCommand}" />
-                                </On.Value>
-                            </On>
-                            <On Platform="UWP">
-                                <On.Value>
-                                    <behaviors:EventToCommandBehavior 
-                                        EventName="Navigated"
-                                        EventArgsConverter="{StaticResource WebNavigatedEventArgsConverter}"
-                                        Command="{Binding NavigateCommand}" />
-                                </On.Value>
-                            </On>
-                        </OnPlatform>
-                    </WebView.Behaviors>
-                </WebView>
-            </AbsoluteLayout>
-
-
-            <BoxView HeightRequest="10"/>
-            <Image HorizontalOptions="Center" WidthRequest="300"  Source="logo"/>
-            <Frame BackgroundColor="#BF043055" HasShadow="False">
-              
-                <StackLayout Orientation="Vertical" Spacing="10">
-                    <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Email"   
-                           PlaceholderColor="White" HeightRequest="40"   
-                           Keyboard="Email"  
-                           TextColor="White"/>
-                    <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password"   
-                           PlaceholderColor="White" HeightRequest="40"   
-                           IsPassword="True"  
-                           TextColor="White"/>
-                    <Button Command="{Binding SubmitCommand}" Text="Login"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
-                    FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
-                    />
-
-                </StackLayout>
-              
-            </Frame>
-
-            <Button Command="{Binding BSenderCommand}" Text="Be a Sender"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
-                    FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
-                    />
-            <Button Command="{Binding BeDriverCommand}" Text="Be a Driver"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
-                    FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
-                    />
-        </StackLayout>
-        
-    </ContentPage.Content>-->
+     
 </ContentPage>

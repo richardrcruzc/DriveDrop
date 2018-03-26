@@ -37,7 +37,7 @@ namespace GoDriveDrop.Core.ViewModels
 
         public static bool UseMockService { get; set; }
 
-        public static void RegisterDependencies(bool useMockServices)
+        public static void RegisterDependencies()
         {
             var builder = new ContainerBuilder();
 
@@ -50,7 +50,8 @@ namespace GoDriveDrop.Core.ViewModels
 
             builder.RegisterType<NewDriverViewModel>();
             builder.RegisterType<NewSenderViewModel>();
-            
+            builder.RegisterType<PersonalInfoViewModel>();
+
             // Services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
 
@@ -65,10 +66,8 @@ namespace GoDriveDrop.Core.ViewModels
              builder.RegisterType<GoogleAddress>().As<IGoogleAddress>();
              builder.RegisterType<DriverService>().As<IDriverService>();
             builder.RegisterType<SenderService>().As<ISenderService>();
-
-
-
-
+             
+             
             if (_container != null)
             {
                 _container.Dispose();

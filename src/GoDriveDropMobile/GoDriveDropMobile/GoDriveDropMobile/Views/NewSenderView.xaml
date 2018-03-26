@@ -7,8 +7,24 @@
                xmlns:converters="clr-namespace:GoDriveDrop.Core.Converters;assembly=GoDriveDrop.Core"
              x:Class="GoDriveDrop.Core.Views.NewSenderView"
                viewModelBase:ViewModelLocator.AutoWireViewModel="true"
-               Title="Be a Sender- goDriveDrop.com"  Icon="serviceicon04.png">
-
+               Title="Be a Sender - goDriveDrop.com"  Icon="serviceicon04.png">
+    <!--<TabbedPage.Title>
+        <OnPlatform x:TypeArguments="x:String">
+            <On Platform="iOS, UWP, WinRT, WinPhone" Value="eShop on Containers" />
+        </OnPlatform>
+    </TabbedPage.Title>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding SettingsCommand}"
+            Text="Settings">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS, Android" Value="app_settings" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/app_settings.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>-->
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
@@ -193,9 +209,9 @@
 					Style="{StaticResource ValidationErrorLabelStyle}"/>
 
 
-                <!--Driver DEFAUL ADDRESS-->
+                <!--Driver DEFAULT ADDRESS-->
                 <Label
-                  Text="DEFAUL ADDRESS"   VerticalOptions="CenterAndExpand" 
+                  Text="DEFAULT ADDRESS"   VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"   Style="{StaticResource DriveDropTitleStyle}"/>
 
                 <SearchBar  x:Name="SearchFor" 

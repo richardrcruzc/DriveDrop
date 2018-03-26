@@ -66,11 +66,11 @@ namespace DriveDrop.Bl.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/fileName/{fileName}/pic")]
+        [Route("[action]/fileName/{belongTo}/{fileName}/pic")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         // GET: /<controller>/
-        public   IActionResult GetImage(string fileName)
+        public   IActionResult GetImage(string belongTo, string fileName)
         {
             if (fileName == null)
             {
@@ -81,7 +81,7 @@ namespace DriveDrop.Bl.Controllers
             fileName= fileName.Replace("/", "\\");
             var webRoot = _env.WebRootPath;
             var path = Path.Combine(webRoot, fileName);
-            path = string.Format("{0}\\uploads\\img\\{1}", webRoot, fileName);
+            path = string.Format("{0}\\uploads\\img\\{1}\\{2}", webRoot, belongTo,fileName);
             string imageFileExtension = Path.GetExtension(fileName);
             string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 

@@ -193,9 +193,9 @@
 					Style="{StaticResource ValidationErrorLabelStyle}"/>
 
 
-                <!--Driver DEFAUL ADDRESS-->
+                <!--Driver DEFAULT ADDRESS-->
                 <Label
-                  Text="DEFAUL ADDRESS"   VerticalOptions="CenterAndExpand" 
+                  Text="DEFAULT ADDRESS"   VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"   Style="{StaticResource DriveDropTitleStyle}" />
 
                 <SearchBar  x:Name="SearchFor" 

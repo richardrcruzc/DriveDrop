@@ -14,19 +14,29 @@ namespace GoDriveDrop.Core.Views
     {
         public static bool IsUWPDesktop { get; set; }
         Dictionary<int, NavigationPage> Pages { get; set; }
+        
         public RootPage()
         {
             if (IsUWPDesktop)
-                this.MasterBehavior = MasterBehavior.Popover;
+                this.MasterBehavior = MasterBehavior.Popover;        
 
             Pages = new Dictionary<int, NavigationPage>();
             Master = new MenuPage(this);
+
+
+          
             BindingContext = new BaseViewModel
             {
-                Title = "Driver/Sender/Admin: Richard Cruz",
-                Subtitle = "Driver / Sender / Admin: Richard Cruz, Sub",
-                Icon = "profile"
+               // Title = title,
+               // Subtitle = title,
+              //  Icon = "profile"
             };
+
+
+            
+
+
+
             //setup home page
             Pages.Add((int)MenuType.About, new GoDriveDropNavigationPage(new AboutPage()));
             Detail = Pages[(int)MenuType.About];
@@ -51,18 +61,22 @@ namespace GoDriveDrop.Core.Views
             Page newPage;
             if (!Pages.ContainsKey(id))
             {
-
+                var navigationService = ViewModelLocator.Resolve<INavigationService>();
                 switch (id)
                 {
+                    case (int)MenuType.Info:
+                        IsBusy = true;
+                        Pages.Add(id, new GoDriveDropNavigationPage(new PersonalInfoView()));
+                        
+                         IsBusy = false;
+                        break;
                     case (int)MenuType.About:
                         Pages.Add(id, new GoDriveDropNavigationPage(new AboutPage()));
                         break;
 
                     case (int)MenuType.LogOut:
                         IsBusy = true;
-                        // Logout
-
-                        var navigationService = ViewModelLocator.Resolve<INavigationService>();
+                        // Logout 
                         await navigationService.NavigateToAsync<LoginViewModel>(new LogoutParameter { Logout = true });
                        await navigationService.RemoveBackStackAsync();
                          
