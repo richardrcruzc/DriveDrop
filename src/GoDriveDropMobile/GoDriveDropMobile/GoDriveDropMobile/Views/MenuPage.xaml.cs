@@ -33,26 +33,25 @@ namespace GoDriveDrop.Core.Views
             title += " " + GlobalSetting.Instance.CurrentCustomerModel.FullName;
 
             textUserName.Text = GlobalSetting.Instance.CurrentCustomerModel.FullName;
-            imgProfile.Source =$"{GlobalSetting.Instance.BaseEndpoint}{GlobalSetting.Instance.CurrentCustomerModel.PersonalPhotoUri}";
+            imgProfile.Source = GlobalSetting.Instance.CurrentCustomerModel.PersonalPhotoUrl;
             BindingContext = new BaseViewModel
             {
-                Title = title,
-                Subtitle = title,
-                Icon = "profile"
+                 Title = title,
+                 Subtitle = title,
+                Icon = "iconlogo"
             };
-
-            ListViewMenu.ItemsSource = menuItems = new List<HomeMenuItem>
-                {
-                   
+            
+                ListViewMenu.ItemsSource = menuItems = new List<HomeMenuItem>
+                { 
                     new HomeMenuItem { Title = "My Personal Info", MenuType = MenuType.Info, Icon = "profilecard.png" },
                     new HomeMenuItem { Title = "My Addresses", MenuType = MenuType.Address, Icon = "iconservice03.png" },
                     new HomeMenuItem { Title = "My Packages", MenuType = MenuType.Package, Icon = "redio02.png" },
+                     new HomeMenuItem { Title = "Send a Package", MenuType = MenuType.NewPackage, Icon = "redio06.png" },
                     new HomeMenuItem { Title = "Change Password", MenuType = MenuType.Password, Icon = "keys.png" }, 
-
-                     new HomeMenuItem { Title = "About", MenuType = MenuType.About, Icon ="about.png" },
-                      new HomeMenuItem { Title = "LogOut", MenuType = MenuType.LogOut, Icon ="logout.png" },
-
+                    new HomeMenuItem { Title = "About", MenuType = MenuType.About, Icon ="about.png" },
+                    new HomeMenuItem { Title = "LogOut", MenuType = MenuType.LogOut, Icon ="logout.png" }, 
                 };
+           
 
             ListViewMenu.SelectedItem = menuItems[0];
 

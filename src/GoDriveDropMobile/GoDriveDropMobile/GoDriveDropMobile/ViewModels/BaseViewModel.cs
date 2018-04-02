@@ -12,7 +12,7 @@ using GoDriveDrop.Core.Services.Navigation;
 
 namespace GoDriveDrop.Core.ViewModels
 {
-    public class BaseViewModel : ExtendedBindableObject // INotifyPropertyChanged
+    public class BaseViewModel : ExtendedBindableObject //,INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
         protected readonly IDialogService DialogService;
@@ -23,16 +23,21 @@ namespace GoDriveDrop.Core.ViewModels
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
         }
-        bool isBusy = false;
+        private bool _isBusy;
+
         public bool IsBusy
         {
-            get { return isBusy; }  
+            get
+            {
+                return _isBusy;
+            }
+
             set
             {
-                isBusy = value;
-                OnPropertyChanged("IsBusy");
-            } 
-         }
+                _isBusy = value;
+                RaisePropertyChanged(() => IsBusy);
+            }
+        }
 
         string title = string.Empty;
         public string Title

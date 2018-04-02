@@ -136,6 +136,7 @@
     <Content Include="Assets\googleplus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\iconlogo.png" />
     <Content Include="Assets\ic_pause.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

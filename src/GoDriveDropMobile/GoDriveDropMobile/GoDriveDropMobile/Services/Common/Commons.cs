@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GoDriveDrop.Core.Services.Common
 {
-    public class Commons:ICommons
+    public class Commons : ICommons
     {
         private readonly IRequestProvider _requestProvider;
         private const string ApiUrlBase = "common";
@@ -24,7 +24,65 @@ namespace GoDriveDrop.Core.Services.Common
             _requestProvider = requestProvider;
         }
 
-        public async Task<IEnumerable<Generic>> VehicleTypes( string token)
+        public async Task<CalculatedChargeModel> CalcTotal(string token,
+                                                            double distance, 
+                                                            decimal weight, 
+                                                            int priority, 
+                                                            int packageSizeId, 
+                                                            string promoCode = null,
+                                                            decimal extraCharge = 0, 
+                                                            string extraNote = null, 
+                                                            string state = null, 
+                                                            string city = null)
+        {
+
+            CalculatedChargeModel total = new CalculatedChargeModel ();
+
+          var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
+            {
+                Path = $"Rates/CalculateAmount?distance={distance}&weight={weight}&priority={priority}&packageSizeId={packageSizeId}&promoCode={promoCode}&extraCharge={extraCharge}&extraNote={extraNote}&state={state}&city={city}"
+            };
+            var uri = System.Net.WebUtility.UrlDecode(builder.ToString());
+            try
+            {
+                  total =
+                  await _requestProvider.GetAsync<CalculatedChargeModel>(uri, token);
+            }
+            catch (Exception ex )
+            {
+                var tes = ex.Message;
+
+            }
+            return total;
+
+        }
+        public async Task<List<Generic>> PriorityTypes(string token)
+        {
+            var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
+            {
+                Path = $"{ApiUrlBase}/PriorityTypes"
+            };
+            var uri = builder.ToString();
+
+            IEnumerable<Generic> vehicleTypes =
+                  await _requestProvider.GetAsync<IEnumerable<Generic>>(uri, token);
+
+            return vehicleTypes.ToList();
+        }
+        public async Task<List<Generic>> PackageSizes(string token)
+        {
+            var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
+            {
+                Path = $"{ApiUrlBase}/PackageSizes"
+            };
+            var uri = builder.ToString();
+
+            IEnumerable<Generic> vehicleTypes =
+                  await _requestProvider.GetAsync<IEnumerable<Generic>>(uri, token);
+
+            return vehicleTypes.ToList();
+        }
+        public async Task<List<Generic>> VehicleTypes( string token)
         {
             var builder = new UriBuilder(GlobalSetting.Instance.ApiEndpoint)
             {
@@ -35,7 +93,7 @@ namespace GoDriveDrop.Core.Services.Common
             IEnumerable<Generic> vehicleTypes =
                   await _requestProvider.GetAsync<IEnumerable<Generic>>(uri, token);
 
-            return vehicleTypes;
+            return vehicleTypes.ToList();
         }
 
         public async Task<string> UploadImage(Stream input, string belingTo )

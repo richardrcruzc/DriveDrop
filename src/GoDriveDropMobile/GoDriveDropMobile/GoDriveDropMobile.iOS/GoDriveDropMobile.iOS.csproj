@@ -145,6 +145,7 @@
     <Content Include="Resources\Icon-Small%403x.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <BundleResource Include="Resources\iconlogo.png" />
     <Content Include="Resources\LaunchScreen.storyboard">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -11,7 +11,11 @@ namespace GoDriveDrop.Core.Services.Common
     
     public interface ICommons
     {
-        Task<IEnumerable<Generic>> VehicleTypes(string token);
+        Task<CalculatedChargeModel> CalcTotal(string token, double distance, decimal weight, int priority, int packageSizeId, string promoCode = null,
+                                                        decimal extraCharge = 0, string extraNote = null, string state = null, string city = null);
+        Task<List<Generic>> PriorityTypes(string token);
+        Task<List<Generic>> PackageSizes(string token);
+        Task<List<Generic>> VehicleTypes(string token);
         Task<string> UploadImage(Stream input, string belingTo );
         Task<string> ValidateUserName(string userName);
         

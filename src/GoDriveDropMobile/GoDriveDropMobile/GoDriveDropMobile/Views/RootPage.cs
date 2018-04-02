@@ -23,32 +23,52 @@ namespace GoDriveDrop.Core.Views
             Pages = new Dictionary<int, NavigationPage>();
             Master = new MenuPage(this);
 
-
-          
-            BindingContext = new BaseViewModel
+            var title = "goDriveDrop - iOS";
+            var iconPath = "Resources/iconlogo.png";
+            if (Device.RuntimePlatform == Device.iOS)
             {
-               // Title = title,
-               // Subtitle = title,
-              //  Icon = "profile"
-            };
+                title = "goDriveDrop - iOS";
+                iconPath = "Resources/iconlogo.png";
+            }
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                title = "goDriveDrop - Android";
+                iconPath = "Resources/drawable/iconlogo.png";
+            }
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                title = "goDriveDrop - UWP";
+                iconPath = "Assets/iconlogo.png";
+            }
+            if (Device.RuntimePlatform == Device.WinPhone)
+            {
+                title = "goDriveDrop - WinPhone";
+                iconPath = "Assets/iconlogo.png";
+            }
+           Title = $"{GlobalSetting.Instance.CurrentCustomerModel.CustomerType}: {title}";                
+           Icon = iconPath;
 
-
-            
-
-
+            //BarBackgroundColor = Color.FromHex("#223669");
+            //BarTextColor = Color.White;
+            //   await (newPage.BindingContext as BaseViewModel).InitializeAsync(null);
+            //BindingContext = new BaseViewModel
+            //{
+            //    Title = title,
+            //    Subtitle = title,
+            //    Icon = iconPath
+            //};
+             
 
             //setup home page
             Pages.Add((int)MenuType.About, new GoDriveDropNavigationPage(new AboutPage()));
             Detail = Pages[(int)MenuType.About];
 
             InvalidateMeasure();
-        }
-
-
+            
+        } 
 
         public async Task NavigateAsync(int id)
-        { 
-
+        {  
             if (Detail != null)
             {
                 if (IsUWPDesktop || Device.Idiom != TargetIdiom.Tablet)
@@ -70,8 +90,24 @@ namespace GoDriveDrop.Core.Views
                         
                          IsBusy = false;
                         break;
+                    case (int)MenuType.Address:
+                        IsBusy = true;
+                        Pages.Add(id, new GoDriveDropNavigationPage(new AddressesView()));
+
+                        IsBusy = false;
+                        break;
+
+                    case (int)MenuType.Package:
+                        Pages.Add(id, new GoDriveDropNavigationPage(new PackageView()));
+                        break;
+
                     case (int)MenuType.About:
                         Pages.Add(id, new GoDriveDropNavigationPage(new AboutPage()));
+                        break;
+
+                    case (int)MenuType.NewPackage:
+                         
+                        Pages.Add(id, new GoDriveDropNavigationPage(new NewPackageView ()));
                         break;
 
                     case (int)MenuType.LogOut:
@@ -85,27 +121,10 @@ namespace GoDriveDrop.Core.Views
                     default:
                         Pages.Add(id, new GoDriveDropNavigationPage(new AboutPage()));
                         break;
-                        //case (int)MenuType.Blog:
-                        //    Pages.Add(id, new GoDriveDropNavigationPage(new BlogPage()));
-                        //    break;
-                        //case (int)MenuType.DeveloperLife:
-                        //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
-                        //    break;
-                        //case (int)MenuType.Hanselminutes:
-                        //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
-                        //    break;
-                        //case (int)MenuType.Ratchet:
-                        //    Pages.Add(id, new GoDriveDropNavigationPage(new PodcastPage((MenuType)id)));
-                        //    break;
-                        //case (int)MenuType.Twitter:
-                        //    Pages.Add(id, new GoDriveDropNavigationPage(new TwitterPage()));
-                        //    break;
-                        //case (int)MenuType.Videos:
-                        //    Pages.Add(id, new GoDriveDropNavigationPage(new Channel9VideosPage()));
-                        //    break;
+                       
                 }
             }
-
+            
             newPage = Pages[id];
             if (newPage == null)
                 return;
@@ -116,7 +135,10 @@ namespace GoDriveDrop.Core.Views
                 await Detail.Navigation.PopToRootAsync();
             }
 
+        
+
             Detail = newPage;
+            
         }
     }
 }

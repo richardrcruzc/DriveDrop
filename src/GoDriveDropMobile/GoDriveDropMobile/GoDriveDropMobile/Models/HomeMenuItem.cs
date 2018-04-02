@@ -8,7 +8,8 @@ namespace GoDriveDrop.Core.Models
     {
         Info,
         Address,
-        Package, 
+        Package,
+        NewPackage,
         Password,
         About,
         LogOut

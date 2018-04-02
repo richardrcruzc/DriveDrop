@@ -11,21 +11,16 @@ namespace GoDriveDrop.Core
         public string _user = "admin@driveDrop.com";
         public string _passworrd = "Pass@word1";
 
+      
 
         public const string AzureTag = "Azure";
         public const string MockTag = "Mock";
-
-        // public const string DefaultEndpoint = "http://identity.godrivedrop.com/";
-        //public const string DriveDropEndpoint = "http://api.godrivedrop.com/";
-
-
-       // public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/"; 
-        public const string DefaultEndpoint = "http://169.254.80.80:5205/";
+              
+        // public const string DefaultEndpoint = "http://godrivedrop.azurewebsites.net/"; 
+        public const string DefaultEndpoint =  "http://169.254.80.80:5205/";
 
 
         private string _baseEndpoint;
-      //  private const string _drivedrppEndpoint = "http://godrivedrop.azurewebsites.net/"; 
-       private const string _drivedrppEndpoint = "http://169.254.80.80:5205/";
 
         private static readonly GlobalSetting _instance = new GlobalSetting();
 
@@ -73,6 +68,7 @@ namespace GoDriveDrop.Core
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 
+   
 
         public string ClientId { get { return "xamarin"; } }
 
@@ -138,9 +134,14 @@ namespace GoDriveDrop.Core
             }
         }
 
+        public string PicBaseUrl { get; set; }
+
 
         private void UpdateEndpoint(string baseEndpoint)
         {
+
+            PicBaseUrl = $"{baseEndpoint}Pic/GetImage/fileName/[0]/pic/";
+
             CurrentCustomer = $"{baseEndpoint}/api/v1/CurrentUser";
             RegisterWebsite = $"{baseEndpoint}/home/register";
             RegisterSender = $"{baseEndpoint}Sender/NewSender";

@@ -27,17 +27,18 @@ namespace GoDriveDrop.Core.Services.RequestProvider
         }
 
         public async Task<TResult> GetAsync<TResult>(string uri, string token = "")
-        {
-            HttpClient httpClient = CreateHttpClient(token);
-            HttpResponseMessage response = await httpClient.GetAsync(uri);
+        { 
+                HttpClient httpClient = CreateHttpClient(token);
+                HttpResponseMessage response = await httpClient.GetAsync(uri);
 
-            await HandleResponse(response);
-            string serialized = await response.Content.ReadAsStringAsync();
+                await HandleResponse(response);
+                string serialized = await response.Content.ReadAsStringAsync();
 
-            TResult result = await Task.Run(() => 
-                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+                TResult result = await Task.Run(() =>
+                    JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
 
-            return result;
+                return result;
+            
         }
 
         public async Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "")

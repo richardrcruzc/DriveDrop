@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:vm="clr-namespace:GoDriveDrop.Core.ViewModels;"
+             x:Class="GoDriveDrop.Core.Views.NewPackageView"   
+              xmlns:viewModelBase="clr-namespace:GoDriveDrop.Core.ViewModels;assembly=GoDriveDrop.Core"
+              xmlns:converters="clr-namespace:GoDriveDrop.Core.Converters;assembly=GoDriveDrop.Core"
+             xmlns:triggers="clr-namespace:GoDriveDrop.Core.Triggers;assembly=GoDriveDrop.Core"
+             xmlns:behaviors="clr-namespace:GoDriveDrop.Core.Behaviors;assembly=GoDriveDrop.Core" 
+              viewModelBase:ViewModelLocator.AutoWireViewModel="true"   Icon="{Binding Icon, Mode=TwoWay}"
+             Title="{Binding Title, Mode=TwoWay}"
+             Padding="5" >
+ 
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding SaveCommand}"
+            Text="[ Send ]">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS, Android" Value="app_settings" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/app_settings.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem 
+            Command="{Binding CancelCommand}"
+            Text="Cancel">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS, Android" Value="app_settings" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/app_settings.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+            <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
+            <converters:WebNavigatedEventArgsConverter x:Key="WebNavigatedEventArgsConverter" />
+
+            <Style x:Key="TitleLabelStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontAttributes"
+                    Value="Bold" />
+                <Setter Property="FontSize"
+                    Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Center" />
+                <Setter Property="Margin"
+                    Value="0, 12" />
+            </Style>
+
+            <Style x:Key="HeaderLabelStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                    Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                    Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Start" />
+            </Style>
+
+            <Style x:Key="CreateButtonStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                    Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Center" />
+                <Setter Property="VerticalOptions"
+                    Value="Center" />
+            </Style>
+
+            <Style x:Key="NewDriverPanelStyle"
+                TargetType="{x:Type Grid}">
+                <Setter Property="HeightRequest"
+                    Value="60" />
+                <Setter Property="BackgroundColor"
+                    Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="FillAndExpand" />
+                <Setter Property="VerticalOptions"
+                    Value="FillAndExpand" />
+            </Style>
+
+            <Style x:Key="DriverPanelStyle"
+                TargetType="{x:Type Grid}"
+                BasedOn="{StaticResource NewDriverPanelStyle}">
+                <Setter Property="BackgroundColor"
+                    Value="{StaticResource GreenColor}" />
+            </Style>
+
+            <Style x:Key="SettingsPanelStyle"
+                TargetType="{x:Type Grid}"
+                BasedOn="{StaticResource NewDriverPanelStyle}">
+                <Setter Property="BackgroundColor"
+                    Value="{StaticResource BlackColor}" />
+            </Style>
+
+            <Style x:Key="SettingsImageStyle"
+                TargetType="{x:Type Image}">
+                <Setter Property="Margin"
+                    Value="12" />
+            </Style>
+
+            <Style x:Key="OrderTotalStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LargerSize}" />
+                <Setter Property="HorizontalOptions" 
+                        Value="End" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout>
+                <Label
+                  Text="Package Information" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
+
+
+                <Label
+                  Text="Select a Pickup Address From Your Address Book or Enter a New Address" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
+                <Picker Title="Select or Enter a New Address" ItemsSource="{Binding PickupAddressesList }" 
+                            ItemDisplayBinding="{Binding Name}" 
+                            SelectedIndex="{Binding PackageInfo.PickupAddressId , Mode=TwoWay}"
+                             SelectedItem="{Binding PackageInfo.PickupAddress, Mode=OneWay}" 
+                            HorizontalOptions="FillAndExpand">
+                    <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                </Picker>
+
+                <Label
+                  Text="Select a Dropoff Address From Your Address Book or Enter a New Address" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"      Style="{StaticResource DriveDropTitleStyle}"/>
+                <Picker Title="Select or Enter a New Address" ItemsSource="{Binding DropAddressesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                             SelectedIndex="{Binding PackageInfo.DropAddressId , Mode=TwoWay}"
+                             SelectedItem="{Binding PackageInfo.DropAddress, Mode=OneWay}" 
+                            HorizontalOptions="FillAndExpand">
+                    <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                </Picker>
+
+                <Label
+                  Text="Package Photo" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}"/> 
+
+                <Button x:Name="takePhotoProfile" Text="Take Package Photo"  Command="{Binding TakePhotoProfileCommand}"/>
+                <Button x:Name="pickPhotoProfile" Text="Pick Package Photo" Command="{Binding PickPhotoProfileCommand}"/>
+                <Label Text="{Binding pickPhotoProfileErrors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                <Image x:Name="profilePhotoImage" WidthRequest = "70" HeightRequest = "70" Source="{Binding ProfilePhotoImage, Mode=OneWay}"/>
+
+
+
+                <Label
+                  Text="Package Information" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}"/>
+
+            <StackLayout Orientation="Horizontal">
+                    <Label Text="Do You Need a Van or Pick-Up Truck ?"   />
+                    <Label Text="{Binding IsToggled, Source={x:Reference switch}}" TextColor="Black"  />
+                    <Switch x:Name="switch" VerticalOptions="Start" IsToggled="{Binding PackageInfo.IsVanOrTruck, Mode=TwoWay}"/>
+                </StackLayout>
+
+                <Picker Title="Select Package Size" ItemsSource="{Binding PackageSizesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                            SelectedIndex="{Binding PackageInfo.PackageSizeId , Mode=TwoWay}"
+                             SelectedItem="{Binding PackageInfo.PackageSize, Mode=OneWay}" 
+                            HorizontalOptions="FillAndExpand">
+                    <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                </Picker>
+                <Picker Title="Select Package Priority" ItemsSource="{Binding PriorityTypesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                            SelectedIndex="{Binding PackageInfo.PriorityTypeId , Mode=TwoWay}"
+                             SelectedItem="{Binding PackageInfo.PriorityType, Mode=OneWay}" 
+                            HorizontalOptions="FillAndExpand">
+                    <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                </Picker>
+
+
+                <Entry Text="{Binding PackageInfo.Amount, Mode=TwoWay}"  Placeholder="Estimate Shipping Value" Keyboard="Numeric">
+
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding FirstName.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}"/>
+
+                <Entry Text="{Binding PackageInfo.ShippingWeight, Mode=TwoWay}"  Placeholder="Estimate Approximate Weight"  Keyboard="Numeric">
+
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding FirstName.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}"/>
+
+                <Label
+                  Text="Note to the Driver, Pickup window, Special instructions, dimensions, if you're not inuding a picture, plase be descriptive." VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
+                <Editor   HeightRequest="85" Text="{Binding PackageInfo.Note, Mode=TwoWay}" Keyboard="Chat"  />
+
+
+                <Entry Text="{Binding PackageInfo.ExtraCharge, Mode=TwoWay}"  Placeholder="Extra Charge." Keyboard="Numeric">
+
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding FirstName.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}"/>
+
+                <Label
+                  Text="Extra Charge Note." VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
+                <Editor   HeightRequest="85" Text="{Binding PackageInfo.ExtraChargeNote, Mode=TwoWay}" Keyboard="Chat"  />
+
+
+                <Entry Text="{Binding PackageInfo.PromoCode, Mode=TwoWay}"  Placeholder="Promo Code." Keyboard="Default" >
+
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding FirstName.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}"/>
+
+                <Button Command="{Binding CalcTotalCommand}" Text="[ Total ]"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
+                    FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
+                   Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+
+
+
+                <Grid IsVisible="{Binding ShowCalculatedTotal}">
+                    <Label
+                          Grid.Row="0"
+                                    Grid.Column="0" 
+                        Grid.ColumnSpan="3"
+                  Text="Shipping Total" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
+
+                    <Label 
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Text="Package Type:"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <Label 
+                                    Grid.Row="1"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.AmountPerSizeDetails, Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand"  />
+                    <!--<Label 
+                                    Grid.Row="1"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.AmountSizePriority, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>-->
+
+                    <Label 
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Text="Package Type + Priority:	"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <!--<Label 
+                                    Grid.Row="2"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.DistanceWeightDetails, Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand"/>-->
+                    <Label 
+                                    Grid.Row="2"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.AmountSizePriority, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>
+
+                    <Label 
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Text="Distance + Weight:"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <Label 
+                                    Grid.Row="3"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.DistanceWeightDetails, Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand" />
+                    <Label 
+                                    Grid.Row="3"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.DistanceWeight, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>
+
+                    <Label 
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Text="Extra Charge:"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <Label 
+                                    Grid.Row="4"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.ExtraChargeNote, Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand"/>
+                    <Label 
+                                    Grid.Row="4"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.StrExtraCharge, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>
+
+                    <Label 
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Text="Sub-Total:"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <!--<Label 
+                                    Grid.Row="5"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.StrSubTotal, Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand" />-->
+                    <Label 
+                                    Grid.Row="5"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.StrSubTotal, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>
+
+                    <Label 
+                                    Grid.Row="6"
+                                    Grid.Column="0"
+                                    Text="Discount:"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <Label 
+                                    Grid.Row="6"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.TransportTypeAmountDetails, Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand" />
+                    <Label 
+                                    Grid.Row="6"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.StrDiscount, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>
+
+                    <Label 
+                                    Grid.Row="7"
+                                    Grid.Column="0"
+                                    Text="Tax:"
+                                    TextColor="{StaticResource BlackColor}" />
+                    <Label 
+                                    Grid.Row="7"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.TaxRate, StringFormat='{0:N}%' Mode=TwoWay}"
+                                     HorizontalOptions="CenterAndExpand"/>
+                    <Label 
+                                    Grid.Row="7"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.StrTaxAmount, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"/>
+
+                    <Label 
+                                    Grid.Row="8"
+                                    Grid.Column="0"
+                                    Text="Total:"
+                                    TextColor="{StaticResource BlackColor}"  Style="{StaticResource OrderTotalStyle}" />
+                    <Label 
+                                    Grid.Row="8"   
+                                    Grid.Column="1"
+                                    Text="{Binding CalculatedTotal.TransportTypeAmountDetails, Mode=TwoWay}"
+                                    HorizontalOptions="CenterAndExpand" />
+                    <Label 
+                                    Grid.Row="8"   
+                                    Grid.Column="2"
+                                    Text="{Binding CalculatedTotal.StrAmountToCharge, Mode=TwoWay}"
+                                    TextColor="{StaticResource GreenColor}"  HorizontalOptions="EndAndExpand"   Style="{StaticResource OrderTotalStyle}"/>
+
+
+
+                    <Button 
+                          Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3"
+                        Command="{Binding CalcTotalCommand}" Text="[ Pay With Paypal ]"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
+                    FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
+                   Style="{StaticResource ValidationErrorLabelStyle}" />
+
+
+                </Grid>
+                
+                
+                
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

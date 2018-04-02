@@ -16,7 +16,7 @@ using AutoMapper;
 
 namespace DriveDrop.Bl.Controllers
 {
-    [Authorize]
+  //  [Authorize]
     [Route("[controller]")]
     public class RatesController : Controller
     {

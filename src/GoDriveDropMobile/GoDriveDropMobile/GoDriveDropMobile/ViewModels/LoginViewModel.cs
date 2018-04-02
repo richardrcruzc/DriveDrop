@@ -269,6 +269,7 @@ namespace GoDriveDrop.Core.ViewModels
 
         private async Task NavigateAsync(string url)
         {
+            IsBusy = true;
             var unescapedUrl = System.Net.WebUtility.UrlDecode(url);
 
             if (unescapedUrl.Equals(GlobalSetting.Instance.LogoutCallback))
@@ -293,38 +294,35 @@ namespace GoDriveDrop.Core.ViewModels
                       //  await NavigationService.NavigateToAsync<RootPage>();
                         //await NavigationService.RemoveLastFromBackStackAsync();
 
-                        var title = "goDriveDrop - iOS";
-                        if (Device.RuntimePlatform == Device.iOS)
-                            title = "goDriveDrop - iOS";
-                        if (Device.RuntimePlatform == Device.Android)
-                            title = "goDriveDrop - Android";
-                        if (Device.RuntimePlatform == Device.UWP)
-                            title = "goDriveDrop - UWP";
-                        if (Device.RuntimePlatform == Device.WinPhone)
-                            title = "goDriveDrop - WinPhone";
+                       
 
 
                         //get current user info
-                        var authToken = GlobalSetting.Instance.AuthAccessToken;
-                        var userInfo = await _userService.MyAccount(authToken);
+                     
+                        var userInfo = await _userService.MyAccount(accessToken);
 
-                        GlobalSetting.Instance.CurrentCustomerModel = userInfo; 
+                        GlobalSetting.Instance.CurrentCustomerModel = userInfo;
 
                         //await NavigationService.NavigateToAsync<RootPage>()
 
                         // Set our Walks Page to be the root page of our application
-                        var mainPage = new NavigationPage(new RootPage()
-                        {
-                            Title = userInfo.CustomerType,
-                        });
+                        var mainPage = new NavigationPage(new RootPage());
+                        //var mainPage = new NavigationPage(new RootPage()
+                        //{
+                        //    Title = $"{userInfo.CustomerType} {title}", 
+                        //    Icon= "iconlogo.png"
+                        //})
+                        //{
 
-                        // Set the NavigationBar TextColor and Background Color
-                        mainPage.BarBackgroundColor = Color.FromHex("#223669");
-                        mainPage.BarTextColor = Color.White;
-                        Application.Current.MainPage = mainPage;
+                        //    // Set the NavigationBar TextColor and Background Color
+                        //    BarBackgroundColor = Color.FromHex("#223669"),
+                        //    BarTextColor = Color.White
+                        //};
+                       Application.Current.MainPage = mainPage;
                     }
                 }
             }
+            IsBusy = false;
         }
 
         private async Task SettingsAsync()

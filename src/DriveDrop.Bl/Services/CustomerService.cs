@@ -231,6 +231,7 @@ namespace DriveDrop.Bl.Services
                 .ThenInclude(ps => ps.ShippingStatus)
                 .Where(x => x.UserName == user && x.Isdeleted==false)
                 .FirstOrDefaultAsync();
+
             if (c == null )
                 return new CurrentCustomerModel();
 
@@ -394,10 +395,7 @@ namespace DriveDrop.Bl.Services
             currentCustomer.PersonalPhotoUri = _pictureService.DisplayImage(currentCustomer.PersonalPhotoUri);
             currentCustomer.DriverLincensePictureUri = _pictureService.DisplayImage(currentCustomer.DriverLincensePictureUri);
             currentCustomer.VehiclePhotoUri = _pictureService.DisplayImage(currentCustomer.VehiclePhotoUri);
-            currentCustomer.InsurancePhotoUri = _pictureService.DisplayImage(currentCustomer.InsurancePhotoUri);
-
-
-
+            currentCustomer.InsurancePhotoUri = _pictureService.DisplayImage(currentCustomer.InsurancePhotoUri); 
 
 
             return currentCustomer;

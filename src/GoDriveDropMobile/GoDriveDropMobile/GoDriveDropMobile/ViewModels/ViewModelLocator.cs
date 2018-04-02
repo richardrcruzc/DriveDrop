@@ -15,6 +15,7 @@ using GoDriveDrop.Core.Services.OpenUrl;
 using GoDriveDrop.Core.Views;
 using GoDriveDrop.Core.Services.Location;
 using GoDriveDrop.Core.Services.User;
+using GoDriveDrop.Core.Services.Address;
 
 namespace GoDriveDrop.Core.ViewModels
 {
@@ -51,23 +52,28 @@ namespace GoDriveDrop.Core.ViewModels
             builder.RegisterType<NewDriverViewModel>();
             builder.RegisterType<NewSenderViewModel>();
             builder.RegisterType<PersonalInfoViewModel>();
+            builder.RegisterType<AddressesViewModel>();
+            builder.RegisterType<PackageViewModel>();
+            builder.RegisterType<NewPackageViewModel>();
 
             // Services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
 
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<DialogService>().As<IDialogService>();
-             builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
-             builder.RegisterType<IdentityService>().As<IIdentityService>();
+            builder.RegisterType<OpenUrlService>().As<IOpenUrlService>();
+            builder.RegisterType<IdentityService>().As<IIdentityService>();
             builder.RegisterType<RequestProvider>().As<IRequestProvider>();
-             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
+            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
 
-             builder.RegisterType<Commons>().As<ICommons>();
-             builder.RegisterType<GoogleAddress>().As<IGoogleAddress>();
-             builder.RegisterType<DriverService>().As<IDriverService>();
+            builder.RegisterType<Commons>().As<ICommons>();
+            builder.RegisterType<GoogleAddress>().As<IGoogleAddress>();
+            builder.RegisterType<DriverService>().As<IDriverService>();
             builder.RegisterType<SenderService>().As<ISenderService>();
-             
-             
+            builder.RegisterType<AddressService>().As<IAddressService>();
+            
+
+
             if (_container != null)
             {
                 _container.Dispose();

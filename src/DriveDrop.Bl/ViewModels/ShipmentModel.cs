@@ -86,5 +86,29 @@ namespace DriveDrop.Bl.ViewModels
         public DateTime Dropby { get;   set; }
 
 
+
+        public string PickupPictureUrl
+        {
+            get
+            {
+                return $"/Pic/GetImage/fileName/{PickupPictureUri}/pic/";
+            }
+        }
+        public string DeliveredPictureUrl
+        {
+            get
+            {
+                return $"/Pic/GetImage/fileName/{DeliveredPictureUri}/pic/";
+            }
+        }
+
+        public string DropPictureUrl
+        {
+            get
+            {
+                return $"/Pic/GetImage/fileName/{DropPictureUri}/pic/";
+            }
+        }
+
     }
 }

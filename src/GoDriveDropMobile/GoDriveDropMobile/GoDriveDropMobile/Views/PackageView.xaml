@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GoDriveDrop.Core.ViewModels;"
+             x:Class="GoDriveDrop.Core.Views.PackageView"   
+             xmlns:viewModelBase="clr-namespace:GoDriveDrop.Core.ViewModels;assembly=GoDriveDrop.Core"
+             xmlns:behaviors="clr-namespace:GoDriveDrop.Core.Behaviors;assembly=GoDriveDrop.Core" 
+              xmlns:templates="clr-namespace:GoDriveDrop.Core.Views.Templates;assembly=GoDriveDrop.Core"   
+               xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"              
+             Title="{Binding Title}"  Icon="{Binding Icon}" x:Name="MyNotifyPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="CartTotalStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LargerSize}" />
+                <Setter Property="HorizontalOptions" 
+                        Value="End" />
+            </Style>
+
+            <Style x:Key="CheckoutButtonStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+
+            <Style x:Key="ShoppingCartStyle" 
+                   TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor"
+                        Value="Black" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0, 12" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid 
+        BackgroundColor="{StaticResource BackgroundColor}">
+        <!-- SHOPPING CART -->
+        <Grid       
+            IsVisible="{Binding PackagesItems.Count, Converter={StaticResource CountToBoolConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="45" />
+            </Grid.RowDefinitions>
+            <!-- CART ITEMS -->
+            <Grid
+                Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- HEADER -->
+                    <Grid IsVisible="{Binding ShowSelected, Mode=TwoWay}"
+                        Grid.Row="0">
+                        <Label 
+                            Text="My Package Details"
+                            Style="{StaticResource ShoppingCartStyle}"/>
+                    </Grid>
+                    <ScrollView x:Name="selectedItem" IsVisible="{Binding ShowSelected, Mode=TwoWay}"
+                        Grid.Row="1">
+                        
+                        <StackLayout  Margin="05,0,0,05">
+                          
+                            <Grid>
+                                <Label 
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Shipping #"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="0"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.IdentityCode}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+
+                                <Label 
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Text="Status:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="1"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.ShippingStatus.Name}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+
+                                <Label 
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Text="Priority:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="2"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.PriorityType.Name}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+
+                                <Label 
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Text="Package Size:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="3"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.PackageSize.Name}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+
+                                <Label 
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Text="Charge Amount:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="4"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.ChargeAmount, StringFormat='${0:N}'}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Text="Discount:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="5"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.Discount, StringFormat='${0:N}'}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="6"
+                                    Grid.Column="0"
+                                    Text="Promo Code:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="6"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.PromoCode}"
+                                    TextColor="{StaticResource GreenColor}" />
+ 
+
+                                <Label 
+                                    Grid.Row="7"
+                                    Grid.Column="0"
+                                    Text="Extra Charge:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="7"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.ExtraCharge, StringFormat='${0:N}'}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="8"
+                                    Grid.Column="0"
+                                    Text="Extra Charge Note:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="8"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.ExtraChargeNote}"
+                                    TextColor="{StaticResource GreenColor}" />
+                                
+
+                                <Label 
+                                    Grid.Row="9"
+                                    Grid.Column="0"
+                                    Text="Amount Paid:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="9"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.AmountPay, StringFormat='${0:N}'}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="10"
+                                    Grid.Column="0"
+                                    Text="Note:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="10"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.Note}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+
+                                <Label 
+                                    Grid.Row="11"
+                                    Grid.Column="0"
+                                    Text="Create Date:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="11"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.ShippingCreateDate, StringFormat='{0:g}'}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="12"
+                                    Grid.Column="0"
+                                    Text="Pickup Address:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="12"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.PickupAddress.GetAddress}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="13"
+                                    Grid.Column="0"
+                                    Text="Delivery Address:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="13"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.DeliveryAddress.GetAddress}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="14"
+                                    Grid.Column="0"
+                                    Text="Distance Miles:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="14"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.Distance}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="15"
+                                    Grid.Column="0"
+                                    Text="Driver:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                <Label 
+                                    Grid.Row="15"   
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedItem.Driver.FullName}"
+                                    TextColor="{StaticResource GreenColor}" />
+
+                                <Label 
+                                    Grid.Row="16"
+                                    Grid.Column="0"
+                                    Text="PickUp Image:"
+                                    TextColor="{StaticResource BlackColor}" />
+                                 <Image
+                                    Grid.Row="16"   
+                                    Grid.Column="1"
+                                    Source="{Binding SelectedItem.PickupPictureUrl, Converter={StaticResource ImageConverter}}"        
+                                    HeightRequest="108" 
+                                    WidthRequest="108"
+                                    Aspect="AspectFit"
+                                    VerticalOptions="Start"
+                                    Margin="12,0,0,0" />
+
+                                
+                                <Label 
+                                    Grid.Row="17"
+                                    Grid.Column="0"
+                                    Text="Delivery Image:"
+                                    TextColor="{StaticResource BlackColor}" />
+
+                                <Image 
+                                      Grid.Row="17"   
+                                    Grid.Column="1"
+                                    Source="{Binding SelectedItem.DeliveredPictureUrl, Converter={StaticResource ImageConverter}}"        
+                                    HeightRequest="108" 
+                                    WidthRequest="108"
+                                    Aspect="AspectFit"
+                                    VerticalOptions="Start"
+                                    Margin="12,0,0,0" />
+ 
+
+                            </Grid>
+                        </StackLayout>
+                    </ScrollView>
+                    
+                    
+                    <ScrollView x:Name="listItems" IsVisible="{Binding ShowList, Mode=TwoWay}"
+                        Grid.Row="1">
+                        <StackLayout>
+                            <!-- ITEMS -->
+                            <ListView  
+                                ItemsSource="{Binding PackagesItems}"  
+                                HeightRequest="{Binding PackagesItems.Count, Converter={StaticResource ItemsToHeightConverter}}"
+                                HasUnevenRows="True"
+                                SeparatorVisibility="None"
+                                VerticalOptions="FillAndExpand"
+                                CachingStrategy="RecycleElement"
+                                  x:Name="ListViewPackage">
+                                <ListView.Behaviors>
+                                    <behaviors:EventToCommandBehavior
+										EventName="ItemTapped"
+										EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"
+										Command="{Binding AddCommand}" />
+                                </ListView.Behaviors>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell >
+                                            <templates:PackageItemTemplate />
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <!-- TOTAL -->
+                            <!--<StackLayout
+                                Margin="0,0,0,24">
+                                <Label 
+                                    Grid.Row="0"
+                                    Text="TOTAL"
+                                    TextColor="{StaticResource BlackColor}"
+                                    Style="{StaticResource CartTotalStyle}"/>
+                                <Label 
+                                    Grid.Row="1"                   
+                                    Text="{Binding Total, StringFormat='${0:N}'}"
+                                    TextColor="{StaticResource GreenColor}"
+                                    Style="{StaticResource CartTotalStyle}"/>
+                            </StackLayout>-->
+                        </StackLayout>
+                    </ScrollView>
+                    
+                </Grid>
+            </Grid>
+            <!-- back -->
+            <Grid IsVisible="{Binding ShowSelected, Mode=TwoWay}"
+                Grid.Row="1"           
+                BackgroundColor="{StaticResource Primary}"
+                Padding="0" 
+                ColumnSpacing="0" 
+                RowSpacing="0">
+                <Label       
+                    Text="[ Back to Packages list]" 
+                    Style="{StaticResource CheckoutButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer            
+                        Command="{Binding BackToListCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <!--<Grid IsVisible="{Binding ShowList, Mode=TwoWay}"
+                Grid.Row="1"           
+                BackgroundColor="{StaticResource Primary}"
+                Padding="0" 
+                ColumnSpacing="0" 
+                RowSpacing="0">
+                <Label       
+                    Text="[ New Packages ]" 
+                    Style="{StaticResource CheckoutButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer            
+                        Command="{Binding NewPackageCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>-->
+        </Grid>
+        <!-- EMPTY SHOPPING CART -->
+        <Grid             
+            IsVisible="{Binding PackagesItems.Count, Converter={StaticResource InverseCountToBoolConverter}}">
+            <Label 
+                Text="There are not Packages"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Grid>
+    </Grid>
+</ContentPage>

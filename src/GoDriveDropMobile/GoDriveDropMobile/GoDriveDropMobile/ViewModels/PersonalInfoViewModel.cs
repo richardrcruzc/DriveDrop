@@ -1,5 +1,6 @@
 ﻿using GoDriveDrop.Core.Models.Commons;
 using GoDriveDrop.Core.Services.Common;
+using GoDriveDrop.Core.Services.Driver;
 using GoDriveDrop.Core.Validations;
 using Plugin.Media;
 using System;
@@ -14,7 +15,7 @@ namespace GoDriveDrop.Core.ViewModels
 {
     public class PersonalInfoViewModel : BaseViewModel
     {
-
+        private ISenderService _senderService;
         private ValidatableObject<string> _lastName;
         private ValidatableObject<string> _firstName;
 
@@ -40,15 +41,15 @@ namespace GoDriveDrop.Core.ViewModels
 
             _lastName.Value = GlobalSetting.Instance.CurrentCustomerModel.LastName;
             _firstName.Value = GlobalSetting.Instance.CurrentCustomerModel.FirstName;
-            _primaryPhone.Value = GlobalSetting.Instance.CurrentCustomerModel.PrimaryPhone;
-            _phone.Value = GlobalSetting.Instance.CurrentCustomerModel.Phone;
+            _primaryPhone.Value = GlobalSetting.Instance.CurrentCustomerModel.PrimaryPhone.CleanPhone();
+            _phone.Value = GlobalSetting.Instance.CurrentCustomerModel.Phone.CleanPhone();
             _verificationId.Value = GlobalSetting.Instance.CurrentCustomerModel.VerificationId;
-            _user.Value = GlobalSetting.Instance.CurrentCustomerModel.Email;
+            _user.Value = GlobalSetting.Instance.CurrentCustomerModel.Email; 
 
             AddValidations();
 
             Title = "My Personal Information";
-            
+            _profilePhotoImage = GlobalSetting.Instance.CurrentCustomerModel.PersonalPhotoUrl;
         }
 
 
@@ -56,7 +57,7 @@ namespace GoDriveDrop.Core.ViewModels
         private string PersonalPhotoUri { set; get; }
 
         private Stream ProfilePhotoImageMS { set; get; }
-        private ImageSource _profilePhotoImage = $"{GlobalSetting.Instance.BaseEndpoint}{GlobalSetting.Instance.CurrentCustomerModel.PersonalPhotoUri}";
+        private ImageSource _profilePhotoImage = GlobalSetting.Instance.CurrentCustomerModel.PersonalPhotoUrl;
         public ImageSource ProfilePhotoImage
         {
             get
@@ -243,8 +244,8 @@ namespace GoDriveDrop.Core.ViewModels
         }
         private bool ValidateUserEmail()
         {
-            return false;
-           // return _userEmail.Check(UserEmail.Value);
+          
+           return _userEmail.Check(UserEmail.Value);
 
         }
 
@@ -280,7 +281,7 @@ namespace GoDriveDrop.Core.ViewModels
             bool isValid = Validate();
             if (isValid)
             {    
-                var sender = new CustomerModel
+                var user = new CustomerModel
                 { 
                     FirstName = FirstName.Value,
                     LastName = LastName.Value,
@@ -291,33 +292,30 @@ namespace GoDriveDrop.Core.ViewModels
 
                 };
 
-                bool isvalidpi = ProfilePhotoImageMS != null ? true : false;
-                if (!isvalidpi)
+                //bool isvalidpi = ProfilePhotoImageMS != null ? true : false;
+                //if (!isvalidpi)
+                //{
+                //    await DialogService.ShowAlertAsync("Need a profile photo", "Saving data ProfilePhotoImage", "Ok");
+                //    IsBusy = false;
+                //    return;
+                //}
+
+                if (ProfilePhotoImageMS!=null && ProfilePhotoImageMS.CanRead)
                 {
-                    await DialogService.ShowAlertAsync("Need a profile photo", "Saving data ProfilePhotoImage", "Ok");
-                    IsBusy = false;
-                    return;
+                    user.PersonalPhotoUri = await _commons.UploadImage(ProfilePhotoImageMS, "sender"); 
+
+                    if (string.IsNullOrWhiteSpace(user.PersonalPhotoUri))
+                    {
+                        IsBusy = false;
+                        await DialogService.ShowAlertAsync("Unable to Save Photos !", "My Personal Information", "Ok");
+                        return;
+                    }
                 }
-
-                if (string.IsNullOrEmpty(PersonalPhotoUri) && ProfilePhotoImageMS.CanRead)
-                    sender.PersonalPhotoUri = await _commons.UploadImage(ProfilePhotoImageMS, "sender");
-                else
-                    sender.PersonalPhotoUri = PersonalPhotoUri;
-
-                PersonalPhotoUri = sender.PersonalPhotoUri;
-
-                if (string.IsNullOrWhiteSpace(sender.PersonalPhotoUri))
-                {
-                    IsBusy = false;
-                    await DialogService.ShowAlertAsync("Unable to Save Photos !", "Verify Informations", "Ok");
-                    return;
-                }
-
 
                 var response = "Info updated";
                 try
                 {
-                    //response = await _senderService.CreateSenderAsync(sender);
+                    response = await _senderService.UpdateSenderAsync(user);
 
 
                 }
@@ -326,9 +324,9 @@ namespace GoDriveDrop.Core.ViewModels
                     response = ex.Message;
 
                 }
-                if (response == "Info updated")
+                if (response == "Updated")
                 {
-                    await DialogService.ShowAlertAsync(" Shortly, you will receive an email with a link. Follow the link to verify your email address.", "Driver Account has Been Created", "Ok");
+                    await DialogService.ShowAlertAsync("Info updated", "My Personal Information", "Ok");
 
 
                     //var navigationService = ViewModelLocator.Resolve<INavigationService>();
@@ -336,14 +334,14 @@ namespace GoDriveDrop.Core.ViewModels
                 }
                 else
                 {
-                    await DialogService.ShowAlertAsync(response, "Error", "Ok");
+                    await DialogService.ShowAlertAsync(response, "My Personal Information", "Ok");
 
                 }
 
             }
             else
             {
-                await DialogService.ShowAlertAsync("Something Wrong !", "Verify Informations", "Ok");
+                await DialogService.ShowAlertAsync("Something Wrong !", "My Personal Information", "Ok");
 
 
 

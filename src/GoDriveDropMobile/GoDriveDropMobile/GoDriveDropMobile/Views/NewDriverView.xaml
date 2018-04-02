@@ -291,7 +291,7 @@
 					Text="{Binding DeliverRadius.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 				Style="{StaticResource ValidationErrorLabelStyle}"	/>
 
-                <Picker Title="All Vehicle Types" ItemsSource="{Binding VehicleTypesList}" 
+                <Picker Title="Select Vehicle Types" ItemsSource="{Binding VehicleTypesList}" 
                             ItemDisplayBinding="{Binding Name}" 
                             SelectedIndex="{Binding SelectedIndex , Mode=TwoWay}"
                              SelectedItem="{Binding SelectedVehicle, Mode=OneWay}" 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace GoDriveDrop.Core.Models.Shippments
 {
@@ -9,12 +10,14 @@ namespace GoDriveDrop.Core.Models.Shippments
     {
         public ShipmentModel()
         {
-         
+            ShippingStatusList = new List<GenericModel>();
+            Reviews = new List<ReviewModel>();
+            PackageStatusHistories = new List<GenericModel>();
         }
 
         public Decimal ExtraCharge { get; set; }
         public string ExtraChargeNote { get; set; }
-        public virtual ICollection<GenericModel> PackageStatusHistories { get; set; }
+        public virtual List<GenericModel> PackageStatusHistories { get; set; }
 
         public List<GenericModel> ShippingStatusList { get; set; }
 
@@ -28,20 +31,20 @@ namespace GoDriveDrop.Core.Models.Shippments
         public DateTime ShippingUpdateDate { get; set; }
 
         public int SenderId { get; set; }
-        public int? DriverId { get; set; }
+        public int  DriverId { get; set; }
 
-        public virtual CustomerModel Sender { get; set; }
-        public virtual CustomerModel Driver { get; set; }
+     //   public virtual CustomerModel Sender { get; set; }
+     //   public virtual CustomerModel Driver { get; set; }
 
         public AddressModel PickupAddress { get; set; }
         public AddressModel DeliveryAddress { get; set; }
-        //public Address BillingAddress { get;  set; }
+        public AddressModel BillingAddress { get;  set; }
 
         // public Customer Sender { get;  set; }
         //public int SenderId { get;  set; }
 
-        //public Customer Driver { get;  set; }
-        //public int DriverId { get;  set; }         
+         public CustomerModel Driver { get;  set; }
+           
 
         public GenericModel ShippingStatus { get; set; }
         public int ShippingStatusId { get; set; }
@@ -82,6 +85,47 @@ namespace GoDriveDrop.Core.Models.Shippments
         public string DropPictureUri { get; set; }
         public string DropComment { get; set; }
         public DateTime Dropby { get; set; }
+
+
+        public string GetPackageHistoryLast
+        {
+            //get { return  "sdddddddddddddd"; }
+            get
+            {
+                if(PackageStatusHistories.Count()>0)
+                return
+              $"{PackageStatusHistories.LastOrDefault().Name}";
+                else
+                    return
+            "No status yet";
+            }
+
+        }
+        //public string PickupPictureUrl { get; set; }
+        //public string DeliveredPictureUrl { get; set; }
+        //public string DropPictureUrl { get; set; }
+        public string PickupPictureUrl
+        {
+            get
+            {
+                return GlobalSetting.Instance.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(PickupPictureUri));
+            }
+        }
+        public string DeliveredPictureUrl
+        {
+            get
+            {
+                return GlobalSetting.Instance.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(DeliveredPictureUri));
+            }
+        }
+
+        public string DropPictureUrl
+        {
+            get
+            {
+                return GlobalSetting.Instance.PicBaseUrl.Replace("[0]", System.Net.WebUtility.UrlEncode(DropPictureUri));
+            }
+        }
 
 
     }

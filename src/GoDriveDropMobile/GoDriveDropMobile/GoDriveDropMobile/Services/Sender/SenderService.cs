@@ -127,7 +127,7 @@ namespace GoDriveDrop.Core.Services.Driver
 
         }
 
-        async Task<string> GetUserTokenAsync()
+        async  Task<string> GetUserTokenAsync()
         {
             var LoginUrl = _identityService.CreateAuthorizationRequest();
             var unescapedUrl = System.Net.WebUtility.UrlDecode(LoginUrl);
@@ -137,5 +137,46 @@ namespace GoDriveDrop.Core.Services.Driver
             return accessToken;
         }
 
+        public async Task<string> UpdateSenderAsync(CustomerModel c)
+        { 
+            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            {
+                //Path = $"/account/RegisterUser?userName={userName}&password={password}"
+                Path = "/sender/UpdateInfoFromBody"
+            };
+          
+            var uri = builder.ToString();
+
+            try
+            {
+                await _requestProvider.PostAsync<CustomerModel>(uri, c);
+                return "Info updated";
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (var errorResponse = (HttpWebResponse)wex.Response)
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            string error = reader.ReadToEnd();
+
+                            var errorList = JsonConvert.DeserializeObject<List<string>>(error,
+                   new JsonSerializerSettings
+                   {
+                       NullValueHandling = NullValueHandling.Ignore
+                   });
+
+
+                            //TODO: use JSON.net to parse this string and look at the error message
+                            //newDriver.ErrorMsg = error;
+                        }
+                    }
+                }
+
+                return "Something wrong !";
+            }
+        }
     }
 }

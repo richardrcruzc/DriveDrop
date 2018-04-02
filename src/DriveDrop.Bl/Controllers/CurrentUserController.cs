@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DriveDrop.Bl.Services;
 using DriveDrop.Bl.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DriveDrop.Bl.Controllers
 {
@@ -28,7 +30,26 @@ namespace DriveDrop.Bl.Controllers
                 return NotFound();
 
 
-            return Ok(c);
+
+            var content = JsonConvert.SerializeObject(c, Formatting.None,
+                        new JsonSerializerSettings()
+                        {
+                            
+                            NullValueHandling = NullValueHandling.Ignore,
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
+
+
+
+            return Ok(content);
+
+
+
+
+
+            //  c = new CurrentCustomerModel { };
+
+           // return new JsonResult( c);
         }
     }
 }

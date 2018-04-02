@@ -1,4 +1,5 @@
 ﻿using GoDriveDrop.Core.Models;
+using GoDriveDrop.Core.Models.Commons;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ namespace GoDriveDrop.Core.Services.Driver
     public interface ISenderService
     {
         Task<string> CreateSenderAsync(NewSenderModel newSender);
+        Task<string> UpdateSenderAsync(CustomerModel newSender);
         Task<ObservableCollection<NewSenderModel>> GetDriversAsync(string token);
         Task<NewSenderModel> GetSenderAsync(int driverId, string token);
         Task<NewSenderModel> GetSenderAsync(string userName, string token);

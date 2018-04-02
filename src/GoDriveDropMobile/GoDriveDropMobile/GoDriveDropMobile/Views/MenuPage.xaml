@@ -52,7 +52,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Source="{Binding Icon}" HeightRequest="25" WidthRequest="25"/>
-                                <Label Grid.Column="1" Text="{Binding Title}" FontSize="24"/>
+                                <Label Grid.Column="1" Text="{Binding Title}" FontSize="20"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

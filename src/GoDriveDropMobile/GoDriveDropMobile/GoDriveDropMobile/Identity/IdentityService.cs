@@ -137,7 +137,7 @@ namespace GoDriveDrop.Core.Identity
             dic.Add("client_id", GlobalSetting.Instance.ClientId);
             dic.Add("client_secret", GlobalSetting.Instance.ClientSecret);
             dic.Add("response_type", "code id_token");
-            dic.Add("scope", "openid profile locations offline_access");
+            dic.Add("scope", "openid profile drivedrop locations offline_access");
             dic.Add("redirect_uri",   GlobalSetting.Instance.IdentityCallback);
             dic.Add("nonce", Guid.NewGuid().ToString("N"));
             dic.Add("code_challenge", CreateCodeChallenge());

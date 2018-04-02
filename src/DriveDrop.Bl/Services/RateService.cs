@@ -101,7 +101,7 @@ namespace DriveDrop.Bl.Services
 
             var taxAmountDetails = string.Format("Tax Rate:{0}", taxRates);
             //var distanceAmountDetails = string.Format("{0} Miles Range From: {1} To:{2}", milesDecimal, rateDistance.From, rateDistance.To);
-            var distanceAmountDetails = string.Format("{0} Miles", distance);
+            var distanceAmountDetails = string.Format("{0} Miles", String.Format("{0:n}", distance));
             var priorityAmountDetail = string.Format("{0}", priorityName.Name);
             //var weightAmountDetails = string.Format("{0} Lbs Weight Range From: {1} To:{2}", weight, rateWeight.From, rateWeight.To);
             var weightAmountDetails = string.Format("{0} Lbs", weight);

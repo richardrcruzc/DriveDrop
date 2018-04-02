@@ -48,9 +48,9 @@ namespace GoDriveDrop.Core.Models.Commons
 
         public decimal Commission { get; set; }
 
-        public ICollection<AddressModel> Addresses { get; set; }
-        public virtual ICollection<ShipmentModel> ShipmentDrivers { get; set; }
-        public virtual ICollection<ShipmentModel> ShipmentSenders { get; set; }
+        public List<AddressModel> Addresses { get; set; }
+        public virtual List<ShipmentModel> ShipmentDrivers { get; set; }
+        public virtual List<ShipmentModel> ShipmentSenders { get; set; }
 
         public string DriverLincensePictureUri { get; set; }
 
@@ -59,7 +59,7 @@ namespace GoDriveDrop.Core.Models.Commons
         public AddressModel DefaultAddress { get; set; }
 
         public string PaymentMethodId { get; set; }
-          public string PersonalPhotoUri { get; set; }
+        public string PersonalPhotoUri { get; set; }
         public string VehiclePhotoUri { get; set; }
         public string InsurancePhotoUri { get; set; }
 
@@ -87,5 +87,34 @@ namespace GoDriveDrop.Core.Models.Commons
             }
         }
 
+
+        public string PersonalPhotoUrl
+        {
+            get
+            {
+                return $"{GlobalSetting.Instance.BaseEndpoint}{PersonalPhotoUri}";
+            }
+        }
+        public string VehiclePhotoUrl
+        {
+            get
+            {
+                return $"{GlobalSetting.Instance.BaseEndpoint}{VehiclePhotoUri}";
+            }
+        }
+        public string InsurancePhotoUrl
+        {
+            get
+            {
+                return $"{GlobalSetting.Instance.BaseEndpoint}{InsurancePhotoUri}";
+            }
+        }
+        public string DriverLincensePictureUrl
+        {
+            get
+            {
+                return $"{GlobalSetting.Instance.BaseEndpoint}{DriverLincensePictureUri}";
+            }
+        }
     }
 }

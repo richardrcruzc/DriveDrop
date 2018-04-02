@@ -95,8 +95,10 @@ namespace GoDriveDrop.Core.Services.User
                 };
                 uri = builder.ToString();
 
-                var currentCustomer =
-                   await _requestProvider.GetAsync<CustomerModel>(uri, authToken);
+                var customerString =
+                   await _requestProvider.GetAsync<string>(uri, authToken);
+
+                var currentCustomer = JsonConvert.DeserializeObject<CustomerModel>(customerString );
 
                 return currentCustomer;
             }
