@@ -291,14 +291,15 @@ namespace GoDriveDrop.Core.ViewModels
                     {
                         GlobalSetting.Instance.AuthAccessToken = accessToken;
                         GlobalSetting.Instance.AuthIdToken = authResponse.IdentityToken;
-                      //  await NavigationService.NavigateToAsync<RootPage>();
+                        GlobalSetting.Instance.AuthToken = accessToken;
+                        //  await NavigationService.NavigateToAsync<RootPage>();
                         //await NavigationService.RemoveLastFromBackStackAsync();
 
-                       
+
 
 
                         //get current user info
-                     
+
                         var userInfo = await _userService.MyAccount(accessToken);
 
                         GlobalSetting.Instance.CurrentCustomerModel = userInfo;

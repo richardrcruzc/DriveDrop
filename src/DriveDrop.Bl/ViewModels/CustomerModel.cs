@@ -345,7 +345,7 @@ namespace DriveDrop.Bl.ViewModels
         }
 
         [Display(Name = "Do you need a Van or Pick-Up Truck ?")]
-        public bool NeedVanOrPickUp { get; private set; }
+        public bool NeedVanOrPickUp { get; set; }
         public int PickupAddressId { get; set; }
         public int DropAddressId { get; set; } 
 

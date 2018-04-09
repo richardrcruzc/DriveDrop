@@ -194,6 +194,13 @@
             <converters:ToUpperConverter x:Key="ToUpperConverter" />
 
             <!-- EXPLICIT STYLES -->
+            <Style x:Key="SelectedAddressLabelStyle"
+				   TargetType="{x:Type Label}">
+                <Setter Property="TextColor"
+						   Value="{StaticResource ErrorColor}" />
+                <Setter Property="FontSize"
+					       Value="{StaticResource MidMediumSize}" />
+            </Style>
             <Style x:Key="ValidationErrorLabelStyle"
 				   TargetType="{x:Type Label}">
                 <Setter Property="TextColor"
@@ -201,7 +208,6 @@
                 <Setter Property="FontSize"
 					       Value="{StaticResource LittleSize}" />
             </Style>
-            
             <Style x:Key="EntryStyle"
                    TargetType="{x:Type Entry}">
                 <Setter Property="FontFamily"

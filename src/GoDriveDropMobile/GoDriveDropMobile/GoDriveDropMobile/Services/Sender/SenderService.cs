@@ -1,7 +1,9 @@
 ﻿using GoDriveDrop.Core.Identity;
 using GoDriveDrop.Core.Models;
 using GoDriveDrop.Core.Models.Commons;
+using GoDriveDrop.Core.Models.Shippments;
 using GoDriveDrop.Core.Services.RequestProvider;
+using GoDriveDrop.Core.ViewModels;
 using IdentityModel.Client;
 using Newtonsoft.Json;
 using System;
@@ -19,13 +21,52 @@ namespace GoDriveDrop.Core.Services.Driver
         private IIdentityService _identityService;
         private readonly IRequestProvider _requestProvider;
         private const string ApiUrlBase = "drivers/";
-        public SenderService(
-            IIdentityService identityService,
-            IRequestProvider requestProvider)
+        public SenderService(IIdentityService identityService, IRequestProvider requestProvider)
         {
             _identityService = identityService;
             _requestProvider = requestProvider;
         }
+
+        public async Task<string> CreatePackageAsync(NewPackageModel p, string token)
+        {
+            var builder = new UriBuilder(GlobalSetting.Instance.BaseEndpoint)
+            { 
+                Path = "/sender/SaveNewShipment"
+            };
+            var uri = builder.ToString();
+            try
+            {
+               var response= await _requestProvider.PostAsync<NewPackageModel>(uri, p, token);
+                return "Info updated";
+            }
+            catch (WebException wex)
+            {
+                if (wex.Response != null)
+                {
+                    using (var errorResponse = (HttpWebResponse)wex.Response)
+                    {
+                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+                        {
+                            string error = reader.ReadToEnd();
+
+                            var errorList = JsonConvert.DeserializeObject<List<string>>(error,
+                   new JsonSerializerSettings
+                   {
+                       NullValueHandling = NullValueHandling.Ignore
+                   });
+
+
+                            //TODO: use JSON.net to parse this string and look at the error message
+                            //newDriver.ErrorMsg = error;
+                        }
+                    }
+                }
+
+                return "Something wrong !";
+            }
+
+        }
+
         public async Task<string> CreateSenderAsync(NewSenderModel c)
         {
             c.FromXamarin = true;

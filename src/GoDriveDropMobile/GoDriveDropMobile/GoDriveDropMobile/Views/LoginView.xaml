@@ -175,7 +175,7 @@
             </AbsoluteLayout>
        
         <!-- INDICATOR -->
-        <ActivityIndicator      
+        <!--<ActivityIndicator      
           Color="{StaticResource LightGreenColor}"
           IsRunning="{Binding IsBusy}"
           IsVisible="{Binding IsBusy}"
@@ -188,7 +188,7 @@
                   Android="100"
                   WinPhone="400" />
             </ActivityIndicator.WidthRequest>
-        </ActivityIndicator>
+        </ActivityIndicator>-->
     </Grid>
      
 </ContentPage>

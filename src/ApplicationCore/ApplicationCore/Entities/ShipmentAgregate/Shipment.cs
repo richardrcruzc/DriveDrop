@@ -147,7 +147,7 @@ namespace ApplicationCore.Entities.ClientAgregate.ShipmentAgregate
             Note = note;
             PickupPictureUri = pickupPictureUri;
             DeliveredPictureUri = deliveredPictureUri;
-
+                        
             PickupAddress = pickup;
             DeliveryAddress = delivery;
 

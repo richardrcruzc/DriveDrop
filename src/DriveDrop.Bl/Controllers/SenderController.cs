@@ -538,8 +538,8 @@ namespace DriveDrop.Bl.Controllers
                     var sender = _context.Customers.Find(c.CustomerId);
 
 
-                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact,c.DeliveryLatitude,c.DeliveryLongitude);
-                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact,c.PickupLatitude, c.PickupLongitude);
+                    var deliveryAddres = new Address(c.DeliveryStreet, c.DeliveryCity, c.DeliveryState, c.DeliveryCountry, c.DeliveryZipCode, c.DeliveryPhone, c.DeliveryContact,c.DeliveryLatitude,c.DeliveryLongitude,"drop");
+                    var pickUpAddres = new Address(c.PickupStreet, c.PickupCity, c.PickupState, c.PickupCountry, c.PickupZipCode, c.PickupPhone, c.PickupContact,c.PickupLatitude, c.PickupLongitude,"pickup");
 
                     foreach (var s in sender.Addresses)
                     {
@@ -576,8 +576,14 @@ namespace DriveDrop.Bl.Controllers
                     _context.SaveChanges();
 
                     await _context.SaveChangesAsync();
+                                        
+                    sender.AddAddress(deliveryAddres);
+                    sender.AddAddress(pickUpAddres);
 
-                     
+                    _context.Update(sender);
+
+                    await _context.SaveChangesAsync();
+
 
                     return  new JsonResult(sender.Id);
 

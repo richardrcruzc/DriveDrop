@@ -60,7 +60,7 @@ namespace GoDriveDrop.Core.ViewModels
         /// <summary>
         /// Gets or sets the "Icon" of the viewmodel
         /// </summary>
-        public const string IconPropertyName = "Icon";
+        public const string IconPropertyName = "iconlogo";
         public string Icon
         {
             get { return icon; }

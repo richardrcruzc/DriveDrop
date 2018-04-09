@@ -21,15 +21,12 @@ namespace GoDriveDrop.Core.Models.Shippments
         }
 
         
-        public bool NeedVanOrPickUp { get; private set; }
+        public bool NeedVanOrPickUp { get; set; }
         public int PickupAddressId { get; set; }
         public int DropAddressId { get; set; }
 
         public List<AddressModel> PickupAddresses { get; set; }
-        public List<AddressModel> DropAddresses { get; set; }
-
-        public GenericModel PickupAddress { get; set; }
-        public GenericModel DropAddress { get; set; }
+        public List<AddressModel> DropAddresses { get; set; } 
 
         public List<GenericModel> CustomerTypeList { get; set; }
         public List<GenericModel> TransportTypeList { get; set; }
@@ -45,9 +42,7 @@ namespace GoDriveDrop.Core.Models.Shippments
         public int CustomerId { get; set; }
         public GenericModel PackageSize { get; set; }
         public int PackageSizeId { get; set; }
-        public int TransportTypeId { get; set; }
-        public bool NeedaVanOrPickup { get; set; } 
-     
+        public int TransportTypeId { get; set; } 
 
         public string PickupPictureUri { get; set; }
 
@@ -96,9 +91,9 @@ namespace GoDriveDrop.Core.Models.Shippments
         public int PriorityTypeLevel { get; set; }
 
        
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
        
-        public decimal? ShippingWeight { get; set; }
+        public decimal ShippingWeight { get; set; }
         public string PromoCode { get; set; }
 
         public int PriorityTypeId { get; set; }
@@ -106,10 +101,9 @@ namespace GoDriveDrop.Core.Models.Shippments
        
         public string Note { get; set; }
 
-        public Decimal? ExtraCharge { get; set; }
+        public Decimal ExtraCharge { get; set; }
         public string ExtraChargeNote { get; set; }
-
-        public bool IsVanOrTruck { get; set; }
+         
     }
 
 }

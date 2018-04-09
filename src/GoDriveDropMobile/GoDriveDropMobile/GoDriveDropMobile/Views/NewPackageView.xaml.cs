@@ -13,7 +13,8 @@ namespace GoDriveDrop.Core.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class NewPackageView : ContentPage
 	{
-		public NewPackageView ()
+        ScrollView scrollView;
+        public NewPackageView ()
 		{
 			InitializeComponent ();
             Task.Run(async () => await (BindingContext as BaseViewModel).InitializeAsync(null));

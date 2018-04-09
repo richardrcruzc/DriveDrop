@@ -16,7 +16,7 @@ namespace GoDriveDropMobile.Droid.Activities
 {
     [Activity(
         Label = "GoDriveDropMobile",
-        Icon = "@drawable/icon",
+        Icon = "@drawable/iconlogo",
         Theme = "@style/MainTheme",
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsAppCompatActivity

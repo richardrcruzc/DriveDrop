@@ -9,30 +9,7 @@
              xmlns:behaviors="clr-namespace:GoDriveDrop.Core.Behaviors;assembly=GoDriveDrop.Core" 
               viewModelBase:ViewModelLocator.AutoWireViewModel="true"   Icon="{Binding Icon, Mode=TwoWay}"
              Title="{Binding Title, Mode=TwoWay}"
-             Padding="5" >
- 
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem 
-            Command="{Binding SaveCommand}"
-            Text="[ Send ]">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS, Android" Value="app_settings" />
-                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/app_settings.png" />
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem 
-            Command="{Binding CancelCommand}"
-            Text="Cancel">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS, Android" Value="app_settings" />
-                    <On Platform="UWP, WinRT, WinPhone" Value="Assets/app_settings.png" />
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>-->
+             Padding="5" > 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
@@ -122,8 +99,11 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView Orientation="Vertical">
-            <StackLayout>
+
+        <ScrollView Orientation="Vertical" x:Name="TotalScrollView" IsEnabled="{Binding IsEnabledScrollView}">
+            
+            <StackLayout  >
+ 
                 <Label
                   Text="Package Information" VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
@@ -132,10 +112,78 @@
                 <Label
                   Text="Select a Pickup Address From Your Address Book or Enter a New Address" VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
-                <Picker Title="Select or Enter a New Address" ItemsSource="{Binding PickupAddressesList }" 
+               
+                <Picker Title="Select or Enter a New Address" ItemsSource="{Binding PickupAddressesList}"                         
                             ItemDisplayBinding="{Binding Name}" 
-                            SelectedIndex="{Binding PackageInfo.PickupAddressId , Mode=TwoWay}"
-                             SelectedItem="{Binding PackageInfo.PickupAddress, Mode=OneWay}" 
+                            SelectedIndex="{Binding PickupAddressId, Mode=TwoWay}"
+                             SelectedItem="{Binding SelectedPickupAddress, Mode=TwoWay}" 
+                            HorizontalOptions="FillAndExpand">
+                    <!--<Picker.ItemsSource>
+                            <x:String>Id</x:String>
+                            <x:String>Description</x:String>
+                        </Picker.ItemsSource>-->
+                </Picker>
+ 
+                <StackLayout IsVisible="{Binding ShowNewPickupAddress}">
+
+                    <SearchBar  x:Name="SearchForPickupAddress" 
+                                Text="{Binding SearchTextForPickupAddress}"
+                            SearchCommand="{Binding SearchPickupAddressCommand}"
+                                Placeholder="Enter Your New Pickup Address" 
+                                  HorizontalOptions="FillAndExpand"/>
+                    
+                    <Label  VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"  
+                  Text="{Binding PickupAddress }"
+                        IsVisible="{Binding IsPickupAddressVisible}" Style="{StaticResource SelectedAddressLabelStyle}"/>
+ 
+                    <Entry Text="{Binding PackageInfo.PickupPhone, Mode=TwoWay}" 
+                            Keyboard="Telephone"  Placeholder="Pickup Primary Phone" >
+
+                        <Entry.Behaviors>
+                            <behaviors:PhoneNumberMaskBehavior x:Name="PrimaryPhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePrimaryPhoneCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding PackageInfo.PickupPhone.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                  
+
+                    <Entry Text="{Binding PackageInfo.PickupContact, Mode=TwoWay}" 
+                             Placeholder="Pickup Contact" >
+ 
+                    </Entry>
+                      
+
+
+
+
+                    <ListView x:Name="selectedNewPickUpAddress"
+                        IsVisible="{Binding IsListViewVisibleNewPickupAddress}"
+                        ItemsSource="{Binding Items}" 
+                              VerticalOptions="FillAndExpand" 
+                              SelectedItem="{Binding SelectedItemNewPickupAddress, Mode=TwoWay}"/>
+                    
+                </StackLayout>
+                
+                
+                <Label
+                  Text="Select a Dropoff Address From Your Address Book or Enter a New Address" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"      Style="{StaticResource DriveDropTitleStyle}"/>
+               
+                <Picker Title="Select or Enter a New  Drop Address" ItemsSource="{Binding DropAddressesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                             SelectedIndex="{Binding DropAddressId , Mode=TwoWay}"
+                             SelectedItem="{Binding SelectedDropAddress, Mode=TwoWay}" 
                             HorizontalOptions="FillAndExpand">
                     <!--<Picker.ItemsSource>
                             <x:String>Id</x:String>
@@ -143,19 +191,54 @@
                         </Picker.ItemsSource>-->
                 </Picker>
 
-                <Label
-                  Text="Select a Dropoff Address From Your Address Book or Enter a New Address" VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand"      Style="{StaticResource DriveDropTitleStyle}"/>
-                <Picker Title="Select or Enter a New Address" ItemsSource="{Binding DropAddressesList}" 
-                            ItemDisplayBinding="{Binding Name}" 
-                             SelectedIndex="{Binding PackageInfo.DropAddressId , Mode=TwoWay}"
-                             SelectedItem="{Binding PackageInfo.DropAddress, Mode=OneWay}" 
-                            HorizontalOptions="FillAndExpand">
-                    <!--<Picker.ItemsSource>
-                            <x:String>Id</x:String>
-                            <x:String>Description</x:String>
-                        </Picker.ItemsSource>-->
-                </Picker>
+
+                <StackLayout IsVisible="{Binding ShowNewDropAddress}">
+                    <SearchBar  x:Name="SearchForDropAddress" 
+                                Text="{Binding SearchTextForDropAddress}"
+                            SearchCommand="{Binding SearchDropAddressCommand}"
+                                Placeholder="Enter Your New Drop Address" 
+                                  HorizontalOptions="FillAndExpand"/>
+                   
+                    <Label  VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"  
+                  Text="{Binding DropAddress}"
+                        IsVisible="{Binding IsDropAddressVisible}" Style="{StaticResource SelectedAddressLabelStyle}"/>
+                    
+                    <Entry Text="{Binding PackageInfo.DeliveryPhone, Mode=TwoWay}" 
+                            Keyboard="Telephone"  Placeholder="Delivery Primary Phone" >
+
+                        <Entry.Behaviors>
+                            <behaviors:PhoneNumberMaskBehavior x:Name="DeliveryPhoneMask" />
+                            <behaviors:EntryLengthValidatorBehavior  MaxLength="12" />
+                            <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePrimaryPhoneCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding PackageInfo.DeliveryPhone.IsValid}"
+							Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+
+
+                    <Entry Text="{Binding PackageInfo.DeliveryContact, Mode=TwoWay}" 
+                           Placeholder="Delivery Contact" >
+
+                    </Entry>
+
+
+                    <ListView x:Name="selectedNewDropAddress"
+                        IsVisible="{Binding IsListViewVisibleNewDropAddress}"
+                        ItemsSource="{Binding ItemsDropAddress}" 
+                              VerticalOptions="FillAndExpand" 
+                              SelectedItem="{Binding SelectedItemNewDropAddress, Mode=TwoWay}"/>
+
+                </StackLayout>
+
 
                 <Label
                   Text="Package Photo" VerticalOptions="CenterAndExpand" 
@@ -176,7 +259,7 @@
             <StackLayout Orientation="Horizontal">
                     <Label Text="Do You Need a Van or Pick-Up Truck ?"   />
                     <Label Text="{Binding IsToggled, Source={x:Reference switch}}" TextColor="Black"  />
-                    <Switch x:Name="switch" VerticalOptions="Start" IsToggled="{Binding PackageInfo.IsVanOrTruck, Mode=TwoWay}"/>
+                    <Switch x:Name="switch" VerticalOptions="Start" IsToggled="{Binding PackageInfo.NeedVanOrPickup, Mode=TwoWay}"/>
                 </StackLayout>
 
                 <Picker Title="Select Package Size" ItemsSource="{Binding PackageSizesList}" 
@@ -200,28 +283,13 @@
                         </Picker.ItemsSource>-->
                 </Picker>
 
+                <Grid>
 
-                <Entry Text="{Binding PackageInfo.Amount, Mode=TwoWay}"  Placeholder="Estimate Shipping Value" Keyboard="Numeric">
-
-                    <Entry.Behaviors>
-                        <behaviors:EventToCommandBehavior
-							EventName="TextChanged"
-							Command="{Binding ValidateFirstNameCommand}" />
-                    </Entry.Behaviors>
-                    <Entry.Triggers>
-                        <DataTrigger 
-							TargetType="Entry"
-							Binding="{Binding FirstName.IsValid}"
-							Value="False">
-                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
-                        </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
-                <Label 
-					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
-					Style="{StaticResource ValidationErrorLabelStyle}"/>
-
-                <Entry Text="{Binding PackageInfo.ShippingWeight, Mode=TwoWay}"  Placeholder="Estimate Approximate Weight"  Keyboard="Numeric">
+                    <Label Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2"
+                  Text="Estimate Shipping Value" VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"   />
+                    
+                    <Entry Grid.Row="0" Grid.Column="2" Text="{Binding PackageInfo.Amount, Mode=TwoWay}"  Placeholder="Estimate Shipping Value" Keyboard="Numeric">
 
                     <Entry.Behaviors>
                         <behaviors:EventToCommandBehavior
@@ -231,23 +299,50 @@
                     <Entry.Triggers>
                         <DataTrigger 
 							TargetType="Entry"
-							Binding="{Binding FirstName.IsValid}"
+							Binding="{Binding Amount.IsValid}"
 							Value="False">
                             <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
                         </DataTrigger>
                     </Entry.Triggers>
                 </Entry>
-                <Label 
-					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+                    <Label   Grid.Row="0" Grid.Column="1"
+					Text="{Binding Amount.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}"/>
+                </Grid>
+                
+                <Grid>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Estimate Approximate Weight" VerticalOptions="CenterAndExpand"/>
+                    
+                    <Entry Grid.Row="0" Grid.Column="2" Text="{Binding PackageInfo.ShippingWeight, Mode=TwoWay}"  Placeholder="Estimate Approximate Weight"  Keyboard="Numeric">
 
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateFirstNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding PackageInfo.ShippingWeight.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                    <Label Grid.Row="0" Grid.Column="1"
+					Text="{Binding PackageInfo.ShippingWeight.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+					Style="{StaticResource ValidationErrorLabelStyle}"/>
+                </Grid>
+                
                 <Label
                   Text="Note to the Driver, Pickup window, Special instructions, dimensions, if you're not inuding a picture, plase be descriptive." VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
                 <Editor   HeightRequest="85" Text="{Binding PackageInfo.Note, Mode=TwoWay}" Keyboard="Chat"  />
+                
+                <Grid>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Extra Charge Amount" VerticalOptions="CenterAndExpand"/>
 
-
-                <Entry Text="{Binding PackageInfo.ExtraCharge, Mode=TwoWay}"  Placeholder="Extra Charge." Keyboard="Numeric">
+                    <Entry Grid.Row="0" Grid.Column="2"  Text="{Binding PackageInfo.ExtraCharge, Mode=TwoWay}"  Placeholder="Extra Charge" Keyboard="Numeric">
 
                     <Entry.Behaviors>
                         <behaviors:EventToCommandBehavior
@@ -257,16 +352,17 @@
                     <Entry.Triggers>
                         <DataTrigger 
 							TargetType="Entry"
-							Binding="{Binding FirstName.IsValid}"
+							Binding="{Binding ExtraCharge}"
 							Value="False">
                             <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
                         </DataTrigger>
                     </Entry.Triggers>
                 </Entry>
-                <Label 
-					Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}"
+                    <Label Grid.Row="0" Grid.Column="1" 
+					Text="{Binding ExtraCharge.Errors, Converter={StaticResource FirstValidationErrorConverter}"
 					Style="{StaticResource ValidationErrorLabelStyle}"/>
-
+                </Grid>
+                
                 <Label
                   Text="Extra Charge Note." VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"     Style="{StaticResource DriveDropTitleStyle}" />
@@ -295,13 +391,11 @@
 
                 <Button Command="{Binding CalcTotalCommand}" Text="[ Total ]"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
-                   Style="{StaticResource ValidationErrorLabelStyle}" />
+                   Style="{StaticResource ValidationErrorLabelStyle}" 
+                        CommandParameter="{x:Reference TotalScrollView}"/>
+            
 
-
-
-
-
-                <Grid IsVisible="{Binding ShowCalculatedTotal}">
+                    <Grid  IsVisible="{Binding ShowCalculatedTotal}">
                     <Label
                           Grid.Row="0"
                                     Grid.Column="0" 
@@ -439,18 +533,18 @@
 
 
 
-                    <Button 
+                    <Button x:Name="PayPalBtn"  IsEnabled="{Binding IsEnabledScrollView}"
                           Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3"
-                        Command="{Binding CalcTotalCommand}" Text="[ Pay With Paypal ]"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
+                        Command="{Binding SubmitCommand}" Text="[ Pay With Paypal ]"  BackgroundColor="{StaticResource Primary}" TextColor="{StaticResource WhiteColor}"
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                    Style="{StaticResource ValidationErrorLabelStyle}" />
 
 
                 </Grid>
-                
-                
-                
+
+
+
             </StackLayout>
-        </ScrollView>
+            </ScrollView>
     </ContentPage.Content>
 </ContentPage>
